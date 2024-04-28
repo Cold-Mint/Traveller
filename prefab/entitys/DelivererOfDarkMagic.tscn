@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://cj65pso40syj5"]
+
+[ext_resource type="Script" path="res://scripts/character/AICharacter.cs" id="1_hym0i"]
+[ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_eha68"]
+[ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_kiam3"]
+[ext_resource type="PackedScene" uid="uid://sqqfrmikmk5v" path="res://prefab/ui/HealthBar.tscn" id="4_gt388"]
+[ext_resource type="Script" path="res://scripts/behaviorTree/BehaviorNode.cs" id="5_h6w2s"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
+radius = 20.0
+height = 52.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vmqbt"]
+radius = 34.5398
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qumby"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_eha68")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c61vr"]
+radius = 129.027
+
+[node name="DelivererOfDarkMagic" type="CharacterBody2D"]
+collision_layer = 64
+collision_mask = 38
+script = ExtResource("1_hym0i")
+metadata/CampId = "Mazoku"
+metadata/MaxHp = 99999
+metadata/Name = "死灵法师"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_bb8wt")
+
+[node name="Area2DPickingArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DPickingArea"]
+shape = SubResource("CircleShape2D_vmqbt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qumby")
+
+[node name="ItemMarker2D" type="Marker2D" parent="."]
+position = Vector2(15, 20)
+
+[node name="AttackObstacleDetection" type="RayCast2D" parent="ItemMarker2D"]
+collision_mask = 2
+
+[node name="DamageNumber" type="Marker2D" parent="."]
+position = Vector2(0, -32)
+script = ExtResource("3_kiam3")
+
+[node name="HealthBar" parent="." instance=ExtResource("4_gt388")]
+visible = false
+offset_left = -46.0
+offset_top = 41.0
+offset_right = 50.0
+offset_bottom = 53.0
+
+[node name="Behavior" type="Node2D" parent="."]
+script = ExtResource("5_h6w2s")
+
+[node name="WallDetection" type="RayCast2D" parent="."]
+position = Vector2(3, -1)
+target_position = Vector2(50, 0)
+collision_mask = 6
+
+[node name="AttackArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 68
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2D"]
+shape = SubResource("CircleShape2D_c61vr")

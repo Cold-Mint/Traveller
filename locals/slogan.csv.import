@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cjtdm8ddsrd7e"
+
+[deps]
+
+files=["res://locals/slogan.zh.translation", "res://locals/slogan.en.translation"]
+
+source_file="res://locals/slogan.csv"
+dest_files=["res://locals/slogan.zh.translation", "res://locals/slogan.en.translation"]
+
+[params]
+
+compress=true
+delimiter=0

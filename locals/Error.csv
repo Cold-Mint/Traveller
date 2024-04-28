@@ -1,0 +1,7 @@
+id,zh,en
+Object reference not set to an instance of an object.,尝试在空对象上调用虚拟方法。,Object reference not set to an instance of an object.
+missing_parameters,缺少参数。,Missing parameters.
+room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be Node2D.
+width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.
+connected_room_timeout,连接房间超时。,Connecting the room timed out.
+projectiles_is_empty,未设置抛射体。,The projectile is not set.

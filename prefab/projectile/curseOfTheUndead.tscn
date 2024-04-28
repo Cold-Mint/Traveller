@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://c01av43yk1q71"]
+
+[ext_resource type="Script" path="res://scripts/projectile/Projectile.cs" id="1_ib3qh"]
+[ext_resource type="Texture2D" uid="uid://bbcjkyrsx88av" path="res://sprites/projectile/curseOfTheUndead.png" id="1_k8el6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dgro2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8117d"]
+radius = 11.0
+
+[node name="curseOfTheUndead" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_ib3qh")
+metadata/Speed = 500.0
+metadata/Life = 10.0
+metadata/Durability = 1.0
+metadata/DamageType = 2
+metadata/Knockback = Vector2(2, -3)
+
+[node name="CurseOfTheUndead" type="Sprite2D" parent="."]
+texture = ExtResource("1_k8el6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dgro2")
+
+[node name="CollisionDetectionArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 78
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionDetectionArea"]
+shape = SubResource("CircleShape2D_8117d")

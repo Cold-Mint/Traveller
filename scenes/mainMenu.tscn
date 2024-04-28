@@ -1,0 +1,91 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3o422sb2opuh"]
+
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/MainMenuLoader.cs" id="1_ljkri"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ljkri")
+
+[node name="StartGameButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -47.5
+offset_top = 170.0
+offset_right = 47.5
+offset_bottom = 201.0
+grow_horizontal = 2
+text = "start_game"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -103.0
+offset_right = 87.0
+offset_bottom = -20.0
+grow_vertical = 0
+
+[node name="Bilibili" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Bilibili"
+
+[node name="GithubLabel2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Github"
+
+[node name="CopyrightLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "copyright"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 98.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 45
+text = "product_name"
+
+[node name="CenterContainer2" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 102.0
+offset_bottom = 127.0
+grow_horizontal = 2
+
+[node name="SloganLabel" type="Label" parent="CenterContainer2"]
+layout_mode = 2
+text = "slogan"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -68.0
+offset_top = -60.0
+offset_right = -67.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VersionLabel" type="Label" parent="VBoxContainer2"]
+layout_mode = 2

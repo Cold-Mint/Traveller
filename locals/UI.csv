@@ -1,0 +1,14 @@
+id,zh,en
+product_name,异界旅人,A traveler from another world
+start_game,开始游戏,Start game
+pick_up,拾捡,Pick up 
+move_left,向左移动,Move left
+move_right,向右移动,Move right
+jump,跳跃,Jump
+throw,抛出,Throw a 
+must_be_thrown,必须先抛出{0}才能拾捡{1},{0} must be thrown before {1} can be picked up.
+use_item,使用,Use
+jump_down,跳下平台,Jump off platform
+de,的,'s
+default_player_name,白纸,blankPaper
+unknown,未知,Unknown

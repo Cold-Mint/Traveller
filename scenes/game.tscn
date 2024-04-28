@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnftvkj2cido7"]
+
+[ext_resource type="Script" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
+[ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="2_n1yht"]
+[ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="2_owrhq"]
+[ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="2_xrm3v"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_mqdgt")
+
+[node name="MapRoot" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -95.0
+offset_right = 178.0
+offset_bottom = -10.0
+grow_vertical = 0
+
+[node name="HealthBarUi" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_xrm3v")
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HealthBarUi"]
+layout_mode = 2
+texture = ExtResource("2_n1yht")
+
+[node name="HotBar" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_owrhq")
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HotBar"]
+layout_mode = 2
+texture = ExtResource("2_n1yht")
+
+[node name="OperationTip" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "32323"
+
+[node name="ProjectileContainer" type="Node2D" parent="."]
+
+[node name="DamageNumberContainer" type="Node2D" parent="."]
+
+[node name="WeaponContainer" type="Node2D" parent="."]

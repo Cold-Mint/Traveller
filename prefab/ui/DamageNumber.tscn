@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bci3swhs1crfb"]
+
+[ext_resource type="Script" path="res://scripts/damage/DamageNumber.cs" id="1_fui0m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vq24w"]
+
+[node name="DamageNumber" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_fui0m")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vq24w")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

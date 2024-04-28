@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnnn2xyayiehk"]
+
+[ext_resource type="Texture2D" uid="uid://e6670ykyq145" path="res://sprites/weapon/staffOfTheUndead.png" id="1_ms3us"]
+[ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
+size = Vector2(49, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
+size = Vector2(49, 5.25)
+
+[node name="StaffOfTheUndead" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 34
+script = ExtResource("1_w8hhv")
+metadata/Projectiles = PackedStringArray("res://prefab/projectile/curseOfTheUndead.tscn")
+metadata/Name = "staff_of_the_undead"
+metadata/FiringIntervalArray = PackedInt64Array(5000, 500, 250)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 68
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(25.5, 0.5)
+shape = SubResource("RectangleShape2D_obcq2")
+
+[node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
+position = Vector2(30, 0)
+texture = ExtResource("1_ms3us")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(25.5, 0.375)
+shape = SubResource("RectangleShape2D_14m1g")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(65, 0)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(26, -8)
+target_position = Vector2(0, 20)
+collision_mask = 34
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+target_position = Vector2(0, -29)

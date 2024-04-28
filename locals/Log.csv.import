@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://btmjafjh5r6bk"
+
+[deps]
+
+files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation"]
+
+source_file="res://locals/Log.csv"
+dest_files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation"]
+
+[params]
+
+compress=true
+delimiter=0
