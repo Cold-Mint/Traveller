@@ -36,13 +36,15 @@ offset_right = 87.0
 offset_bottom = -20.0
 grow_vertical = 0
 
-[node name="Bilibili" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Bilibili"
-
-[node name="GithubLabel2" type="Label" parent="VBoxContainer"]
+[node name="GithubLink" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
 text = "Github"
+uri = "https://github.com/Cold-Mint/Traveller"
+
+[node name="BiliBiliLink" type="LinkButton" parent="VBoxContainer"]
+layout_mode = 2
+text = "Bilibili"
+uri = "https://space.bilibili.com/1383759192"
 
 [node name="CopyrightLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
