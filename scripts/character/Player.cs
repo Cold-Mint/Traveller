@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 using ColdMint.scripts;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.database;
-using ColdMint.scripts.debug;
-using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// <para>玩家角色</para>
@@ -282,20 +278,6 @@ public partial class Player : CharacterTemplate
         var success = PickItem(PickAbleItem);
         if (success)
         {
-            //在背包内添加物品
-            var dataPackDbContext = DataBaseManager.GetRequiredService<DataPackDbContext>();
-            var itemInfoDbSet = dataPackDbContext.ItemInfo;
-            var query = from itemInfoData in itemInfoDbSet
-                where itemInfoData.Id == "staffOfTheDead" && itemInfoData.Namespace == Config.DefaultNamespace
-                select itemInfoData;
-            var itemInfo = await query.FirstOrDefaultAsync();
-            if (itemInfo != null)
-            {
-                var item = new LocalItem(itemInfo);
-                await item.LoadIcon();
-                GameSceneNodeHolder.HotBar.AddItem(item);
-            }
-
             PickAbleItem = null;
             TotalNumberOfPickups--;
             if (FloatLabel != null)

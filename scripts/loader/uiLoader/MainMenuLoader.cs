@@ -2,11 +2,8 @@ using System;
 using System.IO;
 using System.Text;
 using ColdMint.scripts.camp;
-using ColdMint.scripts.database;
-using ColdMint.scripts.dataPack;
 using ColdMint.scripts.debug;
 using Godot;
-using SQLitePCL;
 
 namespace ColdMint.scripts.loader.uiLoader;
 
@@ -35,24 +32,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
 			Directory.CreateDirectory(dataPath);
 		}
 		
-		//创建数据库文件夹
-		var dataBasePath = Config.GetDataBaseDirectory();
-		if (!Directory.Exists(dataBasePath))
-		{
-			Directory.CreateDirectory(dataBasePath);
-		}
-		DataBaseManager.InitDataBases(dataBasePath);
-
-		//创建数据包文件夹
-		var dataPackPath = Config.GetDataPackDirectory();
-		if (!Directory.Exists(dataPackPath))
-		{
-			Directory.CreateDirectory(dataPackPath);
-		}
-		await DataPackManager.ScanAllDataPack(dataPackPath);
-
-	
-
 		//Registered camp
 		//注册阵营
 		var defaultCamp = new Camp(Config.CampId.Default);

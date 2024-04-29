@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using ColdMint.scripts.dataPack;
 using Godot;
 using Environment = System.Environment;
 
@@ -85,18 +84,7 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
-
-    /// <summary>
-    /// <para>An empty namespace</para>
-    /// <para>空的命名空间</para>
-    /// </summary>
-    public const string EmptyNamespace = "Empty";
-
-    /// <summary>
-    /// <para>The default namespace of the packet</para>
-    /// <para>数据包的默认命名空间</para>
-    /// </summary>
-    public const string DefaultNamespace = "traveler";
+    
 
     /// <summary>
     /// <para>UserID</para>
@@ -119,66 +107,7 @@ public static class Config
     ///<para>在禁用版本隔离时用的</para>
     /// </remarks>
     public const string DefaultVersionName = "Default";
-
-    public const string DataPackDirectoryName = "DataPacks";
-    public const string CacheDirectoryName = "Caches";
-    public const string DataBaseDirectoryName = "DataBases";
-
-    /// <summary>
-    /// <para>The starting path of the item data</para>
-    /// <para>物品数据的起始路径</para>
-    /// </summary>
-    public const string ItemStartPathName = "items";
-
-    public const string SpriteStartPathName = "sprites";
-
-    /// <summary>
-    /// <para>The format of the source file inside the packet</para>
-    /// <para>数据包内的源文件格式</para>
-    /// </summary>
-    public const string DataPackSourceFileFomat = ".json";
-
-    /// <summary>
-    /// <para>The path symbol inside the compressed package</para>
-    /// <para>压缩包内部的路径符号</para>
-    /// </summary>
-    public const char ZipPathCharacter = '/';
-
-    /// <summary>
-    /// <para>Gets the packet directory</para>
-    /// <para>获取数据包目录</para>
-    /// </summary>
-    /// <returns></returns>
-    public static string GetDataPackDirectory()
-    {
-        return Path.Join(GetGameDataDirectory(), DataPackDirectoryName);
-    }
-
-    /// <summary>
-    /// <para>Gets the packet cache directory</para>
-    /// <para>获取数据包缓存目录</para>
-    /// </summary>
-    /// <param name="nameS"></param>
-    /// <returns></returns>
-    public static string GetDataPackCacheDirectory(string namespaceStr)
-    {
-        var path = Path.Join(GetGameDataDirectory(), CacheDirectoryName, DataPackDirectoryName, namespaceStr);
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-        return path;
-    }
-
-    /// <summary>
-    /// <para>Get database directory</para>
-    /// <para>获取数据库目录</para>
-    /// </summary>
-    /// <returns></returns>
-    public static string GetDataBaseDirectory()
-    {
-        return Path.Join(GetGameDataDirectory(), DataBaseDirectoryName);
-    }
+    
 
     /// <summary>
     /// <para>GetGameDataDirectory</para>
