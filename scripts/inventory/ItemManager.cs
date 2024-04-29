@@ -2,6 +2,10 @@
 
 namespace ColdMint.scripts.inventory;
 
+/// <summary>
+/// <para>Item manager</para>
+/// <para>物品管理器</para>
+/// </summary>
 public static class ItemManager
 {
     private static Dictionary<string, IItem> _dictionary = new Dictionary<string, IItem>();
@@ -13,17 +17,10 @@ public static class ItemManager
     /// <param name="item"></param>
     public static void AddItem(IItem item)
     {
-        var key = GetKey(item);
-        if (_dictionary.ContainsKey(key))
+        if (_dictionary.ContainsKey(item.Id))
         {
             return;
         }
-
-        _dictionary.Add(key, item);
-    }
-
-    private static string GetKey(IItem item)
-    {
-        return item.Namespace + item.Id;
+        _dictionary.Add(item.Id, item);
     }
 }

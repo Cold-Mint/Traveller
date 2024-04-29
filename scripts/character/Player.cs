@@ -196,7 +196,23 @@ public partial class Player : CharacterTemplate
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
         {
-            PickUpAction();
+            var success = PickItem(PickAbleItem);
+            if (success)
+            {
+                if (PickAbleItem is WeaponTemplate weaponTemplate)
+                {
+                    GameSceneNodeHolder.HotBar.AddItem(weaponTemplate);
+                }
+                PickAbleItem = null;
+                TotalNumberOfPickups--;
+                if (FloatLabel != null)
+                {
+                    FloatLabel.QueueFree();
+                    FloatLabel = null;
+                }
+
+                UpdateOperationTip();
+            }
         }
 
         if (Input.IsActionJustPressed("ui_down"))
@@ -273,22 +289,7 @@ public partial class Player : CharacterTemplate
         }
     }
 
-    private async Task PickUpAction()
-    {
-        var success = PickItem(PickAbleItem);
-        if (success)
-        {
-            PickAbleItem = null;
-            TotalNumberOfPickups--;
-            if (FloatLabel != null)
-            {
-                FloatLabel.QueueFree();
-                FloatLabel = null;
-            }
-
-            UpdateOperationTip();
-        }
-    }
+   
 
     private Vector2 GetThrowVelocity()
     {

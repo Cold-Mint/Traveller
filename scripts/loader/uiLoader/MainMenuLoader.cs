@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -31,7 +32,12 @@ public partial class MainMenuLoader : UiLoaderTemplate
 		{
 			Directory.CreateDirectory(dataPath);
 		}
-		
+		//Registered article
+		//注册物品
+		// var staffOfTheUndead = new CommonItem();
+		// staffOfTheUndead.Name = "item_staff_of_the_undead";
+		// staffOfTheUndead.Id = "staff_of_the_undead";
+		// staffOfTheUndead.Description = "";
 		//Registered camp
 		//注册阵营
 		var defaultCamp = new Camp(Config.CampId.Default);

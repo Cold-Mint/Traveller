@@ -11,4 +11,4 @@ use_item,使用,Use
 jump_down,跳下平台,Jump off platform
 de,的,'s
 default_player_name,白纸,blankPaper
-unknown,未知,Unknown
+item_prompt_debug,ID：{0}\n名称：{1}\n数量：{2}\n最大叠加数量：{3}\n数据类型：{4},ID: {0}\n Name: {1}\n Quantity: {2}\n Maximum stacking quantity: {3}\n Data type: {4}

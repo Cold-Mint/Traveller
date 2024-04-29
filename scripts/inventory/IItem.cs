@@ -9,7 +9,7 @@ public interface IItem
     /// <para>Item and ID</para>
     /// <para>物品还有ID</para>
     /// </summary>
-    string Id { get; }
+    string Id { get; set; }
 
     /// <summary>
     /// <para>Represents the quantity of this item</para>
@@ -21,21 +21,20 @@ public interface IItem
     /// <para>How many can this item stack up to</para>
     /// <para>这个物品最多叠加到多少个</para>
     /// </summary>
-    int MaxStackQuantity { get; }
+    int MaxStackQuantity { get; set; }
 
     /// <summary>
     /// <para>Items can be set with Icon</para>
     /// <para>物品可以设置图标</para>
     /// </summary>
-    Texture2D Icon { get; }
+    Texture2D Icon { get; set; }
 
     /// <summary>
     /// <para>Item has a name</para>
     /// <para>物品有名称</para>
     /// </summary>
-    string Name { get; }
+    string Name { get; set; }
 
-    string Namespace { get; }
 
     /// <summary>
     /// <para>When using items</para>

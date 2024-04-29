@@ -13,11 +13,17 @@ namespace ColdMint.scripts.weapon;
 /// <para>WeaponTemplate</para>
 /// <para>武器模板</para>
 /// </summary>
-public partial class WeaponTemplate : RigidBody2D
+public partial class WeaponTemplate : RigidBody2D, IItem
 {
     public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-    public string Name => GetMeta("Name", "").AsString();
+    public string Id { get; set; }
+    public int Quantity { get; set; }
+    public int MaxStackQuantity { get; set; }
+    public Texture2D Icon { get; set; }
+    public string Name { get; set; }
+    public Action<IItem> OnUse { get; set; }
+    public Func<IItem, Node> OnInstantiation { get; set; }
 
     /// <summary>
     /// <para>Owner</para>
@@ -39,7 +45,7 @@ public partial class WeaponTemplate : RigidBody2D
 
     //开火间隔
     private TimeSpan _firingInterval;
-    
+
 
     /// <summary>
     /// <para>The recoil of the weapon</para>
@@ -61,6 +67,11 @@ public partial class WeaponTemplate : RigidBody2D
         _rayCast2D = GetNode<RayCast2D>("RayCast2D");
         _area2D = GetNode<Area2D>("Area2D");
         _area2D.BodyEntered += OnBodyEnter;
+        Id = GetMeta("ID", "1").AsString();
+        Quantity = GetMeta("Quantity", "1").AsInt32();
+        MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
+        Icon = GetMeta("Icon", "").As<Texture2D>();
+        Name = GetMeta("Name", "").AsString();
         _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
         _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
         _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
