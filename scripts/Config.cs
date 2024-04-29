@@ -121,6 +121,7 @@ public static class Config
     public const string DefaultVersionName = "Default";
 
     public const string DataPackDirectoryName = "DataPacks";
+    public const string CacheDirectoryName = "Caches";
     public const string DataBaseDirectoryName = "DataBases";
 
     /// <summary>
@@ -151,6 +152,22 @@ public static class Config
     public static string GetDataPackDirectory()
     {
         return Path.Join(GetGameDataDirectory(), DataPackDirectoryName);
+    }
+
+    /// <summary>
+    /// <para>Gets the packet cache directory</para>
+    /// <para>获取数据包缓存目录</para>
+    /// </summary>
+    /// <param name="nameS"></param>
+    /// <returns></returns>
+    public static string GetDataPackCacheDirectory(string namespaceStr)
+    {
+        var path = Path.Join(GetGameDataDirectory(), CacheDirectoryName, DataPackDirectoryName, namespaceStr);
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+        return path;
     }
 
     /// <summary>

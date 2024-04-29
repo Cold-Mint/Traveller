@@ -14,6 +14,7 @@ using ColdMint.scripts.debug;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColdMint.scripts.dataPack.local;
 
@@ -50,7 +51,7 @@ public class LocalDataPack : IDataPack
         var query = from zipFileInfo in zipFileInfoDbSet
             where zipFileInfo.ZipFileName == zipFileName
             select zipFileInfo;
-        var oldZipFileInfo = query.FirstOrDefault();
+        var oldZipFileInfo = await query.FirstOrDefaultAsync();
         if (oldZipFileInfo == null || oldZipFileInfo.ZipFileMd5 != md5)
         {
             //Get the list file GetEntry internal Dictionary based implementation, very fast
@@ -82,7 +83,7 @@ public class LocalDataPack : IDataPack
                         .Where(item => item.ZipFileName == zipFileName)
                         .ToList();
                     dataPackDbContext.ItemInfo.RemoveRange(itemsToDelete);
-                    
+
                     var spritesToDelete = dataPackDbContext.SpriteInfo
                         .Where(sprite => sprite.ZipFileName == zipFileName)
                         .ToList();
@@ -174,7 +175,7 @@ public class LocalDataPack : IDataPack
             select dataPack;
         if (dataPackInfo != null)
         {
-            manifest = dataPackInfo.FirstOrDefault();
+            manifest = await dataPackInfo.FirstOrDefaultAsync();
         }
     }
 

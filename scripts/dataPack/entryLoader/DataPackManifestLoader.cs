@@ -7,6 +7,7 @@ using ColdMint.scripts.database;
 using ColdMint.scripts.database.dataPackEntity;
 using ColdMint.scripts.dataPack.local;
 using ColdMint.scripts.serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColdMint.scripts.dataPack.entryLoader;
 
@@ -55,7 +56,7 @@ public class DataPackManifestLoader : IEntryLoader
             var dataPackQuery = from dataPack in dataPackInfoDbSet
                 where dataPack.ZipFileName == zipFileName
                 select dataPack;
-            var oldDataPackInfo = dataPackQuery.FirstOrDefault();
+            var oldDataPackInfo = await dataPackQuery.FirstOrDefaultAsync();
             if (oldDataPackInfo == null)
             {
                 //There was no list to record before, create one.

@@ -12,6 +12,7 @@ using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// <para>玩家角色</para>
@@ -287,10 +288,11 @@ public partial class Player : CharacterTemplate
             var query = from itemInfoData in itemInfoDbSet
                 where itemInfoData.Id == "staffOfTheDead" && itemInfoData.Namespace == Config.DefaultNamespace
                 select itemInfoData;
-            var itemInfo = query.FirstOrDefault();
+            var itemInfo = await query.FirstOrDefaultAsync();
             if (itemInfo != null)
             {
                 var item = new LocalItem(itemInfo);
+                await item.LoadIcon();
                 GameSceneNodeHolder.HotBar.AddItem(item);
             }
 
