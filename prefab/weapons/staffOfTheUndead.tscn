@@ -19,6 +19,8 @@ metadata/Name = "staff_of_the_undead"
 metadata/FiringIntervalArray = PackedInt64Array(5000, 500, 250)
 metadata/Icon = ExtResource("2_l5lni")
 metadata/ID = "StaffOfTheUndead"
+metadata/MaxStackQuantity = 1
+metadata/Description = "staff_of_the_undead_desc"
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 8

@@ -25,7 +25,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
 	{
 		//Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package
 		//注册对应的编码提供程序，解决压缩包中文路径乱码问题
-		Encoding.RegisterProvider(CodePagesEncodingProvider.Instance); 
+		Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 		//创建游戏数据文件夹
 		var dataPath = Config.GetGameDataDirectory();
 		if (dataPath != null && !Directory.Exists(dataPath))
@@ -72,7 +72,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
 		_copyrightBuilder.Append(Config.CompanyName);
 		_copyrightBuilder.Append(" all rights reserved.");
 		_copyrightLabel.Text = _copyrightBuilder.ToString();
-		_versionLabel.Text = "ver." + ProjectSettings.GetSetting("application/config/version").AsString();
+		_versionLabel.Text = "ver." + Config.GetVersion();
 		_sloganLabel.Text = SloganProvider.GetSlogan();
 	}
 

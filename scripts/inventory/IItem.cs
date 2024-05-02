@@ -34,6 +34,12 @@ public interface IItem
     /// <para>物品有名称</para>
     /// </summary>
     string Name { get; set; }
+    
+    /// <summary>
+    /// <para>Description</para>
+    /// <para>描述</para>
+    /// </summary>
+    string Description { get; set; }
 
 
     /// <summary>

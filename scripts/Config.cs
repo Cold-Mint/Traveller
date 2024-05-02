@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Godot;
 using Environment = System.Environment;
 
@@ -107,8 +108,26 @@ public static class Config
     ///<para>在禁用版本隔离时用的</para>
     /// </remarks>
     public const string DefaultVersionName = "Default";
-    
 
+
+    /// <summary>
+    /// <para>IsDebug</para>
+    /// <para>是否为Debug模式</para>
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsDebug()
+    {
+        return OS.HasFeature("debug");
+    }
+
+    public static string GetVersion()
+    {
+        var stringBuilder = new StringBuilder();
+        stringBuilder.Append(ProjectSettings.GetSetting("application/config/version").AsString());
+        stringBuilder.Append(IsDebug() ? "_debug" : "_release");
+        return stringBuilder.ToString();
+    }
+    
     /// <summary>
     /// <para>GetGameDataDirectory</para>
     /// <para>获取游戏数据目录</para>

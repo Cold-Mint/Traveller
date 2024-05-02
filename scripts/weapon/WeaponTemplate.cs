@@ -22,6 +22,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     public int MaxStackQuantity { get; set; }
     public Texture2D Icon { get; set; }
     public string Name { get; set; }
+    public string Description { get; set; }
     public Action<IItem> OnUse { get; set; }
     public Func<IItem, Node> OnInstantiation { get; set; }
 
@@ -72,6 +73,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
         Icon = GetMeta("Icon", "").As<Texture2D>();
         Name = GetMeta("Name", "").AsString();
+        Description =GetMeta("Description", "").AsString();
         _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
         _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
         _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
