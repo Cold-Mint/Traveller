@@ -25,6 +25,18 @@ offset_bottom = 201.0
 grow_horizontal = 2
 text = "start_game"
 
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -44.5
+offset_top = 215.0
+offset_right = 50.5
+offset_bottom = 248.0
+grow_horizontal = 2
+text = "settings"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2
@@ -38,11 +50,13 @@ grow_vertical = 0
 
 [node name="GithubLink" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 2
 text = "Github"
 uri = "https://github.com/Cold-Mint/Traveller"
 
 [node name="BiliBiliLink" type="LinkButton" parent="VBoxContainer"]
 layout_mode = 2
+focus_mode = 2
 text = "Bilibili"
 uri = "https://space.bilibili.com/1383759192"
 

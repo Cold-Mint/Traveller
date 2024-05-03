@@ -24,9 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.2, 0.2)
 
-[node name="IconTextureRect" type="TextureButton" parent="BackgroundTexture/CenterContainer"]
+[node name="IconTextureRect" type="TextureRect" parent="BackgroundTexture/CenterContainer"]
 layout_mode = 2
-tooltip_text = "老婆"
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

@@ -85,7 +85,13 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
-    
+
+    /// <summary>
+    /// <para>How many item slots are there on the shortcut bar</para>
+    /// <para>快捷栏上有多少个物品槽</para>
+    /// </summary>
+    public const int HotBarSize = 10;
+
 
     /// <summary>
     /// <para>UserID</para>
@@ -127,7 +133,7 @@ public static class Config
         stringBuilder.Append(IsDebug() ? "_debug" : "_release");
         return stringBuilder.ToString();
     }
-    
+
     /// <summary>
     /// <para>GetGameDataDirectory</para>
     /// <para>获取游戏数据目录</para>

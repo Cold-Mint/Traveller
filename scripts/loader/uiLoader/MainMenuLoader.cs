@@ -53,6 +53,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
 	public override void InitializeUI()
 	{
 		_startGameButton = GetNode<Button>("StartGameButton");
+		_startGameButton.GrabFocus();
 		_versionLabel = GetNode<Label>("VBoxContainer2/VersionLabel");
 		//Generative copyright
 		//生成版权
