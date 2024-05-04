@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
 
+/// <summary>
+/// <para>HotBar</para>
+/// <para>快捷物品栏</para>
+/// </summary>
 public partial class HotBar : HBoxContainer
 {
     private PackedScene _itemSlotPackedScene;
@@ -25,6 +30,13 @@ public partial class HotBar : HBoxContainer
     public override void _Process(double delta)
     {
         base._Process(delta);
+        if (Input.IsActionPressed("throw"))
+        {
+            //Players are not allowed to switch current items while throwing them.
+            //玩家在抛物品时禁止切换当前物品。
+            return;
+        }
+
         if (Input.IsActionJustPressed("hotbar_next"))
         {
             var count = _itemSlotNodes.Count;
@@ -32,6 +44,7 @@ public partial class HotBar : HBoxContainer
             {
                 return;
             }
+
             //Mouse wheel down
             //鼠标滚轮向下
             var oldSelectIndex = selectIndex;
@@ -51,6 +64,7 @@ public partial class HotBar : HBoxContainer
             {
                 return;
             }
+
             //Mouse wheel up
             //鼠标滚轮向上
             var oldSelectIndex = selectIndex;
@@ -107,11 +121,6 @@ public partial class HotBar : HBoxContainer
         {
             SelectItemSlotByHotBarShortcutKey(8);
         }
-
-        if (Input.IsActionJustPressed("hotbar_10"))
-        {
-            SelectItemSlotByHotBarShortcutKey(9);
-        }
     }
 
     /// <summary>
@@ -136,6 +145,41 @@ public partial class HotBar : HBoxContainer
         selectIndex = newIndex;
     }
 
+
+    /// <summary>
+    /// <para>Removes an item from the currently selected inventory</para>
+    /// <para>移除当前选中的物品栏内的物品</para>
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    public bool RemoveItemFromItemSlotBySelectIndex(int number)
+    {
+        return RemoveItemFromItemSlot(selectIndex, number);
+    }
+
+    /// <summary>
+    /// <para>Remove items from the item slot</para>
+    /// <para>从物品槽内移除物品</para>
+    /// </summary>
+    /// <param name="itemSlotIndex">
+    ///<para>When this number is greater than the number of item slots, residual filtering is used.</para>
+    ///<para>当此数量大于物品槽的数量时，会使用余数筛选。</para>
+    /// </param>
+    public bool RemoveItemFromItemSlot(int itemSlotIndex, int number)
+    {
+        var count = _itemSlotNodes.Count;
+        if (count == 0)
+        {
+            //Prevents the dividend from being 0
+            //防止被除数为0
+            return false;
+        }
+
+        var newIndex = itemSlotIndex % count;
+        var itemSlot = _itemSlotNodes[newIndex];
+        return itemSlot.RemoveItem(number);
+    }
+
     /// <summary>
     /// <para>Select an item slot</para>
     /// <para>选中某个物品槽</para>
@@ -144,6 +188,35 @@ public partial class HotBar : HBoxContainer
     {
         _itemSlotNodes[oldSelectIndex].IsSelect = false;
         _itemSlotNodes[newSelectIndex].IsSelect = true;
+        var oldItem = _itemSlotNodes[oldSelectIndex].GetItem();
+        if (oldItem != null && oldItem is Node2D oldNode2D)
+        {
+            oldNode2D.ProcessMode = ProcessModeEnum.Disabled;
+            oldNode2D.Hide();
+        }
+
+        var item = _itemSlotNodes[newSelectIndex].GetItem();
+        if (item == null)
+        {
+            LogCat.Log("选择" + oldSelectIndex + "新的为" + newSelectIndex + "空对象");
+            GameSceneNodeHolder.Player.CurrentItem = null;
+            LogCat.Log("我是空吗" + (GameSceneNodeHolder.Player.CurrentItem == null));
+        }
+        else
+        {
+            if (item is Node2D node2D)
+            {
+                LogCat.Log("我是空吗" + (GameSceneNodeHolder.Player.CurrentItem == null));
+                LogCat.Log("选择" + oldSelectIndex + "新的为" + newSelectIndex + "已赋值" + node2D);
+                node2D.ProcessMode = ProcessModeEnum.Inherit;
+                node2D.Show();
+                GameSceneNodeHolder.Player.CurrentItem = node2D;
+            }
+            else
+            {
+                GameSceneNodeHolder.Player.CurrentItem = null;
+            }
+        }
     }
 
     /// <summary>

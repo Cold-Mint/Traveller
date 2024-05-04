@@ -30,7 +30,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <para>Owner</para>
     /// <para>主人</para>
     /// </summary>
-    public Node2D Owner { get; set; }
+    public Node2D? Owner { get; set; }
 
 
     /// <summary>

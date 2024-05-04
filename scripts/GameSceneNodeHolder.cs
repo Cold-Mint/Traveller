@@ -13,7 +13,7 @@ public class GameSceneNodeHolder
     /// <para>Player instances within the game scene</para>
     /// <para>游戏场景内的玩家实例</para>
     /// </summary>
-    public static Player Player { get; set; }
+    public static Player? Player { get; set; }
 
     /// <summary>
     /// <para>WeaponContainer</para>

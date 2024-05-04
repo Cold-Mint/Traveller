@@ -90,7 +90,7 @@ public static class Config
     /// <para>How many item slots are there on the shortcut bar</para>
     /// <para>快捷栏上有多少个物品槽</para>
     /// </summary>
-    public const int HotBarSize = 10;
+    public const int HotBarSize = 9;
 
 
     /// <summary>

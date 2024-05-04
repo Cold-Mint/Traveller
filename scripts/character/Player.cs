@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ColdMint.scripts;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 
@@ -51,7 +52,7 @@ public partial class Player : CharacterTemplate
     public override void _Ready()
     {
         base._Ready();
-        _characterName = TranslationServer.Translate("default_player_name");
+        CharacterName = TranslationServer.Translate("default_player_name");
         FloatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
         Parabola = GetNode<Line2D>("Parabola");
         PlatformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
@@ -203,6 +204,7 @@ public partial class Player : CharacterTemplate
                 {
                     GameSceneNodeHolder.HotBar.AddItem(weaponTemplate);
                 }
+
                 PickAbleItem = null;
                 TotalNumberOfPickups--;
                 if (FloatLabel != null)
@@ -241,7 +243,7 @@ public partial class Player : CharacterTemplate
             if (CurrentItem != null)
             {
                 Parabola.Points =
-                    ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), gravity, 0.1f);
+                    ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
             }
         }
 
@@ -284,12 +286,12 @@ public partial class Player : CharacterTemplate
 
                 CurrentItem = null;
                 TotalNumberOfPickups++;
+                GameSceneNodeHolder.HotBar.RemoveItemFromItemSlotBySelectIndex(1);
                 UpdateOperationTip();
             }
         }
     }
 
-   
 
     private Vector2 GetThrowVelocity()
     {
@@ -373,7 +375,7 @@ public partial class Player : CharacterTemplate
             {
                 if (weapon.Owner is CharacterTemplate characterTemplate)
                 {
-                    stringBuilder.Append(characterTemplate.CharacterName);
+                    stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
                     stringBuilder.Append(TranslationServer.Translate("de"));
                 }
             }

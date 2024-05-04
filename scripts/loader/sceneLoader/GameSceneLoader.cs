@@ -63,9 +63,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 	{
 		_mapGenerator.Generate(_mapGeneratorConfig);
 		var packedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
+		//Register players in the holder
 		//在持有者内注册玩家
-		GameSceneNodeHolder.Player = (Player)packedScene.Instantiate();
 		var node2D = (Node2D)packedScene.Instantiate();
+		GameSceneNodeHolder.Player = node2D as Player;
 		var gameRoot = GetNode<Node2D>(".");
 		gameRoot.AddChild(node2D);
 		node2D.Position = new Vector2(55, 70);
@@ -75,6 +76,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 		gameRoot.AddChild(delivererOfDarkMagicPackedSceneNode2D);
 		delivererOfDarkMagicPackedSceneNode2D.Position = new Vector2(70, 70);
 
+		//Load a weapon
 		//加载武器
 		var w = GD.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
 		for (int i = 0; i < 3; i++)
