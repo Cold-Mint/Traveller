@@ -10,7 +10,7 @@ namespace ColdMint.scripts.inventory;
 /// <para>HotBar</para>
 /// <para>快捷物品栏</para>
 /// </summary>
-public partial class HotBar : HBoxContainer
+public partial class HotBar : HBoxContainer, IItemContainer
 {
     private PackedScene _itemSlotPackedScene;
     private List<ItemSlotNode> _itemSlotNodes;
@@ -30,13 +30,6 @@ public partial class HotBar : HBoxContainer
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (Input.IsActionPressed("throw"))
-        {
-            //Players are not allowed to switch current items while throwing them.
-            //玩家在抛物品时禁止切换当前物品。
-            return;
-        }
-
         if (Input.IsActionJustPressed("hotbar_next"))
         {
             var count = _itemSlotNodes.Count;
@@ -198,26 +191,38 @@ public partial class HotBar : HBoxContainer
         var item = _itemSlotNodes[newSelectIndex].GetItem();
         if (item == null)
         {
-            LogCat.Log("选择" + oldSelectIndex + "新的为" + newSelectIndex + "空对象");
-            GameSceneNodeHolder.Player.CurrentItem = null;
-            LogCat.Log("我是空吗" + (GameSceneNodeHolder.Player.CurrentItem == null));
+            if (GameSceneNodeHolder.Player != null)
+            {
+                GameSceneNodeHolder.Player.CurrentItem = null;
+            }
         }
         else
         {
             if (item is Node2D node2D)
             {
-                LogCat.Log("我是空吗" + (GameSceneNodeHolder.Player.CurrentItem == null));
-                LogCat.Log("选择" + oldSelectIndex + "新的为" + newSelectIndex + "已赋值" + node2D);
                 node2D.ProcessMode = ProcessModeEnum.Inherit;
                 node2D.Show();
-                GameSceneNodeHolder.Player.CurrentItem = node2D;
+                if (GameSceneNodeHolder.Player != null)
+                {
+                    GameSceneNodeHolder.Player.CurrentItem = node2D;
+                }
             }
             else
             {
-                GameSceneNodeHolder.Player.CurrentItem = null;
+                if (GameSceneNodeHolder.Player != null)
+                {
+                    GameSceneNodeHolder.Player.CurrentItem = null;
+                }
             }
         }
     }
+
+
+    public bool CanAddItem(IItem item)
+    {
+        return Matching(item) != null;
+    }
+
 
     /// <summary>
     /// <para>Add an item to the HotBar</para>
@@ -227,9 +232,54 @@ public partial class HotBar : HBoxContainer
     /// <returns></returns>
     public bool AddItem(IItem item)
     {
-        return _itemSlotNodes.Count != 0 && _itemSlotNodes.Any(itemSlotNode => itemSlotNode.SetItem(item));
+        var itemSlotNode = Matching(item);
+        if (itemSlotNode == null)
+        {
+            return false;
+        }
+        else
+        {
+            return itemSlotNode.SetItem(item);
+        }
     }
 
+    public ItemSlotNode? GetSelectItemSlotNode()
+    {
+        if (_itemSlotNodes.Count == 0)
+        {
+            return null;
+        }
+
+        if (selectIndex < _itemSlotNodes.Count)
+        {
+            //Prevent subscripts from going out of bounds.
+            //防止下标越界。
+            return _itemSlotNodes[selectIndex];
+        }
+
+        return null;
+    }
+
+    public ItemSlotNode? Matching(IItem item)
+    {
+        if (_itemSlotNodes.Count == 0)
+        {
+            return null;
+        }
+
+
+        foreach (var itemSlotNode in _itemSlotNodes)
+        {
+            if (itemSlotNode.CanSetItem(item))
+            {
+                //If there is an item slot to put this item in, then we return it.
+                //如果有物品槽可放置此物品，那么我们返回它。
+                return itemSlotNode;
+            }
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// <para>Add items tank</para>

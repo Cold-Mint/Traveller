@@ -20,6 +20,9 @@ public partial class Player : CharacterTemplate
 
     protected Control FloatLabel;
 
+    //Empty object projectile
+    //空的物品抛射线
+    private Vector2[] emptyVector2Array = new[] { Vector2.Zero };
 
     //抛物线
     private Line2D Parabola;
@@ -172,39 +175,40 @@ public partial class Player : CharacterTemplate
 
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
+        //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
         if (PlatformDetectionRayCast2D.IsColliding() != CollidingWithPlatform)
         {
+            //When the state changes, update the action hint
             //当状态改变时，更新操作提示
             CollidingWithPlatform = PlatformDetectionRayCast2D.IsColliding();
             UpdateOperationTip();
         }
 
+        //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度
         if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
             velocity.Y = JumpVelocity;
 
+        //Moving left and right
         //左右移动
         var axis = Input.GetAxis("ui_left", "ui_right");
         velocity.X = axis * Speed;
 
+        //Use items
         //使用物品
         if (Input.IsActionPressed("use_item"))
         {
             UseItem(GetGlobalMousePosition());
         }
 
+        //Pick up an item
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
         {
             var success = PickItem(PickAbleItem);
             if (success)
             {
-                if (PickAbleItem is WeaponTemplate weaponTemplate)
-                {
-                    GameSceneNodeHolder.HotBar.AddItem(weaponTemplate);
-                }
-
                 PickAbleItem = null;
                 TotalNumberOfPickups--;
                 if (FloatLabel != null)
@@ -221,6 +225,7 @@ public partial class Player : CharacterTemplate
         {
             if (CollidingWithPlatform)
             {
+                //When the character stands on the platform and presses the ui_down key, we cancel the collision between the character and the platform
                 //当角色站在平台上按下 ui_down 键时，我们取消角色与平台的碰撞
                 var timer = new Timer();
                 AddChild(timer);
@@ -237,16 +242,23 @@ public partial class Player : CharacterTemplate
         }
 
 
+        //Display a parabola when an item is thrown
         //抛出物品时，显示抛物线
         if (Input.IsActionPressed("throw"))
         {
-            if (CurrentItem != null)
+            if (CurrentItem == null)
+            {
+                Parabola.Points = emptyVector2Array;
+            }
+            else
             {
                 Parabola.Points =
                     ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
             }
         }
 
+
+        //When you raise your hand, throw the object
         //抬起手时，抛出物品
         if (Input.IsActionJustReleased("throw"))
         {
@@ -295,6 +307,7 @@ public partial class Player : CharacterTemplate
 
     private Vector2 GetThrowVelocity()
     {
+        //We take the mouse position, normalize it, and then multiply it by the distance the player can throw
         //我们拿到鼠标的位置，将其归一化处理，然后乘以玩家可扔出的距离
         return GetLocalMousePosition().Normalized() * throwingVelocity;
     }
@@ -307,18 +320,21 @@ public partial class Player : CharacterTemplate
         switch (axis)
         {
             case -1:
+                //Minus 1, we move to the left
                 //-1，向左移动
                 FacingLeft = true;
                 itemMarker2DPosition.X = -ReadOnlyItemMarkerOriginalX;
                 Flip();
                 break;
             case 1:
+                //1, move to the right
                 //1，向右移动
                 FacingLeft = false;
                 itemMarker2DPosition.X = ReadOnlyItemMarkerOriginalX;
                 Flip();
                 break;
             default:
+                //0, when it's not pressed
                 //0，没有按下时
                 break;
         }
@@ -329,6 +345,7 @@ public partial class Player : CharacterTemplate
     protected override void Flip()
     {
         base.Flip();
+        //If there is a weapon, flip it too
         //如果有武器的话，也要翻转
         if (CurrentItem != null)
         {
@@ -341,6 +358,13 @@ public partial class Player : CharacterTemplate
 
     protected override void EnterThePickingRangeBody(Node node)
     {
+        if (CurrentItem == node)
+        {
+            //If the node entering the pick range is the node held by the player, then return.
+            //如果说进入拾捡范围的节点是玩家所持有的节点，那么返回。
+            return;
+        }
+
         if (node is not Node2D)
         {
             return;
@@ -398,6 +422,7 @@ public partial class Player : CharacterTemplate
         TotalNumberOfPickups--;
         if (TotalNumberOfPickups == 0)
         {
+            //Set to null if there are no more items to pick up
             //如果没有可捡的物品了，设置为null
             PickAbleItem = null;
         }

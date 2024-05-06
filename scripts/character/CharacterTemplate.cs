@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.health;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.weapon;
 using Godot;
 
@@ -29,6 +30,16 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected string? CharacterName;
 
+    //Item containers are used to store items.
+    //物品容器用于存储物品。
+    protected IItemContainer? _itemContainer;
+
+
+    public IItemContainer? ItemContainer
+    {
+        get => _itemContainer;
+        set => _itemContainer = value;
+    }
 
     //Items currently held
     //当前持有的物品
@@ -167,31 +178,75 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Whether successfully picked up</para>
     ///<para>是否成功拾起</para>
     /// </returns>
-    public bool PickItem(Node2D pickAbleItem)
+    public bool PickItem(Node2D? pickAbleItem)
     {
-        if (CurrentItem == null)
+        if (pickAbleItem == null)
         {
-            if (pickAbleItem is WeaponTemplate weaponTemplate)
-            {
-                if (weaponTemplate.Owner != null && weaponTemplate.Owner != this)
-                {
-                    return false;
-                }
-
-                weaponTemplate.Owner = this;
-                weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-                weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
-                weaponTemplate.EnableContactInjury = false;
-                weaponTemplate.Sleeping = true;
-            }
-
-            pickAbleItem.Reparent(ItemMarker2D);
-            pickAbleItem.Position = Vector2.Zero;
-            CurrentItem = pickAbleItem;
-            return true;
+            return false;
         }
 
-        return false;
+        if (_itemContainer == null)
+        {
+            return false;
+        }
+
+        //Get the currently selected node
+        //拿到当前选择的节点
+        var itemSlotNode = _itemContainer.GetSelectItemSlotNode();
+        if (itemSlotNode == null)
+        {
+            return false;
+        }
+
+        if (pickAbleItem is not IItem item)
+        {
+            return false;
+        }
+
+        //First check if we can pick up the item.
+        //先检查我们能否拾起此物品。
+        var canPick = _itemContainer.CanAddItem(item);
+        if (!canPick)
+        {
+            return false;
+        }
+
+        //Is it successfully added to the container?
+        //再检查是否成功的添加到容器内了？
+        var addSuccess = _itemContainer.AddItem(item);
+        if (!addSuccess)
+        {
+            return false;
+        }
+
+        //Set up routine handling of picked up items.
+        //设置捡起物品的常规处理。
+        //You can supplement picking up state handling for more types of objects here.
+        //您可以在这里补充更多类型对象的捡起状态处理。
+        if (pickAbleItem is WeaponTemplate weaponTemplate)
+        {
+            weaponTemplate.Owner = this;
+            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
+            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
+            weaponTemplate.EnableContactInjury = false;
+            weaponTemplate.Sleeping = true;
+        }
+
+        if (itemSlotNode.GetItem() != null && itemSlotNode.GetItem() == item && CurrentItem == null)
+        {
+            //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
+            //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
+            CurrentItem = pickAbleItem;
+        }
+        else
+        {
+            pickAbleItem.Visible = false;
+            pickAbleItem.ProcessMode = ProcessModeEnum.Disabled;
+        }
+
+        pickAbleItem.Reparent(ItemMarker2D);
+        pickAbleItem.Position = Vector2.Zero;
+        return true;
     }
 
 

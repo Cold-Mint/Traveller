@@ -66,7 +66,14 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 		//Register players in the holder
 		//在持有者内注册玩家
 		var node2D = (Node2D)packedScene.Instantiate();
-		GameSceneNodeHolder.Player = node2D as Player;
+		if (node2D is Player player)
+		{
+			GameSceneNodeHolder.Player = player;
+			//Allow the player to pick up items.
+			//使玩家可以捡起物品。
+			player.ItemContainer = GameSceneNodeHolder.HotBar;
+		}
+		
 		var gameRoot = GetNode<Node2D>(".");
 		gameRoot.AddChild(node2D);
 		node2D.Position = new Vector2(55, 70);

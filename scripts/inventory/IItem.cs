@@ -27,7 +27,7 @@ public interface IItem
     /// <para>Items can be set with Icon</para>
     /// <para>物品可以设置图标</para>
     /// </summary>
-    Texture2D Icon { get; set; }
+    Texture2D? Icon { get; set; }
 
     /// <summary>
     /// <para>Item has a name</para>
