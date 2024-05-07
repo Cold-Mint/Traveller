@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace ColdMint.scripts.loader.sceneLoader;
 
 public interface ISceneLoaderContract
@@ -6,11 +8,11 @@ public interface ISceneLoaderContract
     /// <para>initialization data</para>
     /// <para>初始化数据</para>
     /// </summary>
-    void InitializeData();
+    Task InitializeData();
 
     /// <summary>
     /// <para>load scene</para>
     /// <para>加载场景</para>
     /// </summary>
-    void LoadScene();
+    Task LoadScene();
 }

@@ -134,10 +134,10 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         _initialHp = GetMeta("InitialHp", "0").AsInt32();
-        if (_initialHp <= 0)
+        if (_initialHp <= 0 || _initialHp > MaxHp)
         {
-            //If the initial blood volume is less than or equal to 0, the initial blood volume is set to the maximum blood volume
-            //若初始血量小于等于0，则将初始血量设置为最大血量
+            //If the initial health is less than or equal to 0 or greater than the maximum health, then set it to the maximum health
+            //如果初始血量小于等于0或者大于最大血量，那么将其设置为最大血量
             _initialHp = MaxHp;
         }
 

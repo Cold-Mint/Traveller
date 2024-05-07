@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
@@ -8,19 +9,20 @@ namespace ColdMint.scripts.loader.sceneLoader;
 /// </summary>
 public partial class SceneLoaderTemplate : Node2D, ISceneLoaderContract
 {
-	public sealed override void _Ready()
-	{
-		InitializeData();
-		LoadScene();
-	}
+    public sealed override async void _Ready()
+    {
+        await InitializeData();
+        await LoadScene();
+    }
 
-	public virtual void InitializeData()
-	{
-		
-	}
 
-	public virtual void LoadScene()
-	{
-		
-	}
+    public virtual Task InitializeData()
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task LoadScene()
+    {
+        return Task.CompletedTask;
+    }
 }

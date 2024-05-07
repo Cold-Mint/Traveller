@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 using Godot;
 
@@ -19,6 +20,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
     public override void _Ready()
     {
         base._Ready();
+        NodeUtils.DeleteAllChild(this);
         _itemSlotNodes = new List<ItemSlotNode>();
         _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
         for (var i = 0; i < Config.HotBarSize; i++)
