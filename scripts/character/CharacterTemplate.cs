@@ -32,7 +32,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //Item containers are used to store items.
     //物品容器用于存储物品。
-    protected IItemContainer? _itemContainer;
+    private IItemContainer? _itemContainer;
 
 
     public IItemContainer? ItemContainer

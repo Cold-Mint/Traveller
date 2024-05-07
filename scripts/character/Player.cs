@@ -1,64 +1,60 @@
-using Godot;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ColdMint.scripts;
-using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
+using Godot;
+
+namespace ColdMint.scripts.character;
 
 /// <summary>
 /// <para>玩家角色</para>
 /// </summary>
 public partial class Player : CharacterTemplate
 {
-    private PackedScene FloatLabelPackedScene;
+    private PackedScene? _floatLabelPackedScene;
 
-    protected Control FloatLabel;
+    private Control? _floatLabel;
 
     //Empty object projectile
     //空的物品抛射线
-    private Vector2[] emptyVector2Array = new[] { Vector2.Zero };
+    private readonly Vector2[] _emptyVector2Array = new[] { Vector2.Zero };
 
     //抛物线
-    private Line2D Parabola;
+    private Line2D? _parabola;
 
     //用于检测玩家是否站在平台上的射线
-    private RayCast2D PlatformDetectionRayCast2D;
+    private RayCast2D? _platformDetectionRayCast2D;
 
     //在拾捡范围内，可拾起的物品数量
-    private int TotalNumberOfPickups = 0;
+    private int _totalNumberOfPickups;
 
-    private const float promptTextDistance = 50;
+    private const float PromptTextDistance = 50;
 
     //玩家可拾捡的物品
-    private Node2D PickAbleItem;
+    private Node2D? _pickAbleItem;
 
     //抛出物品的飞行速度
-    private float throwingVelocity = Config.CellSize * 13;
+    private float _throwingVelocity = Config.CellSize * 13;
 
     //射线是否与平台碰撞
-    private bool CollidingWithPlatform = false;
+    private bool _collidingWithPlatform;
 
     //How long does it take for the character to recover from a collision with the platform after jumping off the platform (in seconds)
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
-    private double PlatformCollisionRecoveryTime = 0.2f;
+    private double _platformCollisionRecoveryTime = 0.2f;
 
     //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
-    private double ItemCollisionRecoveryTime = 0.045f;
+    private readonly double _itemCollisionRecoveryTime = 0.045f;
 
 
     public override void _Ready()
     {
         base._Ready();
         CharacterName = TranslationServer.Translate("default_player_name");
-        FloatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
-        Parabola = GetNode<Line2D>("Parabola");
-        PlatformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
+        _floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
+        _parabola = GetNode<Line2D>("Parabola");
+        _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         UpdateOperationTip();
         GameSceneNodeHolder.HealthBarUi.MaxHp = MaxHp;
         GameSceneNodeHolder.HealthBarUi.CurrentHp = CurrentHp;
@@ -71,16 +67,16 @@ public partial class Player : CharacterTemplate
     private void UpdateOperationTip()
     {
         var operationTipBuilder = new StringBuilder();
-        if (TotalNumberOfPickups > 0)
+        if (_totalNumberOfPickups > 0)
         {
             //If there's anything around to pick up
             //如果周围有能捡的东西
             if (CurrentItem == null)
             {
-                if (PickAbleItem != null)
+                if (_pickAbleItem != null)
                 {
-                    string name = null;
-                    if (PickAbleItem is WeaponTemplate weaponTemplate)
+                    string? name = null;
+                    if (_pickAbleItem is WeaponTemplate weaponTemplate)
                     {
                         //When the weapon has no owner, a pick up prompt is displayed.
                         //当武器没有主人时，显示捡起提示。
@@ -101,13 +97,13 @@ public partial class Player : CharacterTemplate
             }
             else
             {
-                string pickAbleItemName = null;
-                string currentItemName = null;
+                string? pickAbleItemName = null;
+                string? currentItemName = null;
                 string mustBeThrown = TranslationServer.Translate("must_be_thrown");
-                if (PickAbleItem != null)
+                if (_pickAbleItem != null)
                 {
                     //可捡的物品是武器
-                    if (PickAbleItem is WeaponTemplate weaponTemplate)
+                    if (_pickAbleItem is WeaponTemplate weaponTemplate)
                     {
                         pickAbleItemName = TranslationServer.Translate(weaponTemplate.Name);
                     }
@@ -145,7 +141,7 @@ public partial class Player : CharacterTemplate
         operationTipBuilder.Append(' ');
         operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
         operationTipBuilder.Append(TranslationServer.Translate("jump"));
-        if (CollidingWithPlatform)
+        if (_collidingWithPlatform)
         {
             operationTipBuilder.Append(' ');
             operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
@@ -177,11 +173,11 @@ public partial class Player : CharacterTemplate
     {
         //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
-        if (PlatformDetectionRayCast2D.IsColliding() != CollidingWithPlatform)
+        if (_platformDetectionRayCast2D != null && _platformDetectionRayCast2D.IsColliding() != _collidingWithPlatform)
         {
             //When the state changes, update the action hint
             //当状态改变时，更新操作提示
-            CollidingWithPlatform = PlatformDetectionRayCast2D.IsColliding();
+            _collidingWithPlatform = _platformDetectionRayCast2D.IsColliding();
             UpdateOperationTip();
         }
 
@@ -206,15 +202,15 @@ public partial class Player : CharacterTemplate
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
         {
-            var success = PickItem(PickAbleItem);
+            var success = PickItem(_pickAbleItem);
             if (success)
             {
-                PickAbleItem = null;
-                TotalNumberOfPickups--;
-                if (FloatLabel != null)
+                _pickAbleItem = null;
+                _totalNumberOfPickups--;
+                if (_floatLabel != null)
                 {
-                    FloatLabel.QueueFree();
-                    FloatLabel = null;
+                    _floatLabel.QueueFree();
+                    _floatLabel = null;
                 }
 
                 UpdateOperationTip();
@@ -223,13 +219,13 @@ public partial class Player : CharacterTemplate
 
         if (Input.IsActionJustPressed("ui_down"))
         {
-            if (CollidingWithPlatform)
+            if (_collidingWithPlatform)
             {
                 //When the character stands on the platform and presses the ui_down key, we cancel the collision between the character and the platform
                 //当角色站在平台上按下 ui_down 键时，我们取消角色与平台的碰撞
                 var timer = new Timer();
                 AddChild(timer);
-                timer.WaitTime = PlatformCollisionRecoveryTime;
+                timer.WaitTime = _platformCollisionRecoveryTime;
                 timer.OneShot = true;
                 timer.Start();
                 timer.Timeout += () =>
@@ -246,15 +242,21 @@ public partial class Player : CharacterTemplate
         //抛出物品时，显示抛物线
         if (Input.IsActionPressed("throw"))
         {
-            if (CurrentItem == null)
+            if (_parabola == null)
             {
-                Parabola.Points = emptyVector2Array;
+                return;
             }
-            else
+
+            if (ItemMarker2D == null)
             {
-                Parabola.Points =
-                    ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
+                //Cannot get the marked location of the item, then do not draw a line
+                //无法获取物品的标记位置，那么不绘制线
+                return;
             }
+
+            _parabola.Points = CurrentItem == null
+                ? _emptyVector2Array
+                : ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
         }
 
 
@@ -262,15 +264,20 @@ public partial class Player : CharacterTemplate
         //抬起手时，抛出物品
         if (Input.IsActionJustReleased("throw"))
         {
-            if (CurrentItem != null)
+            if (CurrentItem == null) return;
+            if (_parabola != null)
             {
-                Parabola.Points = new[] { Vector2.Zero };
-                CurrentItem.Reparent(GameSceneNodeHolder.WeaponContainer);
-                if (CurrentItem is WeaponTemplate weaponTemplate)
+                _parabola.Points = new[] { Vector2.Zero };
+            }
+
+            CurrentItem.Reparent(GameSceneNodeHolder.WeaponContainer);
+            switch (CurrentItem)
+            {
+                case WeaponTemplate weaponTemplate:
                 {
                     var timer = new Timer();
                     weaponTemplate.AddChild(timer);
-                    timer.WaitTime = ItemCollisionRecoveryTime;
+                    timer.WaitTime = _itemCollisionRecoveryTime;
                     timer.OneShot = true;
                     timer.Timeout += () =>
                     {
@@ -284,23 +291,20 @@ public partial class Player : CharacterTemplate
                     timer.Start();
                     weaponTemplate.Sleeping = false;
                     weaponTemplate.LinearVelocity = Vector2.Zero;
+                    break;
                 }
-
-                if (CurrentItem is CharacterBody2D characterBody2D)
-                {
+                case CharacterBody2D characterBody2D:
                     characterBody2D.Velocity = GetThrowVelocity();
-                }
-
-                if (CurrentItem is RigidBody2D rigidBody2D)
-                {
+                    break;
+                case RigidBody2D rigidBody2D:
                     rigidBody2D.LinearVelocity = GetThrowVelocity();
-                }
-
-                CurrentItem = null;
-                TotalNumberOfPickups++;
-                GameSceneNodeHolder.HotBar.RemoveItemFromItemSlotBySelectIndex(1);
-                UpdateOperationTip();
+                    break;
             }
+
+            CurrentItem = null;
+            _totalNumberOfPickups++;
+            GameSceneNodeHolder.HotBar.RemoveItemFromItemSlotBySelectIndex(1);
+            UpdateOperationTip();
         }
     }
 
@@ -309,13 +313,18 @@ public partial class Player : CharacterTemplate
     {
         //We take the mouse position, normalize it, and then multiply it by the distance the player can throw
         //我们拿到鼠标的位置，将其归一化处理，然后乘以玩家可扔出的距离
-        return GetLocalMousePosition().Normalized() * throwingVelocity;
+        return GetLocalMousePosition().Normalized() * _throwingVelocity;
     }
 
     public override void _Process(double delta)
     {
         AimTheCurrentItemAtAPoint(GetGlobalMousePosition());
-        var itemMarker2DPosition = ItemMarker2D.Position;
+        var itemMarker2DPosition = Vector2.Zero;
+        if (ItemMarker2D != null)
+        {
+            itemMarker2DPosition = ItemMarker2D.Position;
+        }
+
         var axis = Input.GetAxis("ui_left", "ui_right");
         switch (axis)
         {
@@ -323,23 +332,30 @@ public partial class Player : CharacterTemplate
                 //Minus 1, we move to the left
                 //-1，向左移动
                 FacingLeft = true;
-                itemMarker2DPosition.X = -ReadOnlyItemMarkerOriginalX;
+                if (ItemMarker2D != null)
+                {
+                    itemMarker2DPosition.X = -ReadOnlyItemMarkerOriginalX;
+                }
+
                 Flip();
                 break;
             case 1:
                 //1, move to the right
                 //1，向右移动
                 FacingLeft = false;
-                itemMarker2DPosition.X = ReadOnlyItemMarkerOriginalX;
+                if (ItemMarker2D != null)
+                {
+                    itemMarker2DPosition.X = ReadOnlyItemMarkerOriginalX;
+                }
+
                 Flip();
-                break;
-            default:
-                //0, when it's not pressed
-                //0，没有按下时
                 break;
         }
 
-        ItemMarker2D.Position = itemMarker2DPosition;
+        if (ItemMarker2D != null)
+        {
+            ItemMarker2D.Position = itemMarker2DPosition;
+        }
     }
 
     protected override void Flip()
@@ -347,12 +363,9 @@ public partial class Player : CharacterTemplate
         base.Flip();
         //If there is a weapon, flip it too
         //如果有武器的话，也要翻转
-        if (CurrentItem != null)
+        if (CurrentItem is WeaponTemplate weapon)
         {
-            if (CurrentItem is WeaponTemplate weapon)
-            {
-                weapon.Flip(FacingLeft);
-            }
+            weapon.Flip(FacingLeft);
         }
     }
 
@@ -365,50 +378,42 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        if (node is not Node2D)
+        if (node is not Node2D node2D)
         {
             return;
         }
 
-        var node2D = node as Node2D;
-        TotalNumberOfPickups++;
-        PickAbleItem = node2D;
-        if (FloatLabel != null)
+        _totalNumberOfPickups++;
+        _pickAbleItem = node2D;
+        if (_floatLabelPackedScene != null)
         {
-            FloatLabel.QueueFree();
-        }
-
-        FloatLabel = (Control)FloatLabelPackedScene.Instantiate();
-        var rotationDegreesNode2D = node2D.RotationDegrees;
-        var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
-        if (rotationDegreesNode2DAbs > 90)
-        {
-            FloatLabel.Position = new Vector2(0, promptTextDistance);
-        }
-        else
-        {
-            FloatLabel.Position = new Vector2(0, -promptTextDistance);
-        }
-
-        FloatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
-        var label = FloatLabel.GetNode<Label>("Label");
-        if (node is WeaponTemplate weapon)
-        {
-            var stringBuilder = new StringBuilder();
-            if (weapon.Owner != null)
+            //If there is a scene of floating text, then we generate floating text.
+            //如果有悬浮文本的场景，那么我们生成悬浮文本。
+            _floatLabel?.QueueFree();
+            _floatLabel = (Control)_floatLabelPackedScene.Instantiate();
+            var rotationDegreesNode2D = node2D.RotationDegrees;
+            var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
+            _floatLabel.Position = rotationDegreesNode2DAbs > 90
+                ? new Vector2(0, PromptTextDistance)
+                : new Vector2(0, -PromptTextDistance);
+            _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
+            var label = _floatLabel.GetNode<Label>("Label");
+            if (node is WeaponTemplate weapon)
             {
+                var stringBuilder = new StringBuilder();
                 if (weapon.Owner is CharacterTemplate characterTemplate)
                 {
                     stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
                     stringBuilder.Append(TranslationServer.Translate("de"));
                 }
+
+                stringBuilder.Append(TranslationServer.Translate(weapon.Name));
+                label.Text = stringBuilder.ToString();
             }
 
-            stringBuilder.Append(TranslationServer.Translate(weapon.Name));
-            label.Text = stringBuilder.ToString();
+            node.AddChild(_floatLabel);
         }
 
-        node.AddChild(FloatLabel);
         UpdateOperationTip();
     }
 
@@ -419,18 +424,18 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        TotalNumberOfPickups--;
-        if (TotalNumberOfPickups == 0)
+        _totalNumberOfPickups--;
+        if (_totalNumberOfPickups == 0)
         {
             //Set to null if there are no more items to pick up
             //如果没有可捡的物品了，设置为null
-            PickAbleItem = null;
+            _pickAbleItem = null;
         }
 
-        if (FloatLabel != null)
+        if (_floatLabel != null)
         {
-            FloatLabel.QueueFree();
-            FloatLabel = null;
+            _floatLabel.QueueFree();
+            _floatLabel = null;
         }
 
         UpdateOperationTip();

@@ -1,4 +1,5 @@
-﻿using ColdMint.scripts.inventory;
+﻿using ColdMint.scripts.character;
+using ColdMint.scripts.inventory;
 using Godot;
 
 namespace ColdMint.scripts;
@@ -7,7 +8,7 @@ namespace ColdMint.scripts;
 /// <para>The node holder within the game scene</para>
 /// <para>游戏场景内的节点持有者</para>
 /// </summary>
-public class GameSceneNodeHolder
+public static class GameSceneNodeHolder
 {
     /// <summary>
     /// <para>Player instances within the game scene</para>

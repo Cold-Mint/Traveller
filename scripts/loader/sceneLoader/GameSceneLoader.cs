@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
+using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.loader.uiLoader;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.room;
@@ -9,21 +9,20 @@ using ColdMint.scripts.map.roomHolder;
 using ColdMint.scripts.map.RoomPlacer;
 using ColdMint.scripts.map.RoomProvider;
 using ColdMint.scripts.map.slotsMatcher;
-using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
 
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
-    private IMapGenerator _mapGenerator;
-    private IMapGeneratorConfig _mapGeneratorConfig;
+    private IMapGenerator? _mapGenerator;
+    private IMapGeneratorConfig? _mapGeneratorConfig;
 
-    public override async Task InitializeData()
+    public override Task InitializeData()
     {
         //加载血条场景
-        var healthBarUI = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");
-        GameSceneNodeHolder.HealthBarUi = healthBarUI;
+        var healthBarUi = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");
+        GameSceneNodeHolder.HealthBarUi = healthBarUi;
         //加载HotBar
         var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
         GameSceneNodeHolder.HotBar = hotBar;
@@ -56,10 +55,22 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         _mapGeneratorConfig = new MapGeneratorConfig(GetNode<Node2D>("MapRoot"), 1);
         roomPlacer.MapGeneratorConfig = _mapGeneratorConfig;
         _mapGenerator.RoomPlacer = roomPlacer;
+        return Task.CompletedTask;
     }
 
     public override async Task LoadScene()
     {
+        if (_mapGenerator == null)
+        {
+            LogCat.LogError("map_generator_is_not_set_up");
+            return;
+        }
+
+        if (_mapGeneratorConfig == null)
+        {
+            LogCat.LogError("map_generator_is_not_configured");
+            return;
+        }
         await _mapGenerator.Generate(_mapGeneratorConfig);
         var packedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
         //Register players in the holder

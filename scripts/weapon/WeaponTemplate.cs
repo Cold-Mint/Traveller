@@ -58,7 +58,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// </remarks>
     private Vector2 _recoil;
 
-    private Area2D _area2D;
+    private Area2D? _area2D;
 
     protected RayCast2D _rayCast2D;
 
@@ -135,8 +135,8 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <summary>
     /// <para>翻转武器</para>
     /// </summary>
-    /// <param name="FacingLeft"></param>
-    public void Flip(bool FacingLeft)
+    /// <param name="facingLeft"></param>
+    public void Flip(bool facingLeft)
     {
     }
 
