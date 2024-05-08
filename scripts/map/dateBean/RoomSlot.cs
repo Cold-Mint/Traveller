@@ -5,6 +5,7 @@ using Godot;
 namespace ColdMint.scripts.map.dateBean;
 
 /// <summary>
+/// <para>RoomSlot</para>
 /// <para>槽</para>
 /// </summary>
 public class RoomSlot
@@ -23,10 +24,7 @@ public class RoomSlot
     /// <para>Is it a horizontal slot</para>
     /// <para>是水平方向的槽吗</para>
     /// </summary>
-    public bool IsHorizontal
-    {
-        get { return StartPosition.Y == EndPosition.Y; }
-    }
+    public bool IsHorizontal => StartPosition.Y == EndPosition.Y;
 
 
     /// <summary>
@@ -37,13 +35,7 @@ public class RoomSlot
     ///<para>Element 1 represents left and right, element 2 represents up and down</para>
     ///<para>元素1，代表左右，元素2代表上下</para>
     /// </remarks>
-    public CoordinateUtils.OrientationDescribe[] DistanceToMidpointOfRoom { get; set; }
+    public CoordinateUtils.OrientationDescribe[]? DistanceToMidpointOfRoom { get; set; }
 
-    public int Length
-    {
-        get
-        {
-            return Math.Max(Math.Abs(EndPosition.X - StartPosition.X), Math.Abs(EndPosition.Y - StartPosition.Y)) + 1;
-        }
-    }
+    public int Length => Math.Max(Math.Abs(EndPosition.X - StartPosition.X), Math.Abs(EndPosition.Y - StartPosition.Y)) + 1;
 }

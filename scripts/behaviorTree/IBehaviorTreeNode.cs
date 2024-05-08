@@ -1,5 +1,4 @@
-﻿using Godot;
-
+﻿
 namespace ColdMint.scripts.behaviorTree;
 
 /// <summary>
@@ -22,7 +21,7 @@ public interface IBehaviorTreeNode
     /// <para>The parent of this node</para>
     /// <para>此节点的父节点</para>
     /// </summary>
-    IBehaviorTreeNode Parent { get; set; }
+    IBehaviorTreeNode? Parent { get; set; }
 
     /// <summary>
     /// <para>child node</para>

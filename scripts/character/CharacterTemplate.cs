@@ -310,17 +310,20 @@ public partial class CharacterTemplate : CharacterBody2D
             var playerCamp = CampManager.GetCamp(GameSceneNodeHolder.Player.CampId);
             if (CampManager.CanCauseHarm(targetCamp, playerCamp))
             {
-                if (targetCamp.ID == playerCamp.ID)
+                if (targetCamp != null && playerCamp != null)
                 {
-                    //If an attack is allowed and you are on the same side, it is displayed as a friendly color (friend damage).
-                    //如果允许攻击，且属于同一阵营，则显示为友好颜色（友伤）
-                    _healthBar.SetFriendlyTones();
-                }
-                else
-                {
-                    //If the injured target is an enemy of the player, it is displayed as an enemy color
-                    //如果受伤的目标是玩家的敌人，则显示为敌对颜色
-                    _healthBar.SetEnemyTones();
+                    if (targetCamp.Id == playerCamp.Id)
+                    {
+                        //If an attack is allowed and you are on the same side, it is displayed as a friendly color (friend damage).
+                        //如果允许攻击，且属于同一阵营，则显示为友好颜色（友伤）
+                        _healthBar.SetFriendlyTones();
+                    }
+                    else
+                    {
+                        //If the injured target is an enemy of the player, it is displayed as an enemy color
+                        //如果受伤的目标是玩家的敌人，则显示为敌对颜色
+                        _healthBar.SetEnemyTones();
+                    }
                 }
             }
             else

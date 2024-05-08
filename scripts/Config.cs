@@ -14,7 +14,7 @@ public static class Config
         /// <para>巡逻</para>
         /// <para>Patrol</para>
         /// </summary>
-        public const string Patrol = "Patrol";
+        public const string? Patrol = "Patrol";
     }
 
     /// <summary>

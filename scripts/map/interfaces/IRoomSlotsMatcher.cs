@@ -16,18 +16,18 @@ public interface IRoomSlotsMatcher
     /// <param name="mainRoom"></param>
     /// <param name="newRoom"></param>
     /// <returns></returns>
-    Task<bool> IsMatch(IRoom mainRoom, IRoom newRoom);
+    Task<bool> IsMatch(IRoom? mainRoom, IRoom newRoom);
 
    
     /// <summary>
     /// <para>LastMatchedMainSlot</para>
     /// <para>最后匹配的主要插槽</para>
     /// </summary>
-    RoomSlot LastMatchedMainSlot { get; }
+    RoomSlot? LastMatchedMainSlot { get; }
     
     /// <summary>
     /// <para>LastMatchedMinorSlot</para>
     /// <para>最后匹配的次要插槽</para>
     /// </summary>
-    RoomSlot LastMatchedMinorSlot { get; }
+    RoomSlot? LastMatchedMinorSlot { get; }
 }

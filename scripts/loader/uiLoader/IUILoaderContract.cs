@@ -14,7 +14,7 @@ public interface IUiLoaderContract
     /// <para>This method loads the information that the UI needs to display, such as: button text, images, etc.</para>
     /// <para>在此方法内加载UI需要显示的信息，例如：按钮的文字，图像等。</para>
     /// </summary>
-    void InitializeUI();
+    void InitializeUi();
 
     /// <summary>
     /// <para>initialization data</para>
@@ -26,5 +26,5 @@ public interface IUiLoaderContract
     /// <para>Load user actions that the UI needs to respond to, such as setting a click event for a button.</para>
     /// <para>加载UI需要响应的用户行动，例如为按钮设置点击事件。</para>
     /// </summary>
-    void LoadUIActions();
+    void LoadUiActions();
 }

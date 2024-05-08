@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using Godot;
@@ -9,26 +8,39 @@ namespace ColdMint.scripts.map.RoomPlacer;
 
 public class RoomPlacer : RoomPlacerTemplate
 {
-    public IMapGeneratorConfig MapGeneratorConfig { get; set; }
-    private Vector2 _halfCell = new Vector2(CellSize / 2, CellSize / 2);
+    public IMapGeneratorConfig? MapGeneratorConfig { get; set; }
+    private readonly Vector2 _halfCell = new Vector2(CellSize / 2f, CellSize / 2f);
 
-    public async override Task<bool> PlaceRoom(Vector2 position, IRoom room)
+    public override Task<bool> PlaceRoom(Vector2 position, IRoom room)
     {
-        var node = room.RootNode;
-        MapGeneratorConfig.MapRoot.AddChild(node);
-        if (node is Node2D node2D)
+        if (MapGeneratorConfig == null)
         {
-            node2D.Position = position;
-            return true;
+            return Task.FromResult(false);
         }
 
-        return false;
+        var node = room.RootNode;
+        MapGeneratorConfig.MapRoot.AddChild(node);
+        if (node is { } node2D)
+        {
+            //If the Node is not empty and is a 2D node.
+            //如果Node不是空的，且是2D节点。
+            node2D.Position = position;
+            return Task.FromResult(true);
+        }
+
+        return Task.FromResult(false);
     }
 
-    public async override Task<Vector2> CalculatedPosition(IRoom mainRoom, IRoom newRoom, RoomSlot mainRoomSlot,
-        RoomSlot newRoomSlot,
+    public override Task<Vector2> CalculatedPosition(IRoom mainRoom, IRoom newRoom, RoomSlot? mainRoomSlot,
+        RoomSlot? newRoomSlot,
         RoomPlacerConfig roomPlacerConfig)
     {
+        if (mainRoom.RootNode == null || mainRoom.TileMap == null || newRoom.TileMap == null || mainRoomSlot == null ||
+            newRoomSlot == null)
+        {
+            return Task.FromResult(Vector2.Zero);
+        }
+
         //计算主插槽中点在世界中的位置。
         //mainRoom.RootNode.Position意为房间所在的世界位置
         //mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition)意为主插槽在房间中的位置
@@ -55,6 +67,6 @@ public class RoomPlacer : RoomPlacerTemplate
             result -= newRoom.TileMap.MapToLocal(new Vector2I(0, newRoomSlot.EndPosition.Y)) - _halfCell;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 }

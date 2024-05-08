@@ -1,4 +1,3 @@
-using ColdMint.scripts.debug;
 using Godot;
 
 namespace ColdMint.scripts.damage;
@@ -9,7 +8,7 @@ namespace ColdMint.scripts.damage;
 /// </summary>
 public partial class DamageNumber : CharacterBody2D
 {
-	private VisibleOnScreenNotifier2D _visibleOnScreenNotifier2D;
+	private VisibleOnScreenNotifier2D? _visibleOnScreenNotifier2D;
 
 	public override void _Ready()
 	{
@@ -24,22 +23,22 @@ public partial class DamageNumber : CharacterBody2D
 		QueueFree();
 	}
 
-	private float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-	private bool enableGravity;
+	private bool _enableGravity;
 
 	public void SetVelocity(Vector2 velocity)
 	{
 		Velocity = velocity;
-		enableGravity = true;
+		_enableGravity = true;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		var velocity = Velocity;
-		if (enableGravity)
+		if (_enableGravity)
 		{
-			velocity.Y += gravity * (float)delta;
+			velocity.Y += _gravity * (float)delta;
 		}
 
 		Velocity = velocity;

@@ -1,12 +1,11 @@
 ﻿using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
-using Godot;
 
 namespace ColdMint.scripts.behaviorTree.ai;
 
-public class AIAttackNode : BehaviorTreeNodeTemplate
+public class AiAttackNode : BehaviorTreeNodeTemplate
 {
-    public AICharacter Character { get; set; }
+    public AiCharacter? Character { get; set; }
 
     public override int Execute(bool isPhysicsProcess, double delta)
     {
@@ -25,7 +24,7 @@ public class AIAttackNode : BehaviorTreeNodeTemplate
 
         //Save the nearest enemy
         //保存最近的敌人
-        CharacterTemplate closestEnemy = null;
+        CharacterTemplate? closestEnemy = null;
         var closestDistance = float.MaxValue;
         var selfCamp = CampManager.GetCamp(Character.CampId);
         foreach (var node in nodesInTheAttackRange)
@@ -44,7 +43,12 @@ public class AIAttackNode : BehaviorTreeNodeTemplate
                     continue;
                 }
 
-                if (selfCamp.ID == characterCamp.ID)
+                if (selfCamp == null || characterCamp == null)
+                {
+                    continue;
+                }
+
+                if (selfCamp.Id == characterCamp.Id)
                 {
                     //如果是同一阵营，不攻击
                     continue;
@@ -60,7 +64,7 @@ public class AIAttackNode : BehaviorTreeNodeTemplate
             }
         }
 
-        if (closestEnemy != null)
+        if (closestEnemy != null && Character.AttackObstacleDetection != null)
         {
             //There are the closest enemies
             //有距离最近的敌人

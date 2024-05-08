@@ -2,7 +2,7 @@
 
 public interface IBehaviorTree
 {
-    string ID { get; }
+    string? Id { get; }
 
-    IBehaviorTreeNode Root { get; }
+    IBehaviorTreeNode? Root { get; }
 }

@@ -71,6 +71,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             LogCat.LogError("map_generator_is_not_configured");
             return;
         }
+
         await _mapGenerator.Generate(_mapGeneratorConfig);
         var packedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
         //Register players in the holder
@@ -100,7 +101,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         {
             var wn = (Node2D)w.Instantiate();
             wn.Position = new Vector2(55, 90);
-            GameSceneNodeHolder.WeaponContainer.AddChild(wn);
+            var weaponContainer = GameSceneNodeHolder.WeaponContainer;
+            weaponContainer?.AddChild(wn);
         }
     }
 }

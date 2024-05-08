@@ -6,9 +6,9 @@ namespace ColdMint.scripts.behaviorTree.ai;
 /// <para>一个节点用于实现角色的移动</para>
 /// <para>A node is used to implement the movement of the character</para>
 /// </summary>
-public class AIWalkNode : BehaviorTreeNodeTemplate
+public class AiWalkNode : BehaviorTreeNodeTemplate
 {
-    public AICharacter Character { get; set; }
+    public AiCharacter? Character { get; set; }
 
     public override int Execute(bool isPhysicsProcess, double delta)
     {

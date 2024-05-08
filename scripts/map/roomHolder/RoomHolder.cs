@@ -13,7 +13,7 @@ public class RoomHolder : IRoomHolder
         return true;
     }
 
-    public IRoom LastRoom
+    public IRoom? LastRoom
     {
         get
         {

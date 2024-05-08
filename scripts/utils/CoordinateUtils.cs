@@ -10,19 +10,19 @@ public class CoordinateUtils
     public enum OrientationDescribe
     {
         //上
-        UP,
+        Up,
 
         //下
-        DOWN,
+        Down,
 
         //左
-        LEFT,
+        Left,
 
         //右
-        RIGHT,
+        Right,
 
         //原点
-        ORIGIN
+        Origin
     }
 
     /// <summary>
@@ -44,28 +44,28 @@ public class CoordinateUtils
         var orientationDescribes = new OrientationDescribe[2];
         if (vector2.X < 0)
         {
-            orientationDescribes[0] = OrientationDescribe.LEFT;
+            orientationDescribes[0] = OrientationDescribe.Left;
         }
         else if (vector2.X == 0)
         {
-            orientationDescribes[0] = OrientationDescribe.ORIGIN;
+            orientationDescribes[0] = OrientationDescribe.Origin;
         }
         else
         {
-            orientationDescribes[0] = OrientationDescribe.RIGHT;
+            orientationDescribes[0] = OrientationDescribe.Right;
         }
 
         if (vector2.Y > 0)
         {
-            orientationDescribes[1] = OrientationDescribe.DOWN;
+            orientationDescribes[1] = OrientationDescribe.Down;
         }
         else if (vector2.Y == 0)
         {
-            orientationDescribes[0] = OrientationDescribe.ORIGIN;
+            orientationDescribes[0] = OrientationDescribe.Origin;
         }
         else
         {
-            orientationDescribes[1] = OrientationDescribe.UP;
+            orientationDescribes[1] = OrientationDescribe.Up;
         }
 
         return orientationDescribes;

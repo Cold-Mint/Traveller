@@ -9,7 +9,7 @@ public interface IItem
     /// <para>Item and ID</para>
     /// <para>物品还有ID</para>
     /// </summary>
-    string Id { get; set; }
+    string? Id { get; set; }
 
     /// <summary>
     /// <para>Represents the quantity of this item</para>
@@ -33,24 +33,24 @@ public interface IItem
     /// <para>Item has a name</para>
     /// <para>物品有名称</para>
     /// </summary>
-    string Name { get; set; }
+    string? Name { get; set; }
     
     /// <summary>
     /// <para>Description</para>
     /// <para>描述</para>
     /// </summary>
-    string Description { get; set; }
+    string? Description { get; set; }
 
 
     /// <summary>
     /// <para>When using items</para>
     /// <para>当使用物品时</para>
     /// </summary>
-    Action<IItem> OnUse { get; set; }
+    Action<IItem>? OnUse { get; set; }
 
     /// <summary>
     /// <para>When removing items from the backpack, instantiate them</para>
     /// <para>当从背包内取出，实例化物品时</para>
     /// </summary>
-    Func<IItem, Node> OnInstantiation { get; set; }
+    Func<IItem, Node>? OnInstantiation { get; set; }
 }

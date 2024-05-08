@@ -14,11 +14,11 @@ public interface IMapGenerator
     /// </remarks>
     public int TimeOutPeriod { get; set; }
 
-    public IRoomSlotsMatcher RoomSlotsMatcher { get; set; }
-    public IRoomHolder RoomHolder { get; set; }
-    public IRoomPlacer RoomPlacer { get; set; }
+    public IRoomSlotsMatcher? RoomSlotsMatcher { get; set; }
+    public IRoomHolder? RoomHolder { get; set; }
+    public IRoomPlacer? RoomPlacer { get; set; }
 
-    public IRoomProvider RoomProvider { get; set; }
+    public IRoomProvider? RoomProvider { get; set; }
 
     Task Generate(IMapGeneratorConfig mapGeneratorConfig);
 }

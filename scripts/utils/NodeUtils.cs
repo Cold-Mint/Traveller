@@ -34,6 +34,6 @@ public class NodeUtils
     /// <returns></returns>
     public static async Task<int> DeleteAllChildAsync(Node parent)
     {
-        return await Task.Run<int>(() => DeleteAllChild(parent));
+        return await Task.Run(() => DeleteAllChild(parent));
     }
 }

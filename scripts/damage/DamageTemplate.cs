@@ -1,5 +1,4 @@
 ﻿using System;
-using ColdMint.scripts.debug;
 using Godot;
 
 namespace ColdMint.scripts.damage;
@@ -30,7 +29,7 @@ public abstract class DamageTemplate
     /// <para></para>
     /// <para>攻击者</para>
     /// </summary>
-    public Node2D Attacker { get; set; }
+    public Node2D? Attacker { get; set; }
 
     /// <summary>
     /// <para>Whether the damage text moves to the left</para>
@@ -81,11 +80,11 @@ public abstract class DamageTemplate
     /// <para>An event performed before harming the enemy</para>
     /// <para>在伤害敌人之前执行的事件</para>
     /// </summary>
-    public Action<Node2D> BeforeDamage;
+    public Action<Node2D>? BeforeDamage;
 
     /// <summary>
     /// <para>After damaging the enemy</para>
     /// <para>在伤害敌人之后</para>
     /// </summary>
-    public Action<Node2D> AfterDamage;
+    public Action<Node2D>? AfterDamage;
 }

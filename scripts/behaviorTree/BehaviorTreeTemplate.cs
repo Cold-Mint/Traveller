@@ -6,18 +6,18 @@
 /// </summary>
 public abstract class BehaviorTreeTemplate : IBehaviorTree
 {
-    private IBehaviorTreeNode _root;
-    private string _id;
-    public IBehaviorTreeNode Root => _root;
-    public string ID => _id;
+    private IBehaviorTreeNode? _root;
+    private string? _id;
+    public IBehaviorTreeNode? Root => _root;
+    public string? Id => _id;
 
     public void Init()
     {
         _root = CreateRoot();
-        _id = CreateID();
+        _id = CreateId();
     }
 
-    protected abstract IBehaviorTreeNode CreateRoot();
+    protected abstract IBehaviorTreeNode? CreateRoot();
     
-    protected abstract string CreateID();
+    protected abstract string? CreateId();
 }

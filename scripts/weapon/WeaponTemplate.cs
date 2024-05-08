@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using Godot;
 
@@ -15,22 +13,22 @@ namespace ColdMint.scripts.weapon;
 /// </summary>
 public partial class WeaponTemplate : RigidBody2D, IItem
 {
-    public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    public float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-    public string Id { get; set; }
+    public string? Id { get; set; }
     public int Quantity { get; set; }
     public int MaxStackQuantity { get; set; }
-    public Texture2D Icon { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public Action<IItem> OnUse { get; set; }
-    public Func<IItem, Node> OnInstantiation { get; set; }
+    public Texture2D? Icon { get; set; }
+    public new string? Name { get; set; }
+    public string? Description { get; set; }
+    public Action<IItem>? OnUse { get; set; }
+    public Func<IItem, Node>? OnInstantiation { get; set; }
 
     /// <summary>
     /// <para>Owner</para>
     /// <para>主人</para>
     /// </summary>
-    public Node2D? Owner { get; set; }
+    public new Node2D? Owner { get; set; }
 
 
     /// <summary>
@@ -60,12 +58,12 @@ public partial class WeaponTemplate : RigidBody2D, IItem
 
     private Area2D? _area2D;
 
-    protected RayCast2D _rayCast2D;
+    protected RayCast2D? RayCast2D;
 
 
     public override void _Ready()
     {
-        _rayCast2D = GetNode<RayCast2D>("RayCast2D");
+        RayCast2D = GetNode<RayCast2D>("RayCast2D");
         _area2D = GetNode<Area2D>("Area2D");
         _area2D.BodyEntered += OnBodyEnter;
         Id = GetMeta("ID", "1").AsString();
@@ -73,7 +71,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
         Icon = GetMeta("Icon", "").As<Texture2D>();
         Name = GetMeta("Name", "").AsString();
-        Description =GetMeta("Description", "").AsString();
+        Description = GetMeta("Description", "").AsString();
         _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
         _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
         _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
@@ -143,18 +141,21 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        if (_rayCast2D.IsColliding())
+        if (RayCast2D != null)
         {
-            //If the weapon hits the ground, we disable physical damage.
-            //如果武器落到地面了，我们禁用物理伤害。
-            EnableContactInjury = false;
-            //Items can be pushed by the player when they are on the ground
-            //当物品在地面上时，可被玩家推动
-            SetCollisionMaskValue(Config.LayerNumber.Player, true);
-        }
-        else
-        {
-            SetCollisionMaskValue(Config.LayerNumber.Player, false);
+            if (RayCast2D.IsColliding())
+            {
+                //If the weapon hits the ground, we disable physical damage.
+                //如果武器落到地面了，我们禁用物理伤害。
+                EnableContactInjury = false;
+                //Items can be pushed by the player when they are on the ground
+                //当物品在地面上时，可被玩家推动
+                SetCollisionMaskValue(Config.LayerNumber.Player, true);
+            }
+            else
+            {
+                SetCollisionMaskValue(Config.LayerNumber.Player, false);
+            }
         }
     }
 
@@ -173,7 +174,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     ///<para>敌人所在位置</para>
     /// </param>
     /// </remarks>
-    public void Fire(Node2D owner, Vector2 enemyGlobalPosition)
+    public void Fire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
         var nowTime = DateTime.Now;
         if (_lastFiringTime == null || nowTime - _lastFiringTime > _firingInterval)
@@ -210,7 +211,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <para>Execute fire</para>
     /// <para>执行开火</para>
     /// </summary>
-    protected virtual void DoFire(Node2D owner, Vector2 enemyGlobalPosition)
+    protected virtual void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
     }
 }

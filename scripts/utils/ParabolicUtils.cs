@@ -1,5 +1,4 @@
-﻿using ColdMint.scripts.debug;
-using Godot;
+﻿using Godot;
 
 namespace ColdMint.scripts.utils;
 

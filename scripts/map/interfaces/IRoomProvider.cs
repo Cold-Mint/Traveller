@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ColdMint.scripts.map.interfaces;
+﻿namespace ColdMint.scripts.map.interfaces;
 
 public interface IRoomProvider
 {
@@ -8,7 +6,7 @@ public interface IRoomProvider
     /// <para>Initial room</para>
     /// <para>初始房间</para>
     /// </summary>
-    IRoomTemplate InitialRoom { get; set; }
+    IRoomTemplate? InitialRoom { get; set; }
 
 
     /// <summary>
@@ -18,5 +16,5 @@ public interface IRoomProvider
     /// <param name="index"></param>
     /// <param name="config"></param>
     /// <returns></returns>
-    IRoomTemplate GetRoomRes(int index, IMapGeneratorConfig config);
+    IRoomTemplate? GetRoomRes(int index, IMapGeneratorConfig config);
 }

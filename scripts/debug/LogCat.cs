@@ -4,17 +4,17 @@ using Godot;
 
 namespace ColdMint.scripts.debug;
 
-public class LogCat
+public static class LogCat
 {
-    private static readonly StringBuilder _stringBuilder = new StringBuilder();
+    private static readonly StringBuilder StringBuilder = new StringBuilder();
 
 
     private static StringBuilder HandleMessage(string message)
     {
-        _stringBuilder.Clear();
-        _stringBuilder.Append(DateTime.Now.ToString("yyyy-M-d HH:mm:ss |"));
-        _stringBuilder.Append(TranslationServer.Translate(message));
-        return _stringBuilder;
+        StringBuilder.Clear();
+        StringBuilder.Append(DateTime.Now.ToString("yyyy-M-d HH:mm:ss |"));
+        StringBuilder.Append(TranslationServer.Translate(message));
+        return StringBuilder;
     }
 
     /// <summary>

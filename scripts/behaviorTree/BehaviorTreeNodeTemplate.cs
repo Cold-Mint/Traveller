@@ -8,7 +8,7 @@ namespace ColdMint.scripts.behaviorTree;
 /// </summary>
 public abstract class BehaviorTreeNodeTemplate : IBehaviorTreeNode
 {
-    private List<IBehaviorTreeNode> _children = new List<IBehaviorTreeNode>();
+    private readonly List<IBehaviorTreeNode> _children = new List<IBehaviorTreeNode>();
 
     public void AddChild(IBehaviorTreeNode child)
     {
@@ -29,7 +29,7 @@ public abstract class BehaviorTreeNodeTemplate : IBehaviorTreeNode
     /// <param name="defaultT"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public T GetChild<T>(T defaultT)
+    protected T? GetChild<T>(T? defaultT)
     {
         if (_children.Count == 0)
         {
@@ -49,6 +49,6 @@ public abstract class BehaviorTreeNodeTemplate : IBehaviorTreeNode
 
     public abstract int Execute(bool isPhysicsProcess, double delta);
 
-    public IBehaviorTreeNode Parent { get; set; }
+    public IBehaviorTreeNode? Parent { get; set; }
     public IBehaviorTreeNode[] Children => _children.ToArray();
 }

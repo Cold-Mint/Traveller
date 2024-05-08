@@ -2,7 +2,6 @@ using System;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -13,29 +12,29 @@ namespace ColdMint.scripts.projectile;
 /// </summary>
 public partial class ProjectileTemplate : CharacterBody2D
 {
-	protected Timer _timer;
+	protected Timer? Timer;
 
-	protected double _life;
+	protected double Life;
 
 	//The durability of the projectile
 	//抛射体的耐久度
 	//When the projectile hits the object, the durability will be reduced, and when the durability is less than or equal to 0, the projectile will be destroyed
 	//当抛射体撞击到物体时，会减少耐久度，当耐久度小于等于0时，销毁抛射体
-	protected double _durability;
+	protected double Durability;
 
-	protected int _maxDamage;
-	protected int _minDamage;
-	protected int _damageType;
+	protected int MaxDamage;
+	protected int MinDamage;
+	protected int DamageType;
 
 	//We use the Time node to specify when to destroy the projectile
 	//我们用Time节点来指定何时销毁抛射体
-	private Timer timer;
+	private Timer? _timer;
 
 	/// <summary>
 	/// <para>The impact area of the bullet</para>
 	/// <para>子弹的碰撞区域</para>
 	/// </summary>
-	protected Area2D _area2D;
+	protected Area2D? Area2D;
 
 	/// <summary>
 	/// <para>knockback</para>
@@ -45,7 +44,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 	///<para>How much force does it have when hitting the character? Unit: Number of cells，The X direction of the force is inferred automatically.</para>
 	///<para>当击中角色时带有多大的力？单位：格数，力的X方向是自动推断的。</para>
 	/// </remarks>
-	protected Vector2 _knockbackForce;
+	protected Vector2 KnockbackForce;
 
 	public float Speed
 	{
@@ -56,34 +55,34 @@ public partial class ProjectileTemplate : CharacterBody2D
 	/// <para>The master of the weapon</para>
 	/// <para>武器的主人</para>
 	/// </summary>
-	public Node2D Owner { get; set; }
+	public new Node2D? Owner { get; set; }
 
 	public override void _Ready()
 	{
 		//子弹的碰撞检测区域
-		_area2D = GetNode<Area2D>("CollisionDetectionArea");
-		_area2D.Monitoring = true;
-		_area2D.BodyEntered += OnBodyEnter;
-		_area2D.BodyExited += OnBodyExited;
-		_durability = GetMeta("Durability", "1").AsDouble();
-		_maxDamage = GetMeta("MaxDamage", "7").AsInt32();
-		_minDamage = GetMeta("MinDamage", "5").AsInt32();
-		_damageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
-		_knockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
+		Area2D = GetNode<Area2D>("CollisionDetectionArea");
+		Area2D.Monitoring = true;
+		Area2D.BodyEntered += OnBodyEnter;
+		Area2D.BodyExited += OnBodyExited;
+		Durability = GetMeta("Durability", "1").AsDouble();
+		MaxDamage = GetMeta("MaxDamage", "7").AsInt32();
+		MinDamage = GetMeta("MinDamage", "5").AsInt32();
+		DamageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
+		KnockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
 		//子弹的存在时间
-		_life = GetMeta("Life", "10").AsDouble();
+		Life = GetMeta("Life", "10").AsDouble();
 		//如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
-		if (_life <= 0)
+		if (Life <= 0)
 		{
-			_life = 10;
+			Life = 10;
 		}
 
-		_timer = new Timer();
-		AddChild(_timer);
-		_timer.WaitTime = _life;
-		_timer.OneShot = true;
-		_timer.Start();
-		_timer.Timeout += OnTimeOut;
+		Timer = new Timer();
+		AddChild(Timer);
+		Timer.WaitTime = Life;
+		Timer.OneShot = true;
+		Timer.Start();
+		Timer.Timeout += OnTimeOut;
 	}
 
 
@@ -94,7 +93,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 	/// <param name="owner"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-	private bool CanCauseHarm(Node2D owner, Node2D target)
+	private bool CanCauseHarm(Node2D? owner, Node2D target)
 	{
 		//We must know who the owner of the bullet is in order to determine whether it should cause damage or not
 		//我们必须知道子弹的主人是谁，才能判断是否应该造成伤害
@@ -133,7 +132,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 	/// </summary>
 	/// <param name="owner"></param>
 	/// <param name="target"></param>
-	private void DoDamage(Node2D owner, Node2D target)
+	private void DoDamage(Node2D? owner, Node2D target)
 	{
 		if (target is not CharacterTemplate characterTemplate)
 		{
@@ -144,18 +143,18 @@ public partial class ProjectileTemplate : CharacterBody2D
 		//允许造成伤害
 		var damage = new Damage();
 		damage.Attacker = owner;
-		damage.MaxDamage = _maxDamage;
-		damage.MinDamage = _minDamage;
+		damage.MaxDamage = MaxDamage;
+		damage.MinDamage = MinDamage;
 		damage.CreateDamage();
 		damage.MoveLeft = Velocity.X < 0;
-		damage.Type = _damageType;
+		damage.Type = DamageType;
 		characterTemplate.Damage(damage);
-		if (_knockbackForce != Vector2.Zero)
+		if (KnockbackForce != Vector2.Zero)
 		{
 			//If we set the attack force, then apply the force to the object
 			//如果我们设置了攻退力，那么将力应用到对象上
 			var force = new Vector2();
-			var forceX = Math.Abs(_knockbackForce.X);
+			var forceX = Math.Abs(KnockbackForce.X);
 			if (Velocity.X < 0)
 			{
 				//Beat back to port
@@ -164,7 +163,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 			}
 
 			force.X = forceX * Config.CellSize;
-			force.Y = _knockbackForce.Y * Config.CellSize;
+			force.Y = KnockbackForce.Y * Config.CellSize;
 			characterTemplate.AddForce(force);
 		}
 	}
@@ -188,8 +187,8 @@ public partial class ProjectileTemplate : CharacterBody2D
 		//请在Mask内配置子弹会和谁碰撞
 		//When a bullet hits an object, its durability decreases
 		//子弹撞击到物体时，耐久度减少
-		_durability--;
-		if (_durability <= 0)
+		Durability--;
+		if (Durability <= 0)
 		{
 			//When the durability is less than or equal to 0, destroy the bullet
 			//当耐久度小于等于0时，销毁子弹

@@ -9,33 +9,29 @@ namespace ColdMint.scripts.inventory;
 public partial class ItemSlotNode : MarginContainer
 {
     private IItem? _item;
-    private TextureRect _backgroundTextureRect;
-    private TextureRect _iconTextureRect;
-    private Label _quantityLabel;
-    private Control _control;
+    private TextureRect? _backgroundTextureRect;
+    private TextureRect? _iconTextureRect;
+    private Label? _quantityLabel;
+    private Control? _control;
     private bool _isSelect;
-    private Texture2D _backgroundTexture;
-    private Texture2D _backgroundTextureWhenSelect;
+    private Texture2D? _backgroundTexture;
+    private Texture2D? _backgroundTextureWhenSelect;
 
     public bool IsSelect
     {
         get => _isSelect;
         set
         {
-            if (value)
+            if (_backgroundTextureRect != null)
             {
-                _backgroundTextureRect.Texture = _backgroundTextureWhenSelect;
-            }
-            else
-            {
-                _backgroundTextureRect.Texture = _backgroundTexture;
+                _backgroundTextureRect.Texture = value ? _backgroundTextureWhenSelect : _backgroundTexture;
             }
 
             _isSelect = value;
         }
     }
 
-    public TextureRect BackgroundTextureRect => _backgroundTextureRect;
+    public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
 
     /// <summary>
     /// <para>Get the items in the item slot</para>
@@ -88,9 +84,20 @@ public partial class ItemSlotNode : MarginContainer
     public void ClearItem()
     {
         _item = null;
-        _iconTextureRect.Texture = null;
-        _control.TooltipText = null;
-        _quantityLabel.Visible = false;
+        if (_iconTextureRect != null)
+        {
+            _iconTextureRect.Texture = null;
+        }
+
+        if (_control != null)
+        {
+            _control.TooltipText = null;
+        }
+
+        if (_quantityLabel != null)
+        {
+            _quantityLabel.Visible = false;
+        }
     }
 
 
@@ -140,7 +147,7 @@ public partial class ItemSlotNode : MarginContainer
 
         if (_item == null)
         {
-            if (item.Icon != null)
+            if (item.Icon != null && _iconTextureRect != null)
             {
                 _iconTextureRect.Texture = item.Icon;
             }
@@ -167,6 +174,11 @@ public partial class ItemSlotNode : MarginContainer
     /// <param name="item"></param>
     private void UpdateTooltipText(IItem item)
     {
+        if (_control == null)
+        {
+            return;
+        }
+
         if (Config.IsDebug())
         {
             _control.TooltipText = string.Format(TranslationServer.Translate("item_prompt_debug"), item.Id,
@@ -188,6 +200,11 @@ public partial class ItemSlotNode : MarginContainer
     /// <param name="quantity"></param>
     private void UpdateQuantityLabel(int? quantity)
     {
+        if (_quantityLabel == null)
+        {
+            return;
+        }
+
         switch (quantity)
         {
             case null:

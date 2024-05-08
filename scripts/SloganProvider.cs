@@ -12,7 +12,7 @@ public static class SloganProvider
     /// <para>Define how many banners you want to display</para>
     /// <para>定义共有多少条标语需要展示</para>
     /// </summary>
-    private const int total = 12;
+    private const int Total = 12;
 
     /// <summary>
     /// <para>Swipe the machine to get a slogan</para>
@@ -21,6 +21,6 @@ public static class SloganProvider
     /// <returns></returns>
     public static string GetSlogan()
     {
-        return TranslationServer.Translate("slogan_" + GD.RandRange(1, total));
+        return TranslationServer.Translate("slogan_" + GD.RandRange(1, Total));
     }
 }

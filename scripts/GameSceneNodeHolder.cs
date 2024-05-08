@@ -20,11 +20,11 @@ public static class GameSceneNodeHolder
     /// <para>WeaponContainer</para>
     /// <para>武器容器</para>
     /// </summary>
-    public static Node2D WeaponContainer { get; set; }
+    public static Node2D? WeaponContainer { get; set; }
     
-    public static HotBar HotBar { get; set; }
+    public static HotBar? HotBar { get; set; }
 
 
-    public static HealthBarUi HealthBarUi { get; set; }
-    public static Label OperationTipLabel { get; set; }
+    public static HealthBarUi? HealthBarUi { get; set; }
+    public static Label? OperationTipLabel { get; set; }
 }

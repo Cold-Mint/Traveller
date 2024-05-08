@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.weapon;
-using Godot;
 
 namespace ColdMint.scripts.behaviorTree.ai;
 
@@ -8,11 +7,11 @@ namespace ColdMint.scripts.behaviorTree.ai;
 /// <para>Deal with AI picking up items</para>
 /// <para>处理AI拾起物品的行为</para>
 /// </summary>
-public class AIPickNode : BehaviorTreeNodeTemplate
+public class AiPickNode : BehaviorTreeNodeTemplate
 {
 
 
-    public AICharacter Character { get; set; }
+    public AiCharacter? Character { get; set; }
 
     public override int Execute(bool isPhysicsProcess, double delta)
     {
@@ -40,7 +39,7 @@ public class AIPickNode : BehaviorTreeNodeTemplate
 
         //The closest weapon
         //距离最近的武器
-        WeaponTemplate closestWeapon = null;
+        WeaponTemplate? closestWeapon = null;
         var closestDistance = float.MaxValue;
         foreach (var weaponTemplate in Character.GetCanPickedWeapon())
         {

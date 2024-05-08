@@ -8,7 +8,7 @@ namespace ColdMint.scripts.behaviorTree;
 /// </summary>
 public partial class BehaviorNode : Node2D
 {
-    public IBehaviorTreeNode Root { get; set; }
+    public IBehaviorTreeNode? Root { get; set; }
 
     public override void _PhysicsProcess(double delta)
     {

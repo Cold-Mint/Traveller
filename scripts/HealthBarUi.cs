@@ -114,7 +114,7 @@ public partial class HealthBarUi : HBoxContainer
     /// </summary>
     /// <param name="percent"></param>
     /// <returns></returns>
-    private Texture2D GetTexture2DByPercent(float percent)
+    private Texture2D? GetTexture2DByPercent(float percent)
     {
         if (percent == 0)
         {
@@ -139,11 +139,11 @@ public partial class HealthBarUi : HBoxContainer
         }
     }
 
-    private Texture2D _heartFull;
-    private Texture2D _heartEmpty;
-    private Texture2D _heartHalf;
-    private Texture2D _heartQuarter;
-    private Texture2D _heartThreeFourths;
+    private Texture2D? _heartFull;
+    private Texture2D? _heartEmpty;
+    private Texture2D? _heartHalf;
+    private Texture2D? _heartQuarter;
+    private Texture2D? _heartThreeFourths;
 
     public override void _Ready()
     {

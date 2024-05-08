@@ -6,9 +6,9 @@ namespace ColdMint.scripts.behaviorTree.ai;
 /// <para>The node that controls the rotor when the AI is facing the wall</para>
 /// <para>当AI面向墙壁时，控制转头的节点</para>
 /// </summary>
-public class AIRotorNode : BehaviorTreeNodeTemplate
+public class AiRotorNode : BehaviorTreeNodeTemplate
 {
-    public AICharacter Character { get; set; }
+    public AiCharacter? Character { get; set; }
 
     public override int Execute(bool isPhysicsProcess, double delta)
     {
@@ -17,7 +17,7 @@ public class AIRotorNode : BehaviorTreeNodeTemplate
             return Config.BehaviorTreeResult.Failure;
         }
 
-        var notFacingTheWall = Character.WallDetection.GetCollider() == null;
+        var notFacingTheWall = Character.WallDetection?.GetCollider() == null;
         if (notFacingTheWall)
         {
             return Config.BehaviorTreeResult.Failure;

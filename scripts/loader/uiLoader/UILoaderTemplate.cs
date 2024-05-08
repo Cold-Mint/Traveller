@@ -11,12 +11,12 @@ public partial class UiLoaderTemplate : Control, IUiLoaderContract
 	public sealed override void _Ready()
 	{
 		InitializeData();
-		InitializeUI();
-		LoadUIActions();
+		InitializeUi();
+		LoadUiActions();
 	}
 
    
-	public virtual void InitializeUI()
+	public virtual void InitializeUi()
 	{
 	}
 
@@ -25,7 +25,7 @@ public partial class UiLoaderTemplate : Control, IUiLoaderContract
 		
 	}
 
-	public virtual void LoadUIActions()
+	public virtual void LoadUiActions()
 	{
 	}
 }

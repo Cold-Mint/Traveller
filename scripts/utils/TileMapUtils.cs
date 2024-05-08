@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
 using Godot;
-using Godot.Collections;
 
 namespace ColdMint.scripts.utils;
 
@@ -47,7 +44,7 @@ public static class TileMapUtils
     ///<para>此方法由Github Copilot编写。</para>
     /// </remarks>
     /// <returns></returns>
-    public static RoomSlot[] GetRoomSlots(TileMap tileMap, string layerName)
+    public static RoomSlot[]? GetRoomSlots(TileMap tileMap, string layerName)
     {
         var layer = GetTileMapLayer(tileMap, layerName);
         if (layer == -1)

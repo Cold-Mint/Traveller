@@ -56,8 +56,12 @@ public partial class Player : CharacterTemplate
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         UpdateOperationTip();
-        GameSceneNodeHolder.HealthBarUi.MaxHp = MaxHp;
-        GameSceneNodeHolder.HealthBarUi.CurrentHp = CurrentHp;
+        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        if (healthBarUi != null)
+        {
+            healthBarUi.MaxHp = MaxHp;
+            healthBarUi.CurrentHp = CurrentHp;
+        }
     }
 
     /// <summary>
@@ -66,6 +70,12 @@ public partial class Player : CharacterTemplate
     /// </summary>
     private void UpdateOperationTip()
     {
+        var operationTipLabel = GameSceneNodeHolder.OperationTipLabel;
+        if (operationTipLabel == null)
+        {
+            return;
+        }
+
         var operationTipBuilder = new StringBuilder();
         if (_totalNumberOfPickups > 0)
         {
@@ -129,7 +139,7 @@ public partial class Player : CharacterTemplate
                 }
             }
 
-            GameSceneNodeHolder.OperationTipLabel.Text = operationTipBuilder.ToString();
+            operationTipLabel.Text = operationTipBuilder.ToString();
             return;
         }
 
@@ -165,7 +175,7 @@ public partial class Player : CharacterTemplate
             }
         }
 
-        GameSceneNodeHolder.OperationTipLabel.Text = operationTipBuilder.ToString();
+        operationTipLabel.Text = operationTipBuilder.ToString();
     }
 
 
@@ -264,7 +274,10 @@ public partial class Player : CharacterTemplate
         //抬起手时，抛出物品
         if (Input.IsActionJustReleased("throw"))
         {
-            if (CurrentItem == null) return;
+            if (CurrentItem == null)
+            {
+                return;
+            }
             if (_parabola != null)
             {
                 _parabola.Points = new[] { Vector2.Zero };
@@ -293,6 +306,12 @@ public partial class Player : CharacterTemplate
                     weaponTemplate.LinearVelocity = Vector2.Zero;
                     break;
                 }
+            }
+
+            //We apply force to objects.
+            //我们给物品施加力。
+            switch (CurrentItem)
+            {
                 case CharacterBody2D characterBody2D:
                     characterBody2D.Velocity = GetThrowVelocity();
                     break;
@@ -303,7 +322,9 @@ public partial class Player : CharacterTemplate
 
             CurrentItem = null;
             _totalNumberOfPickups++;
-            GameSceneNodeHolder.HotBar.RemoveItemFromItemSlotBySelectIndex(1);
+            var hotBar = GameSceneNodeHolder.HotBar;
+            hotBar?.RemoveItemFromItemSlotBySelectIndex(1);
+
             UpdateOperationTip();
         }
     }
@@ -444,6 +465,10 @@ public partial class Player : CharacterTemplate
     protected override void OnHit(DamageTemplate damageTemplate)
     {
         base.OnHit(damageTemplate);
-        GameSceneNodeHolder.HealthBarUi.CurrentHp = CurrentHp;
+        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        if (healthBarUi != null)
+        {
+            healthBarUi.CurrentHp = CurrentHp;
+        }
     }
 }

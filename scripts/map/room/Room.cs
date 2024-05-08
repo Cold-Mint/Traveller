@@ -5,7 +5,6 @@ using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.utils;
 using Godot;
-using Godot.Collections;
 
 namespace ColdMint.scripts.map.room;
 
@@ -19,17 +18,17 @@ namespace ColdMint.scripts.map.room;
 /// </remarks>
 public class Room : IRoom
 {
-    private Node2D _rootNode;
-    private RoomSlot[] _roomSlots;
-    private TileMap _tileMap;
+    private Node2D? _rootNode;
+    private RoomSlot?[]? _roomSlots;
+    private TileMap? _tileMap;
 
-    public PackedScene RoomScene
+    public PackedScene? RoomScene
     {
         get => default;
         set => AnalyzeRoomData(value);
     }
 
-    public TileMap TileMap
+    public TileMap? TileMap
     {
         get => _tileMap;
         set => _tileMap = value;
@@ -40,9 +39,9 @@ public class Room : IRoom
     /// <para>解析房间的数据</para>
     /// </summary>
     /// <param name="packedScene"></param>
-    private void AnalyzeRoomData(PackedScene packedScene)
+    private void AnalyzeRoomData(PackedScene? packedScene)
     {
-        var node = packedScene.Instantiate();
+        var node = packedScene?.Instantiate();
         if (node is not Node2D node2D)
         {
             //房间节点不是Node2D类型，抛出异常
@@ -56,19 +55,25 @@ public class Room : IRoom
             node2D.GetNode<Node2D>("RoomSlotList"));
     }
 
-    public Node2D RootNode => _rootNode;
+    public Node2D? RootNode => _rootNode;
 
-    public RoomSlot[] RoomSlots => _roomSlots;
+    public RoomSlot?[]? RoomSlots => _roomSlots;
 
     /// <summary>
     /// <para>GetRoomSlots</para>
     /// <para>在房间内获取所有插槽</para>
     /// </summary>
     /// <param name="tileMap"></param>
+    /// <param name="roomArea2D"></param>
     /// <param name="slotList"></param>
     /// <returns></returns>
-    private RoomSlot[] GetRoomSlots(TileMap tileMap, Area2D roomArea2D, Node2D slotList)
+    private RoomSlot?[]? GetRoomSlots(TileMap? tileMap, Area2D roomArea2D, Node2D slotList)
     {
+        if (tileMap == null)
+        {
+            return null;
+        }
+
         var slotCount = slotList.GetChildCount();
         if (slotCount == 0)
         {

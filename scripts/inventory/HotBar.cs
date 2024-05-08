@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -13,9 +10,12 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class HotBar : HBoxContainer, IItemContainer
 {
-    private PackedScene _itemSlotPackedScene;
-    private List<ItemSlotNode> _itemSlotNodes;
-    private int selectIndex = 0;
+    private PackedScene? _itemSlotPackedScene;
+
+    private List<ItemSlotNode>? _itemSlotNodes;
+
+    //_selectIndex默认为0.
+    private int _selectIndex;
 
     public override void _Ready()
     {
@@ -29,47 +29,75 @@ public partial class HotBar : HBoxContainer, IItemContainer
         }
     }
 
+    /// <summary>
+    /// <para>Select the next item slot</para>
+    /// <para>选择下一个物品槽</para>
+    /// </summary>
+    private void SelectTheNextItemSlot()
+    {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
+        var count = _itemSlotNodes.Count;
+        if (count == 0)
+        {
+            return;
+        }
+
+        var oldSelectIndex = _selectIndex;
+        _selectIndex++;
+        if (_selectIndex >= count)
+        {
+            _selectIndex = 0;
+        }
+
+        SelectItemSlot(oldSelectIndex, _selectIndex);
+    }
+
+    /// <summary>
+    /// <para>Select the previous item slot</para>
+    /// <para>选择上一个物品槽</para>
+    /// </summary>
+    private void SelectThePreviousItemSlot()
+    {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
+        var count = _itemSlotNodes.Count;
+        if (count == 0)
+        {
+            return;
+        }
+
+        var oldSelectIndex = _selectIndex;
+        _selectIndex--;
+        if (_selectIndex < 0)
+        {
+            _selectIndex = count - 1;
+        }
+        
+        SelectItemSlot(oldSelectIndex, _selectIndex);
+    }
+
     public override void _Process(double delta)
     {
         base._Process(delta);
         if (Input.IsActionJustPressed("hotbar_next"))
         {
-            var count = _itemSlotNodes.Count;
-            if (count == 0)
-            {
-                return;
-            }
-
             //Mouse wheel down
             //鼠标滚轮向下
-            var oldSelectIndex = selectIndex;
-            selectIndex++;
-            if (selectIndex >= count)
-            {
-                selectIndex = 0;
-            }
-
-            SelectItemSlot(oldSelectIndex, selectIndex);
+            SelectTheNextItemSlot();
         }
 
         if (Input.IsActionJustPressed("hotbar_previous"))
         {
-            var count = _itemSlotNodes.Count;
-            if (count == 0)
-            {
-                return;
-            }
-
             //Mouse wheel up
             //鼠标滚轮向上
-            var oldSelectIndex = selectIndex;
-            selectIndex--;
-            if (selectIndex < 0)
-            {
-                selectIndex = count - 1;
-            }
-
-            SelectItemSlot(oldSelectIndex, selectIndex);
+            SelectThePreviousItemSlot();
         }
 
         if (Input.IsActionJustPressed("hotbar_1"))
@@ -127,6 +155,11 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// <param name="shortcutKeyIndex"></param>
     private void SelectItemSlotByHotBarShortcutKey(int shortcutKeyIndex)
     {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
         var count = _itemSlotNodes.Count;
         if (count == 0)
         {
@@ -136,8 +169,8 @@ public partial class HotBar : HBoxContainer, IItemContainer
         }
 
         var newIndex = shortcutKeyIndex % count;
-        SelectItemSlot(selectIndex, newIndex);
-        selectIndex = newIndex;
+        SelectItemSlot(_selectIndex, newIndex);
+        _selectIndex = newIndex;
     }
 
 
@@ -149,7 +182,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// <returns></returns>
     public bool RemoveItemFromItemSlotBySelectIndex(int number)
     {
-        return RemoveItemFromItemSlot(selectIndex, number);
+        return RemoveItemFromItemSlot(_selectIndex, number);
     }
 
     /// <summary>
@@ -160,8 +193,17 @@ public partial class HotBar : HBoxContainer, IItemContainer
     ///<para>When this number is greater than the number of item slots, residual filtering is used.</para>
     ///<para>当此数量大于物品槽的数量时，会使用余数筛选。</para>
     /// </param>
+    /// <param name="number">
+    ///<para>The number of items removed</para>
+    ///<para>移除物品的数量</para>
+    /// </param>
     public bool RemoveItemFromItemSlot(int itemSlotIndex, int number)
     {
+        if (_itemSlotNodes == null)
+        {
+            return false;
+        }
+
         var count = _itemSlotNodes.Count;
         if (count == 0)
         {
@@ -181,6 +223,11 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// </summary>
     private void SelectItemSlot(int oldSelectIndex, int newSelectIndex)
     {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
         _itemSlotNodes[oldSelectIndex].IsSelect = false;
         _itemSlotNodes[newSelectIndex].IsSelect = true;
         var oldItem = _itemSlotNodes[oldSelectIndex].GetItem();
@@ -247,16 +294,16 @@ public partial class HotBar : HBoxContainer, IItemContainer
 
     public ItemSlotNode? GetSelectItemSlotNode()
     {
-        if (_itemSlotNodes.Count == 0)
+        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
         {
             return null;
         }
 
-        if (selectIndex < _itemSlotNodes.Count)
+        if (_selectIndex < _itemSlotNodes.Count)
         {
             //Prevent subscripts from going out of bounds.
             //防止下标越界。
-            return _itemSlotNodes[selectIndex];
+            return _itemSlotNodes[_selectIndex];
         }
 
         return null;
@@ -264,7 +311,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
 
     public ItemSlotNode? Matching(IItem item)
     {
-        if (_itemSlotNodes.Count == 0)
+        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
         {
             return null;
         }
@@ -289,6 +336,11 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// </summary>
     private void AddItemSlot(int index)
     {
+        if (_itemSlotNodes == null || _itemSlotPackedScene == null)
+        {
+            return;
+        }
+
         var itemSlotNode = _itemSlotPackedScene.Instantiate() as ItemSlotNode;
         if (itemSlotNode == null)
         {
@@ -296,7 +348,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
         }
 
         AddChild(itemSlotNode);
-        itemSlotNode.IsSelect = index == selectIndex;
+        itemSlotNode.IsSelect = index == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
     }
 }

@@ -13,12 +13,7 @@ public abstract class SelectorNode : BehaviorTreeNodeTemplate
     public override int Execute(bool isPhysicsProcess, double delta)
     {
         var behaviorTreeNode = SelectNode(isPhysicsProcess, delta, Children);
-        if (behaviorTreeNode == null)
-        {
-            return Config.BehaviorTreeResult.Failure;
-        }
-
-        return behaviorTreeNode.Execute(isPhysicsProcess, delta);
+        return behaviorTreeNode?.Execute(isPhysicsProcess, delta) ?? Config.BehaviorTreeResult.Failure;
     }
 
     
@@ -28,5 +23,5 @@ public abstract class SelectorNode : BehaviorTreeNodeTemplate
     /// <para>选择节点的抽象方法</para>
     /// </summary>
     /// <returns></returns>
-    public abstract IBehaviorTreeNode SelectNode(bool isPhysicsProcess, double delta, IBehaviorTreeNode[] children);
+    protected abstract IBehaviorTreeNode? SelectNode(bool isPhysicsProcess, double delta, IBehaviorTreeNode[] children);
 }

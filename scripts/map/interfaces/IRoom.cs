@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ColdMint.scripts.map.dateBean;
+﻿using ColdMint.scripts.map.dateBean;
 using Godot;
 
 namespace ColdMint.scripts.map.interfaces;
@@ -14,19 +13,19 @@ public interface IRoom
     /// <para>Set room scene</para>
     /// <para>设置房间场景</para>
     /// </summary>
-    PackedScene RoomScene { get; set; }
+    PackedScene? RoomScene { get; set; }
     
-    TileMap TileMap { get; set; }
+    TileMap? TileMap { get; set; }
 
     /// <summary>
     /// <para>Gets the root node of the room</para>
     /// <para>获取房间的根节点</para>
     /// </summary>
-    Node2D RootNode { get; }
+    Node2D? RootNode { get; }
 
     /// <summary>
     /// <para>The room holds the corresponding slot data</para>
     /// <para>房间持有对应的插槽数据</para>
     /// </summary>
-    RoomSlot[] RoomSlots { get; }
+    RoomSlot?[]? RoomSlots { get; }
 }

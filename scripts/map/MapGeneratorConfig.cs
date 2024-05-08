@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ColdMint.scripts.map.interfaces;
+﻿using ColdMint.scripts.map.interfaces;
 using Godot;
 
 namespace ColdMint.scripts.map;

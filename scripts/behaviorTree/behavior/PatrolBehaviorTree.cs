@@ -1,5 +1,4 @@
 ﻿using ColdMint.scripts.behaviorTree.ai;
-using ColdMint.scripts.behaviorTree.framework;
 using ColdMint.scripts.character;
 
 namespace ColdMint.scripts.behaviorTree.behavior;
@@ -10,14 +9,14 @@ namespace ColdMint.scripts.behaviorTree.behavior;
 /// </summary>
 public class PatrolBehaviorTree : BehaviorTreeTemplate
 {
-    public AICharacter Character { get; set; }
+    public AiCharacter? Character { get; set; }
     protected override IBehaviorTreeNode CreateRoot()
     {
-        var patrolNode = new AIPatrolNode();
-        var aiWalkNode = new AIWalkNode();
-        var aiRotorNode = new AIRotorNode();
-        var aIPickNode = new AIPickNode();
-        var aiAttackNode = new AIAttackNode();
+        var patrolNode = new AiPatrolNode();
+        var aiWalkNode = new AiWalkNode();
+        var aiRotorNode = new AiRotorNode();
+        var aIPickNode = new AiPickNode();
+        var aiAttackNode = new AiAttackNode();
         aiWalkNode.Character = Character;
         patrolNode.Character = Character;
         aiRotorNode.Character = Character;
@@ -30,7 +29,7 @@ public class PatrolBehaviorTree : BehaviorTreeTemplate
         return patrolNode;
     }
 
-    protected override string CreateID()
+    protected override string? CreateId()
     {
         return Config.BehaviorTreeId.Patrol;
     }

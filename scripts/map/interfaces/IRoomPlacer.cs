@@ -31,7 +31,10 @@ public interface IRoomPlacer
     /// </summary>
     /// <param name="mainRoom"></param>
     /// <param name="newRoom"></param>
+    /// <param name="mainRoomSlot"></param>
+    /// <param name="newRoomSlot"></param>
+    /// <param name="roomPlacerConfig"></param>
     /// <returns></returns>
-    public Task<Vector2> CalculatedPosition(IRoom mainRoom, IRoom newRoom, RoomSlot mainRoomSlot, RoomSlot newRoomSlot,
+    public Task<Vector2> CalculatedPosition(IRoom mainRoom, IRoom newRoom, RoomSlot? mainRoomSlot, RoomSlot? newRoomSlot,
         RoomPlacerConfig roomPlacerConfig);
 }
