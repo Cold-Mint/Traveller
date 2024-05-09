@@ -6,10 +6,10 @@ uid="uid://dvvc7sup2d2ii"
 
 [deps]
 
-files=["res://locals/InputMapping.zh.translation", "res://locals/InputMapping.en.translation"]
+files=["res://locals/InputMapping.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.jp.translation"]
 
 source_file="res://locals/InputMapping.csv"
-dest_files=["res://locals/InputMapping.zh.translation", "res://locals/InputMapping.en.translation"]
+dest_files=["res://locals/InputMapping.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.jp.translation"]
 
 [params]
 

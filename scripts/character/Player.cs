@@ -26,13 +26,9 @@ public partial class Player : CharacterTemplate
     //用于检测玩家是否站在平台上的射线
     private RayCast2D? _platformDetectionRayCast2D;
 
-    //在拾捡范围内，可拾起的物品数量
-    private int _totalNumberOfPickups;
 
     private const float PromptTextDistance = 50;
 
-    //玩家可拾捡的物品
-    private Node2D? _pickAbleItem;
 
     //抛出物品的飞行速度
     private float _throwingVelocity = Config.CellSize * 13;
@@ -77,99 +73,73 @@ public partial class Player : CharacterTemplate
         }
 
         var operationTipBuilder = new StringBuilder();
-        if (_totalNumberOfPickups > 0)
-        {
-            //If there's anything around to pick up
-            //如果周围有能捡的东西
-            if (CurrentItem == null)
-            {
-                if (_pickAbleItem != null)
-                {
-                    string? name = null;
-                    if (_pickAbleItem is WeaponTemplate weaponTemplate)
-                    {
-                        //When the weapon has no owner, a pick up prompt is displayed.
-                        //当武器没有主人时，显示捡起提示。
-                        if (weaponTemplate.Owner == null || weaponTemplate.Owner == this)
-                        {
-                            name = TranslationServer.Translate(weaponTemplate.Name);
-                        }
-                    }
 
-                    if (name != null)
-                    {
-                        operationTipBuilder.Append(
-                            TranslationServer.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
-                        operationTipBuilder.Append(TranslationServer.Translate("pick_up"));
-                        operationTipBuilder.Append(name);
-                    }
-                }
-            }
-            else
-            {
-                string? pickAbleItemName = null;
-                string? currentItemName = null;
-                string mustBeThrown = TranslationServer.Translate("must_be_thrown");
-                if (_pickAbleItem != null)
-                {
-                    //可捡的物品是武器
-                    if (_pickAbleItem is WeaponTemplate weaponTemplate)
-                    {
-                        pickAbleItemName = TranslationServer.Translate(weaponTemplate.Name);
-                    }
-                }
-
-                if (CurrentItem != null)
-                {
-                    //当前持有的物品是武器
-                    if (CurrentItem is WeaponTemplate weaponTemplate)
-                    {
-                        currentItemName = TranslationServer.Translate(weaponTemplate.Name);
-                    }
-                }
-
-                if (pickAbleItemName != null && currentItemName != null && mustBeThrown != "must_be_thrown")
-                {
-                    operationTipBuilder.Append(string.Format(mustBeThrown, currentItemName, pickAbleItemName));
-                    operationTipBuilder.Append(' ');
-                    operationTipBuilder.Append(
-                        TranslationServer.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
-                    operationTipBuilder.Append(TranslationServer.Translate("throw"));
-                    operationTipBuilder.Append(currentItemName);
-                }
-            }
-
-            operationTipLabel.Text = operationTipBuilder.ToString();
-            return;
-        }
-
+        operationTipBuilder.Append("[color=");
+        operationTipBuilder.Append(Config.OperationTipActionColor);
+        operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_left")[0].AsText()));
+        operationTipBuilder.Append("[/color]");
         operationTipBuilder.Append(TranslationServer.Translate("move_left"));
         operationTipBuilder.Append(' ');
+        operationTipBuilder.Append("[color=");
+        operationTipBuilder.Append(Config.OperationTipActionColor);
+        operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_right")[0].AsText()));
+        operationTipBuilder.Append("[/color]");
         operationTipBuilder.Append(TranslationServer.Translate("move_right"));
         operationTipBuilder.Append(' ');
+        operationTipBuilder.Append("[color=");
+        operationTipBuilder.Append(Config.OperationTipActionColor);
+        operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
+        operationTipBuilder.Append("[/color]");
         operationTipBuilder.Append(TranslationServer.Translate("jump"));
         if (_collidingWithPlatform)
         {
             operationTipBuilder.Append(' ');
+            operationTipBuilder.Append("[color=");
+            operationTipBuilder.Append(Config.OperationTipActionColor);
+            operationTipBuilder.Append(']');
             operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
+            operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServer.Translate("jump_down"));
+        }
+
+        //If the PickingRangeBodiesList is not null and the length is greater than 0
+        //如果PickingRangeBodiesList不是null，且长度大于0
+        if (PickingRangeBodiesList is { Count: > 0 })
+        {
+            operationTipBuilder.Append(' ');
+            operationTipBuilder.Append("[color=");
+            operationTipBuilder.Append(Config.OperationTipActionColor);
+            operationTipBuilder.Append(']');
+            operationTipBuilder.Append(
+                TranslationServer.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
+            operationTipBuilder.Append("[/color]");
+            operationTipBuilder.Append(TranslationServer.Translate("pick_up"));
+            operationTipLabel.Text = operationTipBuilder.ToString();
         }
 
         if (CurrentItem != null)
         {
             operationTipBuilder.Append(' ');
+            operationTipBuilder.Append("[color=");
+            operationTipBuilder.Append(Config.OperationTipActionColor);
+            operationTipBuilder.Append(']');
             operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
+            operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServer.Translate("throw"));
             if (CurrentItem is WeaponTemplate weaponTemplate)
             {
                 operationTipBuilder.Append(TranslationServer.Translate(weaponTemplate.Name));
                 //提示武器攻击
                 operationTipBuilder.Append(' ');
+                operationTipBuilder.Append("[color=");
+                operationTipBuilder.Append(Config.OperationTipActionColor);
+                operationTipBuilder.Append(']');
                 operationTipBuilder.Append(
                     TranslationServer.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
+                operationTipBuilder.Append("[/color]");
                 operationTipBuilder.Append(TranslationServer.Translate("use_item"));
                 operationTipBuilder.Append(TranslationServer.Translate(weaponTemplate.Name));
             }
@@ -212,18 +182,20 @@ public partial class Player : CharacterTemplate
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
         {
-            var success = PickItem(_pickAbleItem);
+            var pickAbleItem = FindTheNearestItem();
+            var success = PickItem(pickAbleItem);
             if (success)
             {
-                _pickAbleItem = null;
-                _totalNumberOfPickups--;
+                if (pickAbleItem != null)
+                {
+                    PickingRangeBodiesList?.Remove(pickAbleItem);
+                }
+
                 if (_floatLabel != null)
                 {
                     _floatLabel.QueueFree();
                     _floatLabel = null;
                 }
-
-                UpdateOperationTip();
             }
         }
 
@@ -278,6 +250,7 @@ public partial class Player : CharacterTemplate
             {
                 return;
             }
+
             if (_parabola != null)
             {
                 _parabola.Points = new[] { Vector2.Zero };
@@ -319,16 +292,16 @@ public partial class Player : CharacterTemplate
                     rigidBody2D.LinearVelocity = GetThrowVelocity();
                     break;
             }
-
             CurrentItem = null;
-            _totalNumberOfPickups++;
             var hotBar = GameSceneNodeHolder.HotBar;
             hotBar?.RemoveItemFromItemSlotBySelectIndex(1);
-
-            UpdateOperationTip();
         }
     }
 
+    protected override void WhenUpdateCurrentItem(Node2D? currentItem)
+    {
+        UpdateOperationTip();
+    }
 
     private Vector2 GetThrowVelocity()
     {
@@ -392,6 +365,7 @@ public partial class Player : CharacterTemplate
 
     protected override void EnterThePickingRangeBody(Node node)
     {
+        base.EnterThePickingRangeBody(node);
         if (CurrentItem == node)
         {
             //If the node entering the pick range is the node held by the player, then return.
@@ -404,8 +378,6 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        _totalNumberOfPickups++;
-        _pickAbleItem = node2D;
         if (_floatLabelPackedScene != null)
         {
             //If there is a scene of floating text, then we generate floating text.
@@ -440,17 +412,10 @@ public partial class Player : CharacterTemplate
 
     protected override void ExitThePickingRangeBody(Node node)
     {
+        base.ExitThePickingRangeBody(node);
         if (node is not Node2D)
         {
             return;
-        }
-
-        _totalNumberOfPickups--;
-        if (_totalNumberOfPickups == 0)
-        {
-            //Set to null if there are no more items to pick up
-            //如果没有可捡的物品了，设置为null
-            _pickAbleItem = null;
         }
 
         if (_floatLabel != null)

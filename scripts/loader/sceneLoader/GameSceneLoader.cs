@@ -27,7 +27,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
         GameSceneNodeHolder.HotBar = hotBar;
         //加载操作提示
-        var operationTip = GetNode<Label>("CanvasLayer/Control/VBoxContainer/OperationTip");
+        var operationTip = GetNode<RichTextLabel>("CanvasLayer/Control/VBoxContainer/OperationTip");
         GameSceneNodeHolder.OperationTipLabel = operationTip;
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");

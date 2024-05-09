@@ -6,10 +6,10 @@ uid="uid://nmtkvo0t7p7n"
 
 [deps]
 
-files=["res://locals/Error.zh.translation", "res://locals/Error.en.translation"]
+files=["res://locals/Error.zh.translation", "res://locals/Error.en.translation", "res://locals/Error.jp.translation"]
 
 source_file="res://locals/Error.csv"
-dest_files=["res://locals/Error.zh.translation", "res://locals/Error.en.translation"]
+dest_files=["res://locals/Error.zh.translation", "res://locals/Error.en.translation", "res://locals/Error.jp.translation"]
 
 [params]
 

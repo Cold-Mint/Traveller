@@ -26,5 +26,5 @@ public static class GameSceneNodeHolder
 
 
     public static HealthBarUi? HealthBarUi { get; set; }
-    public static Label? OperationTipLabel { get; set; }
+    public static RichTextLabel? OperationTipLabel { get; set; }
 }

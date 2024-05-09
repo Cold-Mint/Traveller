@@ -79,6 +79,13 @@ public static class Config
     /// <para>单个物品栏最大堆叠的物品数量</para>
     /// </summary>
     public const int MaxStackQuantity = 99;
+    
+    /// <summary>
+    /// <para>Operation prompts, function key text color</para>
+    /// <para>操作提示内，功能键文本颜色</para>
+    /// </summary>
+    public const string OperationTipActionColor = "#2b8a3e";
+    
 
     /// <summary>
     /// <para>Company/Creator name</para>

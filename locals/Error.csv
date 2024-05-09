@@ -1,7 +1,9 @@
-id,zh,en
-Object reference not set to an instance of an object.,尝试在空对象上调用虚拟方法。,Object reference not set to an instance of an object.
-missing_parameters,缺少参数。,Missing parameters.
-room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be Node2D.
-width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.
-connected_room_timeout,连接房间超时。,Connecting the room timed out.
-projectiles_is_empty,未设置抛射体。,The projectile is not set.
+id,zh,en,jp
+Object reference not set to an instance of an object.,尝试在空对象上调用虚拟方法。,Object reference not set to an instance of an object.,空のオブジェクト上で仮想メソッドを呼び出してみます。
+missing_parameters,缺少参数。,Missing parameters.,パラメータが不足しています。
+room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be Node2D.,ルートノードはNode2Dでなければなりません。
+width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.,部屋の溝の幅または高さは1でなければなりません。
+connected_room_timeout,连接房间超时。,Connecting the room timed out.,接続部屋はタイムアウトです。
+projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
+map_generator_is_not_set_up,未设置地图生成器。,Map generator is not set up.,マップ生成器は設置されていません。
+map_generator_is_not_configured,地图生成器没有有效配置。,Map Generator is not configured.,地図生成器は機能していません。

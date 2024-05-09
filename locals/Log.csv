@@ -1,11 +1,1 @@
-id,zh,en
-data_packet_missing_id,位于{0}的数据包，缺少Id，无法加载。,"Packet at {0}, missing Id, unable to load."
-index_is_up_to_date,位于{0}的数据包索引已是最新。,"The packet index at {0} is up to date."
-build_an_index,为{0}构建索引。,"Build an index for {0}."
-add_file_index,添加文件索引{0}。,"Add file index {0}."
-index_updated,{0}索引已更新。,"{0} Index has been updated."
-no_manifest_file,位于{0}的数据包，没有清单文件，无法加载。,"Packet located in {0}, no manifest file, cannot be loaded."
-duplicate_at_path_id,位于{0}路径{1}的Id({2})已被占用，无法加载。,"Id({2}) in {0} path {1} is occupied and cannot be loaded."
-duplicate_at_path_id,位于{0}路径{1}的Id({2})已被占用，无法加载。,"Id({2}) in {0} path {1} is occupied and cannot be loaded."
-map_generator_is_not_set_up,未设置地图生成器。,Map generator is not set up.
-map_generator_is_not_configured,地图生成器没有有效配置。,Map Generator is not configured.
+id,zh,en,jp

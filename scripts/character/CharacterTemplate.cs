@@ -4,6 +4,7 @@ using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 using Godot;
 
@@ -43,7 +44,29 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //Items currently held
     //当前持有的物品
-    public Node2D? CurrentItem;
+    private Node2D? _currentItem;
+
+    public Node2D? CurrentItem
+    {
+        get => _currentItem;
+        set
+        {
+            _currentItem = value;
+            WhenUpdateCurrentItem(_currentItem);
+        }
+    }
+
+    /// <summary>
+    /// <para>When the items the character holds are updated</para>
+    /// <para>当角色持有的物品更新时</para>
+    /// </summary>
+    /// <param name="currentItem">
+    ///<para>Update finished items</para>
+    ///<para>更新完成后的物品</para>
+    /// </param>
+    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem)
+    {
+    }
 
     //Define a pick up range
     //定义一个拾起范围
@@ -92,9 +115,32 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Pick up all items within range</para>
     /// <para>拾捡范围内的所有物品</para>
     /// </summary>
-    private List<Node>? _pickingRangeBodies;
+    protected List<Node>? PickingRangeBodiesList;
 
-    public Node[] PickingRangeBodies => _pickingRangeBodies?.ToArray() ?? Array.Empty<Node>();
+    public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? Array.Empty<Node>();
+
+    /// <summary>
+    /// <para>Find the nearest item within the pick up area(Does not include items currently held)</para>
+    /// <para>在拾捡范围内查找距离最近的物品（不包括当前持有的物品）</para>
+    /// </summary>
+    /// <returns></returns>
+    public Node2D? FindTheNearestItem()
+    {
+        if (PickingRangeBodiesList == null || PickingRangeBodiesList.Count == 0)
+        {
+            return null;
+        }
+
+        HashSet<Node>? exclude = null;
+        if (_currentItem != null)
+        {
+            //Prevent picking up objects in your hands again.
+            //防止再次捡起自己手上的物品。
+            exclude = new HashSet<Node> { _currentItem };
+        }
+
+        return NodeUtils.GetTheNearestNode(this, PickingRangeBodiesList.ToArray(), exclude);
+    }
 
 
     /// <summary>
@@ -122,7 +168,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _Ready()
     {
         base._Ready();
-        _pickingRangeBodies = new List<Node>();
+        PickingRangeBodiesList = new List<Node>();
         CharacterName = GetMeta("Name", Name).AsString();
         CampId = GetMeta("CampId", Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
@@ -232,7 +278,7 @@ public partial class CharacterTemplate : CharacterBody2D
             weaponTemplate.Sleeping = true;
         }
 
-        if (itemSlotNode.GetItem() != null && itemSlotNode.GetItem() == item && CurrentItem == null)
+        if (itemSlotNode.GetItem() != null && itemSlotNode.GetItem() == item && _currentItem == null)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
@@ -256,12 +302,12 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     public bool UseItem(Vector2 position)
     {
-        if (CurrentItem == null)
+        if (_currentItem == null)
         {
             return false;
         }
 
-        if (CurrentItem is WeaponTemplate weaponTemplate)
+        if (_currentItem is WeaponTemplate weaponTemplate)
         {
             weaponTemplate.Fire(this, position);
         }
@@ -397,7 +443,12 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void EnterThePickingRangeBody(Node node)
     {
-        _pickingRangeBodies?.Add(node);
+        if (node is not IItem)
+        {
+            return;
+        }
+
+        PickingRangeBodiesList?.Add(node);
     }
 
     /// <summary>
@@ -407,7 +458,12 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void ExitThePickingRangeBody(Node node)
     {
-        _pickingRangeBodies?.Remove(node);
+        if (node is not IItem)
+        {
+            return;
+        }
+
+        PickingRangeBodiesList?.Remove(node);
     }
 
     /// <summary>
@@ -429,9 +485,9 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //We continuously set the position of the items to prevent them from changing as we zoom in and out of the window.
         //我们持续设置物品的位置，为了防止放大缩小窗口时物品位置的变化。
-        if (CurrentItem != null)
+        if (_currentItem != null)
         {
-            CurrentItem.Position = Vector2.Zero;
+            _currentItem.Position = Vector2.Zero;
         }
 
         var velocity = Velocity;
@@ -453,7 +509,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     public void AimTheCurrentItemAtAPoint(Vector2 position)
     {
-        if (CurrentItem == null)
+        if (_currentItem == null)
         {
             //Do not currently hold any items.
             //当前没有持有任何物品。
@@ -462,7 +518,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         // Apply the rotation Angle to the node
         // 将旋转角度应用于节点
-        CurrentItem.LookAt(position);
+        _currentItem.LookAt(position);
     }
 
 

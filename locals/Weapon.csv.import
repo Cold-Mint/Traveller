@@ -6,10 +6,10 @@ uid="uid://dmhmjvtquyu16"
 
 [deps]
 
-files=["res://locals/Weapon.zh.translation", "res://locals/Weapon.en.translation"]
+files=["res://locals/Weapon.zh.translation", "res://locals/Weapon.en.translation", "res://locals/Weapon.jp.translation"]
 
 source_file="res://locals/Weapon.csv"
-dest_files=["res://locals/Weapon.zh.translation", "res://locals/Weapon.en.translation"]
+dest_files=["res://locals/Weapon.zh.translation", "res://locals/Weapon.en.translation", "res://locals/Weapon.jp.translation"]
 
 [params]
 

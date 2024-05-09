@@ -12,7 +12,7 @@ public static class SloganProvider
     /// <para>Define how many banners you want to display</para>
     /// <para>定义共有多少条标语需要展示</para>
     /// </summary>
-    private const int Total = 12;
+    private const int Total = 5;
 
     /// <summary>
     /// <para>Swipe the machine to get a slogan</para>
