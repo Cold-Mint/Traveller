@@ -105,3 +105,18 @@ grow_vertical = 0
 
 [node name="VersionLabel" type="Label" parent="VBoxContainer2"]
 layout_mode = 2
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+
+[node name="GodotLabel" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Power by"
+horizontal_alignment = 2
+
+[node name="LinkButton" type="LinkButton" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Godot Engine"
+underline = 1
+uri = "https://godotengine.org/"
