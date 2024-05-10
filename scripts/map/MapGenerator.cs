@@ -70,8 +70,7 @@ public class MapGenerator : IMapGenerator
         }
         catch (Exception e)
         {
-            LogCat.LogError(e);
-            throw;
+            LogCat.WhenCaughtException(e);
         }
     }
 

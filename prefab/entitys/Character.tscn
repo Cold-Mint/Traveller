@@ -34,6 +34,7 @@ shape = SubResource("CapsuleShape2D_bb8wt")
 debug_color = Color(0.886275, 0, 0.803922, 0.419608)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
 
 [node name="Area2DPickingArea" type="Area2D" parent="."]
 collision_layer = 0

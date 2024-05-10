@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnftvkj2cido7"]
+[gd_scene load_steps=6 format=3 uid="uid://bnftvkj2cido7"]
 
 [ext_resource type="Script" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="2_n1yht"]
 [ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="2_owrhq"]
 [ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="2_xrm3v"]
+[ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="5_dis4v"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_mqdgt")
@@ -54,6 +55,17 @@ layout_mode = 2
 bbcode_enabled = true
 text = "OperationTip"
 fit_content = true
+
+[node name="FPSLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 25.0
+grow_horizontal = 0
+horizontal_alignment = 2
+script = ExtResource("5_dis4v")
 
 [node name="ProjectileContainer" type="Node2D" parent="."]
 

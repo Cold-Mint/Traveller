@@ -46,8 +46,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             new RoomTemplate("res://prefab/roomTemplates/dungeon/horizontalCorridorWithSewer.tscn");
         var horizontalCorridor = new RoomTemplate("res://prefab/roomTemplates/dungeon/horizontalCorridor.tscn");
         roomProvider.AddRoom(initialRoom);
-        roomProvider.AddRoom(horizontalCorridor);
         roomProvider.AddRoom(horizontalCorridorWithSewer);
+        roomProvider.AddRoom(horizontalCorridor);
         roomProvider.AddRoom(utilityRoom);
         _mapGenerator.RoomProvider = roomProvider;
 

@@ -58,8 +58,15 @@ public static class LogCat
         GD.Print(string.Format(HandleMessage(message).ToString(), args));
     }
 
-    public static void LogError(Exception e)
+    /// <summary>
+    /// <para>This method is called when an exception is caught</para>
+    /// <para>当捕获异常后调用此方法</para>
+    /// </summary>
+    /// <param name="e"></param>
+    public static void WhenCaughtException(Exception e)
     {
+        //Log an exception here or send it to the server.
+        //请在这里记录异常或将异常发送至服务器。
         GD.PrintErr(HandleMessage(e.Message).Append('\n').Append(e.StackTrace));
     }
 }

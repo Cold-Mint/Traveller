@@ -17,6 +17,12 @@ public interface IMapGeneratorConfig
     int RoomCount { get; }
 
     /// <summary>
+    /// <para>The number of forks in this map</para>
+    /// <para>这个地图的分叉数量</para>
+    /// </summary>
+    int BranchCount { get; }
+    
+    /// <summary>
     /// <para>seed</para>
     /// <para>种子</para>
     /// </summary>
