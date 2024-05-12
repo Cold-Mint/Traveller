@@ -37,6 +37,18 @@ offset_bottom = 248.0
 grow_horizontal = 2
 text = "settings"
 
+[node name="levelGraphEditorButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -44.5
+offset_top = 269.0
+offset_right = 50.5
+offset_bottom = 302.0
+grow_horizontal = 2
+text = "level_graph_editor"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2

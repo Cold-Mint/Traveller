@@ -19,6 +19,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
     private PackedScene? _gameScene;
     private Label? _sloganLabel;
     private Label? _versionLabel;
+    private Button? _levelGraphEditorButton;
 
     public override void InitializeData()
     {
@@ -55,6 +56,10 @@ public partial class MainMenuLoader : UiLoaderTemplate
     public override void InitializeUi()
     {
         _startGameButton = GetNode<Button>("StartGameButton");
+        _levelGraphEditorButton = GetNode<Button>("levelGraphEditorButton");
+        //The level map editor is only available in debug mode.
+        //关卡图编辑器仅在调试模式可用。
+        _levelGraphEditorButton.Visible = Config.IsDebug();
         _startGameButton.GrabFocus();
         _versionLabel = GetNode<Label>("VBoxContainer2/VersionLabel");
         //Generative copyright
@@ -87,6 +92,15 @@ public partial class MainMenuLoader : UiLoaderTemplate
             {
                 LogCat.Log("start_game");
                 GetTree().ChangeSceneToPacked(_gameScene);
+            };
+        }
+
+        if (_levelGraphEditorButton!=null)
+        {
+            _levelGraphEditorButton.Pressed += () =>
+            {
+                LogCat.Log("level_graph_editor");
+                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/LevelGraphEditor.tscn"));
             };
         }
     }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dslr5tdbp4noq"]
+[gd_scene load_steps=6 format=3 uid="uid://dslr5tdbp4noq"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 
@@ -10,6 +10,9 @@ size = Vector2(20, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x4kt2"]
 size = Vector2(46, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_131jn"]
+size = Vector2(20, 54)
 
 [node name="InitialRoom" type="Node2D"]
 
@@ -44,3 +47,10 @@ shape = SubResource("RectangleShape2D_o85u0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomSlotList/Area2D3"]
 position = Vector2(224, 178)
 shape = SubResource("RectangleShape2D_x4kt2")
+
+[node name="Area2D2" type="Area2D" parent="RoomSlotList"]
+position = Vector2(498, 109)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomSlotList/Area2D2"]
+position = Vector2(0, 17)
+shape = SubResource("RectangleShape2D_131jn")

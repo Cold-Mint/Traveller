@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckl23uwxrjat4"]
+
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/LevelGraphEditorLoader.cs" id="1_7nyq6"]
+
+[node name="LevelGraphEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7nyq6")
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+show_grid = false
+minimap_enabled = false
+show_minimap_button = false
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 7.0
+offset_right = 143.0
+offset_bottom = 32.0
+text = "level_graph_editor"
+
+[node name="CreateOrEditorPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = 42.0
+offset_right = -39.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 11.0
+offset_right = 102.0
+offset_bottom = 36.0
+text = "create_room"
+
+[node name="Label3" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 109.0
+offset_right = 94.0
+offset_bottom = 134.0
+text = "describe"
+
+[node name="RoomNameLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 54.0
+offset_right = 1053.0
+offset_bottom = 87.0
+
+[node name="RoomDescriptionLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 108.0
+offset_right = 1060.0
+offset_bottom = 141.0
+
+[node name="HideCreateRoomPanelButton" type="Button" parent="CreateOrEditorPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -46.0
+offset_bottom = 33.0
+grow_horizontal = 0
+text = "close"
+
+[node name="Label2" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 56.0
+offset_right = 62.0
+offset_bottom = 81.0
+text = "name"
+
+[node name="CreateRoomButton" type="Button" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 972.0
+offset_top = 507.0
+offset_right = 1039.0
+offset_bottom = 540.0
+text = "creation"
+
+[node name="ShowCreateRoomPanelButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -95.0
+offset_bottom = 33.0
+grow_horizontal = 0
+text = "create_room"
