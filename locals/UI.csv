@@ -18,3 +18,4 @@ close,关闭,Close,閉じます
 name,名称,Name,めいしょう
 describe,描述,Describe,ないよう
 creation,创建,Creation,創建
+default_room_name,房间{0},Room{0},部屋{0}です

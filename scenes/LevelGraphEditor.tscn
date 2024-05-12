@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckl23uwxrjat4"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/LevelGraphEditorLoader.cs" id="1_7nyq6"]
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/LevelGraphEditorLoader.cs" id="1_g1axq"]
 
 [node name="LevelGraphEditor" type="Control"]
 layout_mode = 3
@@ -9,15 +9,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7nyq6")
+script = ExtResource("1_g1axq")
 
 [node name="GraphEdit" type="GraphEdit" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 39.0
+offset_left = 12.0
+offset_top = 52.0
+offset_right = -16.0
+offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 2
 show_grid = false
@@ -33,79 +35,104 @@ offset_bottom = 32.0
 text = "level_graph_editor"
 
 [node name="CreateOrEditorPanel" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 45.0
-offset_top = 42.0
-offset_right = -39.0
-offset_bottom = -45.0
+offset_left = 15.0
+offset_top = 44.0
+offset_right = -16.0
+offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 15.0
-offset_top = 11.0
-offset_right = 102.0
-offset_bottom = 36.0
+layout_mode = 1
+offset_left = 10.0
+offset_top = 13.0
+offset_right = 97.0
+offset_bottom = 38.0
 text = "create_room"
 
 [node name="Label3" type="Label" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 7.0
-offset_top = 109.0
-offset_right = 94.0
-offset_bottom = 134.0
+layout_mode = 1
+offset_left = 12.0
+offset_top = 106.0
+offset_right = 72.0
+offset_bottom = 131.0
 text = "describe"
 
 [node name="RoomNameLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 75.0
-offset_top = 54.0
-offset_right = 1053.0
-offset_bottom = 87.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 100.0
+offset_top = 59.0
+offset_right = -8.0
+offset_bottom = 92.0
+grow_horizontal = 2
 
 [node name="RoomDescriptionLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 82.0
-offset_top = 108.0
-offset_right = 1060.0
-offset_bottom = 141.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 100.0
+offset_top = 104.0
+offset_right = -8.0
+offset_bottom = 137.0
+grow_horizontal = 2
 
 [node name="HideCreateRoomPanelButton" type="Button" parent="CreateOrEditorPanel"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -46.0
-offset_bottom = 33.0
+offset_left = -57.0
+offset_top = 6.0
+offset_right = -11.0
+offset_bottom = 39.0
 grow_horizontal = 0
 text = "close"
 
 [node name="Label2" type="Label" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 56.0
-offset_right = 62.0
-offset_bottom = 81.0
+layout_mode = 1
+offset_left = 13.0
+offset_top = 60.0
+offset_right = 48.0
+offset_bottom = 85.0
 text = "name"
 
 [node name="CreateRoomButton" type="Button" parent="CreateOrEditorPanel"]
-layout_mode = 0
-offset_left = 972.0
-offset_top = 507.0
-offset_right = 1039.0
-offset_bottom = 540.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -46.0
+offset_right = -13.0
+offset_bottom = -13.0
+grow_horizontal = 0
+grow_vertical = 0
 text = "creation"
 
-[node name="ShowCreateRoomPanelButton" type="Button" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -95.0
-offset_bottom = 33.0
+offset_left = -160.0
+offset_top = 4.0
+offset_right = -15.0
+offset_bottom = 47.0
 grow_horizontal = 0
+
+[node name="ShowCreateRoomPanelButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
 text = "create_room"
+
+[node name="ReturnButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "close"

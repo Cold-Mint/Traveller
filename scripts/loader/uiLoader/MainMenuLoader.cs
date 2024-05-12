@@ -23,6 +23,9 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
+        //Load the slogan
+        //加载标语
+        SloganProvider.LoadSloganCsv();
         //Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package
         //注册对应的编码提供程序，解决压缩包中文路径乱码问题
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -32,13 +35,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
         {
             Directory.CreateDirectory(dataPath);
         }
-
-        //Registered article
-        //注册物品
-        // var staffOfTheUndead = new CommonItem();
-        // staffOfTheUndead.Name = "item_staff_of_the_undead";
-        // staffOfTheUndead.Id = "staff_of_the_undead";
-        // staffOfTheUndead.Description = "";
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)
@@ -95,12 +91,12 @@ public partial class MainMenuLoader : UiLoaderTemplate
             };
         }
 
-        if (_levelGraphEditorButton!=null)
+        if (_levelGraphEditorButton != null)
         {
             _levelGraphEditorButton.Pressed += () =>
             {
                 LogCat.Log("level_graph_editor");
-                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/LevelGraphEditor.tscn"));
+                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/levelGraphEditor.tscn"));
             };
         }
     }

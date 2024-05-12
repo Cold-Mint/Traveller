@@ -23,11 +23,15 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private LineEdit? _roomNameLineEdit;
     private LineEdit? _roomDescriptionLineEdit;
     private Button? _createRoomButton;
+    private Button? _returnButton;
+    private string? _defaultRoomName;
+    private int _roomIndex = 1;
 
     public override void InitializeData()
     {
         base.InitializeData();
         _roomNodeScene = (PackedScene)GD.Load("res://prefab/ui/RoomNode.tscn");
+        _defaultRoomName = TranslationServer.Translate("default_room_name");
     }
 
 
@@ -35,7 +39,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     {
         base.InitializeUi();
         _graphEdit = GetNode<GraphEdit>("GraphEdit");
-        _showCreateRoomPanelButton = GetNode<Button>("ShowCreateRoomPanelButton");
+        _showCreateRoomPanelButton = GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
+        _returnButton = GetNode<Button>("HBoxContainer/ReturnButton");
         _createOrEditorPanel = GetNode<Panel>("CreateOrEditorPanel");
         _hideCreateRoomPanelButton = GetNode<Button>("CreateOrEditorPanel/HideCreateRoomPanelButton");
         _roomNameLineEdit = GetNode<LineEdit>("CreateOrEditorPanel/RoomNameLineEdit");
@@ -68,13 +73,26 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             return false;
         }
 
-        roomNode.Title = roomNodeData.Title;
+        roomNode.RoomNodeData = roomNodeData;
+        _roomIndex++;
         return true;
     }
 
     public override void LoadUiActions()
     {
         base.LoadUiActions();
+        if (_graphEdit != null)
+        {
+            _graphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
+            {
+                _graphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
+            };
+            _graphEdit.DisconnectionRequest += (fromNode, fromPort, toNode, toPort) =>
+            {
+                _graphEdit.DisconnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
+            };
+        }
+
         if (_showCreateRoomPanelButton != null)
         {
             _showCreateRoomPanelButton.Pressed += () =>
@@ -89,7 +107,25 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     _createOrEditorPanel.Visible = true;
                 }
 
+                if (_roomNameLineEdit != null && _defaultRoomName != null)
+                {
+                    _roomNameLineEdit.Text = string.Format(_defaultRoomName, _roomIndex);
+                }
+
+                if (_returnButton != null)
+                {
+                    _returnButton.Visible = false;
+                }
+
                 _showCreateRoomPanelButton.Visible = false;
+            };
+        }
+
+        if (_returnButton != null)
+        {
+            _returnButton.Pressed += () =>
+            {
+                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/mainMenu.tscn"));
             };
         }
 
@@ -136,6 +172,11 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         if (_createOrEditorPanel != null)
         {
             _createOrEditorPanel.Visible = false;
+        }
+
+        if (_returnButton != null)
+        {
+            _returnButton.Visible = true;
         }
 
         if (_showCreateRoomPanelButton != null)

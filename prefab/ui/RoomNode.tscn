@@ -3,6 +3,19 @@
 [ext_resource type="Script" path="res://scripts/levelGraphEditor/RoomNode.cs" id="1_jiu7r"]
 
 [node name="RoomNode" type="GraphNode"]
-offset_right = 571.0
-offset_bottom = 253.0
+offset_right = 363.0
+offset_bottom = 218.0
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
 script = ExtResource("1_jiu7r")
+
+[node name="DescribeLabel" type="Label" parent="."]
+layout_mode = 2
+text = "describe"
