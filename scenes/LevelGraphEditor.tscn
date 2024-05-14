@@ -63,6 +63,22 @@ offset_right = 72.0
 offset_bottom = 131.0
 text = "describe"
 
+[node name="Label4" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 152.0
+offset_right = 75.0
+offset_bottom = 177.0
+text = "room_template_collection_prompt"
+
+[node name="RoomTemplateTipsLabel" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 1
+offset_left = 18.0
+offset_top = 319.0
+offset_right = 265.0
+offset_bottom = 344.0
+text = "errorTip"
+
 [node name="RoomNameLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
 layout_mode = 1
 anchors_preset = 10
@@ -118,6 +134,13 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "creation"
 
+[node name="RoomTemplateCollectionTextEdit" type="TextEdit" parent="CreateOrEditorPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 187.0
+offset_right = 1111.0
+offset_bottom = 303.0
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
@@ -128,6 +151,10 @@ offset_top = 4.0
 offset_right = -15.0
 offset_bottom = 47.0
 grow_horizontal = 0
+
+[node name="DisplayCurrentPageData" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "display_current_page_data"
 
 [node name="ShowCreateRoomPanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2

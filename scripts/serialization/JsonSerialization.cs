@@ -26,6 +26,17 @@ public static class JsonSerialization
         return await JsonSerializer.DeserializeAsync<T>(openStream, _options);
     }
 
+    /// <summary>
+    /// <para>Serialize the object to Json</para>
+    /// <para>将对象序列化为Json</para>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string Serialize(object obj)
+    {
+        return JsonSerializer.Serialize(obj, _options);
+    }
+
     public static async Task<T?> ReadJsonFileToObj<T>(Stream openStream)
     {
         return await JsonSerializer.DeserializeAsync<T>(openStream, _options);

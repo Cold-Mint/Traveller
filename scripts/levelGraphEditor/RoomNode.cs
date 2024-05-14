@@ -16,11 +16,10 @@ public partial class RoomNode : GraphNode
             Title = value.Title;
             if (value.Description.Length == 0)
             {
-                _describeLabel.Visible = false;
+                _describeLabel.Text = string.Empty;
             }
             else
             {
-                _describeLabel.Visible = true;
                 _describeLabel.Text = value.Description;
             }
 
@@ -33,5 +32,4 @@ public partial class RoomNode : GraphNode
         base._Ready();
         _describeLabel = GetNode<Label>("DescribeLabel");
     }
-    
 }

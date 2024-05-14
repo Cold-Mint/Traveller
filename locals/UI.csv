@@ -19,3 +19,7 @@ name,名称,Name,めいしょう
 describe,描述,Describe,ないよう
 creation,创建,Creation,創建
 default_room_name,房间{0},Room{0},部屋{0}です
+room_template_collection_prompt,房间模板集(每一行被认为是一条房间模板地址。),Room template set (Each row is considered to be one room template address.),お部屋テンプレートセット(各行がお部屋テンプレートアドレスとされています。)
+error_specifying_room_template_line,位于{0}错误，文件不存在。,"Located at {0} error, file does not exist.",{0}エラーに位置し、ファイルは存在しません。
+line_errors_must_start_with_res,位于{0}错误，必须以res://开头。,"Located at {0} error, must start with res://.",{0}エラーに位置し、res://で始めなければなりません。
+display_current_page_data,显示当前页面数据,Displays the current page data,現在のページデータを表示します

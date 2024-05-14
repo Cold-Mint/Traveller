@@ -1,5 +1,11 @@
-﻿using ColdMint.scripts.levelGraphEditor;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using ColdMint.scripts.debug;
+using ColdMint.scripts.levelGraphEditor;
+using ColdMint.scripts.serialization;
+using ColdMint.scripts.utils;
 using Godot;
+using Godot.Collections;
 
 namespace ColdMint.scripts.loader.uiLoader;
 
@@ -26,6 +32,9 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private Button? _returnButton;
     private string? _defaultRoomName;
     private int _roomIndex = 1;
+    private TextEdit? _roomTemplateCollectionTextEdit;
+    private Label? _roomTemplateTipsLabel;
+    private Button? _displayCurrentPageData;
 
     public override void InitializeData()
     {
@@ -38,6 +47,14 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void InitializeUi()
     {
         base.InitializeUi();
+        _roomTemplateTipsLabel = GetNode<Label>("CreateOrEditorPanel/RoomTemplateTipsLabel");
+        if (_roomTemplateTipsLabel != null)
+        {
+            _roomTemplateTipsLabel.Text = string.Empty;
+        }
+
+        _displayCurrentPageData = GetNode<Button>("HBoxContainer/DisplayCurrentPageData");
+        _roomTemplateCollectionTextEdit = GetNode<TextEdit>("CreateOrEditorPanel/RoomTemplateCollectionTextEdit");
         _graphEdit = GetNode<GraphEdit>("GraphEdit");
         _showCreateRoomPanelButton = GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
         _returnButton = GetNode<Button>("HBoxContainer/ReturnButton");
@@ -81,6 +98,63 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void LoadUiActions()
     {
         base.LoadUiActions();
+        if (_roomTemplateCollectionTextEdit != null)
+        {
+            _roomTemplateCollectionTextEdit.TextChanged += () =>
+            {
+                if (_roomTemplateTipsLabel == null)
+                {
+                    return;
+                }
+
+                var text = _roomTemplateCollectionTextEdit.Text;
+                if (string.IsNullOrEmpty(text))
+                {
+                    _roomTemplateTipsLabel.Text = string.Empty;
+                    return;
+                }
+
+                var lastLine = StrUtils.GetLastLine(text);
+                if (string.IsNullOrEmpty(lastLine))
+                {
+                    _roomTemplateTipsLabel.Text = string.Empty;
+                    return;
+                }
+
+                //Parse the last line
+                //解析最后一行
+                if (lastLine.Length > 0)
+                {
+                    if (!lastLine.StartsWith("res://"))
+                    {
+                        var lineError = TranslationServer.Translate("line_errors_must_start_with_res");
+                        if (lineError == null)
+                        {
+                            return;
+                        }
+
+                        _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                        return;
+                    }
+
+                    var exists = FileAccess.FileExists(lastLine);
+                    if (!exists)
+                    {
+                        var lineError = TranslationServer.Translate("error_specifying_room_template_line");
+                        if (lineError == null)
+                        {
+                            return;
+                        }
+
+                        _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                        return;
+                    }
+
+                    _roomTemplateTipsLabel.Text = string.Empty;
+                }
+            };
+        }
+
         if (_graphEdit != null)
         {
             _graphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
@@ -153,6 +227,76 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 {
                     HideCreateRoomPanel();
                 }
+            };
+        }
+
+        if (_displayCurrentPageData != null)
+        {
+            _displayCurrentPageData.Pressed += () =>
+            {
+                if (_graphEdit == null)
+                {
+                    return;
+                }
+
+                Array<Dictionary> connectionList = _graphEdit.GetConnectionList();
+                var levelGraphEditorSaveData = new LevelGraphEditorSaveData();
+                var connectionDataList = new List<ConnectionData>();
+                levelGraphEditorSaveData.ConnectionData = connectionDataList;
+                if (connectionList.Count <= 0) return;
+                foreach (var dictionary in connectionList)
+                {
+                    if (dictionary == null)
+                    {
+                        continue;
+                    }
+
+                    var keys = dictionary.Keys;
+                    if (keys.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    var connectionData = new ConnectionData();
+                    foreach (var variant in keys)
+                    {
+                        var typeStr = variant.ToString();
+                        switch (typeStr)
+                        {
+                            case "from_node":
+                                // LogCat.Log("查找"+dictionary[variant].Obj);
+                                // var obj = dictionary[variant].Obj;
+                                // if (obj == null)
+                                // {
+                                //     LogCat.Log("obj is null");
+                                //     continue;
+                                // }
+                                //
+                                // LogCat.Log("obj is " + obj.ToString());
+                                // var roomNode = dictionary[variant]. as RoomNode;
+                                // LogCat.Log("roomNode is" + (roomNode == null));
+                                // var roomNode = dictionary[variant].As<RoomNode>();
+                                // LogCat.Log("空的？" + (roomNode == null)+"类为"+dictionary[variant].ToString()+"路径为"+dictionary[variant].AsNodePath()+"对于C#"+dictionary[variant].Obj );
+                                // connectionData.From = dictionary[variant].Obj as RoomNode;
+                                // LogCat.Log("类型" + dictionary[variant]);
+                                break;
+                            case "from_port":
+                                connectionData.FromPort = dictionary[variant].AsInt32();
+                                break;
+                            case "to_node":
+                                connectionData.To = dictionary[variant].Obj as IRoomNodeData;
+                                break;
+                            case "to_port":
+                                connectionData.ToPort = dictionary[variant].AsInt32();
+                                break;
+                        }
+
+                        LogCat.Log(variant.ToString());
+                        connectionDataList.Add(connectionData);
+                    }
+                }
+
+                LogCat.Log(JsonSerialization.Serialize(connectionDataList));
             };
         }
     }
