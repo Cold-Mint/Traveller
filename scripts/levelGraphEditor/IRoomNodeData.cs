@@ -2,17 +2,17 @@
 
 public interface IRoomNodeData
 {
-    string Id { get; set; }
+    string? Id { get; set; }
 
     /// <summary>
     /// <para>Title</para>
     /// <para>标题</para>
     /// </summary>
-    string Title { get; set; }
+    string? Title { get; set; }
 
     /// <summary>
     /// <para>描述</para>
     /// <para>Description</para>
     /// </summary>
-    string Description { get; set; }
+    string? Description { get; set; }
 }

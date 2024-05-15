@@ -14,15 +14,7 @@ public partial class RoomNode : GraphNode
         {
             if (_describeLabel == null || value == null) return;
             Title = value.Title;
-            if (value.Description.Length == 0)
-            {
-                _describeLabel.Text = string.Empty;
-            }
-            else
-            {
-                _describeLabel.Text = value.Description;
-            }
-
+            _describeLabel.Text = string.IsNullOrEmpty(value.Description) ? string.Empty : value.Description;
             _roomNodeData = value;
         }
     }
