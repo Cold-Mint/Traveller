@@ -79,13 +79,13 @@ public static class Config
     /// <para>单个物品栏最大堆叠的物品数量</para>
     /// </summary>
     public const int MaxStackQuantity = 99;
-    
+
     /// <summary>
     /// <para>Operation prompts, function key text color</para>
     /// <para>操作提示内，功能键文本颜色</para>
     /// </summary>
     public const string OperationTipActionColor = "#2b8a3e";
-    
+
 
     /// <summary>
     /// <para>Company/Creator name</para>
@@ -133,6 +133,85 @@ public static class Config
         return OS.HasFeature("debug");
     }
 
+    public enum OsEnum
+    {
+        //unknown
+        //未知
+        Unknown,
+
+        //Runs on Android (non-web browser)
+        //在 Android 上运行（非 Web 浏览器）
+        Android,
+
+        //Runs on Linux (non-web browser)
+        //在 Linux 上运行（非 Web 浏览器）
+        Linux,
+
+        //Runs on macOS (non-Web browser)
+        //在 macOS 上运行（非 Web 浏览器）
+        Macos,
+
+        //Runs on iOS (non-Web browser)
+        //在 iOS 上运行（非 Web 浏览器）
+        Ios,
+
+        //Runs on Windows
+        //在 Windows 上运行
+        Windows,
+
+        //The host operating system is a web browser
+        //宿主操作系统是网页浏览器
+        Web,
+
+        //Editor
+        //编辑器
+        // Editor
+    }
+
+    /// <summary>
+    /// <para>Get what platform is currently running on</para>
+    /// <para>获取当前在什么平台上运行</para>
+    /// </summary>
+    /// <returns></returns>
+    public static OsEnum GetOs()
+    {
+        // if (OS.HasFeature("editor"))
+        // {
+        //     return OsEnum.Editor;
+        // }
+
+        if (OS.HasFeature("windows"))
+        {
+            return OsEnum.Windows;
+        }
+
+        if (OS.HasFeature("android"))
+        {
+            return OsEnum.Android;
+        }
+
+        if (OS.HasFeature("linux"))
+        {
+            return OsEnum.Linux;
+        }
+
+        if (OS.HasFeature("web"))
+        {
+            return OsEnum.Web;
+        }
+
+        if (OS.HasFeature("macos"))
+        {
+            return OsEnum.Macos;
+        }
+
+        if (OS.HasFeature("ios"))
+        {
+            return OsEnum.Ios;
+        }
+        return OsEnum.Unknown;
+    }
+
     public static string GetVersion()
     {
         var stringBuilder = new StringBuilder();
@@ -160,6 +239,17 @@ public static class Config
                 ProjectSettings.GetSetting("application/config/name").AsString(), UserId,
                 DefaultVersionName);
         }
+    }
+
+
+    /// <summary>
+    /// <para>Get the export directory for the level graph</para>
+    /// <para>获取关卡图的导出目录</para>
+    /// </summary>
+    /// <returns></returns>
+    public static string GetLevelGraphExportDirectory()
+    {
+        return Path.Join(GetGameDataDirectory(), "LevelGraphs");
     }
 
     /// <summary>
@@ -215,11 +305,6 @@ public static class Config
     /// </summary>
     public const int HorizontalSpeedOfDamageNumbers = 3;
 
-    /// <summary>
-    /// <para>The file name of the packet's manifest</para>
-    /// <para>数据包的清单文件名</para>
-    /// </summary>
-    public const string DataPackManifestName = "DataPackManifest.json";
 
     /// <summary>
     /// <para>VerticalVelocityOfDamageNumbers</para>

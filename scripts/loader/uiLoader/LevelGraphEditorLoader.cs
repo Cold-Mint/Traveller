@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
-using ColdMint.scripts.debug;
+using System.Diagnostics;
+using System.IO;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;
 using Godot.Collections;
+using FileAccess = Godot.FileAccess;
 
 namespace ColdMint.scripts.loader.uiLoader;
 
@@ -34,13 +35,20 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private int _roomIndex = 1;
     private TextEdit? _roomTemplateCollectionTextEdit;
     private Label? _roomTemplateTipsLabel;
-    private Button? _displayCurrentPageData;
+    private Button? _saveButton;
+    private Button? _openExportFolderButton;
+    private HBoxContainer? _hBoxContainer;
 
     public override void InitializeData()
     {
         base.InitializeData();
         _roomNodeScene = (PackedScene)GD.Load("res://prefab/ui/RoomNode.tscn");
         _defaultRoomName = TranslationServer.Translate("default_room_name");
+        var folder = Config.GetLevelGraphExportDirectory();
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
     }
 
 
@@ -53,7 +61,16 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             _roomTemplateTipsLabel.Text = string.Empty;
         }
 
-        _displayCurrentPageData = GetNode<Button>("HBoxContainer/DisplayCurrentPageData");
+        _openExportFolderButton = GetNode<Button>("HBoxContainer/OpenExportFolderButton");
+        if (_openExportFolderButton != null)
+        {
+            //If open directories are supported, a button is displayed.
+            //若支持打开目录，那么显示按钮。
+            _openExportFolderButton.Visible = ExplorerUtils.SupportOpenDirectory();
+        }
+
+        _hBoxContainer = GetNode<HBoxContainer>("HBoxContainer");
+        _saveButton = GetNode<Button>("HBoxContainer/SaveButton");
         _roomTemplateCollectionTextEdit = GetNode<TextEdit>("CreateOrEditorPanel/RoomTemplateCollectionTextEdit");
         _graphEdit = GetNode<GraphEdit>("GraphEdit");
         _showCreateRoomPanelButton = GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
@@ -167,6 +184,14 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             };
         }
 
+        if (_openExportFolderButton != null)
+        {
+            _openExportFolderButton.Pressed += () =>
+            {
+                ExplorerUtils.OpenFolder(Config.GetLevelGraphExportDirectory());
+            };
+        }
+
         if (_showCreateRoomPanelButton != null)
         {
             _showCreateRoomPanelButton.Pressed += () =>
@@ -186,9 +211,9 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     _roomNameLineEdit.Text = string.Format(_defaultRoomName, _roomIndex);
                 }
 
-                if (_returnButton != null)
+                if (_hBoxContainer != null)
                 {
-                    _returnButton.Visible = false;
+                    _hBoxContainer.Visible = false;
                 }
 
                 _showCreateRoomPanelButton.Visible = false;
@@ -219,6 +244,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 var roomNodeData = new RoomNodeData
                 {
+                    Id = GuidUtils.GetGuid(),
                     Title = _roomNameLineEdit.Text,
                     Description = _roomDescriptionLineEdit.Text
                 };
@@ -230,75 +256,128 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             };
         }
 
-        if (_displayCurrentPageData != null)
+        if (_saveButton != null)
         {
-            _displayCurrentPageData.Pressed += () =>
+            _saveButton.Pressed += () =>
             {
                 if (_graphEdit == null)
                 {
                     return;
                 }
 
-                Array<Dictionary> connectionList = _graphEdit.GetConnectionList();
                 var levelGraphEditorSaveData = new LevelGraphEditorSaveData();
-                var connectionDataList = new List<ConnectionData>();
-                levelGraphEditorSaveData.ConnectionData = connectionDataList;
-                if (connectionList.Count <= 0) return;
-                foreach (var dictionary in connectionList)
+                //Serialize room node information
+                //序列化房间节点信息
+                var length = _graphEdit.GetChildCount();
+                if (length <= 0)
                 {
-                    if (dictionary == null)
+                    //no room
+                    //没有房间
+                    return;
+                }
+
+                var roomNodeDataList = new List<IRoomNodeData>();
+                levelGraphEditorSaveData.RoomNodeDataList = roomNodeDataList;
+                for (var i = 0; i < length; i++)
+                {
+                    var node = _graphEdit.GetChild(i);
+                    if (node is not RoomNode roomNode) continue;
+                    var data = roomNode.RoomNodeData;
+                    if (data == null)
                     {
                         continue;
                     }
 
-                    var keys = dictionary.Keys;
-                    if (keys.Count == 0)
-                    {
-                        continue;
-                    }
+                    roomNodeDataList.Add(data);
+                }
 
-                    var connectionData = new ConnectionData();
-                    foreach (var variant in keys)
+                //Serialized connection information
+                //序列化连接信息
+                Array<Dictionary> connectionList = _graphEdit.GetConnectionList();
+                var connectionDataList = new List<ConnectionData>();
+                levelGraphEditorSaveData.ConnectionDataList = connectionDataList;
+                if (connectionList.Count > 0)
+                {
+                    foreach (var dictionary in connectionList)
                     {
-                        var typeStr = variant.ToString();
-                        switch (typeStr)
+                        if (dictionary == null)
                         {
-                            case "from_node":
-                                // LogCat.Log("查找"+dictionary[variant].Obj);
-                                // var obj = dictionary[variant].Obj;
-                                // if (obj == null)
-                                // {
-                                //     LogCat.Log("obj is null");
-                                //     continue;
-                                // }
-                                //
-                                // LogCat.Log("obj is " + obj.ToString());
-                                // var roomNode = dictionary[variant]. as RoomNode;
-                                // LogCat.Log("roomNode is" + (roomNode == null));
-                                // var roomNode = dictionary[variant].As<RoomNode>();
-                                // LogCat.Log("空的？" + (roomNode == null)+"类为"+dictionary[variant].ToString()+"路径为"+dictionary[variant].AsNodePath()+"对于C#"+dictionary[variant].Obj );
-                                // connectionData.From = dictionary[variant].Obj as RoomNode;
-                                // LogCat.Log("类型" + dictionary[variant]);
-                                break;
-                            case "from_port":
-                                connectionData.FromPort = dictionary[variant].AsInt32();
-                                break;
-                            case "to_node":
-                                connectionData.To = dictionary[variant].Obj as IRoomNodeData;
-                                break;
-                            case "to_port":
-                                connectionData.ToPort = dictionary[variant].AsInt32();
-                                break;
+                            continue;
                         }
 
-                        LogCat.Log(variant.ToString());
+                        var keys = dictionary.Keys;
+                        if (keys.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        var connectionData = new ConnectionData();
+                        foreach (var variant in keys)
+                        {
+                            var typeStr = variant.ToString();
+                            switch (typeStr)
+                            {
+                                case "from_node":
+                                    var fromRoomNodeData = GetRoomNodeData(dictionary[variant].AsString());
+                                    if (fromRoomNodeData == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    connectionData.FromId = fromRoomNodeData.Id;
+                                    break;
+                                case "from_port":
+                                    connectionData.FromPort = dictionary[variant].AsInt32();
+                                    break;
+                                case "to_node":
+                                    var toRoomNodeData = GetRoomNodeData(dictionary[variant].AsString());
+                                    if (toRoomNodeData == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    connectionData.ToId = toRoomNodeData.Id;
+                                    break;
+                                case "to_port":
+                                    connectionData.ToPort = dictionary[variant].AsInt32();
+                                    break;
+                            }
+                        }
+
                         connectionDataList.Add(connectionData);
                     }
                 }
 
-                LogCat.Log(JsonSerialization.Serialize(connectionDataList));
+                var filePath = Path.Join(Config.GetLevelGraphExportDirectory(), GuidUtils.GetGuid() + ".json");
+                File.WriteAllText(filePath, JsonSerialization.Serialize(levelGraphEditorSaveData));
             };
         }
+    }
+
+
+    /// <summary>
+    /// <para>Get node data by name</para>
+    /// <para>根据名称获取节点数据</para>
+    /// </summary>
+    /// <param name="name">
+    ///<para>name</para>
+    ///<para>名称</para>
+    /// </param>
+    /// <returns></returns>
+    private IRoomNodeData? GetRoomNodeData(string name)
+    {
+        if (_graphEdit == null)
+        {
+            return null;
+        }
+
+        var roomNode = _graphEdit.GetNodeOrNull<RoomNode>(name);
+        if (roomNode == null)
+        {
+            return null;
+        }
+
+        return roomNode.RoomNodeData;
     }
 
 
@@ -318,9 +397,9 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             _createOrEditorPanel.Visible = false;
         }
 
-        if (_returnButton != null)
+        if (_hBoxContainer != null)
         {
-            _returnButton.Visible = true;
+            _hBoxContainer.Visible = true;
         }
 
         if (_showCreateRoomPanelButton != null)

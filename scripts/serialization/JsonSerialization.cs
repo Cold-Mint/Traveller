@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace ColdMint.scripts.serialization;
@@ -10,7 +12,13 @@ public static class JsonSerialization
     {
         //Case-insensitive attribute matching
         //不区分大小写的属性匹配
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
+        //Try to avoid metastasis
+        //尽量避免转移
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        //Enable smart Print
+        //启用漂亮打印
+        WriteIndented = true
     };
 
     /// <summary>

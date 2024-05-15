@@ -152,9 +152,13 @@ offset_right = -15.0
 offset_bottom = 47.0
 grow_horizontal = 0
 
-[node name="DisplayCurrentPageData" type="Button" parent="HBoxContainer"]
+[node name="OpenExportFolderButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "display_current_page_data"
+text = "open_the_export_directory"
+
+[node name="SaveButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "save"
 
 [node name="ShowCreateRoomPanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
@@ -163,3 +167,75 @@ text = "create_room"
 [node name="ReturnButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "close"
+
+[node name="SaveOrloadPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 232.0
+offset_top = 202.0
+offset_right = -121.0
+offset_bottom = -155.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="SaveOrloadPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -18.5
+offset_top = 15.0
+offset_right = 21.5
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "save"
+
+[node name="LineEdit" type="LineEdit" parent="SaveOrloadPanel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 18.0
+offset_top = -5.0
+offset_right = -18.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="SaveOrloadPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -38.0
+offset_right = 80.0
+offset_bottom = -13.0
+grow_vertical = 2
+text = "filename"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SaveOrloadPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -117.0
+offset_top = -50.0
+offset_right = -19.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="CancelButton" type="Button" parent="SaveOrloadPanel/HBoxContainer"]
+layout_mode = 2
+text = "cancel"
+
+[node name="ActionButton" type="Button" parent="SaveOrloadPanel/HBoxContainer"]
+layout_mode = 2
+text = "save"

@@ -8,5 +8,7 @@ namespace ColdMint.scripts.levelGraphEditor;
 /// </summary>
 public class LevelGraphEditorSaveData
 {
-    public List<ConnectionData>? ConnectionData { get; set; }
+    public List<ConnectionData>? ConnectionDataList { get; set; }
+
+    public List<IRoomNodeData>? RoomNodeDataList { get; set; }
 }

@@ -2,8 +2,8 @@
 
 public class ConnectionData
 {
-    public IRoomNodeData? From { get; set; }
-    public IRoomNodeData? To { get; set; }
+    public string? FromId { get; set; }
+    public string? ToId { get; set; }
     public int FromPort { get; set; }
     public int ToPort { get; set; }
 }

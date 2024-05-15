@@ -7,7 +7,4 @@
     <RootNamespace>ColdMint</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="scripts\map\branch\" />
-  </ItemGroup>
 </Project>
