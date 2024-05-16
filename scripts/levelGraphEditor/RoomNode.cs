@@ -5,9 +5,9 @@ namespace ColdMint.scripts.levelGraphEditor;
 public partial class RoomNode : GraphNode
 {
     private Label? _describeLabel;
-    private IRoomNodeData? _roomNodeData;
+    private RoomNodeData? _roomNodeData;
 
-    public IRoomNodeData? RoomNodeData
+    public RoomNodeData? RoomNodeData
     {
         get => _roomNodeData;
         set

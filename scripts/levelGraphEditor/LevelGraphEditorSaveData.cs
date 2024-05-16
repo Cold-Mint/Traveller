@@ -10,5 +10,5 @@ public class LevelGraphEditorSaveData
 {
     public List<ConnectionData>? ConnectionDataList { get; set; }
 
-    public List<IRoomNodeData>? RoomNodeDataList { get; set; }
+    public List<RoomNodeData>? RoomNodeDataList { get; set; }
 }

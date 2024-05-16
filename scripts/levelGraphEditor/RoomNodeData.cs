@@ -1,6 +1,6 @@
 ﻿namespace ColdMint.scripts.levelGraphEditor;
 
-public class RoomNodeData : IRoomNodeData
+public class RoomNodeData
 {
     public string? Id { get; set; }
     public string? Title { get; set; }

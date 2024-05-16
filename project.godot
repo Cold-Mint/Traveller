@@ -147,6 +147,7 @@ hotbar_previous={
 [internationalization]
 
 locale/translations=PackedStringArray("res://locals/UI.en.translation", "res://locals/UI.zh.translation", "res://locals/Error.zh.translation", "res://locals/Error.en.translation", "res://locals/slogan.en.translation", "res://locals/slogan.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.zh.translation", "res://locals/Weapon.en.translation", "res://locals/Weapon.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.zh.translation", "res://locals/Error.jp.translation", "res://locals/InputMapping.jp.translation", "res://locals/Log.jp.translation", "res://locals/slogan.jp.translation", "res://locals/UI.jp.translation", "res://locals/Weapon.jp.translation")
+locale/test="jp"
 
 [layer_names]
 

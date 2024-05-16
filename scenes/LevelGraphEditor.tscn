@@ -156,9 +156,13 @@ grow_horizontal = 0
 layout_mode = 2
 text = "open_the_export_directory"
 
-[node name="SaveButton" type="Button" parent="HBoxContainer"]
+[node name="ShowSavePanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "save"
+
+[node name="ShowLoadPanelButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "load"
 
 [node name="ShowCreateRoomPanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
@@ -168,7 +172,7 @@ text = "create_room"
 layout_mode = 2
 text = "close"
 
-[node name="SaveOrloadPanel" type="Panel" parent="."]
+[node name="SaveOrLoadPanel" type="Panel" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -181,7 +185,7 @@ offset_bottom = -155.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="SaveOrloadPanel"]
+[node name="SaveOrLoadPanelTitleLabel" type="Label" parent="SaveOrLoadPanel"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -193,7 +197,7 @@ offset_bottom = 40.0
 grow_horizontal = 2
 text = "save"
 
-[node name="LineEdit" type="LineEdit" parent="SaveOrloadPanel"]
+[node name="FileNameLineEdit" type="LineEdit" parent="SaveOrLoadPanel"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -206,7 +210,7 @@ offset_bottom = 28.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label2" type="Label" parent="SaveOrloadPanel"]
+[node name="Label" type="Label" parent="SaveOrLoadPanel"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -218,7 +222,7 @@ offset_bottom = -13.0
 grow_vertical = 2
 text = "filename"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SaveOrloadPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SaveOrLoadPanel"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -232,10 +236,10 @@ offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="CancelButton" type="Button" parent="SaveOrloadPanel/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="SaveOrLoadPanel/HBoxContainer"]
 layout_mode = 2
 text = "cancel"
 
-[node name="ActionButton" type="Button" parent="SaveOrloadPanel/HBoxContainer"]
+[node name="ActionButton" type="Button" parent="SaveOrLoadPanel/HBoxContainer"]
 layout_mode = 2
 text = "save"
