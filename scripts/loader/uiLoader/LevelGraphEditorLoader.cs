@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
@@ -49,6 +51,14 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private Label? _saveOrLoadPanelTitleLabel;
     private LineEdit? _fileNameLineEdit;
     private Button? _showLoadPanelButton;
+    private Button? _deleteSelectedNodeButton;
+    private readonly List<Node> _selectedNodes = new List<Node>();
+
+    /// <summary>
+    /// <para>Displays the time to enter the suggestion</para>
+    /// <para>显示输入建议的时刻</para>
+    /// </summary>
+    private DateTime? _displaysTheSuggestedInputTime;
 
     /// <summary>
     /// <para>Offset to append when a new node is created.</para>
@@ -103,6 +113,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         _showSavePanelButton = GetNode<Button>("HBoxContainer/ShowSavePanelButton");
         _roomTemplateCollectionTextEdit = GetNode<TextEdit>("CreateOrEditorPanel/RoomTemplateCollectionTextEdit");
         _graphEdit = GetNode<GraphEdit>("GraphEdit");
+        _deleteSelectedNodeButton = GetNode<Button>("HBoxContainer/DeleteSelectedNodeButton");
         _showCreateRoomPanelButton = GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
         _returnButton = GetNode<Button>("HBoxContainer/ReturnButton");
         _createOrEditorPanel = GetNode<Panel>("CreateOrEditorPanel");
@@ -143,6 +154,77 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         return roomNode;
     }
 
+    /// <summary>
+    /// <para>Displays input suggestions for room templates</para>
+    /// <para>显示房间模板的输入建议</para>
+    /// </summary>
+    private void DisplayInputPrompt()
+    {
+        if (_roomTemplateTipsLabel == null || _roomTemplateCollectionTextEdit == null)
+        {
+            return;
+        }
+
+        var text = _roomTemplateCollectionTextEdit.Text;
+        if (string.IsNullOrEmpty(text))
+        {
+            _roomTemplateTipsLabel.Text = string.Empty;
+            return;
+        }
+
+        var lastLine = StrUtils.GetLastLine(text);
+        if (string.IsNullOrEmpty(lastLine))
+        {
+            _roomTemplateTipsLabel.Text = string.Empty;
+            return;
+        }
+
+        //Parse the last line
+        //解析最后一行
+        if (lastLine.Length > 0)
+        {
+            if (!lastLine.StartsWith("res://"))
+            {
+                var lineError = TranslationServer.Translate("line_errors_must_start_with_res");
+                if (lineError == null)
+                {
+                    return;
+                }
+
+                _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                return;
+            }
+
+            var fileExists = FileAccess.FileExists(lastLine);
+            var dirExists = DirAccess.DirExistsAbsolute(lastLine);
+            if (!fileExists && !dirExists)
+            {
+                var lineError = TranslationServer.Translate("error_specifying_room_template_line");
+                if (lineError == null)
+                {
+                    return;
+                }
+
+                _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                return;
+            }
+
+            _roomTemplateTipsLabel.Text = string.Empty;
+        }
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (_displaysTheSuggestedInputTime != null && DateTime.Now > _displaysTheSuggestedInputTime)
+        {
+            //Performs the actual input field text change event.
+            //执行实际的输入框文本改变事件。
+            DisplayInputPrompt();
+            _displaysTheSuggestedInputTime = null;
+        }
+    }
+
     public override void LoadUiActions()
     {
         base.LoadUiActions();
@@ -150,61 +232,18 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         {
             _roomTemplateCollectionTextEdit.TextChanged += () =>
             {
-                if (_roomTemplateTipsLabel == null)
-                {
-                    return;
-                }
-
-                var text = _roomTemplateCollectionTextEdit.Text;
-                if (string.IsNullOrEmpty(text))
-                {
-                    _roomTemplateTipsLabel.Text = string.Empty;
-                    return;
-                }
-
-                var lastLine = StrUtils.GetLastLine(text);
-                if (string.IsNullOrEmpty(lastLine))
-                {
-                    _roomTemplateTipsLabel.Text = string.Empty;
-                    return;
-                }
-
-                //Parse the last line
-                //解析最后一行
-                if (lastLine.Length > 0)
-                {
-                    if (!lastLine.StartsWith("res://"))
-                    {
-                        var lineError = TranslationServer.Translate("line_errors_must_start_with_res");
-                        if (lineError == null)
-                        {
-                            return;
-                        }
-
-                        _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
-                        return;
-                    }
-
-                    var exists = FileAccess.FileExists(lastLine);
-                    if (!exists)
-                    {
-                        var lineError = TranslationServer.Translate("error_specifying_room_template_line");
-                        if (lineError == null)
-                        {
-                            return;
-                        }
-
-                        _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
-                        return;
-                    }
-
-                    _roomTemplateTipsLabel.Text = string.Empty;
-                }
+                //Add anti-shake treatment.
+                //添加防抖处理。
+                //Higher frequency events are executed last time.
+                //频率较高的事件中，执行最后一次。
+                _displaysTheSuggestedInputTime = DateTime.Now.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
             };
         }
 
         if (_graphEdit != null)
         {
+            _graphEdit.NodeSelected += node => { _selectedNodes.Add(node); };
+            _graphEdit.NodeDeselected += node => { _selectedNodes.Remove(node); };
             _graphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
             {
                 _graphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
@@ -220,6 +259,35 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             _openExportFolderButton.Pressed += () =>
             {
                 ExplorerUtils.OpenFolder(Config.GetLevelGraphExportDirectory());
+            };
+        }
+
+        if (_deleteSelectedNodeButton != null)
+        {
+            _deleteSelectedNodeButton.Pressed += () =>
+            {
+                if (_graphEdit == null)
+                {
+                    return;
+                }
+
+                if (_selectedNodes.Count == 0)
+                {
+                    return;
+                }
+
+                var nodes = _selectedNodes.ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node is not RoomNode roomNode)
+                    {
+                        continue;
+                    }
+
+                    _graphEdit.RemoveChild(node);
+                    roomNode.QueueFree();
+                    _selectedNodes.Remove(node);
+                }
             };
         }
 
@@ -246,8 +314,6 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 {
                     _hBoxContainer.Visible = false;
                 }
-
-                _showCreateRoomPanelButton.Visible = false;
             };
         }
 
@@ -268,7 +334,20 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         {
             _createRoomButton.Pressed += () =>
             {
-                if (_roomNameLineEdit == null || _roomDescriptionLineEdit == null)
+                if (_roomNameLineEdit == null || _roomDescriptionLineEdit == null ||
+                    _roomTemplateCollectionTextEdit == null)
+                {
+                    return;
+                }
+
+                var roomTemplateData = _roomTemplateCollectionTextEdit.Text;
+                if (string.IsNullOrEmpty(roomTemplateData))
+                {
+                    return;
+                }
+
+                var roomTemplateArray = roomTemplateData.Split('\n');
+                if (roomTemplateArray.Length == 0)
                 {
                     return;
                 }
@@ -277,7 +356,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 {
                     Id = GuidUtils.GetGuid(),
                     Title = _roomNameLineEdit.Text,
-                    Description = _roomDescriptionLineEdit.Text
+                    Description = _roomDescriptionLineEdit.Text,
+                    RoomTemplateSet = roomTemplateArray
                 };
                 var roomNode = CreateRoomNode(roomNodeData);
                 if (roomNode != null)
@@ -637,11 +717,6 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         if (_hBoxContainer != null)
         {
             _hBoxContainer.Visible = true;
-        }
-
-        if (_showCreateRoomPanelButton != null)
-        {
-            _showCreateRoomPanelButton.Visible = true;
         }
     }
 }

@@ -19,11 +19,12 @@ name,名称,Name,めいしょう
 describe,描述,Describe,ないよう
 creation,创建,Creation,創建
 default_room_name,房间{0},Room{0},部屋{0}です
-room_template_collection_prompt,房间模板集(每一行被认为是一条房间模板地址。),Room template set (Each row is considered to be one room template address.),お部屋テンプレートセット(各行がお部屋テンプレートアドレスとされています。)
-error_specifying_room_template_line,位于{0}错误，文件不存在。,"Located at {0} error, file does not exist.",{0}エラーに位置し、ファイルは存在しません。
+room_template_collection_prompt,房间模板集(传入路径为文件夹，将选择文件夹内的所有子文件),"Room template set (incoming path is folder, all subfiles in folder will be selected)",部屋テンプレートセット(着信経路をフォルダにして、フォルダ内のすべてのサブファイルを選択します。)
+error_specifying_room_template_line,位于{0}错误，文件或文件夹不存在。,"Located at {0} error, file or folder does not exist.",{0}エラーに位置し、ファイルやフォルダが存在しません。
 line_errors_must_start_with_res,位于{0}错误，必须以res://开头。,"Located at {0} error, must start with res://.",{0}エラーに位置し、res://で始めなければなりません。
 open_the_export_directory,打开导出目录,Open the export directory,エクスポートディレクトリを開きます
 save,保存,Save,保留
 filename,文件名,File name,ファイル名
 cancel,取消,Cancel,キャンセル
 load,加载,Load,ろーど
+delete_selected_node,删除选中的节点,Delete selected node,選択されたノードを削除します

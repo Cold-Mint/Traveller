@@ -81,6 +81,12 @@ public static class Config
     public const int MaxStackQuantity = 99;
 
     /// <summary>
+    /// <para>Text change buffering Time How long does it take to execute the actual event after an event with a text change listener is triggered? (Anti-shake processing time), unit: milliseconds</para>
+    /// <para>当添加了文本改变监听器的事件被触发后，多长时间后执行实际事件？（防抖处理时长），单位：毫秒</para>
+    /// </summary>
+    public const long TextChangesBuffetingDuration = 300;
+
+    /// <summary>
     /// <para>Operation prompts, function key text color</para>
     /// <para>操作提示内，功能键文本颜色</para>
     /// </summary>

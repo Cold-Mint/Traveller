@@ -35,7 +35,6 @@ offset_bottom = 32.0
 text = "level_graph_editor"
 
 [node name="CreateOrEditorPanel" type="Panel" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,6 +150,10 @@ offset_top = 4.0
 offset_right = -15.0
 offset_bottom = 47.0
 grow_horizontal = 0
+
+[node name="DeleteSelectedNodeButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "delete_selected_node"
 
 [node name="OpenExportFolderButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
