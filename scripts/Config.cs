@@ -333,6 +333,15 @@ public static class Config
         public const int Platform = 6;
         public const int Mob = 7;
     }
+    
+    public class RoomDataTag
+    {
+        /// <summary>
+        /// <para>Mark the starting room</para>
+        /// <para>起点房间的标记</para>
+        /// </summary>
+        public const string StartingRoom = "StartingRoom";
+    }
 
     /// <summary>
     /// <para>Specify the type of damage used in the game</para>

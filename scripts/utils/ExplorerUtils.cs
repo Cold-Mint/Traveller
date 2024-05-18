@@ -54,8 +54,6 @@ public class ExplorerUtils
                 };
                 Process.Start(startInfoAndroid);
                 break;
-            default:
-                throw new NotImplementedException($"No implementation for OS: {osEnum}");
         }
     }
 

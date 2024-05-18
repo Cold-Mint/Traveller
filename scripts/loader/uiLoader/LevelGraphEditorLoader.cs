@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
+using ColdMint.scripts.nodeBinding;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;
@@ -17,22 +17,9 @@ namespace ColdMint.scripts.loader.uiLoader;
 /// </summary>
 public partial class LevelGraphEditorLoader : UiLoaderTemplate
 {
-    private GraphEdit? _graphEdit;
-
-    /// <summary>
-    /// <para>Button to display the room creation panel.</para>
-    /// <para>用于展示房间创建面板的按钮。</para>
-    /// </summary>
-    private Button? _showCreateRoomPanelButton;
-
-    private PackedScene? _roomNodeScene;
-    private Panel? _createOrEditorPanel;
-    private Button? _hideCreateRoomPanelButton;
-    private LineEdit? _roomNameLineEdit;
-    private LineEdit? _roomDescriptionLineEdit;
-    private Button? _createRoomButton;
-    private Button? _returnButton;
     private string? _defaultRoomName;
+
+    private readonly LevelGraphEditorBinding _nodeBinding = new LevelGraphEditorBinding();
 
     /// <summary>
     /// <para>Index of the room</para>
@@ -40,18 +27,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// </summary>
     private int _roomIndex = 1;
 
-    private TextEdit? _roomTemplateCollectionTextEdit;
-    private Label? _roomTemplateTipsLabel;
-    private Button? _showSavePanelButton;
-    private Button? _openExportFolderButton;
-    private HBoxContainer? _hBoxContainer;
-    private Panel? _saveOrLoadPanel;
-    private Button? _cancelButton;
-    private Button? _actionButton;
-    private Label? _saveOrLoadPanelTitleLabel;
-    private LineEdit? _fileNameLineEdit;
-    private Button? _showLoadPanelButton;
-    private Button? _deleteSelectedNodeButton;
+    private PackedScene? _roomNodeScene;
+
     private readonly List<Node> _selectedNodes = new List<Node>();
 
     /// <summary>
@@ -89,38 +66,18 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void InitializeUi()
     {
         base.InitializeUi();
-        _roomTemplateTipsLabel = GetNode<Label>("CreateOrEditorPanel/RoomTemplateTipsLabel");
-        if (_roomTemplateTipsLabel != null)
-        {
-            _roomTemplateTipsLabel.Text = string.Empty;
-        }
-
-        _openExportFolderButton = GetNode<Button>("HBoxContainer/OpenExportFolderButton");
-        if (_openExportFolderButton != null)
+        _nodeBinding.Binding(this);
+        if (_nodeBinding.OpenExportFolderButton != null)
         {
             //If open directories are supported, a button is displayed.
             //若支持打开目录，那么显示按钮。
-            _openExportFolderButton.Visible = ExplorerUtils.SupportOpenDirectory();
+            _nodeBinding.OpenExportFolderButton.Visible = ExplorerUtils.SupportOpenDirectory();
         }
 
-        _showLoadPanelButton = GetNode<Button>("HBoxContainer/ShowLoadPanelButton");
-        _saveOrLoadPanelTitleLabel = GetNode<Label>("SaveOrLoadPanel/SaveOrLoadPanelTitleLabel");
-        _saveOrLoadPanel = GetNode<Panel>("SaveOrLoadPanel");
-        _fileNameLineEdit = GetNode<LineEdit>("SaveOrLoadPanel/FileNameLineEdit");
-        _actionButton = GetNode<Button>("SaveOrLoadPanel/HBoxContainer/ActionButton");
-        _cancelButton = GetNode<Button>("SaveOrLoadPanel/HBoxContainer/CancelButton");
-        _hBoxContainer = GetNode<HBoxContainer>("HBoxContainer");
-        _showSavePanelButton = GetNode<Button>("HBoxContainer/ShowSavePanelButton");
-        _roomTemplateCollectionTextEdit = GetNode<TextEdit>("CreateOrEditorPanel/RoomTemplateCollectionTextEdit");
-        _graphEdit = GetNode<GraphEdit>("GraphEdit");
-        _deleteSelectedNodeButton = GetNode<Button>("HBoxContainer/DeleteSelectedNodeButton");
-        _showCreateRoomPanelButton = GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
-        _returnButton = GetNode<Button>("HBoxContainer/ReturnButton");
-        _createOrEditorPanel = GetNode<Panel>("CreateOrEditorPanel");
-        _hideCreateRoomPanelButton = GetNode<Button>("CreateOrEditorPanel/HideCreateRoomPanelButton");
-        _roomNameLineEdit = GetNode<LineEdit>("CreateOrEditorPanel/RoomNameLineEdit");
-        _roomDescriptionLineEdit = GetNode<LineEdit>("CreateOrEditorPanel/RoomDescriptionLineEdit");
-        _createRoomButton = GetNode<Button>("CreateOrEditorPanel/CreateRoomButton");
+        if (_nodeBinding.RoomTemplateTipsLabel != null)
+        {
+            _nodeBinding.RoomTemplateTipsLabel.Text = string.Empty;
+        }
     }
 
     /// <summary>
@@ -131,7 +88,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// <returns></returns>
     private RoomNode? CreateRoomNode(RoomNodeData roomNodeData)
     {
-        if (_roomNodeScene == null || _graphEdit == null)
+        if (_roomNodeScene == null || _nodeBinding.GraphEdit == null)
         {
             return null;
         }
@@ -142,7 +99,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             return null;
         }
 
-        _graphEdit?.AddChild(node);
+        _nodeBinding.GraphEdit?.AddChild(node);
         if (node is not RoomNode roomNode)
         {
             return null;
@@ -160,22 +117,22 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// </summary>
     private void DisplayInputPrompt()
     {
-        if (_roomTemplateTipsLabel == null || _roomTemplateCollectionTextEdit == null)
+        if (_nodeBinding.RoomTemplateTipsLabel == null || _nodeBinding.RoomTemplateCollectionTextEdit == null)
         {
             return;
         }
 
-        var text = _roomTemplateCollectionTextEdit.Text;
+        var text = _nodeBinding.RoomTemplateCollectionTextEdit.Text;
         if (string.IsNullOrEmpty(text))
         {
-            _roomTemplateTipsLabel.Text = string.Empty;
+            _nodeBinding.RoomTemplateTipsLabel.Text = string.Empty;
             return;
         }
 
         var lastLine = StrUtils.GetLastLine(text);
         if (string.IsNullOrEmpty(lastLine))
         {
-            _roomTemplateTipsLabel.Text = string.Empty;
+            _nodeBinding.RoomTemplateTipsLabel.Text = string.Empty;
             return;
         }
 
@@ -191,7 +148,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     return;
                 }
 
-                _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                _nodeBinding.RoomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
                 return;
             }
 
@@ -205,11 +162,11 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     return;
                 }
 
-                _roomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
+                _nodeBinding.RoomTemplateTipsLabel.Text = string.Format(lineError, lastLine);
                 return;
             }
 
-            _roomTemplateTipsLabel.Text = string.Empty;
+            _nodeBinding.RoomTemplateTipsLabel.Text = string.Empty;
         }
     }
 
@@ -228,45 +185,46 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void LoadUiActions()
     {
         base.LoadUiActions();
-        if (_roomTemplateCollectionTextEdit != null)
+        if (_nodeBinding.RoomTemplateCollectionTextEdit != null)
         {
-            _roomTemplateCollectionTextEdit.TextChanged += () =>
+            _nodeBinding.RoomTemplateCollectionTextEdit.TextChanged += () =>
             {
                 //Add anti-shake treatment.
                 //添加防抖处理。
                 //Higher frequency events are executed last time.
                 //频率较高的事件中，执行最后一次。
-                _displaysTheSuggestedInputTime = DateTime.Now.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
+                _displaysTheSuggestedInputTime =
+                    DateTime.Now.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
             };
         }
 
-        if (_graphEdit != null)
+        if (_nodeBinding.GraphEdit != null)
         {
-            _graphEdit.NodeSelected += node => { _selectedNodes.Add(node); };
-            _graphEdit.NodeDeselected += node => { _selectedNodes.Remove(node); };
-            _graphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
+            _nodeBinding.GraphEdit.NodeSelected += node => { _selectedNodes.Add(node); };
+            _nodeBinding.GraphEdit.NodeDeselected += node => { _selectedNodes.Remove(node); };
+            _nodeBinding.GraphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
             {
-                _graphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
+                _nodeBinding.GraphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
             };
-            _graphEdit.DisconnectionRequest += (fromNode, fromPort, toNode, toPort) =>
+            _nodeBinding.GraphEdit.DisconnectionRequest += (fromNode, fromPort, toNode, toPort) =>
             {
-                _graphEdit.DisconnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
+                _nodeBinding.GraphEdit.DisconnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
             };
         }
 
-        if (_openExportFolderButton != null)
+        if (_nodeBinding.OpenExportFolderButton != null)
         {
-            _openExportFolderButton.Pressed += () =>
+            _nodeBinding.OpenExportFolderButton.Pressed += () =>
             {
                 ExplorerUtils.OpenFolder(Config.GetLevelGraphExportDirectory());
             };
         }
 
-        if (_deleteSelectedNodeButton != null)
+        if (_nodeBinding.DeleteSelectedNodeButton != null)
         {
-            _deleteSelectedNodeButton.Pressed += () =>
+            _nodeBinding.DeleteSelectedNodeButton.Pressed += () =>
             {
-                if (_graphEdit == null)
+                if (_nodeBinding.GraphEdit == null)
                 {
                     return;
                 }
@@ -284,63 +242,63 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                         continue;
                     }
 
-                    _graphEdit.RemoveChild(node);
+                    _nodeBinding.GraphEdit.RemoveChild(node);
                     roomNode.QueueFree();
                     _selectedNodes.Remove(node);
                 }
             };
         }
 
-        if (_showCreateRoomPanelButton != null)
+        if (_nodeBinding.ShowCreateRoomPanelButton != null)
         {
-            _showCreateRoomPanelButton.Pressed += () =>
+            _nodeBinding.ShowCreateRoomPanelButton.Pressed += () =>
             {
-                if (_graphEdit != null)
+                if (_nodeBinding.GraphEdit != null)
                 {
-                    _graphEdit.Visible = false;
+                    _nodeBinding.GraphEdit.Visible = false;
                 }
 
-                if (_createOrEditorPanel != null)
+                if (_nodeBinding.CreateOrEditorPanel != null)
                 {
-                    _createOrEditorPanel.Visible = true;
+                    _nodeBinding.CreateOrEditorPanel.Visible = true;
                 }
 
-                if (_roomNameLineEdit != null && _defaultRoomName != null)
+                if (_nodeBinding.RoomNameLineEdit != null && _defaultRoomName != null)
                 {
-                    _roomNameLineEdit.Text = string.Format(_defaultRoomName, _roomIndex);
+                    _nodeBinding.RoomNameLineEdit.Text = string.Format(_defaultRoomName, _roomIndex);
                 }
 
-                if (_hBoxContainer != null)
+                if (_nodeBinding.HBoxContainer != null)
                 {
-                    _hBoxContainer.Visible = false;
+                    _nodeBinding.HBoxContainer.Visible = false;
                 }
             };
         }
 
-        if (_returnButton != null)
+        if (_nodeBinding.ReturnButton != null)
         {
-            _returnButton.Pressed += () =>
+            _nodeBinding.ReturnButton.Pressed += () =>
             {
                 GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/mainMenu.tscn"));
             };
         }
 
-        if (_hideCreateRoomPanelButton != null)
+        if (_nodeBinding.HideCreateRoomPanelButton != null)
         {
-            _hideCreateRoomPanelButton.Pressed += HideCreateRoomPanel;
+            _nodeBinding.HideCreateRoomPanelButton.Pressed += HideCreateRoomPanel;
         }
 
-        if (_createRoomButton != null)
+        if (_nodeBinding.CreateRoomButton != null)
         {
-            _createRoomButton.Pressed += () =>
+            _nodeBinding.CreateRoomButton.Pressed += () =>
             {
-                if (_roomNameLineEdit == null || _roomDescriptionLineEdit == null ||
-                    _roomTemplateCollectionTextEdit == null)
+                if (_nodeBinding.RoomNameLineEdit == null || _nodeBinding.RoomDescriptionLineEdit == null ||
+                    _nodeBinding.RoomTemplateCollectionTextEdit == null)
                 {
                     return;
                 }
 
-                var roomTemplateData = _roomTemplateCollectionTextEdit.Text;
+                var roomTemplateData = _nodeBinding.RoomTemplateCollectionTextEdit.Text;
                 if (string.IsNullOrEmpty(roomTemplateData))
                 {
                     return;
@@ -355,8 +313,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 var roomNodeData = new RoomNodeData
                 {
                     Id = GuidUtils.GetGuid(),
-                    Title = _roomNameLineEdit.Text,
-                    Description = _roomDescriptionLineEdit.Text,
+                    Title = _nodeBinding.RoomNameLineEdit.Text,
+                    Description = _nodeBinding.RoomDescriptionLineEdit.Text,
                     RoomTemplateSet = roomTemplateArray
                 };
                 var roomNode = CreateRoomNode(roomNodeData);
@@ -367,94 +325,94 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             };
         }
 
-        if (_cancelButton != null)
+        if (_nodeBinding.CancelButton != null)
         {
-            _cancelButton.Pressed += () =>
+            _nodeBinding.CancelButton.Pressed += () =>
             {
-                if (_saveOrLoadPanel != null)
+                if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _saveOrLoadPanel.Visible = false;
+                    _nodeBinding.SaveOrLoadPanel.Visible = false;
                 }
             };
         }
 
-        if (_actionButton != null)
+        if (_nodeBinding.ActionButton != null)
         {
-            _actionButton.Pressed += () =>
+            _nodeBinding.ActionButton.Pressed += () =>
             {
-                if (_saveOrLoadPanel != null)
+                if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _saveOrLoadPanel.Visible = false;
+                    _nodeBinding.SaveOrLoadPanel.Visible = false;
                 }
             };
         }
 
-        if (_showLoadPanelButton != null)
+        if (_nodeBinding.ShowLoadPanelButton != null)
         {
-            _showLoadPanelButton.Pressed += () =>
+            _nodeBinding.ShowLoadPanelButton.Pressed += () =>
             {
-                if (_saveOrLoadPanel != null)
+                if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _saveOrLoadPanel.Visible = true;
+                    _nodeBinding.SaveOrLoadPanel.Visible = true;
                 }
 
-                if (_actionButton != null)
+                if (_nodeBinding.ActionButton != null)
                 {
-                    _actionButton.Text = TranslationServer.Translate("load");
+                    _nodeBinding.ActionButton.Text = TranslationServer.Translate("load");
                 }
 
-                if (_fileNameLineEdit != null)
+                if (_nodeBinding.FileNameLineEdit != null)
                 {
-                    _fileNameLineEdit.Text = string.Empty;
+                    _nodeBinding.FileNameLineEdit.Text = string.Empty;
                 }
 
-                if (_saveOrLoadPanelTitleLabel != null)
+                if (_nodeBinding.SaveOrLoadPanelTitleLabel != null)
                 {
-                    _saveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("load");
+                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("load");
                 }
 
                 _saveMode = false;
             };
         }
 
-        if (_showSavePanelButton != null)
+        if (_nodeBinding.ShowSavePanelButton != null)
         {
-            _showSavePanelButton.Pressed += () =>
+            _nodeBinding.ShowSavePanelButton.Pressed += () =>
             {
-                if (_saveOrLoadPanel != null)
+                if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _saveOrLoadPanel.Visible = true;
+                    _nodeBinding.SaveOrLoadPanel.Visible = true;
                 }
 
-                if (_actionButton != null)
+                if (_nodeBinding.ActionButton != null)
                 {
-                    _actionButton.Text = TranslationServer.Translate("save");
+                    _nodeBinding.ActionButton.Text = TranslationServer.Translate("save");
                 }
 
-                if (_fileNameLineEdit != null)
+                if (_nodeBinding.FileNameLineEdit != null)
                 {
-                    _fileNameLineEdit.Text = string.Empty;
+                    _nodeBinding.FileNameLineEdit.Text = string.Empty;
                 }
 
-                if (_saveOrLoadPanelTitleLabel != null)
+                if (_nodeBinding.SaveOrLoadPanelTitleLabel != null)
                 {
-                    _saveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("save");
+                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("save");
                 }
 
                 _saveMode = true;
             };
         }
 
-        if (_actionButton != null)
+        if (_nodeBinding.ActionButton != null)
         {
-            _actionButton.Pressed += () =>
+            _nodeBinding.ActionButton.Pressed += () =>
             {
-                if (_fileNameLineEdit == null)
+                if (_nodeBinding.FileNameLineEdit == null)
                 {
                     return;
                 }
 
-                var fileName = _fileNameLineEdit.Text;
+                var fileName = _nodeBinding.FileNameLineEdit.Text;
                 if (string.IsNullOrEmpty(fileName))
                 {
                     return;
@@ -484,7 +442,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// </param>
     private async void SaveFile(string fileName)
     {
-        if (_graphEdit == null)
+        if (_nodeBinding.GraphEdit == null)
         {
             return;
         }
@@ -492,7 +450,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         var levelGraphEditorSaveData = new LevelGraphEditorSaveData();
         //Serialize room node information
         //序列化房间节点信息
-        var length = _graphEdit.GetChildCount();
+        var length = _nodeBinding.GraphEdit.GetChildCount();
         if (length <= 0)
         {
             //no room
@@ -504,7 +462,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         levelGraphEditorSaveData.RoomNodeDataList = roomNodeDataList;
         for (var i = 0; i < length; i++)
         {
-            var node = _graphEdit.GetChild(i);
+            var node = _nodeBinding.GraphEdit.GetChild(i);
             if (node is not RoomNode roomNode) continue;
             var data = roomNode.RoomNodeData;
             if (data == null)
@@ -517,7 +475,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
         //Serialized connection information
         //序列化连接信息
-        Array<Dictionary> connectionList = _graphEdit.GetConnectionList();
+        Array<Dictionary> connectionList = _nodeBinding.GraphEdit.GetConnectionList();
         var connectionDataList = new List<ConnectionData>();
         levelGraphEditorSaveData.ConnectionDataList = connectionDataList;
         if (connectionList.Count > 0)
@@ -603,7 +561,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
     private async void LoadFile(string fileName)
     {
-        if (_graphEdit == null)
+        if (_nodeBinding.GraphEdit == null)
         {
             return;
         }
@@ -627,7 +585,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
         //Do not call DeleteAllChildAsync; this will raise "ERROR: Caller thread can't call this function in this node."
         //不要调用DeleteAllChildAsync方法，这会引发“ERROR: Caller thread can't call this function in this node”。
-        NodeUtils.DeleteAllChild(_graphEdit);
+        NodeUtils.DeleteAllChild(_nodeBinding.GraphEdit);
         _roomIndex = 1;
         var roomNodeDataList = levelGraphEditorSaveData.RoomNodeDataList;
         if (roomNodeDataList != null)
@@ -666,7 +624,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 //Connecting rooms
                 //连接房间
-                _graphEdit.ConnectNode(connectionData.FromId, connectionData.FromPort, connectionData.ToId,
+                _nodeBinding.GraphEdit?.ConnectNode(connectionData.FromId, connectionData.FromPort, connectionData.ToId,
                     connectionData.ToPort);
             }
         }
@@ -683,12 +641,12 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// <returns></returns>
     private RoomNodeData? GetRoomNodeData(string name)
     {
-        if (_graphEdit == null)
+        if (_nodeBinding.GraphEdit == null)
         {
             return null;
         }
 
-        var roomNode = _graphEdit.GetNodeOrNull<RoomNode>(name);
+        var roomNode = _nodeBinding.GraphEdit.GetNodeOrNull<RoomNode>(name);
         if (roomNode == null)
         {
             return null;
@@ -704,19 +662,19 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// </summary>
     private void HideCreateRoomPanel()
     {
-        if (_graphEdit != null)
+        if (_nodeBinding.GraphEdit != null)
         {
-            _graphEdit.Visible = true;
+            _nodeBinding.GraphEdit.Visible = true;
         }
 
-        if (_createOrEditorPanel != null)
+        if (_nodeBinding.CreateOrEditorPanel != null)
         {
-            _createOrEditorPanel.Visible = false;
+            _nodeBinding.CreateOrEditorPanel.Visible = false;
         }
 
-        if (_hBoxContainer != null)
+        if (_nodeBinding.HBoxContainer != null)
         {
-            _hBoxContainer.Visible = true;
+            _nodeBinding.HBoxContainer.Visible = true;
         }
     }
 }

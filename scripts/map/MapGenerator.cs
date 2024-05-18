@@ -1,110 +1,60 @@
-using System;
-using System.Threading.Tasks;
-using ColdMint.scripts.debug;
-using ColdMint.scripts.map.interfaces;
-using ColdMint.scripts.map.room;
-using ColdMint.scripts.map.RoomPlacer;
-using Godot;
+﻿using System.Threading.Tasks;
+using ColdMint.scripts.levelGraphEditor;
 
 namespace ColdMint.scripts.map;
 
-public class MapGenerator : IMapGenerator
+/// <summary>
+/// <para>Map generator</para>
+/// <para>地图生成器</para>
+/// </summary>
+/// <remarks>
+///<para>Responsible for the overall map generation process control</para>
+///<para>负责地图的整体生成流程控制</para>
+/// </remarks>
+public static class MapGenerator
 {
-    public int TimeOutPeriod { get; set; }
-    public IRoomSlotsMatcher? RoomSlotsMatcher { get; set; }
-    public IRoomHolder? RoomHolder { get; set; }
+    /// <summary>
+    /// <para>Layout map selection strategy</para>
+    /// <para>布局图选择策略</para>
+    /// </summary>
+    private static ILayoutStrategy? _layoutStrategy;
 
-    public IRoomPlacer? RoomPlacer { get; set; }
-
-    public IRoomProvider? RoomProvider { get; set; }
-
-    public async Task Generate(IMapGeneratorConfig mapGeneratorConfig)
+    public static ILayoutStrategy? LayoutStrategy
     {
-        if (RoomPlacer == null || RoomHolder == null || RoomProvider == null || RoomSlotsMatcher == null ||
-            RoomProvider.InitialRoom == null)
+        get => _layoutStrategy;
+        set => _layoutStrategy = value;
+    }
+
+    /// <summary>
+    /// <para>Generating a map</para>
+    /// <para>生成地图</para>
+    /// </summary>
+    public static async Task GenerateMap()
+    {
+        if (_layoutStrategy == null)
         {
-            PrintMissingParametersError();
             return;
         }
 
-        try
+        //Get the layout data
+        //拿到布局图数据
+        var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
+        //Finding the starting room
+        //查找起点房间
+        if (levelGraphEditorSaveData.RoomNodeDataList == null || levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
-            var roomPlacerConfig = new RoomPlacerConfig();
-            //获取原点
-            var origin = Vector2.Zero;
-            //在提供者哪里获取房间，并放置他（首次拿初始房间）
-            var originRoom =
-                RoomFactory.CreateRoom(RoomProvider.InitialRoom.RoomResPath);
-            await PlaceRoom(origin, originRoom);
-            var endTime = DateTime.Now + TimeSpan.FromSeconds(TimeOutPeriod);
-            while (RoomHolder.PlacedRoomNumber < mapGeneratorConfig.RoomCount)
-            {
-                if (DateTime.Now > endTime)
-                {
-                    LogCat.LogError("connected_room_timeout");
-                    break;
-                }
-
-                //我们会一直尝试放置房间，直到达到指定的数量
-                var roomRes = RoomProvider.GetRoomRes(RoomHolder.PlacedRoomNumber, mapGeneratorConfig);
-                if (roomRes == null)
-                {
-                    continue;
-                }
-
-                var newRoom =
-                    RoomFactory.CreateRoom(roomRes
-                        .RoomResPath);
-                if (await RoomSlotsMatcher.IsMatch(RoomHolder.LastRoom, newRoom))
-                {
-                    // LogCat.Log("匹配成功" + RoomSlotsMatcher.LastMatchedMainSlot.DistanceToMidpointOfRoom[0] + " " +
-                    //            RoomSlotsMatcher.LastMatchedMainSlot.DistanceToMidpointOfRoom[1] + "到" +
-                    //            RoomSlotsMatcher.LastMatchedMinorSlot.DistanceToMidpointOfRoom[0] + " " +
-                    //            RoomSlotsMatcher.LastMatchedMinorSlot.DistanceToMidpointOfRoom[1]);
-                    await PlaceRoom(
-                        await RoomPlacer.CalculatedPosition(originRoom, newRoom, RoomSlotsMatcher.LastMatchedMainSlot,
-                            RoomSlotsMatcher.LastMatchedMinorSlot, roomPlacerConfig), newRoom);
-                    originRoom = newRoom;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            LogCat.WhenCaughtException(e);
-        }
-    }
-
-    /// <summary>
-    /// <para>PrintMissingParametersError</para>
-    /// <para>打印缺少参数错误</para>
-    /// </summary>
-    private void PrintMissingParametersError()
-    {
-        LogCat.LogError("missing_parameters");
-    }
-
-    /// <summary>
-    /// <para>PlaceRoom</para>
-    /// <para>放置房间</para>
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="room"></param>
-    /// <returns></returns>
-    private async Task<bool> PlaceRoom(Vector2 position, IRoom room)
-    {
-        if (RoomPlacer == null || RoomHolder == null)
-        {
-            return false;
+            return;
         }
 
-        if (await RoomPlacer.PlaceRoom(position, room))
+        var startRoomNodeData = levelGraphEditorSaveData.RoomNodeDataList.Find(roomNodeData =>
+            roomNodeData.HasTag(Config.RoomDataTag.StartingRoom));
+        if (startRoomNodeData == null)
         {
-            RoomHolder.AddRoom(room);
-            // LogCat.Log("我要放置房间，但是成功");
-            return true;
+            //Can't find the starting room
+            //找不到起点房间
+            return;
         }
-
-        // LogCat.Log("我要放置房间，但是失败了");
-        return false;
+        //The starting room is regarded as the root node, and the map is generated from the root node to the leaf node like the tree structure.
+        //TODO:将起点房间看作根节点，像树结构一样，从根节点到叶节点生成地图。
     }
 }
