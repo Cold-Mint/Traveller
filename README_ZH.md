@@ -18,11 +18,11 @@
 
 游戏场景
 
-![](screenshot\0.0.1\game_page.png)
+![](screenshot/0.0.1/game_page.png)
 
 关卡编辑器
 
-![](screenshot\0.0.1\level_Graph_Editor.png)
+![](screenshot/0.0.1/level_Graph_Editor.png)
 
 ## 在本地运行项目
 

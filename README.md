@@ -18,11 +18,11 @@ A pixel cross-platform roguelite game.
 
 Game scene
 
-![](screenshot\0.0.1\game_page.png)
+![](screenshot/0.0.1/game_page.png)
 
 Level graph editor
 
-![](screenshot\0.0.1\level_Graph_Editor.png)
+![](screenshot/0.0.1/level_Graph_Editor.png)
 
 ## Run the project locally
 

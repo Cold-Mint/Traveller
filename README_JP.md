@@ -17,11 +17,11 @@
 
 ゲームのシーンです
 
-![](screenshot\0.0.1\game_page.png)
+![](screenshot/0.0.1/game_page.png)
 
 ステージエディター
 
-![](screenshot\0.0.1\level_Graph_Editor.png)
+![](screenshot/0.0.1/level_Graph_Editor.png)
 ## 地元でプロジェクトを進めています
 
 #### ダウンロードエンジンです
