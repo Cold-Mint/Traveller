@@ -4,7 +4,7 @@ English [简体中文](README_ZH.md) [にほんご](README_JP.md)
 
 Mint's new game.
 
-A pixel cross-platform Roguelite game.
+A pixel cross-platform roguelite game.
 
 ## Recent Development progress
 
@@ -13,6 +13,16 @@ A pixel cross-platform Roguelite game.
 | Randomly generated map                         | In progress |
 | loot                                                 | await         |
 | Support still out of the knapsack system | await                |
+
+## Screenshot
+
+Game scene
+
+![](screenshot\0.0.1\game_page.png)
+
+Level graph editor
+
+![](screenshot\0.0.1\level_Graph_Editor.png)
 
 ## Run the project locally
 

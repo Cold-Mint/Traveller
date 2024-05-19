@@ -14,6 +14,16 @@
 | 战利品                                                 | 等待         |
 | 支持仍出的背包系统 | 等待                |
 
+## 屏幕截图
+
+游戏场景
+
+![](screenshot\0.0.1\game_page.png)
+
+关卡编辑器
+
+![](screenshot\0.0.1\level_Graph_Editor.png)
+
 ## 在本地运行项目
 
 #### 下载引擎

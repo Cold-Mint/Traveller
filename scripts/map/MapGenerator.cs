@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
-using ColdMint.scripts.levelGraphEditor;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ColdMint.scripts.debug;
+using ColdMint.scripts.map.interfaces;
 
 namespace ColdMint.scripts.map;
 
@@ -19,6 +21,31 @@ public static class MapGenerator
     /// </summary>
     private static ILayoutStrategy? _layoutStrategy;
 
+    /// <summary>
+    /// <para>Room placement strategy</para>
+    /// <para>房间的放置策略</para>
+    /// </summary>
+    private static IRoomPlacementStrategy? _roomPlacementStrategy;
+
+
+    /// <summary>
+    /// <para>Layout diagram parsing policy</para>
+    /// <para>布局图解析策略</para>
+    /// </summary>
+    private static ILayoutParsingStrategy? _layoutParsingStrategy;
+
+    public static ILayoutParsingStrategy? LayoutParsingStrategy
+    {
+        get => _layoutParsingStrategy;
+        set => _layoutParsingStrategy = value;
+    }
+
+    public static IRoomPlacementStrategy? RoomPlacementStrategy
+    {
+        get => _roomPlacementStrategy;
+        set => _roomPlacementStrategy = value;
+    }
+
     public static ILayoutStrategy? LayoutStrategy
     {
         get => _layoutStrategy;
@@ -31,30 +58,62 @@ public static class MapGenerator
     /// </summary>
     public static async Task GenerateMap()
     {
-        if (_layoutStrategy == null)
+        if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null)
         {
+            LogCat.LogError("map_generator_missing_parameters");
             return;
         }
 
         //Get the layout data
         //拿到布局图数据
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
-        //Finding the starting room
-        //查找起点房间
         if (levelGraphEditorSaveData.RoomNodeDataList == null || levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
+            LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
             return;
         }
 
-        var startRoomNodeData = levelGraphEditorSaveData.RoomNodeDataList.Find(roomNodeData =>
-            roomNodeData.HasTag(Config.RoomDataTag.StartingRoom));
-        if (startRoomNodeData == null)
+        _layoutParsingStrategy.SetLevelGraph(levelGraphEditorSaveData);
+        //Save the dictionary, put the ID in the room data, corresponding to the successful placement of the room.
+        //保存字典，将房间数据内的ID，对应放置成功的房间。
+        var roomDictionary = new Dictionary<string, IRoom>();
+        while (await _layoutParsingStrategy.HasNext())
         {
-            //Can't find the starting room
-            //找不到起点房间
-            return;
+            //When a new room needs to be placed
+            //当有新的房间需要放置时
+            var roomNodeData = await _layoutParsingStrategy.Next();
+            if (roomNodeData == null)
+            {
+                continue;
+            }
+
+            var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
+            IRoom? parentRoomNode = null;
+            if (nextParentNodeId != null)
+            {
+                //If the new room has the parent's ID, then we pass the parent's room into the compute function.
+                //如果新房间有父节点的ID，那么我们将父节点的房间传入到计算函数内。
+                parentRoomNode = roomDictionary[nextParentNodeId];
+            }
+
+            var roomPlacementData =
+                await _roomPlacementStrategy.CalculateNewRoomPlacementData(parentRoomNode, roomNodeData);
+            if (roomPlacementData == null)
+            {
+                continue;
+            }
+
+            if (!await _roomPlacementStrategy.PlaceRoom(roomPlacementData))
+            {
+                continue;
+            }
+
+            if (!string.IsNullOrEmpty(roomNodeData.Id) && roomPlacementData.Room != null)
+            {
+                roomDictionary.Add(roomNodeData.Id, roomPlacementData.Room);
+            }
         }
-        //The starting room is regarded as the root node, and the map is generated from the root node to the leaf node like the tree structure.
-        //TODO:将起点房间看作根节点，像树结构一样，从根节点到叶节点生成地图。
+        //All rooms have been placed.
+        //所有房间已放置完毕。
     }
 }

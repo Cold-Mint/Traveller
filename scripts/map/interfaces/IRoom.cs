@@ -15,6 +15,10 @@ public interface IRoom
     /// </summary>
     PackedScene? RoomScene { get; set; }
     
+    /// <summary>
+    /// <para>Tile map</para>
+    /// <para>瓦片地图</para>
+    /// </summary>
     TileMap? TileMap { get; set; }
 
     /// <summary>
