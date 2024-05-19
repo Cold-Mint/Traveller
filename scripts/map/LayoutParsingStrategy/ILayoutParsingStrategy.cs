@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ColdMint.scripts.levelGraphEditor;
 
-namespace ColdMint.scripts.map;
+namespace ColdMint.scripts.map.LayoutParsingStrategy;
 
 /// <summary>
 /// <para>Layout parsing strategy</para>

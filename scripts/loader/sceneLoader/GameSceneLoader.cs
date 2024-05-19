@@ -3,6 +3,8 @@ using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map;
+using ColdMint.scripts.map.LayoutParsingStrategy;
+using ColdMint.scripts.map.layoutStrategy;
 using ColdMint.scripts.map.room;
 using ColdMint.scripts.map.roomHolder;
 using ColdMint.scripts.map.RoomPlacer;
@@ -34,6 +36,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 
     public override async Task LoadScene()
     {
-       
+        MapGenerator.LayoutStrategy = new TestLayoutStrategy();
+        MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
     }
 }

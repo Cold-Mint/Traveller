@@ -43,6 +43,18 @@ public static class JsonSerialization
     {
         return JsonSerializer.Serialize(obj, _options);
     }
+    
+    /// <summary>
+    /// <para>Deserialize Json to an object</para>
+    /// <para>将Json反序列化为对象</para>
+    /// </summary>
+    /// <param name="json"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T? Deserialize<T>(string json)
+    {
+        return JsonSerializer.Deserialize<T>(json, _options);
+    }
 
     public static async Task<T?> ReadJsonFileToObj<T>(Stream openStream)
     {

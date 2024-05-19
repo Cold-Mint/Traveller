@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ColdMint.scripts.levelGraphEditor;
 
-namespace ColdMint.scripts.map;
+namespace ColdMint.scripts.map.layoutStrategy;
 
 public interface ILayoutStrategy
 {
@@ -10,5 +10,5 @@ public interface ILayoutStrategy
     /// <para>获取布局图</para>
     /// </summary>
     /// <returns></returns>
-    public Task<LevelGraphEditorSaveData> GetLayout();
+    public Task<LevelGraphEditorSaveData?> GetLayout();
 }

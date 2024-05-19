@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.interfaces;
+using ColdMint.scripts.map.LayoutParsingStrategy;
+using ColdMint.scripts.map.layoutStrategy;
 
 namespace ColdMint.scripts.map;
 
@@ -67,7 +69,8 @@ public static class MapGenerator
         //Get the layout data
         //拿到布局图数据
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
-        if (levelGraphEditorSaveData.RoomNodeDataList == null || levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
+        if (levelGraphEditorSaveData == null || levelGraphEditorSaveData.RoomNodeDataList == null ||
+            levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
             LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
             return;
