@@ -1,4 +1,4 @@
-﻿using ColdMint.scripts.map.interfaces;
+﻿using ColdMint.scripts.map.room;
 using Godot;
 
 namespace ColdMint.scripts.map.dateBean;
@@ -18,5 +18,5 @@ public class RoomPlacementData
     /// <para>Place the room template</para>
     /// <para>放置的房间模板</para>
     /// </summary>
-    public IRoom? Room { get; set; }
+    public Room? Room { get; set; }
 }

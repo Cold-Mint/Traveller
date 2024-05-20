@@ -4,6 +4,8 @@ using ColdMint.scripts.debug;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
+using ColdMint.scripts.map.room;
+using Godot;
 
 namespace ColdMint.scripts.map;
 
@@ -24,6 +26,12 @@ public static class MapGenerator
     private static ILayoutStrategy? _layoutStrategy;
 
     /// <summary>
+    /// <para>Map root node</para>
+    /// <para>地图根节点</para>
+    /// </summary>
+    private static Node? _mapRoot;
+
+    /// <summary>
     /// <para>Room placement strategy</para>
     /// <para>房间的放置策略</para>
     /// </summary>
@@ -35,6 +43,12 @@ public static class MapGenerator
     /// <para>布局图解析策略</para>
     /// </summary>
     private static ILayoutParsingStrategy? _layoutParsingStrategy;
+
+    public static Node? MapRoot
+    {
+        get => _mapRoot;
+        set => _mapRoot = value;
+    }
 
     public static ILayoutParsingStrategy? LayoutParsingStrategy
     {
@@ -60,7 +74,8 @@ public static class MapGenerator
     /// </summary>
     public static async Task GenerateMap()
     {
-        if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null)
+        if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
+            _mapRoot == null)
         {
             LogCat.LogError("map_generator_missing_parameters");
             return;
@@ -79,7 +94,7 @@ public static class MapGenerator
         _layoutParsingStrategy.SetLevelGraph(levelGraphEditorSaveData);
         //Save the dictionary, put the ID in the room data, corresponding to the successful placement of the room.
         //保存字典，将房间数据内的ID，对应放置成功的房间。
-        var roomDictionary = new Dictionary<string, IRoom>();
+        var roomDictionary = new Dictionary<string, Room>();
         while (await _layoutParsingStrategy.HasNext())
         {
             //When a new room needs to be placed
@@ -91,12 +106,15 @@ public static class MapGenerator
             }
 
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
-            IRoom? parentRoomNode = null;
+            Room? parentRoomNode = null;
             if (nextParentNodeId != null)
             {
                 //If the new room has the parent's ID, then we pass the parent's room into the compute function.
                 //如果新房间有父节点的ID，那么我们将父节点的房间传入到计算函数内。
-                parentRoomNode = roomDictionary[nextParentNodeId];
+                if (roomDictionary.TryGetValue(nextParentNodeId, out var value))
+                {
+                    parentRoomNode = value;
+                }
             }
 
             var roomPlacementData =
@@ -106,7 +124,7 @@ public static class MapGenerator
                 continue;
             }
 
-            if (!await _roomPlacementStrategy.PlaceRoom(roomPlacementData))
+            if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
             {
                 continue;
             }

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using ColdMint.scripts.map.interfaces;
+using ColdMint.scripts.map.room;
 
 namespace ColdMint.scripts.map.roomHolder;
 
 public class RoomHolder : IRoomHolder
 {
-    private readonly List<IRoom> _rooms = new List<IRoom>();
+    private readonly List<Room> _rooms = new List<Room>();
 
-    public bool AddRoom(IRoom room)
+    public bool AddRoom(Room room)
     {
         _rooms.Add(room);
         return true;
     }
 
-    public IRoom? LastRoom
+    public Room? LastRoom
     {
         get
         {

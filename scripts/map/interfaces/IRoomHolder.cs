@@ -1,4 +1,6 @@
-﻿namespace ColdMint.scripts.map.interfaces;
+﻿using ColdMint.scripts.map.room;
+
+namespace ColdMint.scripts.map.interfaces;
 
 /// <summary>
 /// <para>Room holder</para>
@@ -10,13 +12,13 @@
 /// </remarks>
 public interface IRoomHolder
 {
-    bool AddRoom(IRoom room);
+    bool AddRoom(Room room);
     
     /// <summary>
     /// <para>LastRoom</para>
     /// <para>最后添加的房间</para>
     /// </summary>
-    IRoom? LastRoom { get; }
+    Room? LastRoom { get; }
     
     /// <summary>
     /// <para>Number of rooms that have been placed</para>

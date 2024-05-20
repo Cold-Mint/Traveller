@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
+using ColdMint.scripts.map.room;
 
 namespace ColdMint.scripts.map.slotsMatcher;
 
@@ -9,7 +10,7 @@ public class RoomSlotsMatcher : IRoomSlotsMatcher
     private RoomSlot? _lastMatchedMainSlot;
     private RoomSlot? _lastMatchedMinorSlot;
 
-    public Task<bool> IsMatch(IRoom? mainRoom, IRoom newRoom)
+    public Task<bool> IsMatch(Room? mainRoom, Room newRoom)
     {
         if (mainRoom == null)
         {

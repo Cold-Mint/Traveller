@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
-using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -16,7 +15,7 @@ namespace ColdMint.scripts.map.room;
 ///<para>The room template is like a jigsaw puzzle and participates in the map building process.</para>
 ///<para>房间模板就像一个拼图，参与到地图的构建过程中。</para>
 /// </remarks>
-public class Room : IRoom
+public class Room
 {
     private Node2D? _rootNode;
     private RoomSlot?[]? _roomSlots;

@@ -1,22 +1,15 @@
 using System.Threading.Tasks;
-using ColdMint.scripts.character;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
-using ColdMint.scripts.map.room;
-using ColdMint.scripts.map.roomHolder;
 using ColdMint.scripts.map.RoomPlacer;
-using ColdMint.scripts.map.RoomProvider;
-using ColdMint.scripts.map.slotsMatcher;
 using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
 
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
-
     public override Task InitializeData()
     {
         //加载血条场景
@@ -36,7 +29,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 
     public override async Task LoadScene()
     {
+        MapGenerator.MapRoot = GetNode<Node>("MapRoot");
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
+        MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
+        await MapGenerator.GenerateMap();
     }
 }

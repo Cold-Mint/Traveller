@@ -1,4 +1,4 @@
-﻿using ColdMint.scripts.map.interfaces;
+﻿using System.Collections.Generic;
 using Godot;
 
 namespace ColdMint.scripts.map.room;
@@ -10,13 +10,66 @@ namespace ColdMint.scripts.map.room;
 public static class RoomFactory
 {
     /// <summary>
+    /// <para>A room template sets a path to a room resource</para>
+    /// <para>房间模板集转房间资源路径</para>
+    /// </summary>
+    /// <param name="roomTemplateSet"></param>
+    /// <returns>
+    /// <para>Returned value Checked for the existence of the file.</para>
+    /// <para>返回值已检验文件是否存在。</para>
+    /// </returns>
+    public static string[] RoomTemplateSetToRoomRes(string[] roomTemplateSet)
+    {
+        var resList = new List<string>();
+        foreach (var roomTemplate in roomTemplateSet)
+        {
+            //Detects whether it is a folder
+            //检测是否为文件夹
+            if (DirAccess.DirExistsAbsolute(roomTemplate))
+            {
+                using var dir = DirAccess.Open(roomTemplate);
+                if (dir != null)
+                {
+                    dir.ListDirBegin();
+                    var fileName = dir.GetNext();
+                    while (!string.IsNullOrEmpty(fileName))
+                    {
+                        if (!dir.CurrentIsDir())
+                        {
+                            resList.Add(fileName);
+                        }
+
+                        fileName = dir.GetNext();
+                    }
+                }
+            }
+
+            if (FileAccess.FileExists(roomTemplate))
+            {
+                resList.Add(roomTemplate);
+            }
+        }
+
+        return resList.ToArray();
+    }
+
+
+    /// <summary>
     /// <para>CreateRoom</para>
     /// <para>创建房间模板</para>
     /// </summary>
     /// <param name="resPath"></param>
     /// <returns></returns>
-    public static IRoom CreateRoom(string resPath)
+    public static Room? CreateRoom(string resPath)
     {
+        //If the file does not exist, null is returned
+        //如果文件不存在，则返回null
+        var exists = FileAccess.FileExists(resPath);
+        if (!exists)
+        {
+            return null;
+        }
+
         var room = new Room
         {
             RoomScene = GD.Load<PackedScene>(resPath)
