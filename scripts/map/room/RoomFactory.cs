@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Godot;
+using FileAccess = Godot.FileAccess;
 
 namespace ColdMint.scripts.map.room;
 
@@ -36,7 +38,7 @@ public static class RoomFactory
                     {
                         if (!dir.CurrentIsDir())
                         {
-                            resList.Add(fileName);
+                            resList.Add(Path.Join(roomTemplate, fileName));
                         }
 
                         fileName = dir.GetNext();

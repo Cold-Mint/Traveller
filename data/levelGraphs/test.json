@@ -5,30 +5,6 @@
       "ToId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
       "FromPort": 0,
       "ToPort": 0
-    },
-    {
-      "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "ToId": "c604e1ef-f3e7-4189-a6f7-ab2bd23d5130",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "ToId": "bb9da3f9-911f-465f-af2e-be1325f17d15",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "c604e1ef-f3e7-4189-a6f7-ab2bd23d5130",
-      "ToId": "c9e860b9-e001-4b9b-9e6d-adf132beb64f",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "bb9da3f9-911f-465f-af2e-be1325f17d15",
-      "ToId": "c9e860b9-e001-4b9b-9e6d-adf132beb64f",
-      "FromPort": 0,
-      "ToPort": 0
     }
   ],
   "RoomNodeDataList": [
@@ -37,7 +13,7 @@
       "Title": "起点房间",
       "Description": "测试的起点房间。",
       "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon/initialRoom.tscn"
+        "res://prefab/roomTemplates/dungeon"
       ],
       "Tags": [
         "StartingRoom"
@@ -49,33 +25,6 @@
       "Description": "比普通房间要大一些的房间，有多个门，用于连接到其他房间。",
       "RoomTemplateSet": [
         "res://prefab/roomTemplates/dungeon/utilityRoom.tscn"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "c604e1ef-f3e7-4189-a6f7-ab2bd23d5130",
-      "Title": "普通房间1",
-      "Description": "测试使用。",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "bb9da3f9-911f-465f-af2e-be1325f17d15",
-      "Title": "普通房间2",
-      "Description": "测试使用。",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "c9e860b9-e001-4b9b-9e6d-adf132beb64f",
-      "Title": "Boos房间",
-      "Description": "关卡结束的地方。",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
       ],
       "Tags": null
     }

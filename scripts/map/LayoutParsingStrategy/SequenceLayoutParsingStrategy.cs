@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ColdMint.scripts.levelGraphEditor;
 
@@ -23,19 +24,17 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
     //设置数据时，是否检查合法了
     private bool _checkLegality;
 
-    //A special marker for the starting room.
-    //特殊标记，代表起始房间。
-    private const int StartingRoomIndex = -1;
 
     //The connection index of the query
     //查询的连接索引
-    private int _index = StartingRoomIndex;
+    private int _index;
     private int _maxIndex;
     private Dictionary<string, RoomNodeData> _roomNodeDataDictionary = new Dictionary<string, RoomNodeData>();
 
     public void SetLevelGraph(LevelGraphEditorSaveData levelGraphEditorSaveData)
     {
-        _index = StartingRoomIndex;
+        _checkLegality = false;
+        _index = -1;
         _levelGraphEditorSaveData = levelGraphEditorSaveData;
         if (_levelGraphEditorSaveData.RoomNodeDataList == null || _levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
@@ -51,7 +50,7 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
         }
         else
         {
-            _maxIndex = _levelGraphEditorSaveData.ConnectionDataList.Count - 1;
+            _maxIndex = _levelGraphEditorSaveData.ConnectionDataList.Count;
         }
 
         _roomNodeDataDictionary.Clear();
@@ -64,66 +63,34 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
 
             _roomNodeDataDictionary.Add(roomNodeData.Id, roomNodeData);
         }
-
-        //Check that the first room is the starting room.
-        //检查首个房间是否为起始房间。
-        var firstRoom = GetFirstRoom(_levelGraphEditorSaveData);
-        if (firstRoom == null)
-        {
-            return;
-        }
-
-        _checkLegality = firstRoom.HasTag(Config.RoomDataTag.StartingRoom);
+        _checkLegality = true;
     }
 
-    /// <summary>
-    /// <para>Get the first room</para>
-    /// <para>获取第一个房间</para>
-    /// </summary>
-    /// <param name="levelGraphEditorSaveData"></param>
-    /// <returns></returns>
-    private RoomNodeData? GetFirstRoom(LevelGraphEditorSaveData? levelGraphEditorSaveData)
+    public Task<RoomNodeData?> GetStartRoomNodeData()
     {
-        if (levelGraphEditorSaveData == null || levelGraphEditorSaveData.RoomNodeDataList == null ||
-            levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
+        if (_levelGraphEditorSaveData == null)
         {
-            return null;
+            return Task.FromResult<RoomNodeData?>(null);
         }
 
-        RoomNodeData? firstRoom = null;
-        if (levelGraphEditorSaveData.ConnectionDataList == null ||
-            levelGraphEditorSaveData.ConnectionDataList.Count == 0)
+        if (_levelGraphEditorSaveData.RoomNodeDataList == null || _levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
-            //If there is no connection information, then fetch the first room in the RoomNodeDataList.
-            //如果没有连接信息，那么在RoomNodeDataList内取出第一个房间。
-            firstRoom = levelGraphEditorSaveData.RoomNodeDataList[0];
-        }
-        else
-        {
-            //If there is connection information, then fetch the first connected From room in the ConnectionDataList.
-            //如果有连接信息，那么在ConnectionDataList内取出第一个连接的From房间。
-            var firstConnection = levelGraphEditorSaveData.ConnectionDataList[0];
-            if (firstConnection.FromId == null)
-            {
-                return firstRoom;
-            }
-
-            if (_roomNodeDataDictionary.TryGetValue(firstConnection.FromId, out var value))
-            {
-                firstRoom = value;
-            }
+            //If there is no room data in the level map set.
+            //如果设置的关卡图内没有房间数据。
+            return Task.FromResult<RoomNodeData?>(null);
         }
 
-        return firstRoom;
+        foreach (var roomNodeData in _levelGraphEditorSaveData.RoomNodeDataList.Where(roomNodeData =>
+                     roomNodeData.HasTag(Config.RoomDataTag.StartingRoom)))
+        {
+            return Task.FromResult<RoomNodeData?>(roomNodeData);
+        }
+
+        return Task.FromResult<RoomNodeData?>(null);
     }
 
     public Task<RoomNodeData?> Next()
     {
-        if (_index == StartingRoomIndex)
-        {
-            return Task.FromResult(GetFirstRoom(_levelGraphEditorSaveData));
-        }
-
         var connectionData = GetIndexOfConnectionData(_index);
         if (connectionData == null)
         {
@@ -167,13 +134,6 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
 
     public Task<string?> GetNextParentNodeId()
     {
-        if (_index == StartingRoomIndex)
-        {
-            //The start room will not have a parent node.
-            //起始房间不会有父节点。
-            return Task.FromResult<string?>(null);
-        }
-
         var connectionData = GetIndexOfConnectionData(_index);
         if (connectionData == null)
         {
@@ -202,14 +162,7 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
             return Task.FromResult(false);
         }
 
-        if (_index == StartingRoomIndex)
-        {
-            //The start room is always considered to have the next room, in order to handle situations where levelGraphEditorSaveData has only room data and no connection data.
-            //起始房间始终被认为有下一个房间，这是为了处理levelGraphEditorSaveData仅有房间数据，没有连接数据的情况。
-            _index++;
-            return Task.FromResult(true);
-        }
-
+        _index++;
         return Task.FromResult(_index < _maxIndex);
     }
 }

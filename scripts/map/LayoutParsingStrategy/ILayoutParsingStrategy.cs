@@ -15,7 +15,14 @@ public interface ILayoutParsingStrategy
     /// </summary>
     /// <param name="levelGraphEditorSaveData"></param>
     public void SetLevelGraph(LevelGraphEditorSaveData levelGraphEditorSaveData);
-    
+
+    /// <summary>
+    /// <para>Gets data for the start room node</para>
+    /// <para>获取起始房间节点的数据</para>
+    /// </summary>
+    /// <returns></returns>
+    public Task<RoomNodeData?> GetStartRoomNodeData();
+
     /// <summary>
     /// <para>Gets the next room to place</para>
     /// <para>获取下一个要放置的房间</para>
@@ -29,7 +36,7 @@ public interface ILayoutParsingStrategy
     /// </summary>
     /// <returns></returns>
     public Task<string?> GetNextParentNodeId();
-    
+
     /// <summary>
     /// <para>Is there another room that needs to be placed</para>
     /// <para>是否还有下一个需要放置的房间</para>

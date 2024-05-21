@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.levelGraphEditor;
+using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
 using ColdMint.scripts.map.room;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.map;
@@ -37,6 +40,19 @@ public static class MapGenerator
     /// </summary>
     private static IRoomPlacementStrategy? _roomPlacementStrategy;
 
+    private static ulong _seed;
+
+    /// <summary>
+    /// <para>Set seed</para>
+    /// <para>设置种子</para>
+    /// </summary>
+    public static string Seed
+    {
+        get => _seed.ToString();
+        //If the player inputs integers, we seed them directly with the input values. If it is not an integer, the hash value is taken.
+        //如果玩家输入的是整数，那么我们直接用输入值作为种子。如果不是整数，则取哈希值。
+        set => _seed = ulong.TryParse(value, out var result) ? result : HashCodeUtils.GetFixedHashCode(value);
+    }
 
     /// <summary>
     /// <para>Layout diagram parsing policy</para>
@@ -95,12 +111,36 @@ public static class MapGenerator
         //Save the dictionary, put the ID in the room data, corresponding to the successful placement of the room.
         //保存字典，将房间数据内的ID，对应放置成功的房间。
         var roomDictionary = new Dictionary<string, Room>();
+        var randomNumberGenerator = new RandomNumberGenerator();
+        randomNumberGenerator.Seed = _seed;
+        LogCat.Log("Seed:" + _seed);
+        var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
+        if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
+        {
+            LogCat.LogError("map_generator_has_no_starting_room_data");
+            return;
+        }
+
+        var startingRoomPlacementData =
+            await _roomPlacementStrategy.CalculatePlacementDataForStartingRoom(randomNumberGenerator,
+                startRoomNodeData);
+        if (startingRoomPlacementData == null)
+        {
+            return;
+        }
+
+        var placeSuccess = await PlaceRoomAndAddRecord(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary);
+        if (!placeSuccess)
+        {
+            return;
+        }
+
         while (await _layoutParsingStrategy.HasNext())
         {
             //When a new room needs to be placed
             //当有新的房间需要放置时
             var roomNodeData = await _layoutParsingStrategy.Next();
-            if (roomNodeData == null)
+            if (roomNodeData == null || string.IsNullOrEmpty(roomNodeData.Id))
             {
                 continue;
             }
@@ -118,23 +158,49 @@ public static class MapGenerator
             }
 
             var roomPlacementData =
-                await _roomPlacementStrategy.CalculateNewRoomPlacementData(parentRoomNode, roomNodeData);
+                await _roomPlacementStrategy.CalculateNewRoomPlacementData(randomNumberGenerator, parentRoomNode,
+                    roomNodeData);
             if (roomPlacementData == null)
             {
                 continue;
             }
 
-            if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
-            {
-                continue;
-            }
-
-            if (!string.IsNullOrEmpty(roomNodeData.Id) && roomPlacementData.Room != null)
-            {
-                roomDictionary.Add(roomNodeData.Id, roomPlacementData.Room);
-            }
+            await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary);
         }
         //All rooms have been placed.
         //所有房间已放置完毕。
+    }
+
+    /// <summary>
+    /// <para>Place rooms and add mappings</para>
+    /// <para>放置房间，并增加映射</para>
+    /// </summary>
+    /// <param name="roomNodeDataId"></param>
+    /// <param name="roomPlacementData"></param>
+    /// <param name="dictionary"></param>
+    /// <returns></returns>
+    private static async Task<bool> PlaceRoomAndAddRecord(string roomNodeDataId,
+        RoomPlacementData roomPlacementData, Dictionary<string, Room> dictionary)
+    {
+        //The input parameters are incomplete.
+        //输入参数不全。
+        if (_roomPlacementStrategy == null || _mapRoot == null || string.IsNullOrEmpty(roomNodeDataId) ||
+            roomPlacementData.Room == null)
+        {
+            return false;
+        }
+
+        if (dictionary.ContainsKey(roomNodeDataId))
+        {
+            return false;
+        }
+
+        if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
+        {
+            return false;
+        }
+
+        dictionary.Add(roomNodeDataId, roomPlacementData.Room);
+        return true;
     }
 }

@@ -7,3 +7,4 @@ connected_room_timeout,连接房间超时。,Connecting the room timed out.,接�
 projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
 map_generator_missing_parameters,地图生成器缺少参数。,Map generator missing parameters.,マップジェネレータが不足しています。
 map_generator_attempts_to_parse_empty_layout_diagrams,地图生成器尝试解析空的布局图。,Map generator attempts to parse empty layout diagrams.,マップジェネレータは空のレイアウト図を解析しようとしています。
+map_generator_has_no_starting_room_data,地图生成器没有起点房间数据。,Map generator has no starting room data.,マップ生成器に起点部屋データはありません。

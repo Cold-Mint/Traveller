@@ -4,6 +4,7 @@ using ColdMint.scripts.map;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
 using ColdMint.scripts.map.RoomPlacer;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
@@ -33,6 +34,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
+        MapGenerator.Seed = GuidUtils.GetGuid();
         await MapGenerator.GenerateMap();
     }
 }

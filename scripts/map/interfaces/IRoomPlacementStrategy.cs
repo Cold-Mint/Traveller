@@ -40,5 +40,18 @@ public interface IRoomPlacementStrategy
     ///<para>欲放置的新房间数据</para>
     /// </param>
     /// <returns></returns>
-    public Task<RoomPlacementData?> CalculateNewRoomPlacementData(Room? parentRoomNode, RoomNodeData newRoomNodeData);
+    public Task<RoomPlacementData?> CalculateNewRoomPlacementData(RandomNumberGenerator randomNumberGenerator,
+        Room? parentRoomNode,
+        RoomNodeData newRoomNodeData);
+
+
+    /// <summary>
+    /// <para>Calculates the placement information for the starting room</para>
+    /// <para>计算起始房间的放置信息</para>
+    /// </summary>
+    /// <param name="randomNumberGenerator"></param>
+    /// <param name="startRoomNodeData"></param>
+    /// <returns></returns>
+    public Task<RoomPlacementData?> CalculatePlacementDataForStartingRoom(
+        RandomNumberGenerator randomNumberGenerator, RoomNodeData startRoomNodeData);
 }

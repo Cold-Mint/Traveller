@@ -32,40 +32,55 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         }
 
         var rootNode = roomPlacementData.Room.RootNode;
-        rootNode.Reparent(mapRoot);
+        mapRoot.AddChild(rootNode);
         rootNode.Position = roomPlacementData.Position.Value;
         return Task.FromResult(true);
     }
 
-    public Task<RoomPlacementData?> CalculateNewRoomPlacementData(Room? parentRoomNode, RoomNodeData newRoomNodeData)
+    public Task<RoomPlacementData?> CalculateNewRoomPlacementData(RandomNumberGenerator randomNumberGenerator,
+        Room? parentRoomNode,
+        RoomNodeData newRoomNodeData)
     {
         if (newRoomNodeData.RoomTemplateSet == null || newRoomNodeData.RoomTemplateSet.Length == 0)
         {
             return Task.FromResult<RoomPlacementData?>(null);
         }
 
-        var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(newRoomNodeData.RoomTemplateSet);
         if (parentRoomNode == null)
         {
-            //No parent node is set, which we think is the starting room.
-            //没有设置父节点，我们认为是起点房间。
-            //TODO:在这里兼容世界种子。
-            var roomPlacementData = new RoomPlacementData
-            {
-                Room = RoomFactory.CreateRoom(roomResArray[0]),
-                Position = Vector2.Zero
-            };
-            return Task.FromResult<RoomPlacementData?>(roomPlacementData);
-        }
-        else
-        {
-            //TODO:在这里实现房间的放置策略。
             return Task.FromResult<RoomPlacementData?>(null);
         }
+        // var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(newRoomNodeData.RoomTemplateSet);
+        //TODO:在这里实现房间的放置策略。
+        return Task.FromResult<RoomPlacementData?>(null);
     }
 
+    public Task<RoomPlacementData?> CalculatePlacementDataForStartingRoom(RandomNumberGenerator randomNumberGenerator,
+        RoomNodeData startRoomNodeData)
+    {
+        if (startRoomNodeData.RoomTemplateSet == null || startRoomNodeData.RoomTemplateSet.Length == 0)
+        {
+            return Task.FromResult<RoomPlacementData?>(null);
+        }
+
+        var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(startRoomNodeData.RoomTemplateSet);
+        if (roomResArray.Length == 0)
+        {
+            return Task.FromResult<RoomPlacementData?>(null);
+        }
+
+        var index = randomNumberGenerator.Randi() % roomResArray.Length;
+        var roomPlacementData = new RoomPlacementData
+        {
+            Room = RoomFactory.CreateRoom(roomResArray[index]),
+            Position = Vector2.Zero
+        };
+        return Task.FromResult<RoomPlacementData?>(roomPlacementData);
+    }
+
+
     private Task<Vector2?> CalculatedPosition(Room mainRoom, Room newRoom, RoomSlot? mainRoomSlot,
-        RoomSlot? newRoomSlot,bool roomSlotOverlap)
+        RoomSlot? newRoomSlot, bool roomSlotOverlap)
     {
         if (mainRoom.RootNode == null || mainRoom.TileMap == null || newRoom.TileMap == null || mainRoomSlot == null ||
             newRoomSlot == null)
