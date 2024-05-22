@@ -34,7 +34,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
-        MapGenerator.Seed = GuidUtils.GetGuid();
+        //Test the seeds used
+        //2531276826 Right-Down和Left-Down匹配成功
+        //4208831693 Left-Down和Right-Up匹配成功
+        MapGenerator.Seed = "2531276826";
         await MapGenerator.GenerateMap();
     }
 }

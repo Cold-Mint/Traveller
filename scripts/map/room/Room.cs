@@ -85,7 +85,7 @@ public class Room
         var midpoint = roomAreaCollisionShape2D.Position + roomAreaRect2.Position + roomAreaRect2.Size / 2;
         //endregion
         var roomSlots = new List<RoomSlot>();
-        for (int i = 0; i < slotCount; i++)
+        for (var i = 0; i < slotCount; i++)
         {
             //拿到了房间卡槽对象
             var area2D = slotList.GetChild<Area2D>(i);
@@ -107,11 +107,13 @@ public class Room
             //转为瓦片地图的坐标(中点)
             var tileMapStartPosition = tileMap.LocalToMap(startPosition);
             var tileMapEndPosition = tileMap.LocalToMap(endPosition);
-            var roomSlot = new RoomSlot();
-            roomSlot.EndPosition = tileMapEndPosition;
-            roomSlot.StartPosition = tileMapStartPosition;
-            //计算槽位的方向(房间中点为原点，指向槽位中点的向量)
-            roomSlot.DistanceToMidpointOfRoom = CoordinateUtils.VectorToOrientationArray(midpoint, midpointOfRoomSlots);
+            var roomSlot = new RoomSlot
+            {
+                EndPosition = tileMapEndPosition,
+                StartPosition = tileMapStartPosition,
+                //计算槽位的方向(房间中点为原点，指向槽位中点的向量)
+                DistanceToMidpointOfRoom = CoordinateUtils.VectorToOrientationArray(midpoint, midpointOfRoomSlots)
+            };
             roomSlots.Add(roomSlot);
         }
 
