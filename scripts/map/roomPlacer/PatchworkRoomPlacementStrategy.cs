@@ -83,7 +83,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 continue;
             }
 
-            var position = CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, true)
+            var position = CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, false)
                 .Result;
             if (position == null) continue;
             var roomPlacementData = new RoomPlacementData
@@ -236,44 +236,41 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             return Task.FromResult<Vector2?>(null);
         }
 
-        Vector2 result;
-        if (mainOrientationDescribe[0] == CoordinateUtils.OrientationDescribe.Left &&
-            newOrientationDescribe[0] == CoordinateUtils.OrientationDescribe.Right)
+        var mainRoomSlotPosition = mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition);
+        var newRoomSlotPosition = newRoom.TileMap.MapToLocal(newRoomSlot.StartPosition);
+        //Get the vector from the new room slot to the main room slot
+        //得到从新房间槽位到主房间槽位的向量
+        var newToMain = mainRoomSlotPosition - newRoomSlotPosition;
+        var result = newToMain + mainRoom.RootNode.Position;
+        if (!roomSlotOverlap)
         {
-            //Move left to new room.
-            //左移新房间。
-            var mainSlotPosition = mainRoom.RootNode.Position + mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition);
-            var newSlotPosition = newRoom.RootNode.Position + newRoom.TileMap.MapToLocal(newRoomSlot.StartPosition);
-            result = mainSlotPosition +
-                newRoom.TileMap.Position - newRoom.TileMap.MapToLocal(newRoomSlot.StartPosition);
-            //Modified y height
-            //修正y高度
-            result.Y -= newSlotPosition.Y - mainSlotPosition.Y;
-            //If the room slots don't overlap
-            //如果房间槽不能重叠
-            if (!roomSlotOverlap)
+            //如果不允许房间槽位重叠
+            //If room slot overlap is not allowed
+            if (mainRoomSlot.IsHorizontal)
             {
-                result.X -= Config.CellSize;
+                //Horizontal slot, offset in the Y direction.
+                //水平方向槽，向Y方向偏移。
+                if (result.Y < 0)
+                {
+                    result.Y += Config.CellSize;
+                }else
+                {
+                    result.Y -= Config.CellSize;
+                }
             }
-        }
-        else
-        {
-            var mainSlotPosition = mainRoom.RootNode.Position + mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition);
-            var newSlotPosition = newRoom.RootNode.Position + newRoom.TileMap.MapToLocal(newRoomSlot.StartPosition);
-            result = mainSlotPosition;
-            // result.Y += newSlotPosition.Y - mainSlotPosition.Y;
-        }
-
-
-        //We need to be on the same level.
-        //我们需要在同一水平上。
-        if (mainRoomSlot.IsHorizontal)
-        {
-            result += newRoom.TileMap.MapToLocal(new Vector2I(newRoomSlot.EndPosition.X, 0)) - _halfCell;
-        }
-        else
-        {
-            result -= newRoom.TileMap.MapToLocal(new Vector2I(0, newRoomSlot.EndPosition.Y)) - _halfCell;
+            else
+            {
+                //Vertical slot, offset in the X direction.
+                //垂直方向槽向X方向偏移。
+                if (result.X < 0)
+                {
+                    result.X -= Config.CellSize;
+                }
+                else
+                {
+                    result.X += Config.CellSize;
+                }
+            }
         }
 
         return Task.FromResult<Vector2?>(result);
