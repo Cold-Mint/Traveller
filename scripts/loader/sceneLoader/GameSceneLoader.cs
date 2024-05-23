@@ -11,6 +11,8 @@ namespace ColdMint.scripts.loader.sceneLoader;
 
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
+    private Label? _seedLabel;
+
     public override Task InitializeData()
     {
         //加载血条场景
@@ -30,14 +32,41 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 
     public override async Task LoadScene()
     {
+        var debugMode = Config.IsDebug();
+        var recreateMapButton = GetNodeOrNull<Button>("CanvasLayer/Control/RecreateMapButton");
+        if (recreateMapButton != null)
+        {
+            recreateMapButton.Visible = debugMode;
+            recreateMapButton.Pressed += () => { _ = GenerateMap(); };
+        }
+
+        _seedLabel = GetNodeOrNull<Label>("CanvasLayer/Control/SeedLabel");
+        if (_seedLabel != null)
+        {
+            _seedLabel.Visible = Config.IsDebug();
+        }
+
         MapGenerator.MapRoot = GetNode<Node>("MapRoot");
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
-        //Test the seeds used
-        //2531276826 Right-Down和Left-Down匹配成功
-        //4208831693 Left-Down和Right-Up匹配成功
-        MapGenerator.Seed = "2531276826";
+        await GenerateMap();
+    }
+
+    /// <summary>
+    /// <para>Generate map</para>
+    /// <para>生成地图</para>
+    /// </summary>
+    private async Task GenerateMap()
+    {
+        MapGenerator.Seed = GuidUtils.GetGuid();
+        if (_seedLabel != null)
+        {
+            //If you have a seedLabel, then set the seed to it.
+            //如果有seedLabel，那么将种子设置上去。
+            _seedLabel.Text = "Seed:" + MapGenerator.Seed;
+        }
+
         await MapGenerator.GenerateMap();
     }
 }

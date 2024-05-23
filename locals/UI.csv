@@ -28,3 +28,4 @@ filename,文件名,File name,ファイル名
 cancel,取消,Cancel,キャンセル
 load,加载,Load,ろーど
 delete_selected_node,删除选中的节点,Delete selected node,選択されたノードを削除します
+re_create_map,重新创建地图,Re-create map,地図を再作成します

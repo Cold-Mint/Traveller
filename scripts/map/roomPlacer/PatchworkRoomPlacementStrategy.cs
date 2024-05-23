@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.room;
-using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.map.RoomPlacer;
@@ -19,8 +19,6 @@ namespace ColdMint.scripts.map.RoomPlacer;
 /// </remarks>
 public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 {
-    private readonly Vector2 _halfCell = new Vector2(Config.CellSize / 2f, Config.CellSize / 2f);
-
     public Task<bool> PlaceRoom(Node mapRoot, RoomPlacementData roomPlacementData)
     {
         if (roomPlacementData.Room == null || roomPlacementData.Position == null)
@@ -64,9 +62,10 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             return Task.FromResult<RoomPlacementData?>(null);
         }
-
-        //Matches unmatched slots.
-        //对未匹配的插槽进行匹配。
+        
+        //Saves all data in the room template that matches the parent room.
+        //保存房间模板内所有与父房间匹配的数据。
+        var useableRoomPlacementData = new List<RoomPlacementData>();
         foreach (var roomRes in roomResArray)
         {
             var newRoom = RoomFactory.CreateRoom(roomRes);
@@ -77,7 +76,10 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
             //Create a room, try to use the room slot to match the existing room slot.
             //创建了一个房间，尝试使用房间的槽与现有的房间槽匹配。
-            if (!IsMatch(parentRoomNode, newRoom, out var mainRoomSlot, out var newRoomSlot).Result) continue;
+            if (!IsMatch(parentRoomNode, newRoom, out var mainRoomSlot, out var newRoomSlot).Result)
+            {
+                continue;
+            }
             if (mainRoomSlot == null || newRoomSlot == null)
             {
                 continue;
@@ -91,10 +93,18 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 Room = newRoom,
                 Position = position
             };
-            return Task.FromResult<RoomPlacementData?>(roomPlacementData);
+            useableRoomPlacementData.Add(roomPlacementData);
         }
 
-        return Task.FromResult<RoomPlacementData?>(null);
+        if (useableRoomPlacementData.Count == 0)
+        {
+            return Task.FromResult<RoomPlacementData?>(null);
+        }
+        else
+        {
+            var index = randomNumberGenerator.Randi() % useableRoomPlacementData.Count;
+            return Task.FromResult<RoomPlacementData?>(useableRoomPlacementData[(int)index]);
+        }
     }
 
     public Task<RoomPlacementData?> CalculatePlacementDataForStartingRoom(RandomNumberGenerator randomNumberGenerator,
@@ -127,6 +137,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
     /// </summary>
     /// <param name="mainRoom"></param>
     /// <param name="newRoom"></param>
+    /// <param name="outMainRoomSlot"></param>
+    /// <param name="outNewRoomSlot"></param>
     /// <returns></returns>
     public Task<bool> IsMatch(Room? mainRoom, Room newRoom, out RoomSlot? outMainRoomSlot, out RoomSlot? outNewRoomSlot)
     {
@@ -253,7 +265,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 if (result.Y < 0)
                 {
                     result.Y += Config.CellSize;
-                }else
+                }
+                else
                 {
                     result.Y -= Config.CellSize;
                 }

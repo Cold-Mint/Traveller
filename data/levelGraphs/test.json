@@ -5,6 +5,36 @@
       "ToId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
       "FromPort": 0,
       "ToPort": 0
+    },
+    {
+      "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
+      "ToId": "9d764cca-5057-470a-976d-ba472a21e2cc",
+      "FromPort": 0,
+      "ToPort": 0
+    },
+    {
+      "FromId": "9d764cca-5057-470a-976d-ba472a21e2cc",
+      "ToId": "08c9d2be-6174-4efe-91fc-e1b205c4dd53",
+      "FromPort": 0,
+      "ToPort": 0
+    },
+    {
+      "FromId": "08c9d2be-6174-4efe-91fc-e1b205c4dd53",
+      "ToId": "55d2ef86-49d0-4f8c-9f06-286673a5e1da",
+      "FromPort": 0,
+      "ToPort": 0
+    },
+    {
+      "FromId": "55d2ef86-49d0-4f8c-9f06-286673a5e1da",
+      "ToId": "07cc5f19-df5c-44aa-9997-81e48f4e2c4e",
+      "FromPort": 0,
+      "ToPort": 0
+    },
+    {
+      "FromId": "07cc5f19-df5c-44aa-9997-81e48f4e2c4e",
+      "ToId": "ea62a8ef-5575-4259-814a-b3454ff688f5",
+      "FromPort": 0,
+      "ToPort": 0
     }
   ],
   "RoomNodeDataList": [
@@ -18,6 +48,51 @@
       "Tags": [
         "StartingRoom"
       ]
+    },
+    {
+      "Id": "9d764cca-5057-470a-976d-ba472a21e2cc",
+      "Title": "房间3",
+      "Description": "",
+      "RoomTemplateSet": [
+        "res://prefab/roomTemplates/dungeon"
+      ],
+      "Tags": null
+    },
+    {
+      "Id": "08c9d2be-6174-4efe-91fc-e1b205c4dd53",
+      "Title": "房间4",
+      "Description": "",
+      "RoomTemplateSet": [
+        "res://prefab/roomTemplates/dungeon"
+      ],
+      "Tags": null
+    },
+    {
+      "Id": "55d2ef86-49d0-4f8c-9f06-286673a5e1da",
+      "Title": "房间5",
+      "Description": "",
+      "RoomTemplateSet": [
+        "res://prefab/roomTemplates/dungeon"
+      ],
+      "Tags": null
+    },
+    {
+      "Id": "ea62a8ef-5575-4259-814a-b3454ff688f5",
+      "Title": "房间7",
+      "Description": "",
+      "RoomTemplateSet": [
+        "res://prefab/roomTemplates/dungeon"
+      ],
+      "Tags": null
+    },
+    {
+      "Id": "07cc5f19-df5c-44aa-9997-81e48f4e2c4e",
+      "Title": "房间6",
+      "Description": "",
+      "RoomTemplateSet": [
+        "res://prefab/roomTemplates/dungeon"
+      ],
+      "Tags": null
     },
     {
       "Id": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",

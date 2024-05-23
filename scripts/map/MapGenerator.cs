@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
@@ -97,6 +96,7 @@ public static class MapGenerator
             return;
         }
 
+        NodeUtils.DeleteAllChild(_mapRoot);
         //Get the layout data
         //拿到布局图数据
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
