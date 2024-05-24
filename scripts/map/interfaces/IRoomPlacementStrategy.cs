@@ -27,19 +27,23 @@ public interface IRoomPlacementStrategy
     ///  </returns>
     public Task<bool> PlaceRoom(Node mapRoot, RoomPlacementData roomPlacementData);
 
-    /// <summary>
-    /// <para>Calculate new room placement information</para>
-    /// <para>计算新的房间放置信息</para>
-    /// </summary>
-    /// <param name="parentRoomNode">
-    ///<para>Parent room node</para>
-    ///<para>父房间节点</para>
+    ///  <summary>
+    ///  <para>Calculate new room placement information</para>
+    ///  <para>计算新的房间放置信息</para>
+    ///  </summary>
+    ///  <param name="randomNumberGenerator">
+    ///<para>randomNumberGenerator</para>
+    ///<para>随机数生成器</para>
     /// </param>
-    /// <param name="newRoomNodeData">
-    ///<para>New room data to be placed</para>
-    ///<para>欲放置的新房间数据</para>
-    /// </param>
-    /// <returns></returns>
+    ///  <param name="parentRoomNode">
+    /// <para>Parent room node</para>
+    /// <para>父房间节点</para>
+    ///  </param>
+    ///  <param name="newRoomNodeData">
+    /// <para>New room data to be placed</para>
+    /// <para>欲放置的新房间数据</para>
+    ///  </param>
+    ///  <returns></returns>
     public Task<RoomPlacementData?> CalculateNewRoomPlacementData(RandomNumberGenerator randomNumberGenerator,
         Room? parentRoomNode,
         RoomNodeData newRoomNodeData);

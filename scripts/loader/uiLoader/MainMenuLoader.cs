@@ -23,6 +23,18 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
+        if (Config.IsDebug())
+        {
+            //Set the minimum log level to Info in debug mode.(Print all logs)
+            //在调试模式下将最小日志等级设置为Info。（打印全部日志）
+            LogCat.MinLogLevel = LogCat.InfoLogLevel;
+        }
+        else
+        {
+            //Disable all logs in the release version.
+            //在发行版禁用所有日志。
+            LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
+        }
         //Load the slogan
         //加载标语
         SloganProvider.LoadSloganCsv();
@@ -35,6 +47,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
         {
             Directory.CreateDirectory(dataPath);
         }
+
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)

@@ -47,7 +47,7 @@ public partial class Player : CharacterTemplate
     public override void _Ready()
     {
         base._Ready();
-        CharacterName = TranslationServer.Translate("default_player_name");
+        CharacterName = TranslationServerUtils.Translate("default_player_name");
         _floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
@@ -77,32 +77,32 @@ public partial class Player : CharacterTemplate
         operationTipBuilder.Append("[color=");
         operationTipBuilder.Append(Config.OperationTipActionColor);
         operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_left")[0].AsText()));
+        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_left")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServer.Translate("move_left"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("move_left"));
         operationTipBuilder.Append(' ');
         operationTipBuilder.Append("[color=");
         operationTipBuilder.Append(Config.OperationTipActionColor);
         operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_right")[0].AsText()));
+        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_right")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServer.Translate("move_right"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("move_right"));
         operationTipBuilder.Append(' ');
         operationTipBuilder.Append("[color=");
         operationTipBuilder.Append(Config.OperationTipActionColor);
         operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
+        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServer.Translate("jump"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("jump"));
         if (_collidingWithPlatform)
         {
             operationTipBuilder.Append(' ');
             operationTipBuilder.Append("[color=");
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
-            operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
+            operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServer.Translate("jump_down"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("jump_down"));
         }
 
         //If the PickingRangeBodiesList is not null and the length is greater than 0
@@ -114,9 +114,9 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
             operationTipBuilder.Append(
-                TranslationServer.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
+                TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServer.Translate("pick_up"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("pick_up"));
             operationTipLabel.Text = operationTipBuilder.ToString();
         }
 
@@ -126,22 +126,22 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append("[color=");
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
-            operationTipBuilder.Append(TranslationServer.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
+            operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServer.Translate("throw"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("throw"));
             if (CurrentItem is WeaponTemplate weaponTemplate)
             {
-                operationTipBuilder.Append(TranslationServer.Translate(weaponTemplate.Name));
+                operationTipBuilder.Append(TranslationServerUtils.Translate(weaponTemplate.Name));
                 //提示武器攻击
                 operationTipBuilder.Append(' ');
                 operationTipBuilder.Append("[color=");
                 operationTipBuilder.Append(Config.OperationTipActionColor);
                 operationTipBuilder.Append(']');
                 operationTipBuilder.Append(
-                    TranslationServer.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
+                    TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
                 operationTipBuilder.Append("[/color]");
-                operationTipBuilder.Append(TranslationServer.Translate("use_item"));
-                operationTipBuilder.Append(TranslationServer.Translate(weaponTemplate.Name));
+                operationTipBuilder.Append(TranslationServerUtils.Translate("use_item"));
+                operationTipBuilder.Append(TranslationServerUtils.Translate(weaponTemplate.Name));
             }
         }
 
@@ -397,10 +397,10 @@ public partial class Player : CharacterTemplate
                 if (weapon.Owner is CharacterTemplate characterTemplate)
                 {
                     stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
-                    stringBuilder.Append(TranslationServer.Translate("de"));
+                    stringBuilder.Append(TranslationServerUtils.Translate("de"));
                 }
 
-                stringBuilder.Append(TranslationServer.Translate(weapon.Name));
+                stringBuilder.Append(TranslationServerUtils.Translate(weapon.Name));
                 label.Text = stringBuilder.ToString();
             }
 

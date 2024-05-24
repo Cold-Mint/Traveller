@@ -113,7 +113,7 @@ public static class MapGenerator
         var roomDictionary = new Dictionary<string, Room>();
         var randomNumberGenerator = new RandomNumberGenerator();
         randomNumberGenerator.Seed = _seed;
-        LogCat.Log("Seed:" + _seed);
+        LogCat.LogWithFormat("seed_info", _seed);
         var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ColdMint.scripts.utils;
 using Godot;
 using FileAccess = Godot.FileAccess;
 
@@ -59,6 +60,6 @@ public static class SloganProvider
             return null;
         }
 
-        return TranslationServer.Translate(_sloganKeys[GD.Randi() % _sloganKeys.Length]);
+        return TranslationServerUtils.Translate(_sloganKeys[GD.Randi() % _sloganKeys.Length]);
     }
 }

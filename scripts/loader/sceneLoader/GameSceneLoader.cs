@@ -59,12 +59,22 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     /// </summary>
     private async Task GenerateMap()
     {
-        MapGenerator.Seed = GuidUtils.GetGuid();
+        //2757235769 房间边框重叠！
+        //4175259928 房间内容重叠！
+        MapGenerator.Seed = "4175259928";
         if (_seedLabel != null)
         {
             //If you have a seedLabel, then set the seed to it.
             //如果有seedLabel，那么将种子设置上去。
-            _seedLabel.Text = "Seed:" + MapGenerator.Seed;
+            var seedInfo = TranslationServerUtils.TranslateWithFormat("seed_info", MapGenerator.Seed);
+            if (seedInfo == null)
+            {
+                _seedLabel.Text = $"Seed: {MapGenerator.Seed}";
+            }
+            else
+            {
+                _seedLabel.Text = seedInfo;
+            }
         }
 
         await MapGenerator.GenerateMap();

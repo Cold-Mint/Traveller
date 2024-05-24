@@ -1,3 +1,4 @@
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -181,15 +182,19 @@ public partial class ItemSlotNode : MarginContainer
 
         if (Config.IsDebug())
         {
-            _control.TooltipText = string.Format(TranslationServer.Translate("item_prompt_debug"), item.Id,
-                TranslationServer.Translate(item.Name),
-                item.Quantity, item.MaxStackQuantity, item.GetType().Name,
-                TranslationServer.Translate(item.Description));
+            var debugText = TranslationServerUtils.Translate("item_prompt_debug");
+            if (debugText != null)
+            {
+                _control.TooltipText = string.Format(debugText, item.Id,
+                    TranslationServerUtils.Translate(item.Name),
+                    item.Quantity, item.MaxStackQuantity, item.GetType().Name,
+                    TranslationServerUtils.Translate(item.Description));
+            }
         }
         else
         {
-            _control.TooltipText = TranslationServer.Translate(item.Name) + "\n" +
-                                   TranslationServer.Translate(item.Description);
+            _control.TooltipText = TranslationServerUtils.Translate(item.Name) + "\n" +
+                                   TranslationServerUtils.Translate(item.Description);
         }
     }
 

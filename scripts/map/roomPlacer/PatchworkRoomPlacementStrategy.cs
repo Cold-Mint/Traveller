@@ -5,6 +5,7 @@ using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.room;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.map.RoomPlacer;
@@ -62,7 +63,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             return Task.FromResult<RoomPlacementData?>(null);
         }
-        
+
         //Saves all data in the room template that matches the parent room.
         //保存房间模板内所有与父房间匹配的数据。
         var useableRoomPlacementData = new List<RoomPlacementData>();
@@ -80,6 +81,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             {
                 continue;
             }
+
             if (mainRoomSlot == null || newRoomSlot == null)
             {
                 continue;
@@ -208,9 +210,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 {
                     continue;
                 }
-
-                LogCat.Log(distanceToMidpointOfRoom[0] + "-" + distanceToMidpointOfRoom[1] + "和" +
-                           newDistanceToMidpointOfRoom[0] + "-" + newDistanceToMidpointOfRoom[1] + "匹配成功");
+                
                 mainRoomSlot.Matched = true;
                 newRoomSlot.Matched = true;
                 outMainRoomSlot = mainRoomSlot;
@@ -262,7 +262,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             {
                 //Horizontal slot, offset in the Y direction.
                 //水平方向槽，向Y方向偏移。
-                if (result.Y < 0)
+                if (newOrientationDescribe[1] == CoordinateUtils.OrientationDescribe.Up)
                 {
                     result.Y += Config.CellSize;
                 }
@@ -275,7 +275,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             {
                 //Vertical slot, offset in the X direction.
                 //垂直方向槽向X方向偏移。
-                if (result.X < 0)
+                if (newOrientationDescribe[0] == CoordinateUtils.OrientationDescribe.Right)
                 {
                     result.X -= Config.CellSize;
                 }
@@ -285,7 +285,6 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 }
             }
         }
-
         return Task.FromResult<Vector2?>(result);
     }
 }

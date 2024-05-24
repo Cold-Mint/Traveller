@@ -79,18 +79,20 @@ public class Room
             return null;
         }
 
-        //region 我们计算房间的中点
+        //We calculate the midpoint of the room
+        //我们计算房间的中点
         var roomAreaCollisionShape2D = roomArea2D.GetChild<CollisionShape2D>(0);
         var roomAreaRect2 = roomAreaCollisionShape2D.Shape.GetRect();
         var midpoint = roomAreaCollisionShape2D.Position + roomAreaRect2.Position + roomAreaRect2.Size / 2;
-        //endregion
         var roomSlots = new List<RoomSlot>();
         for (var i = 0; i < slotCount; i++)
         {
-            //拿到了房间卡槽对象
+            //Got the object in the room slot
+            //拿到了房间槽对象
             var area2D = slotList.GetChild<Area2D>(i);
             var collisionShape2D = area2D.GetChild<CollisionShape2D>(0);
             var rect2 = collisionShape2D.Shape.GetRect();
+            //Round the size of the impactor to the tile size For example, the impactor size 44 is converted to the tile size 44/32=1.375 rounded to 1
             //将碰撞体的尺寸四舍五入到瓦片尺寸例如：碰撞体尺寸44，转为瓦片尺寸为 44/32=1.375 四舍五入为1
             var intSize = new Vector2I((int)Math.Round(rect2.Size.X / Config.CellSize),
                 (int)Math.Round(rect2.Size.Y / Config.CellSize));
@@ -100,10 +102,12 @@ public class Room
                 continue;
             }
 
+            //Gets the absolute position of the slot
             //获取槽位的绝对位置
             var startPosition = area2D.Position + collisionShape2D.Position + rect2.Position;
             var endPosition = area2D.Position + collisionShape2D.Position + rect2.Position + rect2.Size;
             var midpointOfRoomSlots = area2D.Position + collisionShape2D.Position + rect2.Position + rect2.Size / 2;
+            //Convert to tile map coordinates (midpoint)
             //转为瓦片地图的坐标(中点)
             var tileMapStartPosition = tileMap.LocalToMap(startPosition);
             var tileMapEndPosition = tileMap.LocalToMap(endPosition);
@@ -111,6 +115,7 @@ public class Room
             {
                 EndPosition = tileMapEndPosition,
                 StartPosition = tileMapStartPosition,
+                //Calculate the orientation of the slot (the midpoint of the room is the origin, the vector pointing to the midpoint of the slot)
                 //计算槽位的方向(房间中点为原点，指向槽位中点的向量)
                 DistanceToMidpointOfRoom = CoordinateUtils.VectorToOrientationArray(midpoint, midpointOfRoomSlots)
             };

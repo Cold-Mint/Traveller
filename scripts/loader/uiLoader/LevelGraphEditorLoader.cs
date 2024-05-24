@@ -54,7 +54,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     {
         base.InitializeData();
         _roomNodeScene = (PackedScene)GD.Load("res://prefab/ui/RoomNode.tscn");
-        _defaultRoomName = TranslationServer.Translate("default_room_name");
+        _defaultRoomName = TranslationServerUtils.Translate("default_room_name");
         var folder = Config.GetLevelGraphExportDirectory();
         if (!Directory.Exists(folder))
         {
@@ -156,7 +156,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             var dirExists = DirAccess.DirExistsAbsolute(lastLine);
             if (!fileExists && !dirExists)
             {
-                var lineError = TranslationServer.Translate("error_specifying_room_template_line");
+                var lineError = TranslationServerUtils.Translate("error_specifying_room_template_line");
                 if (lineError == null)
                 {
                     return;
@@ -358,7 +358,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.ActionButton != null)
                 {
-                    _nodeBinding.ActionButton.Text = TranslationServer.Translate("load");
+                    _nodeBinding.ActionButton.Text = TranslationServerUtils.Translate("load");
                 }
 
                 if (_nodeBinding.FileNameLineEdit != null)
@@ -368,7 +368,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.SaveOrLoadPanelTitleLabel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("load");
+                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServerUtils.Translate("load");
                 }
 
                 _saveMode = false;
@@ -386,7 +386,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.ActionButton != null)
                 {
-                    _nodeBinding.ActionButton.Text = TranslationServer.Translate("save");
+                    _nodeBinding.ActionButton.Text = TranslationServerUtils.Translate("save");
                 }
 
                 if (_nodeBinding.FileNameLineEdit != null)
@@ -396,7 +396,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.SaveOrLoadPanelTitleLabel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServer.Translate("save");
+                    _nodeBinding.SaveOrLoadPanelTitleLabel.Text = TranslationServerUtils.Translate("save");
                 }
 
                 _saveMode = true;

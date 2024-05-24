@@ -1,19 +1,75 @@
 ﻿using System;
 using System.Text;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.debug;
 
 public static class LogCat
 {
+    /// <summary>
+    /// <para>Information log level</para>
+    /// <para>信息日志等级</para>
+    /// </summary>
+    public const int InfoLogLevel = 0;
+
+    /// <summary>
+    /// <para>Warning level</para>
+    /// <para>警告等级</para>
+    /// </summary>
+    public const int WarningLogLevel = 1;
+
+    /// <summary>
+    /// <para>Error log level</para>
+    /// <para>错误日志等级</para>
+    /// </summary>
+    public const int ErrorLogLevel = 2;
+
+    /// <summary>
+    ///<para>Disable all logs</para>
+    ///<para>禁用所有日志</para>
+    /// </summary>
+    public const int DisableAllLogLevel = int.MaxValue;
+
+    private static int _minLogLevel = InfoLogLevel;
+
+    /// <summary>
+    /// <para>Set the minimum log level</para>
+    /// <para>设置最小日志等级</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Set a value for it so that LogCat only prints logs with a level higher than the set value.</para>
+    ///<para>为其设置一个值，使LogCat仅打印等级高于设定值的日志。</para>
+    /// </remarks>
+    public static int MinLogLevel
+    {
+        get => _minLogLevel;
+        set => _minLogLevel = value;
+    }
+
     private static readonly StringBuilder StringBuilder = new StringBuilder();
 
 
-    private static StringBuilder HandleMessage(string message)
+    private static StringBuilder HandleMessage(int level, string message)
     {
         StringBuilder.Clear();
-        StringBuilder.Append(DateTime.Now.ToString("yyyy-M-d HH:mm:ss |"));
-        StringBuilder.Append(TranslationServer.Translate(message));
+        switch (level)
+        {
+            case InfoLogLevel:
+                StringBuilder.Append("INFO");
+                break;
+            case WarningLogLevel:
+                StringBuilder.Append("WARNING");
+                break;
+            case ErrorLogLevel:
+                StringBuilder.Append("ERROR");
+                break;
+            default:
+                StringBuilder.Append("INFO");
+                break;
+        }
+        StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss : "));
+        StringBuilder.Append(TranslationServerUtils.Translate(message));
         return StringBuilder;
     }
 
@@ -29,7 +85,12 @@ public static class LogCat
     /// </param>
     public static void Log(string message)
     {
-        GD.Print(HandleMessage(message));
+        if (_minLogLevel > InfoLogLevel)
+        {
+            return;
+        }
+
+        GD.Print(HandleMessage(InfoLogLevel, message));
     }
 
     /// <summary>
@@ -44,18 +105,43 @@ public static class LogCat
     /// </param>
     public static void LogError(string message)
     {
-        GD.PrintErr(HandleMessage(message));
+        if (_minLogLevel > ErrorLogLevel)
+        {
+            return;
+        }
+
+        GD.PrintErr(HandleMessage(ErrorLogLevel, message));
+    }
+
+    public static void LogWarning(string message)
+    {
+        if (_minLogLevel > WarningLogLevel)
+        {
+            return;
+        }
+
+        GD.PrintErr(HandleMessage(WarningLogLevel, message));
     }
 
     public static void LogErrorWithFormat(string message, params object?[] args)
     {
-        GD.PrintErr(string.Format(HandleMessage(message).ToString(), args));
+        if (_minLogLevel > ErrorLogLevel)
+        {
+            return;
+        }
+
+        GD.PrintErr(string.Format(HandleMessage(ErrorLogLevel, message).ToString(), args));
     }
-    
+
 
     public static void LogWithFormat(string message, params object?[] args)
     {
-        GD.Print(string.Format(HandleMessage(message).ToString(), args));
+        if (_minLogLevel > InfoLogLevel)
+        {
+            return;
+        }
+
+        GD.Print(string.Format(HandleMessage(InfoLogLevel, message).ToString(), args));
     }
 
     /// <summary>
@@ -67,6 +153,6 @@ public static class LogCat
     {
         //Log an exception here or send it to the server.
         //请在这里记录异常或将异常发送至服务器。
-        GD.PrintErr(HandleMessage(e.Message).Append('\n').Append(e.StackTrace));
+        GD.PrintErr(HandleMessage(ErrorLogLevel, e.Message).Append('\n').Append(e.StackTrace));
     }
 }
