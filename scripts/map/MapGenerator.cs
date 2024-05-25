@@ -97,6 +97,11 @@ public static class MapGenerator
         }
 
         NodeUtils.DeleteAllChild(_mapRoot);
+        if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
+        {
+            return;
+        }
+
         //Get the layout data
         //拿到布局图数据
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
@@ -169,6 +174,7 @@ public static class MapGenerator
         }
         //All rooms have been placed.
         //所有房间已放置完毕。
+        await _roomPlacementStrategy.GeneratedComplete(_mapRoot);
     }
 
     /// <summary>

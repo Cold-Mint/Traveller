@@ -61,7 +61,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     {
         //2757235769 房间边框重叠！
         //4175259928 房间内容重叠！
-        MapGenerator.Seed = "4175259928";
+        //212782913 起始房间重叠！
+        MapGenerator.Seed = GuidUtils.GetGuid();
         if (_seedLabel != null)
         {
             //If you have a seedLabel, then set the seed to it.

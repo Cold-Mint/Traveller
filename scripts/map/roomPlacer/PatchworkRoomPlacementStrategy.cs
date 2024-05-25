@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
@@ -20,6 +21,82 @@ namespace ColdMint.scripts.map.RoomPlacer;
 /// </remarks>
 public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 {
+    /// <summary>
+    /// <para>We use a temporary area to measure whether the rooms overlap</para>
+    /// <para>我们使用一个临时区域进行测量房间是否重叠</para>
+    /// </summary>
+    private Area2D? _measuringArea2D;
+
+    private CollisionShape2D? _measuringCollisionShape2D;
+
+    private Area2D? _selfArea2D;
+
+    /// <summary>
+    /// <para>How many rooms overlap with the new rooms that will be placed</para>
+    /// <para>有多少个房间与将要放置的新房间重叠</para>
+    /// </summary>
+    private int _overlapQuantity;
+
+    public Task<bool> StartGeneration(Node mapRoot)
+    {
+        if (_measuringArea2D == null)
+        {
+            _measuringArea2D = new Area2D();
+            _measuringArea2D.Monitoring = true;
+            _measuringArea2D.AreaEntered += body =>
+            {
+                if (_selfArea2D != null && body == _selfArea2D)
+                {
+                    return;
+                }
+
+                //Room overlap detected
+                //检测到房间重叠
+                _overlapQuantity++;
+            };
+            _measuringArea2D.AreaExited += body =>
+            {
+                if (_selfArea2D != null && body == _selfArea2D)
+                {
+                    return;
+                }
+
+                //Rooms no longer overlap
+                //房间不再重叠
+                _overlapQuantity--;
+            };
+            mapRoot.AddChild(_measuringArea2D);
+        }
+
+        if (_measuringCollisionShape2D == null)
+        {
+            _measuringCollisionShape2D = new CollisionShape2D();
+            _measuringArea2D.AddChild(_measuringCollisionShape2D);
+        }
+
+        return Task.FromResult(true);
+    }
+
+    public Task GeneratedComplete(Node mapRoot)
+    {
+        if (_measuringCollisionShape2D != null)
+        {
+            _measuringCollisionShape2D?.QueueFree();
+            _measuringArea2D?.RemoveChild(_measuringCollisionShape2D);
+            _measuringCollisionShape2D = null;
+        }
+        
+        if (_measuringArea2D != null)
+        {
+            _measuringArea2D?.QueueFree();
+            mapRoot.RemoveChild(_measuringArea2D);
+            _measuringArea2D = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
+
     public Task<bool> PlaceRoom(Node mapRoot, RoomPlacementData roomPlacementData)
     {
         if (roomPlacementData.Room == null || roomPlacementData.Position == null)
@@ -38,30 +115,30 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         return Task.FromResult(true);
     }
 
-    public Task<RoomPlacementData?> CalculateNewRoomPlacementData(RandomNumberGenerator randomNumberGenerator,
+    public async Task<RoomPlacementData?> CalculateNewRoomPlacementData(RandomNumberGenerator randomNumberGenerator,
         Room? parentRoomNode,
         RoomNodeData newRoomNodeData)
     {
         if (newRoomNodeData.RoomTemplateSet == null || newRoomNodeData.RoomTemplateSet.Length == 0)
         {
-            return Task.FromResult<RoomPlacementData?>(null);
+            return null;
         }
 
         if (parentRoomNode == null)
         {
-            return Task.FromResult<RoomPlacementData?>(null);
+            return null;
         }
 
         var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(newRoomNodeData.RoomTemplateSet);
         if (roomResArray.Length == 0)
         {
-            return Task.FromResult<RoomPlacementData?>(null);
+            return null;
         }
 
         var roomSlots = parentRoomNode.RoomSlots;
         if (roomSlots == null || roomSlots.Length == 0)
         {
-            return Task.FromResult<RoomPlacementData?>(null);
+            return null;
         }
 
         //Saves all data in the room template that matches the parent room.
@@ -87,8 +164,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 continue;
             }
 
-            var position = CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, false)
-                .Result;
+            var position = await CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, false);
             if (position == null) continue;
             var roomPlacementData = new RoomPlacementData
             {
@@ -100,12 +176,12 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
         if (useableRoomPlacementData.Count == 0)
         {
-            return Task.FromResult<RoomPlacementData?>(null);
+            return null;
         }
         else
         {
             var index = randomNumberGenerator.Randi() % useableRoomPlacementData.Count;
-            return Task.FromResult<RoomPlacementData?>(useableRoomPlacementData[(int)index]);
+            return useableRoomPlacementData[(int)index];
         }
     }
 
@@ -210,7 +286,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 {
                     continue;
                 }
-                
+
                 mainRoomSlot.Matched = true;
                 newRoomSlot.Matched = true;
                 outMainRoomSlot = mainRoomSlot;
@@ -224,7 +300,32 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         return Task.FromResult(false);
     }
 
-    private Task<Vector2?> CalculatedPosition(Room mainRoom, Room newRoom, RoomSlot? mainRoomSlot,
+    /// <summary>
+    /// <para>Calculate room position</para>
+    /// <para>计算房间位置</para>
+    /// </summary>
+    /// <param name="mainRoom">
+    ///<para>Main room</para>
+    ///<para>主房间</para>
+    /// </param>
+    /// <param name="newRoom">
+    ///<para>New room</para>
+    ///<para>新房间</para>
+    /// </param>
+    /// <param name="mainRoomSlot">
+    ///<para>Main room slot</para>
+    ///<para>主房间插槽</para>
+    /// </param>
+    /// <param name="newRoomSlot">
+    ///<para>New room slot</para>
+    ///<para>新房间插槽</para>
+    /// </param>
+    /// <param name="roomSlotOverlap">
+    ///<para>Whether room slots allow overlays</para>
+    ///<para>房间插槽是否允许覆盖</para>
+    /// </param>
+    /// <returns></returns>
+    private async Task<Vector2?> CalculatedPosition(Room mainRoom, Room newRoom, RoomSlot? mainRoomSlot,
         RoomSlot? newRoomSlot, bool roomSlotOverlap)
     {
         if (mainRoom.RootNode == null || newRoom.RootNode == null || newRoom.TileMap == null ||
@@ -232,7 +333,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             newRoom.TileMap == null || mainRoomSlot == null ||
             newRoomSlot == null)
         {
-            return Task.FromResult<Vector2?>(null);
+            return null;
         }
 
         //Main room slot location description
@@ -245,7 +346,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             //If the room slot is described as null, null is returned
             //若房间槽描述为null，那么返回null
-            return Task.FromResult<Vector2?>(null);
+            return null;
         }
 
         var mainRoomSlotPosition = mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition);
@@ -285,6 +386,27 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 }
             }
         }
-        return Task.FromResult<Vector2?>(result);
+
+        //Do calculations overlap with other rooms?
+        //计算结果是否与其他房间重叠？
+        if (newRoom.RoomCollisionShape2D != null && _measuringArea2D != null && _measuringCollisionShape2D != null)
+        {
+            //Ignore yourself when detecting room overlap
+            //检测房间重叠时应忽略自身
+            _selfArea2D = newRoom.Area2D;
+            _measuringArea2D.Position = result;
+            _measuringCollisionShape2D.Shape = newRoom.RoomCollisionShape2D.Shape;
+            //Calculate the offset of the shape.
+            //计算形状的偏移量。
+            _measuringCollisionShape2D.Position = newRoom.RoomCollisionShape2D.Shape.GetRect().Size / 2;
+            await Task.Delay(TimeSpan.FromMilliseconds(50));
+            if (_overlapQuantity > 0)
+            {
+                return null;
+            }
+        }
+
+
+        return result;
     }
 }

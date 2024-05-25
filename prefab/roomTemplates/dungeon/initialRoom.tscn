@@ -3,7 +3,7 @@
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(511.5, 254)
+size = Vector2(508.75, 254)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(18, 57.75)
@@ -24,7 +24,7 @@ layer_2/tile_data = PackedInt32Array(0, 1, 3, 65536, 131073, 1, 131072, 131073, 
 [node name="RoomArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(257, 129)
+position = Vector2(255.625, 128)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]

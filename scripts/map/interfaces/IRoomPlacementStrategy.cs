@@ -12,6 +12,24 @@ namespace ColdMint.scripts.map.interfaces;
 /// </summary>
 public interface IRoomPlacementStrategy
 {
+    /// <summary>
+    /// <para>This method is called when the map generator starts generating the map</para>
+    /// <para>当地图生成器开始生成地图时调用此方法</para>
+    /// </summary>
+    /// <param name="mapRoot"></param>
+    /// <returns>
+    ///<para>Returning false terminates the build</para>
+    ///<para>返回false则终止生成</para>
+    /// </returns>
+    public Task<bool> StartGeneration(Node mapRoot);
+
+    /// <summary>
+    /// <para>Call this method after the build is complete</para>
+    /// <para>生成完成后调用此方法</para>
+    /// </summary>
+    /// <returns></returns>
+    public Task GeneratedComplete(Node mapRoot);
+    
     ///  <summary>
     ///  <para>Place the room in the designated location</para>
     ///  <para>在指定的位置放置房间</para>

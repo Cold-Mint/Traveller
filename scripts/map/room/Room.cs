@@ -20,6 +20,23 @@ public class Room
     private Node2D? _rootNode;
     private RoomSlot?[]? _roomSlots;
     private TileMap? _tileMap;
+    private Area2D? _area2D;
+    private CollisionShape2D? _collisionShape2D;
+
+    /// <summary>
+    /// <para>The collision shape of the room</para>
+    /// <para>房间的碰撞形状</para>
+    /// </summary>
+    public CollisionShape2D? RoomCollisionShape2D
+    {
+        get => _collisionShape2D;
+        set => _collisionShape2D = value;
+    }
+    public Area2D? Area2D
+    {
+        get => _area2D;
+        set => _area2D = value;
+    }
 
     public PackedScene? RoomScene
     {
@@ -50,7 +67,10 @@ public class Room
 
         _rootNode = node2D;
         _tileMap = node2D.GetNode<TileMap>("TileMap");
-        _roomSlots = GetRoomSlots(_tileMap, node2D.GetNode<Area2D>("RoomArea"),
+        _area2D = node2D.GetNode<Area2D>("RoomArea");
+        _area2D.Monitorable = true;
+        _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
+        _roomSlots = GetRoomSlots(_tileMap, _area2D,
             node2D.GetNode<Node2D>("RoomSlotList"));
     }
 
@@ -90,6 +110,10 @@ public class Room
             //Got the object in the room slot
             //拿到了房间槽对象
             var area2D = slotList.GetChild<Area2D>(i);
+            //Prevent other areas from detecting the room slot
+            //禁止其他区域检测到房间槽
+            area2D.Monitorable = false;
+            
             var collisionShape2D = area2D.GetChild<CollisionShape2D>(0);
             var rect2 = collisionShape2D.Shape.GetRect();
             //Round the size of the impactor to the tile size For example, the impactor size 44 is converted to the tile size 44/32=1.375 rounded to 1
