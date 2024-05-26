@@ -139,6 +139,16 @@ public static class Config
         return OS.HasFeature("debug");
     }
 
+    /// <summary>
+    /// <para>Whether to run on the editor</para>
+    /// <para>是否在编辑器上运行</para>
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsEditor()
+    {
+        return OS.HasFeature("editor");
+    }
+
     public enum OsEnum
     {
         //unknown

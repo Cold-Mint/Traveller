@@ -26,11 +26,12 @@ public static class RoomFactory
         var resList = new List<string>();
         foreach (var roomTemplate in roomTemplateSet)
         {
+           var roomTemplatePath = ResUtils.GetRunTimeResPath(roomTemplate);
             //Detects whether it is a folder
             //检测是否为文件夹
-            if (DirAccess.DirExistsAbsolute(roomTemplate))
+            if (DirAccess.DirExistsAbsolute(roomTemplatePath))
             {
-                using var dir = DirAccess.Open(roomTemplate);
+                using var dir = DirAccess.Open(roomTemplatePath);
                 if (dir != null)
                 {
                     dir.ListDirBegin();
@@ -39,7 +40,7 @@ public static class RoomFactory
                     {
                         if (!dir.CurrentIsDir())
                         {
-                            resList.Add(Path.Join(roomTemplate, fileName));
+                            resList.Add(Path.Join(roomTemplatePath, fileName));
                         }
 
                         fileName = dir.GetNext();
@@ -47,9 +48,9 @@ public static class RoomFactory
                 }
             }
 
-            if (FileAccess.FileExists(roomTemplate))
+            if (FileAccess.FileExists(roomTemplatePath))
             {
-                resList.Add(roomTemplate);
+                resList.Add(roomTemplatePath);
             }
         }
 
@@ -75,7 +76,7 @@ public static class RoomFactory
 
         var room = new Room
         {
-            RoomScene = GD.Load<PackedScene>(ResUtils.GetAbsolutePath(resPath))
+            RoomScene = GD.Load<PackedScene>(ResUtils.GetEditorResPath(resPath))
         };
         return room;
     }

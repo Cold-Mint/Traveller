@@ -16,3 +16,4 @@ failed_to_calculate_the_room_location,计算房间{0}位置时失败。,Failed t
 place_existing_rooms,放置已存在的房间{0}。,Place existing rooms {0}.,既存の部屋を置きます{0}。
 room_placement_failed,房间{0}放置失败。,Room {0} placement failed.,部屋{0}の放置に失敗します。
 room_placement_information,房间{0}已被成功放置在{1}。,Room {0} has been successfully placed in {1}.,部屋{0}を{1}に配置しました。
+slogan_not_exist,找不到位于{0}的标语文件。,The tagline file at {0} could not be found.,{0}にある標語ファイルが見つかりません。
