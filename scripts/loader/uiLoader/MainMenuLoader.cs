@@ -35,9 +35,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
             //在发行版禁用所有日志。
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
-        //Load the slogan
-        //加载标语
-        SloganProvider.LoadSloganCsv();
         //Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package
         //注册对应的编码提供程序，解决压缩包中文路径乱码问题
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
