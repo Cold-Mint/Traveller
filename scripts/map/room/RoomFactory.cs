@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using ColdMint.scripts.utils;
 using Godot;
 using FileAccess = Godot.FileAccess;
 
@@ -74,7 +75,7 @@ public static class RoomFactory
 
         var room = new Room
         {
-            RoomScene = GD.Load<PackedScene>(resPath)
+            RoomScene = GD.Load<PackedScene>(ResUtils.GetAbsolutePath(resPath))
         };
         return room;
     }

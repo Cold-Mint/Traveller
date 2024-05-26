@@ -68,6 +68,7 @@ public static class LogCat
                 StringBuilder.Append("INFO");
                 break;
         }
+
         StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss : "));
         StringBuilder.Append(TranslationServerUtils.Translate(message));
         return StringBuilder;
@@ -120,7 +121,7 @@ public static class LogCat
             return;
         }
 
-        GD.PrintErr(HandleMessage(WarningLogLevel, message));
+        GD.Print(HandleMessage(WarningLogLevel, message));
     }
 
     public static void LogErrorWithFormat(string message, params object?[] args)
@@ -142,6 +143,16 @@ public static class LogCat
         }
 
         GD.Print(string.Format(HandleMessage(InfoLogLevel, message).ToString(), args));
+    }
+
+    public static void LogWarningWithFormat(string message, params object?[] args)
+    {
+        if (_minLogLevel > InfoLogLevel)
+        {
+            return;
+        }
+
+        GD.Print(string.Format(HandleMessage(WarningLogLevel, message).ToString(), args));
     }
 
     /// <summary>

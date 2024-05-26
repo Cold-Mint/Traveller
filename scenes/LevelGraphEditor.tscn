@@ -135,11 +135,22 @@ grow_vertical = 0
 text = "creation"
 
 [node name="RoomTemplateCollectionTextEdit" type="TextEdit" parent="CreateOrEditorPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 9.0
+offset_top = 184.0
+offset_right = -11.0
+offset_bottom = 298.0
+grow_horizontal = 2
+
+[node name="Label5" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 187.0
-offset_right = 1111.0
-offset_bottom = 303.0
+offset_left = 21.0
+offset_top = 354.0
+offset_right = 61.0
+offset_bottom = 379.0
+text = "tags"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

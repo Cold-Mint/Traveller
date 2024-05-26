@@ -27,6 +27,8 @@ public static class MapGenerator
     /// </summary>
     private static ILayoutStrategy? _layoutStrategy;
 
+    private static bool _running;
+
     /// <summary>
     /// <para>Map root node</para>
     /// <para>地图根节点</para>
@@ -89,16 +91,26 @@ public static class MapGenerator
     /// </summary>
     public static async Task GenerateMap()
     {
+        if (_running)
+        {
+            LogCat.LogWarning("map_generator_is_running");
+            return;
+        }
+
+        _running = true;
         if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
             _mapRoot == null)
         {
             LogCat.LogError("map_generator_missing_parameters");
+            _running = false;
             return;
         }
 
         NodeUtils.DeleteAllChild(_mapRoot);
         if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
         {
+            LogCat.LogError("room_placement_strategy_terminates_map_generation");
+            _running = false;
             return;
         }
 
@@ -109,6 +121,7 @@ public static class MapGenerator
             levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
             LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
+            _running = false;
             return;
         }
 
@@ -123,6 +136,7 @@ public static class MapGenerator
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {
             LogCat.LogError("map_generator_has_no_starting_room_data");
+            _running = false;
             return;
         }
 
@@ -131,12 +145,16 @@ public static class MapGenerator
                 startRoomNodeData);
         if (startingRoomPlacementData == null)
         {
+            LogCat.LogError("start_room_placement_information_returns_empty");
+            _running = false;
             return;
         }
 
         var placeSuccess = await PlaceRoomAndAddRecord(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary);
         if (!placeSuccess)
         {
+            LogCat.LogError("start_room_placement_failed");
+            _running = false;
             return;
         }
 
@@ -147,6 +165,7 @@ public static class MapGenerator
             var roomNodeData = await _layoutParsingStrategy.Next();
             if (roomNodeData == null || string.IsNullOrEmpty(roomNodeData.Id))
             {
+                LogCat.LogWarning("room_data_missing");
                 continue;
             }
 
@@ -167,14 +186,17 @@ public static class MapGenerator
                     roomNodeData);
             if (roomPlacementData == null)
             {
+                LogCat.LogWithFormat("failed_to_calculate_the_room_location", roomNodeData.Id);
                 continue;
             }
 
             await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary);
         }
+
         //All rooms have been placed.
         //所有房间已放置完毕。
         await _roomPlacementStrategy.GeneratedComplete(_mapRoot);
+        _running = false;
     }
 
     /// <summary>
@@ -198,15 +220,18 @@ public static class MapGenerator
 
         if (dictionary.ContainsKey(roomNodeDataId))
         {
+            LogCat.LogWithFormat("place_existing_rooms", roomNodeDataId);
             return false;
         }
 
         if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
         {
+            LogCat.LogWarningWithFormat("room_placement_failed", roomNodeDataId);
             return false;
         }
 
         dictionary.Add(roomNodeDataId, roomPlacementData.Room);
+        LogCat.LogWithFormat("room_placement_information",roomNodeDataId,roomPlacementData.Position.ToString());
         return true;
     }
 }
