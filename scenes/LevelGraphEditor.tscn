@@ -35,7 +35,6 @@ offset_bottom = 32.0
 text = "level_graph_editor"
 
 [node name="CreateOrEditorPanel" type="Panel" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,6 +150,16 @@ offset_top = 354.0
 offset_right = 61.0
 offset_bottom = 379.0
 text = "tags"
+
+[node name="TagLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 388.0
+offset_right = -15.0
+offset_bottom = 421.0
+grow_horizontal = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

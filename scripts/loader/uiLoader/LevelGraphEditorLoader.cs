@@ -27,6 +27,12 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// </summary>
     private int _roomIndex = 1;
 
+    /// <summary>
+    /// <para>Is there a start node?</para>
+    /// <para>是否有开始节点了？</para>
+    /// </summary>
+    private bool _hasStartNode;
+
     private PackedScene? _roomNodeScene;
 
     private readonly List<Node> _selectedNodes = new List<Node>();
@@ -235,6 +241,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 }
 
                 var nodes = _selectedNodes.ToArray();
+                _roomIndex -= _selectedNodes.Count;
                 foreach (var node in nodes)
                 {
                     if (node is not RoomNode roomNode)
@@ -242,10 +249,18 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                         continue;
                     }
 
+                    if (roomNode.RoomNodeData != null && roomNode.RoomNodeData.HasTag(Config.RoomDataTag.StartingRoom))
+                    {
+                        //The node with the start room label was deleted.
+                        //删除了带有起始房间标签的节点。
+                        _hasStartNode = false;
+                    }
+
                     _nodeBinding.GraphEdit.RemoveChild(node);
                     roomNode.QueueFree();
                     _selectedNodes.Remove(node);
                 }
+
             };
         }
 
@@ -266,6 +281,23 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 if (_nodeBinding.RoomNameLineEdit != null && _defaultRoomName != null)
                 {
                     _nodeBinding.RoomNameLineEdit.Text = string.Format(_defaultRoomName, _roomIndex);
+                }
+
+                if (_nodeBinding.RoomDescriptionLineEdit != null)
+                {
+                    _nodeBinding.RoomDescriptionLineEdit.Text = string.Empty;
+                }
+
+                if (_nodeBinding.TagLineEdit != null)
+                {
+                    if (_hasStartNode)
+                    {
+                        _nodeBinding.TagLineEdit.Text = string.Empty;
+                    }
+                    else
+                    {
+                        _nodeBinding.TagLineEdit.Text = Config.RoomDataTag.StartingRoom;
+                    }
                 }
 
                 if (_nodeBinding.HBoxContainer != null)
@@ -293,7 +325,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             _nodeBinding.CreateRoomButton.Pressed += () =>
             {
                 if (_nodeBinding.RoomNameLineEdit == null || _nodeBinding.RoomDescriptionLineEdit == null ||
-                    _nodeBinding.RoomTemplateCollectionTextEdit == null)
+                    _nodeBinding.RoomTemplateCollectionTextEdit == null || _nodeBinding.TagLineEdit == null)
                 {
                     return;
                 }
@@ -310,13 +342,27 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     return;
                 }
 
+                string[]? tagArray = null;
+                var tagData = _nodeBinding.TagLineEdit.Text;
+                if (!string.IsNullOrEmpty(tagData))
+                {
+                    tagArray = tagData.Split(',');
+                }
+
+
                 var roomNodeData = new RoomNodeData
                 {
                     Id = GuidUtils.GetGuid(),
                     Title = _nodeBinding.RoomNameLineEdit.Text,
                     Description = _nodeBinding.RoomDescriptionLineEdit.Text,
-                    RoomTemplateSet = roomTemplateArray
+                    RoomTemplateSet = roomTemplateArray,
+                    Tags = tagArray
                 };
+                if (!_hasStartNode && roomNodeData.HasTag(Config.RoomDataTag.StartingRoom))
+                {
+                    _hasStartNode = true;
+                }
+
                 var roomNode = CreateRoomNode(roomNodeData);
                 if (roomNode != null)
                 {
@@ -587,6 +633,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         //不要调用DeleteAllChildAsync方法，这会引发“ERROR: Caller thread can't call this function in this node”。
         NodeUtils.DeleteAllChild(_nodeBinding.GraphEdit);
         _roomIndex = 1;
+        _hasStartNode = false;
         var roomNodeDataList = levelGraphEditorSaveData.RoomNodeDataList;
         if (roomNodeDataList != null)
         {
@@ -595,6 +642,11 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 if (string.IsNullOrEmpty(roomNodeData.Id))
                 {
                     continue;
+                }
+
+                if (!_hasStartNode && roomNodeData.HasTag(Config.RoomDataTag.StartingRoom))
+                {
+                    _hasStartNode = true;
                 }
 
                 //Instantiate the room node.
