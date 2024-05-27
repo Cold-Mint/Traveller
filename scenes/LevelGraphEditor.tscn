@@ -35,6 +35,7 @@ offset_bottom = 32.0
 text = "level_graph_editor"
 
 [node name="CreateOrEditorPanel" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

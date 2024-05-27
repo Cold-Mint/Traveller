@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
@@ -85,7 +84,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             _measuringArea2D?.RemoveChild(_measuringCollisionShape2D);
             _measuringCollisionShape2D = null;
         }
-        
+
         if (_measuringArea2D != null)
         {
             _measuringArea2D?.QueueFree();
@@ -169,7 +168,9 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             var roomPlacementData = new RoomPlacementData
             {
                 Room = newRoom,
-                Position = position
+                Position = position,
+                ParentRoomSlot = mainRoomSlot,
+                NewRoomSlot = newRoomSlot
             };
             useableRoomPlacementData.Add(roomPlacementData);
         }
@@ -181,7 +182,20 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         else
         {
             var index = randomNumberGenerator.Randi() % useableRoomPlacementData.Count;
-            return useableRoomPlacementData[(int)index];
+            var roomPlacementData = useableRoomPlacementData[(int)index];
+            //Be sure to mark its slot as a match when you use it.
+            //一定要在使用时，将其插槽标记为匹配。
+            if (roomPlacementData.ParentRoomSlot != null)
+            {
+                roomPlacementData.ParentRoomSlot.Matched = true;
+            }
+
+            if (roomPlacementData.NewRoomSlot != null)
+            {
+                roomPlacementData.NewRoomSlot.Matched = true;
+            }
+
+            return roomPlacementData;
         }
     }
 
@@ -287,8 +301,6 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                     continue;
                 }
 
-                mainRoomSlot.Matched = true;
-                newRoomSlot.Matched = true;
                 outMainRoomSlot = mainRoomSlot;
                 outNewRoomSlot = newRoomSlot;
                 return Task.FromResult(true);
