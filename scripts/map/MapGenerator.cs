@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
@@ -42,6 +43,59 @@ public static class MapGenerator
     private static IRoomPlacementStrategy? _roomPlacementStrategy;
 
     private static ulong _seed;
+
+    private static Dictionary<string, IRoomInjectionProcessor>? _roomInjectionProcessorsDictionary;
+
+    /// <summary>
+    /// <para>Register the room injection processor</para>
+    /// <para>注册房间注入处理器</para>
+    /// </summary>
+    /// <param name="roomInjectionProcessor"></param>
+    /// <returns></returns>
+    public static bool RegisterRoomInjectionProcessor(IRoomInjectionProcessor roomInjectionProcessor)
+    {
+        var key = roomInjectionProcessor.GetId();
+        if (_roomInjectionProcessorsDictionary == null)
+        {
+            _roomInjectionProcessorsDictionary = new Dictionary<string, IRoomInjectionProcessor>
+                { { key, roomInjectionProcessor } };
+            return true;
+        }
+
+        return _roomInjectionProcessorsDictionary.TryAdd(key, roomInjectionProcessor);
+    }
+    
+    /// <summary>
+    /// <para>Log out of the room injection processor</para>
+    /// <para>注销房间注入处理器</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static bool UnRegisterRoomInjectionProcessor(string id)
+    {
+        if (_roomInjectionProcessorsDictionary == null)
+        {
+            return false;
+        }
+        
+        return _roomInjectionProcessorsDictionary.Remove(id);
+    }
+
+    public delegate void MapGenerationStartEventHandler(MapGenerationStartEvent mapGenerationStartEvent);
+
+    public delegate void MapGenerationCompleteEventHandler(MapGenerationCompleteEvent mapGenerationCompleteEvent);
+
+    /// <summary>
+    /// <para>Map starts generating events</para>
+    /// <para>地图开始生成的事件</para>
+    /// </summary>
+    public static event MapGenerationStartEventHandler? MapGenerationStartEvent;
+
+    /// <summary>
+    /// <para>Map generation completion event</para>
+    /// <para>地图生成完成事件</para>
+    /// </summary>
+    public static event MapGenerationCompleteEventHandler? MapGenerationCompleteEvent;
 
     /// <summary>
     /// <para>Set seed</para>
@@ -98,6 +152,7 @@ public static class MapGenerator
         }
 
         _running = true;
+        MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
             _mapRoot == null)
         {
@@ -197,6 +252,13 @@ public static class MapGenerator
         //所有房间已放置完毕。
         await _roomPlacementStrategy.GeneratedComplete(_mapRoot);
         _running = false;
+        //Invoke the map generation completion event
+        //调用地图生成完成事件
+        var eventObj = new MapGenerationCompleteEvent
+        {
+            RandomNumberGenerator = randomNumberGenerator
+        };
+        MapGenerationCompleteEvent?.Invoke(eventObj);
     }
 
     /// <summary>
@@ -231,7 +293,7 @@ public static class MapGenerator
         }
 
         dictionary.Add(roomNodeDataId, roomPlacementData.Room);
-        LogCat.LogWithFormat("room_placement_information",roomNodeDataId,roomPlacementData.Position.ToString());
+        LogCat.LogWithFormat("room_placement_information", roomNodeDataId, roomPlacementData.Position.ToString());
         return true;
     }
 }

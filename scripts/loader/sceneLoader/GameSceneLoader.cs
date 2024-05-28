@@ -50,6 +50,13 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
+        MapGenerator.MapGenerationCompleteEvent += (_) =>
+        {
+        };
+        MapGenerator.MapGenerationStartEvent+= (_) =>
+        {
+           
+        };
         await GenerateMap();
     }
 
