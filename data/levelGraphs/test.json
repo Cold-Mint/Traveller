@@ -8,31 +8,7 @@
     },
     {
       "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "ToId": "9d764cca-5057-470a-976d-ba472a21e2cc",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "ToId": "cf04b0af-5940-4d8d-b081-d0b597583771",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "9d764cca-5057-470a-976d-ba472a21e2cc",
-      "ToId": "96f264c0-7169-4916-904f-e0384564e491",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "96f264c0-7169-4916-904f-e0384564e491",
-      "ToId": "197d7935-be4f-4808-9264-0848c8069309",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "cf04b0af-5940-4d8d-b081-d0b597583771",
-      "ToId": "26822086-6b19-482f-92b9-71fa8eb3f20c",
+      "ToId": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
       "FromPort": 0,
       "ToPort": 0
     }
@@ -47,7 +23,9 @@
       ],
       "Tags": [
         "StartingRoom"
-      ]
+      ],
+      "RoomInjectionProcessorId": null,
+      "RoomInjectionProcessorConfig": null
     },
     {
       "Id": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
@@ -56,52 +34,19 @@
       "RoomTemplateSet": [
         "res://prefab/roomTemplates/dungeon/utilityRoom.tscn"
       ],
-      "Tags": null
+      "Tags": null,
+      "RoomInjectionProcessorId": null,
+      "RoomInjectionProcessorConfig": null
     },
     {
-      "Id": "9d764cca-5057-470a-976d-ba472a21e2cc",
+      "Id": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
       "Title": "房间3",
-      "Description": "",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "cf04b0af-5940-4d8d-b081-d0b597583771",
-      "Title": "房间8",
       "Description": "",
       "RoomTemplateSet": [
         "res://prefab/roomTemplates/dungeon/"
       ],
-      "Tags": null
-    },
-    {
-      "Id": "96f264c0-7169-4916-904f-e0384564e491",
-      "Title": "房间5",
-      "Description": "",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "197d7935-be4f-4808-9264-0848c8069309",
-      "Title": "房间6",
-      "Description": "",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
-    },
-    {
-      "Id": "26822086-6b19-482f-92b9-71fa8eb3f20c",
-      "Title": "房间7",
-      "Description": "",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": null
+      "Tags": null,
+      "RoomInjectionProcessorData": "[\n    {\n        \"Id\": \"Chance\",\n        \"Config\": \"{\\\"Chance\\\":35.5}\"\n    }\n]"
     }
   ]
 }

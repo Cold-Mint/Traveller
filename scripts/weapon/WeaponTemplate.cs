@@ -121,9 +121,9 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         var damage = new Damage
         {
             MaxDamage = Math.Abs(_maxContactInjury),
-            MinDamage = Math.Abs(_minContactInjury)
+            MinDamage = Math.Abs(_minContactInjury),
+            Attacker = ownerCharacterTemplate
         };
-        damage.Attacker = ownerCharacterTemplate;
         damage.CreateDamage();
         damage.MoveLeft = LinearVelocity.X < 0;
         damage.Type = Config.DamageType.Physical;

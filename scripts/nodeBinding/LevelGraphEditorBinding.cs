@@ -31,6 +31,7 @@ public class LevelGraphEditorBinding : INodeBinding
     public Button? ShowLoadPanelButton;
     public Button? DeleteSelectedNodeButton;
     public LineEdit? TagLineEdit;
+    public TextEdit? RoomInjectionProcessorDataTextEdit;
     public void Binding(Node root)
     {
         RoomTemplateTipsLabel = root.GetNode<Label>("CreateOrEditorPanel/RoomTemplateTipsLabel");
@@ -54,5 +55,6 @@ public class LevelGraphEditorBinding : INodeBinding
         RoomDescriptionLineEdit = root.GetNode<LineEdit>("CreateOrEditorPanel/RoomDescriptionLineEdit");
         CreateRoomButton = root.GetNode<Button>("CreateOrEditorPanel/CreateRoomButton");
         TagLineEdit = root.GetNode<LineEdit>("CreateOrEditorPanel/TagLineEdit");
+        RoomInjectionProcessorDataTextEdit = root.GetNode<TextEdit>("CreateOrEditorPanel/RoomInjectionProcessorDataTextEdit");
     }
 }

@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.map;
+using ColdMint.scripts.map.roomInjectionProcessor;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -35,6 +37,9 @@ public partial class MainMenuLoader : UiLoaderTemplate
             //在发行版禁用所有日志。
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
+
+        MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
+        MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());
         //Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package
         //注册对应的编码提供程序，解决压缩包中文路径乱码问题
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

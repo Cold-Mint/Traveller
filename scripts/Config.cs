@@ -149,6 +149,20 @@ public static class Config
         return OS.HasFeature("editor");
     }
 
+    public class RoomInjectionProcessorId
+    {
+        /// <summary>
+        /// <para>Chance</para>
+        /// <para>概率的</para>
+        /// </summary>
+        public const string Chance = "Chance";
+        /// <summary>
+        /// <para>TimeInterval</para>
+        /// <para>时间范围的</para>
+        /// </summary>
+        public const string TimeInterval = "TimeInterval";
+    }
+    
     public enum OsEnum
     {
         //unknown

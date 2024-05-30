@@ -31,3 +31,4 @@ delete_selected_node,删除选中的节点,Delete selected node,選択された�
 re_create_map,重新创建地图,Re-create map,地図を再作成します
 seed_info,种子：{0},Seed: {0},シード:{0}
 tags,标签,Tags,と呼ぶ
+room_injection_processor,房间注入处理器,Room injection processor,部屋注入処理器

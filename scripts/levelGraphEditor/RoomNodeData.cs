@@ -12,6 +12,11 @@ public class RoomNodeData
 
     public string[]? Tags { get; set; }
 
+    /// <summary>
+    /// <para>Room injector data</para>
+    /// <para>房间注入器数据</para>
+    /// </summary>
+    public string? RoomInjectionProcessorData { get; set; }
 
     /// <summary>
     /// <para>Whether a tag is held</para>

@@ -73,10 +73,10 @@ text = "room_template_collection_prompt"
 
 [node name="RoomTemplateTipsLabel" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 1
-offset_left = 18.0
-offset_top = 319.0
-offset_right = 265.0
-offset_bottom = 344.0
+offset_left = 16.0
+offset_top = 259.0
+offset_right = 263.0
+offset_bottom = 284.0
 text = "errorTip"
 
 [node name="RoomNameLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
@@ -141,25 +141,43 @@ anchor_right = 1.0
 offset_left = 9.0
 offset_top = 184.0
 offset_right = -11.0
-offset_bottom = 298.0
+offset_bottom = 245.0
 grow_horizontal = 2
 
 [node name="Label5" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 354.0
-offset_right = 61.0
-offset_bottom = 379.0
+offset_left = 16.0
+offset_top = 289.0
+offset_right = 56.0
+offset_bottom = 314.0
 text = "tags"
 
 [node name="TagLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 16.0
-offset_top = 388.0
-offset_right = -15.0
-offset_bottom = 421.0
+offset_left = 11.0
+offset_top = 324.0
+offset_right = -20.0
+offset_bottom = 357.0
+grow_horizontal = 2
+
+[node name="Label7" type="Label" parent="CreateOrEditorPanel"]
+layout_mode = 1
+offset_left = 14.0
+offset_top = 368.0
+offset_right = 283.0
+offset_bottom = 393.0
+text = "room_injection_processor"
+
+[node name="RoomInjectionProcessorDataTextEdit" type="TextEdit" parent="CreateOrEditorPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 14.0
+offset_top = 404.0
+offset_right = -25.0
+offset_bottom = 493.0
 grow_horizontal = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
 using ColdMint.scripts.map.room;
+using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -64,7 +66,7 @@ public static class MapGenerator
 
         return _roomInjectionProcessorsDictionary.TryAdd(key, roomInjectionProcessor);
     }
-    
+
     /// <summary>
     /// <para>Log out of the room injection processor</para>
     /// <para>注销房间注入处理器</para>
@@ -77,7 +79,7 @@ public static class MapGenerator
         {
             return false;
         }
-        
+
         return _roomInjectionProcessorsDictionary.Remove(id);
     }
 
@@ -224,6 +226,46 @@ public static class MapGenerator
                 continue;
             }
 
+            var roomInjectionProcessorData = roomNodeData.RoomInjectionProcessorData;
+            //Whether room can be placed
+            //是否可放置房间
+            var canBePlaced = true;
+            if (_roomInjectionProcessorsDictionary != null && !string.IsNullOrEmpty(roomInjectionProcessorData))
+            {
+                var roomInjectionProcessorDataArray =
+                    JsonSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
+                if (roomInjectionProcessorDataArray != null && roomInjectionProcessorDataArray.Length > 0)
+                {
+                    foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
+                    {
+                        if (string.IsNullOrEmpty(injectionProcessorData.Id) || string.IsNullOrEmpty(injectionProcessorData.Config))
+                        {
+                            //The data is incomplete, and the injectionProcessorData is ignored.
+                            //数据不全，忽略injectionProcessorData。
+                            continue;
+                        }
+                        if (!_roomInjectionProcessorsDictionary.TryGetValue(injectionProcessorData.Id,
+                                out var roomInjectionProcessor))
+                        {
+                            //If the room injection processor cannot be found, a print error occurs.
+                            //如果找不到房间注入处理器，那么打印错误。
+                            LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist", injectionProcessorData.Id);
+                            continue;
+                        }
+
+                        if (await roomInjectionProcessor.CanBePlaced(randomNumberGenerator,
+                                injectionProcessorData.Config)) continue;
+                        //If the room cannot be placed, then out of the loop.
+                        //如果此房间不能被放置，那么跳出循环。
+                        canBePlaced = false;
+                        break;
+                    }
+                }
+            }
+            if (!canBePlaced)
+            {
+                continue;
+            }
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
             Room? parentRoomNode = null;
             if (nextParentNodeId != null)

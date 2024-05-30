@@ -260,7 +260,6 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     roomNode.QueueFree();
                     _selectedNodes.Remove(node);
                 }
-
             };
         }
 
@@ -356,7 +355,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                     Title = _nodeBinding.RoomNameLineEdit.Text,
                     Description = _nodeBinding.RoomDescriptionLineEdit.Text,
                     RoomTemplateSet = roomTemplateArray,
-                    Tags = tagArray
+                    Tags = tagArray,
+                    RoomInjectionProcessorData = _nodeBinding.RoomInjectionProcessorDataTextEdit?.Text
                 };
                 if (!_hasStartNode && roomNodeData.HasTag(Config.RoomDataTag.StartingRoom))
                 {
