@@ -15,18 +15,26 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 
     public override Task InitializeData()
     {
+        //Loading the blood bar scene
         //加载血条场景
         var healthBarUi = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");
         GameSceneNodeHolder.HealthBarUi = healthBarUi;
+        //Load HotBar
         //加载HotBar
         var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
         GameSceneNodeHolder.HotBar = hotBar;
+        //Load operation prompt
         //加载操作提示
         var operationTip = GetNode<RichTextLabel>("CanvasLayer/Control/VBoxContainer/OperationTip");
         GameSceneNodeHolder.OperationTipLabel = operationTip;
+        //Loaded weapon container
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");
         GameSceneNodeHolder.WeaponContainer = weaponContainer;
+        //Load player container
+        //加载玩家容器
+        var playerContainer = GetNode<Node2D>("PlayerContainer");
+        GameSceneNodeHolder.PlayerContainer = playerContainer;
         return Task.CompletedTask;
     }
 
@@ -66,9 +74,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     /// </summary>
     private async Task GenerateMap()
     {
-        //2757235769 房间边框重叠！
-        //4175259928 房间内容重叠！
-        //212782913 起始房间重叠！
         MapGenerator.Seed = GuidUtils.GetGuid();
         if (_seedLabel != null)
         {

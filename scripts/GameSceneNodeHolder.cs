@@ -22,6 +22,8 @@ public static class GameSceneNodeHolder
     /// </summary>
     public static Node2D? WeaponContainer { get; set; }
     
+    public static Node2D? PlayerContainer { get; set; }
+    
     public static HotBar? HotBar { get; set; }
 
 

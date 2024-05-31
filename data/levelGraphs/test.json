@@ -1,52 +1,88 @@
 {
   "ConnectionDataList": [
-    {
-      "FromId": "c0255eb6-2c75-44f7-9058-0921fe8fb0d8",
-      "ToId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "FromPort": 0,
-      "ToPort": 0
-    },
-    {
-      "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "ToId": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
-      "FromPort": 0,
-      "ToPort": 0
-    }
+	{
+	  "FromId": "c0255eb6-2c75-44f7-9058-0921fe8fb0d8",
+	  "ToId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
+	  "FromPort": 0,
+	  "ToPort": 0
+	},
+	{
+	  "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
+	  "ToId": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
+	  "FromPort": 0,
+	  "ToPort": 0
+	},
+	{
+	  "FromId": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
+	  "ToId": "8b3d645a-96c0-407e-871d-6f4a0b69557b",
+	  "FromPort": 0,
+	  "ToPort": 0
+	},
+	{
+	  "FromId": "8b3d645a-96c0-407e-871d-6f4a0b69557b",
+	  "ToId": "7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613",
+	  "FromPort": 0,
+	  "ToPort": 0
+	},
+	{
+	  "FromId": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
+	  "ToId": "7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613",
+	  "FromPort": 0,
+	  "ToPort": 0
+	}
   ],
   "RoomNodeDataList": [
-    {
-      "Id": "c0255eb6-2c75-44f7-9058-0921fe8fb0d8",
-      "Title": "起点房间",
-      "Description": "测试的起点房间。",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon"
-      ],
-      "Tags": [
-        "StartingRoom"
-      ],
-      "RoomInjectionProcessorId": null,
-      "RoomInjectionProcessorConfig": null
-    },
-    {
-      "Id": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
-      "Title": "大厅",
-      "Description": "比普通房间要大一些的房间，有多个门，用于连接到其他房间。",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon/utilityRoom.tscn"
-      ],
-      "Tags": null,
-      "RoomInjectionProcessorId": null,
-      "RoomInjectionProcessorConfig": null
-    },
-    {
-      "Id": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
-      "Title": "房间3",
-      "Description": "",
-      "RoomTemplateSet": [
-        "res://prefab/roomTemplates/dungeon/"
-      ],
-      "Tags": null,
-      "RoomInjectionProcessorData": "[\n    {\n        \"Id\": \"TimeInterval\",\n        \"Config\": \"{\\\"DateSpecifiesLevel\\\":0,\\\"StartTime\\\":\\\"2024/1/1 20:34:23\\\",\\\"EndTime\\\":\\\"2025/1/1 20:34:23\\\"}\"\n    }\n]"
-    }
+	{
+	  "Id": "c0255eb6-2c75-44f7-9058-0921fe8fb0d8",
+	  "Title": "起点房间",
+	  "Description": "测试的起点房间。",
+	  "RoomTemplateSet": [
+		"res://prefab/roomTemplates/dungeon/initialRoom.tscn"
+	  ],
+	  "Tags": [
+		"StartingRoom"
+	  ],
+	  "RoomInjectionProcessorData": null
+	},
+	{
+	  "Id": "ba32e05c-0c80-4a79-b5ce-5b8150400e05",
+	  "Title": "房间3",
+	  "Description": "",
+	  "RoomTemplateSet": [
+		"res://prefab/roomTemplates/dungeon/"
+	  ],
+	  "Tags": null,
+	  "RoomInjectionProcessorData": "[\n    {\n        \"Id\": \"TimeInterval\",\n        \"Config\": \"{\\\"DateSpecifiesLevel\\\":0,\\\"StartTime\\\":\\\"2024/1/1 20:34:23\\\",\\\"EndTime\\\":\\\"2025/1/1 20:34:23\\\"}\"\n    }\n]"
+	},
+	{
+	  "Id": "4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03",
+	  "Title": "大厅",
+	  "Description": "比普通房间要大一些的房间，有多个门，用于连接到其他房间。",
+	  "RoomTemplateSet": [
+		"res://prefab/roomTemplates/dungeon/utilityRoom.tscn"
+	  ],
+	  "Tags": null,
+	  "RoomInjectionProcessorData": null
+	},
+	{
+	  "Id": "8b3d645a-96c0-407e-871d-6f4a0b69557b",
+	  "Title": "房间4",
+	  "Description": "",
+	  "RoomTemplateSet": [
+		"res://prefab/roomTemplates/dungeon/"
+	  ],
+	  "Tags": null,
+	  "RoomInjectionProcessorData": ""
+	},
+	{
+	  "Id": "7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613",
+	  "Title": "房间5",
+	  "Description": "",
+	  "RoomTemplateSet": [
+		"res://prefab/roomTemplates/dungeon/"
+	  ],
+	  "Tags": null,
+	  "RoomInjectionProcessorData": ""
+	}
   ]
 }

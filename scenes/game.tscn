@@ -89,5 +89,4 @@ grow_horizontal = 2
 
 [node name="WeaponContainer" type="Node2D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+[node name="PlayerContainer" type="Node2D" parent="."]

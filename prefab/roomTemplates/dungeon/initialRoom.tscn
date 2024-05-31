@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=5 format=3 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
+[ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(508.75, 254)
@@ -36,3 +37,7 @@ position = Vector2(491, 193)
 position = Vector2(5, 0)
 shape = SubResource("RectangleShape2D_jxmys")
 debug_color = Color(0.854902, 0.14902, 0.823529, 0.419608)
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(216, 113)
+script = ExtResource("2_6p8mv")
