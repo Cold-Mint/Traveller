@@ -1,4 +1,5 @@
 ﻿using System;
+using ColdMint.scripts.debug;
 
 namespace ColdMint.scripts.utils;
 
@@ -27,6 +28,8 @@ public static class TimeUtils
         var dtEndTime = Convert.ToDateTime(endTime);
         var compNum1 = DateTime.Compare(dateTime, dtStartTime);
         var compNum2 = DateTime.Compare(dateTime, dtEndTime);
-        return compNum1 >= 0 && compNum2 <= 0;
+        var result = compNum1 >= 0 && compNum2 <= 0;
+        LogCat.LogWithFormat("time_range_debug", dateTime, dtStartTime, dtEndTime, result);
+        return result;
     }
 }

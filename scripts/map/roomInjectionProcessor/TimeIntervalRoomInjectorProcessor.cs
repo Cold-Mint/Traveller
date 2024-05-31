@@ -35,16 +35,47 @@ public class
             configData.EndTime = configData.StartTime;
         }
 
-        var now = DateTime.Now;
-        if (!configData.SpecifiedYear)
+        if (configData.DateSpecifiesLevel == null)
         {
-            //If no year is specified, it is automatically added to the current year
-            //若未指定年份，则自动补充为当前年份
-            var nowYear = now.Year;
-            configData.StartTime = $"{nowYear}-{configData.StartTime}";
-            configData.EndTime = $"{nowYear}-{configData.EndTime}";
+            //If no date level is specified, the default is 0
+            //若未指定日期等级，则默认为0
+            configData.DateSpecifiesLevel = 0;
         }
 
+        var now = DateTime.Now;
+        var nowYear = now.Year;
+        var nowMonth = now.Month;
+        switch (configData.DateSpecifiesLevel)
+        {
+            case 0:
+                //The complete time is specified in the format yyyy/MM/dd hh:mm:ss
+                //指定了完整的时间，格式如：yyyy/MM/dd hh:mm:ss
+                break;
+            case 1:
+                //No year is specified. The format is mm/dd hh:mm:ss
+                //未指定年份。格式如：MM/dd hh:mm:ss
+                configData.StartTime = $"{nowYear}/{configData.StartTime}";
+                configData.EndTime = $"{nowYear}/{configData.EndTime}";
+                break;
+            case 2:
+                //No year and month are specified. The format is dd hh:mm:ss
+                //未指定年份和月份。格式如：dd hh:mm:ss
+                configData.StartTime = $"{nowYear}/{nowMonth}/{configData.StartTime}";
+                configData.EndTime = $"{nowYear}/{nowMonth}/{configData.EndTime}";
+                break;
+            case 3:
+                //No year, month, and day are specified. The format is hh:mm:ss
+                //未指定年份、月份和日期。格式如：hh:mm:ss
+                configData.StartTime = $"{nowYear}/{nowMonth}/{now.Day} {configData.StartTime}";
+                configData.EndTime = $"{nowYear}/{nowMonth}/{now.Day} {configData.EndTime}";
+                break;
+            case 4:
+                //No year, month, day, and hour are specified. The format is mm:ss
+                //未指定年份、月份、日期和小时。格式如：mm:ss
+                configData.StartTime = $"{nowYear}/{nowMonth}/{now.Day} {now.Hour}:{configData.StartTime}";
+                configData.EndTime = $"{nowYear}/{nowMonth}/{now.Day} {now.Hour}:{configData.EndTime}";
+                break;
+        }
         return Task.FromResult(TimeUtils.IsBetweenTimeSpan(now, configData.StartTime, configData.EndTime));
     }
 
@@ -52,33 +83,25 @@ public class
     public class ConfigData
     {
         /// <summary>
-        /// <para>Whether to specify a year</para>
-        /// <para>是否指定年份</para>
+        /// <para>Date specifies the level</para>
+        /// <para>日期指定的等级</para>
         /// </summary>
         /// <remarks>
-        ///<para>If true, then Year can be specified in StartTime and EndTime. The specified year is used to be executed only once in a given year, while configurations that do not specify a year are automatically replenished with the current year (performed annually).</para>
-        ///<para>如果为true，那么可以在StartTime和EndTime内指定Year。指定年份被用于在特定的年份仅执行一次，而未指定年份的配置会自动补充为当前年份（每年执行）。</para>
+        ///<para>Level 0: Specify complete yyyy/MM/DD hh:mm:ss, level 1: yyyy (year automatically uses this year), Level 2: yyyy/MM (year and month automatically uses this month), Level 3: yyyy/MM/DD (automatically uses today), level 4: yyyy/MM/dd hh(The current hour is automatically used)</para>
+        ///<para>等级0：指定完整的yyyy/MM/dd hh:mm:ss，等级1：yyyy（年份自动采用今年），等级2：yyyy/MM（年份和月份自动采用本年本月），等级3：yyyy/MM/dd（自动采用今天），等级4：yyyy/MM/dd hh(自动采用当前小时)</para>
         /// </remarks>
-        public bool SpecifiedYear { get; set; }
+        public int? DateSpecifiesLevel { get; set; }
 
         /// <summary>
         /// <para>Start time</para>
         /// <para>起始时间</para>
         /// </summary>
-        /// <remarks>
-        ///<para>If the year is not specified, enter data in the format MM-DD hh:mm:ss. If the year is specified, enter data in the format yyyy-MM-dd hh:mm:ss.</para>
-        ///<para>若未指定年份，则可填入格式为MM-dd hh:mm:ss的数据，若指定了年份，那么请填入yyyy-MM-dd hh:mm:ss格式数据。</para>
-        /// </remarks>
         public string? StartTime { get; set; }
 
         /// <summary>
         /// <para>End time</para>
         /// <para>结束时间</para>
         /// </summary>
-        /// <remarks>
-        ///<para>See StartTime</para>
-        ///<para>同StartTime</para>
-        /// </remarks>
         public string? EndTime { get; set; }
     }
 }

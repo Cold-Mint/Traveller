@@ -17,3 +17,4 @@ place_existing_rooms,放置已存在的房间{0}。,Place existing rooms {0}.,�
 room_placement_failed,房间{0}放置失败。,Room {0} placement failed.,部屋{0}の放置に失敗します。
 room_placement_information,房间{0}已被成功放置在{1}。,Room {0} has been successfully placed in {1}.,部屋{0}を{1}に配置しました。
 room_injection_processor_does_not_exist,找不到房间注入处理器{0}，请检测是否在MapGenerator内注册。,"Room injection processor {0} not found, check to see if it is registered in MapGenerator.",部屋注入プロセッサ{0}が見つかりません、MapGenerator内に登録されているかどうか検出してください。
+time_range_debug,当前时间：{0}起始时间：{1}，结束时间{2}，是否在范围内{3},"Current time: {0} Start time: {1}, end time {2}, whether in range {3}",現在時間:{0}開始時間:{1}終了時間{2}範囲内かどうか{3}です

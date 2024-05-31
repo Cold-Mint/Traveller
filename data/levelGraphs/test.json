@@ -46,7 +46,7 @@
         "res://prefab/roomTemplates/dungeon/"
       ],
       "Tags": null,
-      "RoomInjectionProcessorData": "[\n    {\n        \"Id\": \"Chance\",\n        \"Config\": \"{\\\"Chance\\\":35.5}\"\n    }\n]"
+      "RoomInjectionProcessorData": "[\n    {\n        \"Id\": \"TimeInterval\",\n        \"Config\": \"{\\\"DateSpecifiesLevel\\\":0,\\\"StartTime\\\":\\\"2024/1/1 20:34:23\\\",\\\"EndTime\\\":\\\"2025/1/1 20:34:23\\\"}\"\n    }\n]"
     }
   ]
 }
