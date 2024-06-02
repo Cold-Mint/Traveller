@@ -18,6 +18,10 @@ public class RoomNodeData
     /// </summary>
     public string? RoomInjectionProcessorData { get; set; }
 
+    public string? EnterRoomEventHandlerId { get; set; }
+
+    public string? ExitRoomEventHandlerId { get; set; }
+
     /// <summary>
     /// <para>Whether a tag is held</para>
     /// <para>是否持有某个标签</para>

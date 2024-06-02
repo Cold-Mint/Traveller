@@ -358,6 +358,22 @@ public static class Config
         public const int Mob = 7;
     }
     
+    /// <summary>
+    /// <para>The event of entering the room</para>
+    /// <para>进入房间的事件</para>
+    /// </summary>
+    public class EnterRoomEventId
+    {
+    }
+    
+    /// <summary>
+    /// <para>Exit the room event</para>
+    /// <para>退出房间的事件</para>
+    /// </summary>
+    public class ExitRoomEventId
+    {
+    }
+    
     public class RoomDataTag
     {
         /// <summary>

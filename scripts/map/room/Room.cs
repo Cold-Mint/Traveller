@@ -23,6 +23,52 @@ public class Room
     private Area2D? _area2D;
     private CollisionShape2D? _collisionShape2D;
 
+    public string? EnterRoomEventHandlerId { get; set; }
+
+    public string? ExitRoomEventHandlerId { get; set; }
+
+    /// <summary>
+    /// <para>When a node enters the room</para>
+    /// <para>当有节点进入房间时</para>
+    /// </summary>
+    /// <param name="node"></param>
+    private void OnEnterRoom(Node node)
+    {
+        if (_rootNode != null)
+        {
+            LogCat.LogWithFormat("enter_the_room_debug", node.Name, _rootNode.Name);
+        }
+
+        if (string.IsNullOrEmpty(EnterRoomEventHandlerId))
+        {
+            return;
+        }
+
+        var enterRoomEventHandler = RoomEventManager.GetEnterRoomEventHandler(EnterRoomEventHandlerId);
+        enterRoomEventHandler?.OnEnterRoom(node, this);
+    }
+
+    /// <summary>
+    /// <para>When a node exits the room</para>
+    /// <para>当有节点退出房间时</para>
+    /// </summary>
+    /// <param name="node"></param>
+    private void OnExitRoom(Node node)
+    {
+        if (_rootNode != null)
+        {
+            LogCat.LogWithFormat("exit_the_room_debug", node.Name, _rootNode.Name);
+        }
+
+        if (string.IsNullOrEmpty(ExitRoomEventHandlerId))
+        {
+            return;
+        }
+
+        var exitRoomEventHandler = RoomEventManager.GetExitRoomEventHandler(ExitRoomEventHandlerId);
+        exitRoomEventHandler?.OnExitRoom(node, this);
+    }
+
     /// <summary>
     /// <para>The collision shape of the room</para>
     /// <para>房间的碰撞形状</para>
@@ -32,6 +78,7 @@ public class Room
         get => _collisionShape2D;
         set => _collisionShape2D = value;
     }
+
     public Area2D? Area2D
     {
         get => _area2D;
@@ -68,7 +115,13 @@ public class Room
         _rootNode = node2D;
         _tileMap = node2D.GetNode<TileMap>("TileMap");
         _area2D = node2D.GetNode<Area2D>("RoomArea");
-        _area2D.Monitorable = true;
+        _area2D.Monitoring = true;
+        _area2D.SetCollisionLayerValue(Config.LayerNumber.RoomArea, true);
+        //Sets the collision layer that can be detected in the current room area.
+        //设置当前房间区域可检测到的碰撞层。
+        _area2D.SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        _area2D.BodyExited += OnExitRoom;
+        _area2D.BodyEntered += OnEnterRoom;
         _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
         _roomSlots = GetRoomSlots(_tileMap, _area2D,
             node2D.GetNode<Node2D>("RoomSlotList"));
@@ -113,7 +166,7 @@ public class Room
             //Prevent other areas from detecting the room slot
             //禁止其他区域检测到房间槽
             area2D.Monitorable = false;
-            
+
             var collisionShape2D = area2D.GetChild<CollisionShape2D>(0);
             var rect2 = collisionShape2D.Shape.GetRect();
             //Round the size of the impactor to the tile size For example, the impactor size 44 is converted to the tile size 44/32=1.375 rounded to 1

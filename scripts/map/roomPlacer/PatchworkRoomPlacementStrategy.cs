@@ -145,7 +145,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         var useableRoomPlacementData = new List<RoomPlacementData>();
         foreach (var roomRes in roomResArray)
         {
-            var newRoom = RoomFactory.CreateRoom(roomRes);
+            var newRoom = RoomFactory.CreateRoom(roomRes, newRoomNodeData.EnterRoomEventHandlerId,
+                newRoomNodeData.ExitRoomEventHandlerId);
             if (newRoom == null)
             {
                 continue;
@@ -216,7 +217,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         var index = randomNumberGenerator.Randi() % roomResArray.Length;
         var roomPlacementData = new RoomPlacementData
         {
-            Room = RoomFactory.CreateRoom(roomResArray[index]),
+            Room = RoomFactory.CreateRoom(roomResArray[index], startRoomNodeData.EnterRoomEventHandlerId,
+                startRoomNodeData.ExitRoomEventHandlerId),
             Position = Vector2.Zero
         };
         return Task.FromResult<RoomPlacementData?>(roomPlacementData);
