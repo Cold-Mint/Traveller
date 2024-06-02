@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.loader.sceneLoader;
 using ColdMint.scripts.map.events;
 using Godot;
 
@@ -33,6 +32,7 @@ public partial class PlayerSpawn : Marker2D
             GameSceneNodeHolder.Player.Position = GlobalPosition;
             return;
         }
+
         if (GameSceneNodeHolder.PlayerContainer == null)
         {
             return;
@@ -50,6 +50,7 @@ public partial class PlayerSpawn : Marker2D
             return;
         }
 
+        player.ItemContainer = GameSceneNodeHolder.HotBar;
         GameSceneNodeHolder.PlayerContainer.AddChild(player);
         GameSceneNodeHolder.Player = player;
         player.Position = GlobalPosition;

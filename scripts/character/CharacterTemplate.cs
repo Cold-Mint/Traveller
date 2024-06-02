@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
@@ -433,6 +434,21 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="damageTemplate"></param>
     protected virtual void OnDie(DamageTemplate damageTemplate)
     {
+        //If the attacker is not empty and the role name is not empty, then the role death message is printed
+        //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
+        if (damageTemplate.Attacker != null && !string.IsNullOrEmpty(CharacterName))
+        {
+            if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
+                !string.IsNullOrEmpty(characterTemplate.CharacterName))
+            {
+                LogCat.LogWithFormat("death_info", CharacterName, characterTemplate.CharacterName);
+            }
+            else
+            {
+                LogCat.LogWithFormat("death_info", CharacterName, damageTemplate.Attacker.Name);
+            }
+        }
+
         QueueFree();
     }
 
