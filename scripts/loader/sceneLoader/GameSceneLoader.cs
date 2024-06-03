@@ -31,6 +31,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");
         GameSceneNodeHolder.WeaponContainer = weaponContainer;
+        //Load AICharacter container
+        //加载AICharacter容器
+        var aiCharacterContainer = GetNode<Node2D>("AICharacterContainer");
+        GameSceneNodeHolder.AICharacterContainer = aiCharacterContainer;
         //Load player container
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");
@@ -58,13 +62,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
-        MapGenerator.MapGenerationCompleteEvent += (_) =>
-        {
-        };
-        MapGenerator.MapGenerationStartEvent+= (_) =>
-        {
-           
-        };
         await GenerateMap();
     }
 

@@ -22,3 +22,4 @@ player_spawn_debug,玩家{0}生成在{1}。,"Player {0} spawned at {1}.",プレ�
 player_packed_scene_not_exist,玩家预制场景不存在。,Player packed scene does not exist.,プレイヤーのパックされたシーンが存在しません。
 exit_the_room_debug,节点{0}退出房间{1}。,"Node {0} exits room {1}.",ノード{0}が部屋{1}を退出します。
 enter_the_room_debug,节点{0}进入房间{1}。,"Node {0} enters room {1}.",ノード{0}が部屋{1}に入ります。
+death_info,生物{0}被{1}击败。,"Creature {0} was defeated by {1}.",生物{0}が{1}によって打ち負かされました。

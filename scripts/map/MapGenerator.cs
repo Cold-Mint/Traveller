@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
@@ -83,21 +84,6 @@ public static class MapGenerator
         return _roomInjectionProcessorsDictionary.Remove(id);
     }
 
-    public delegate void MapGenerationStartEventHandler(MapGenerationStartEvent mapGenerationStartEvent);
-
-    public delegate void MapGenerationCompleteEventHandler(MapGenerationCompleteEvent mapGenerationCompleteEvent);
-
-    /// <summary>
-    /// <para>Map starts generating events</para>
-    /// <para>地图开始生成的事件</para>
-    /// </summary>
-    public static event MapGenerationStartEventHandler? MapGenerationStartEvent;
-
-    /// <summary>
-    /// <para>Map generation completion event</para>
-    /// <para>地图生成完成事件</para>
-    /// </summary>
-    public static event MapGenerationCompleteEventHandler? MapGenerationCompleteEvent;
 
     /// <summary>
     /// <para>Set seed</para>
@@ -154,13 +140,18 @@ public static class MapGenerator
         }
 
         _running = true;
-        MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
+        EventManager.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
             _mapRoot == null)
         {
             LogCat.LogError("map_generator_missing_parameters");
             _running = false;
             return;
+        }
+
+        if (GameSceneNodeHolder.AICharacterContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneNodeHolder.AICharacterContainer);
         }
 
         NodeUtils.DeleteAllChild(_mapRoot);
@@ -238,18 +229,21 @@ public static class MapGenerator
                 {
                     foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
                     {
-                        if (string.IsNullOrEmpty(injectionProcessorData.Id) || string.IsNullOrEmpty(injectionProcessorData.Config))
+                        if (string.IsNullOrEmpty(injectionProcessorData.Id) ||
+                            string.IsNullOrEmpty(injectionProcessorData.Config))
                         {
                             //The data is incomplete, and the injectionProcessorData is ignored.
                             //数据不全，忽略injectionProcessorData。
                             continue;
                         }
+
                         if (!_roomInjectionProcessorsDictionary.TryGetValue(injectionProcessorData.Id,
                                 out var roomInjectionProcessor))
                         {
                             //If the room injection processor cannot be found, a print error occurs.
                             //如果找不到房间注入处理器，那么打印错误。
-                            LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist", injectionProcessorData.Id);
+                            LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist",
+                                injectionProcessorData.Id);
                             continue;
                         }
 
@@ -262,10 +256,12 @@ public static class MapGenerator
                     }
                 }
             }
+
             if (!canBePlaced)
             {
                 continue;
             }
+
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
             Room? parentRoomNode = null;
             if (nextParentNodeId != null)
@@ -300,7 +296,13 @@ public static class MapGenerator
         {
             RandomNumberGenerator = randomNumberGenerator
         };
-        MapGenerationCompleteEvent?.Invoke(eventObj);
+        EventManager.MapGenerationCompleteEvent?.Invoke(eventObj);
+        var aiCharacterGenerateEvent = new AiCharacterGenerateEvent
+        {
+            Tag = AiCharacterGenerateEvent.TagMapGenerationComplete
+        };
+        LogCat.Log("触发事件" + (EventManager.AiCharacterGenerateEvent == null));
+        EventManager.AiCharacterGenerateEvent?.Invoke(aiCharacterGenerateEvent);
     }
 
     /// <summary>

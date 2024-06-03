@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 using Godot;
@@ -100,7 +101,8 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append("[color=");
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
-            operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
+            operationTipBuilder.Append(
+                TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
             operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServerUtils.Translate("jump_down"));
         }
@@ -292,6 +294,7 @@ public partial class Player : CharacterTemplate
                     rigidBody2D.LinearVelocity = GetThrowVelocity();
                     break;
             }
+
             CurrentItem = null;
             var hotBar = GameSceneNodeHolder.HotBar;
             hotBar?.RemoveItemFromItemSlotBySelectIndex(1);
@@ -361,6 +364,20 @@ public partial class Player : CharacterTemplate
         {
             weapon.Flip(FacingLeft);
         }
+    }
+
+    protected override void OnDie(DamageTemplate damageTemplate)
+    {
+        if (EventManager.GameOverEvent != null)
+        {
+            var gameOverEvent = new GameOverEvent
+            {
+                DeathInfo = "\"白纸\"失手将自己杀死。"
+            };
+            EventManager.GameOverEvent(gameOverEvent);
+        }
+
+        Visible = false;
     }
 
     protected override void EnterThePickingRangeBody(Node node)

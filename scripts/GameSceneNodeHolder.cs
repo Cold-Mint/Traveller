@@ -24,6 +24,12 @@ public static class GameSceneNodeHolder
     
     public static Node2D? PlayerContainer { get; set; }
     
+    /// <summary>
+    /// <para>AICharacterContainer</para>
+    /// <para>AICharacter角色</para>
+    /// </summary>
+    public static Node2D? AICharacterContainer { get; set; }
+    
     public static HotBar? HotBar { get; set; }
 
 

@@ -5,6 +5,7 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 using Godot;

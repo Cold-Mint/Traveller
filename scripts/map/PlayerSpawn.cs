@@ -17,12 +17,12 @@ public partial class PlayerSpawn : Marker2D
     {
         base._Ready();
         _playerPackedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
-        MapGenerator.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
+        EventManager.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
     }
 
     private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
-        MapGenerator.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
         //After the map is generated, create the player instance.
         //当地图生成完成后，创建玩家实例。
         if (GameSceneNodeHolder.Player != null)
@@ -55,5 +55,11 @@ public partial class PlayerSpawn : Marker2D
         GameSceneNodeHolder.Player = player;
         player.Position = GlobalPosition;
         LogCat.LogWithFormat("player_spawn_debug", player.ReadOnlyCharacterName, player.Position);
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
     }
 }

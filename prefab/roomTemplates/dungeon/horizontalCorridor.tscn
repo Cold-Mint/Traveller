@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0uurp551pku"]
+[gd_scene load_steps=7 format=3 uid="uid://b0uurp551pku"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_a15hy"]
+[ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="2_wamhd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(443, 118)
@@ -53,3 +54,8 @@ shape = SubResource("RectangleShape2D_30r3c")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomSlotList/Area2D3"]
 position = Vector2(193, 15)
 shape = SubResource("RectangleShape2D_7tsse")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(220, 103)
+script = ExtResource("2_wamhd")
+metadata/ResPath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
