@@ -45,8 +45,7 @@ public class AiPickNode : BehaviorTreeNodeTemplate
         {
             //If it's a weapon
             //如果是武器
-            var distance = weaponTemplate.GlobalPosition - Character.GlobalPosition;
-            var distanceLength = distance.Length();
+            var distanceLength = weaponTemplate.GlobalPosition.DistanceTo(Character.GlobalPosition);
             if (distanceLength < closestDistance)
             {
                 closestDistance = distanceLength;

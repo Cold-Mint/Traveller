@@ -1,0 +1,5 @@
+id,zh,en,jp
+#kill self
+#自杀
+death_info_self_1,{0}误伤了自己。,{0} accidentally shot himself.,{0}誤って自分を傷つけました。
+death_info_self_2,{0}忘记了瞄准。,{0} forgot to aim.,{0}照準を忘れました。

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using ColdMint.scripts.camp;
+using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
@@ -38,6 +39,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
 
+        DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());
         //Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package

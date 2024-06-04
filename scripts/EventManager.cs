@@ -11,7 +11,17 @@ public class EventManager
     /// </summary>
     public static Action<AiCharacterGenerateEvent>? AiCharacterGenerateEvent;
 
+    /// <summary>
+    /// <para>Game Over Event</para>
+    /// <para>游戏结束事件</para>
+    /// </summary>
     public static Action<GameOverEvent>? GameOverEvent;
+
+    /// <summary>
+    /// <para>Events when the game is replayed</para>
+    /// <para>游戏重玩时的事件</para>
+    /// </summary>
+    public static Action<GameReplayEvent>? GameReplayEvent;
 
     /// <summary>
     /// <para>Map starts generating events</para>

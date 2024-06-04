@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
@@ -100,7 +101,7 @@ public partial class CharacterTemplate : CharacterBody2D
     //角色创建后的初始血量
     private int _initialHp;
 
-    protected int MaxHp;
+    public int MaxHp;
 
     /// <summary>
     /// <para>The camp ID of the role</para>
@@ -120,6 +121,34 @@ public partial class CharacterTemplate : CharacterBody2D
     protected List<Node>? PickingRangeBodiesList;
 
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? Array.Empty<Node>();
+
+    /// <summary>
+    /// <para>Resurrected character</para>
+    /// <para>复活角色</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Sets the amount of Hp a character has after resurrection</para>
+    ///<para>设置角色复活后拥有的Hp</para>
+    /// </remarks>
+    public void Revive(int newHp)
+    {
+        //If the new Hp is less than or equal to 0, there is no need to resurrect
+        //如果新的Hp小于等于0，那么不需要复活
+        if (newHp <= 0)
+        {
+            return;
+        }
+
+        if (CurrentHp > 0)
+        {
+            //If the current Hp is greater than 0, there is no need to revive
+            //如果当前Hp大于0，那么不需要复活
+            return;
+        }
+
+        CurrentHp = newHp;
+        Visible = true;
+    }
 
     /// <summary>
     /// <para>Find the nearest item within the pick up area(Does not include items currently held)</para>
@@ -433,7 +462,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>处理角色死亡的事件</para>
     /// </summary>
     /// <param name="damageTemplate"></param>
-    protected virtual void OnDie(DamageTemplate damageTemplate)
+    protected virtual Task OnDie(DamageTemplate damageTemplate)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
@@ -451,6 +480,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         QueueFree();
+        return Task.CompletedTask;
     }
 
     /// <summary>

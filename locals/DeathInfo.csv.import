@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dwx0hwuy0uqio"
+
+[deps]
+
+files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.jp.translation"]
+
+source_file="res://locals/DeathInfo.csv"
+dest_files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.jp.translation"]
+
+[params]
+
+compress=true
+delimiter=0

@@ -1,6 +1,8 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
@@ -153,6 +155,11 @@ public partial class Player : CharacterTemplate
 
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
+        if (!Visible)
+        {
+            return;
+        }
+
         //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
         if (_platformDetectionRayCast2D != null && _platformDetectionRayCast2D.IsColliding() != _collidingWithPlatform)
@@ -315,6 +322,11 @@ public partial class Player : CharacterTemplate
 
     public override void _Process(double delta)
     {
+        if (!Visible)
+        {
+            return;
+        }
+
         AimTheCurrentItemAtAPoint(GetGlobalMousePosition());
         var itemMarker2DPosition = Vector2.Zero;
         if (ItemMarker2D != null)
@@ -366,18 +378,21 @@ public partial class Player : CharacterTemplate
         }
     }
 
-    protected override void OnDie(DamageTemplate damageTemplate)
+    protected override async Task OnDie(DamageTemplate damageTemplate)
     {
-        if (EventManager.GameOverEvent != null)
+        Visible = false;
+        if (EventManager.GameOverEvent == null)
         {
-            var gameOverEvent = new GameOverEvent
-            {
-                DeathInfo = "\"白纸\"失手将自己杀死。"
-            };
-            EventManager.GameOverEvent(gameOverEvent);
+            return;
         }
 
-        Visible = false;
+        var gameOverEvent = new GameOverEvent();
+        if (damageTemplate.Attacker != null)
+        {
+            gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damageTemplate.Attacker);
+        }
+
+        EventManager.GameOverEvent.Invoke(gameOverEvent);
     }
 
     protected override void EnterThePickingRangeBody(Node node)

@@ -18,21 +18,26 @@ public partial class PlayerSpawn : Marker2D
         base._Ready();
         _playerPackedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
         EventManager.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
+        EventManager.GameReplayEvent += GameReplayEvent;
     }
 
-    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    private void GameReplayEvent(GameReplayEvent gameReplayEvent)
     {
-        EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
-        //After the map is generated, create the player instance.
-        //当地图生成完成后，创建玩家实例。
         if (GameSceneNodeHolder.Player != null)
         {
-            //An existing player instance will not be created.
-            //已经存在玩家实例，不再创建。
             GameSceneNodeHolder.Player.Position = GlobalPosition;
+            GameSceneNodeHolder.Player.Revive(GameSceneNodeHolder.Player.MaxHp);
             return;
         }
+        SpawnPlayer();
+    }
 
+    /// <summary>
+    /// <para>Generate player instance</para>
+    /// <para>生成玩家实例</para>
+    /// </summary>
+    private void SpawnPlayer()
+    {
         if (GameSceneNodeHolder.PlayerContainer == null)
         {
             return;
@@ -57,9 +62,24 @@ public partial class PlayerSpawn : Marker2D
         LogCat.LogWithFormat("player_spawn_debug", player.ReadOnlyCharacterName, player.Position);
     }
 
+    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    {
+        //After the map is generated, create the player instance.
+        //当地图生成完成后，创建玩家实例。
+        if (GameSceneNodeHolder.Player != null)
+        {
+            //An existing player instance will not be created.
+            //已经存在玩家实例，不再创建。
+            return;
+        }
+
+        SpawnPlayer();
+    }
+
     public override void _ExitTree()
     {
         base._ExitTree();
         EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventManager.GameReplayEvent -= GameReplayEvent;
     }
 }

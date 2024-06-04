@@ -177,34 +177,36 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     public void Fire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
         var nowTime = DateTime.Now;
-        if (_lastFiringTime == null || nowTime - _lastFiringTime > _firingInterval)
+        //If the present time minus the time of the last fire is less than the interval between fires, it means that the fire cannot be fired yet.
+        //如果现在时间减去上次开火时间小于开火间隔，说明还不能开火。
+        if (_lastFiringTime != null && nowTime - _lastFiringTime < _firingInterval)
         {
-            if (owner is CharacterTemplate characterTemplate)
-            {
-                //我们在每次开火之前，检查武器的后坐力。
-                if (_recoil != Vector2.Zero)
-                {
-                    //假设此武器拥有后坐力
-                    var force = new Vector2();
-                    var forceX = Math.Abs(_recoil.X);
-                    if (Math.Abs(RotationDegrees) < 90)
-                    {
-                        //The weapon goes to the right and we apply a recoil to the left
-                        //武器朝向右边我们向左施加后坐力
-                        forceX = -forceX;
-                    }
-
-                    force.X = forceX * Config.CellSize;
-                    force.Y = _recoil.Y * Config.CellSize;
-                    characterTemplate.AddForce(force);
-                }
-            }
-
-            //If the time difference is greater than the firing interval, then fire
-            //如果可以时间差大于开火间隔，那么开火
-            DoFire(owner, enemyGlobalPosition);
-            _lastFiringTime = nowTime;
+            return;
         }
+
+        if (owner is CharacterTemplate characterTemplate)
+        {
+            //We check the recoil of the weapon before each firing.
+            //我们在每次开火之前，检查武器的后坐力。
+            if (_recoil != Vector2.Zero)
+            {
+                var force = new Vector2();
+                var forceX = Math.Abs(_recoil.X);
+                if (Math.Abs(RotationDegrees) < 90)
+                {
+                    //The weapon goes to the right and we apply a recoil to the left
+                    //武器朝向右边我们向左施加后坐力
+                    forceX = -forceX;
+                }
+
+                force.X = forceX * Config.CellSize;
+                force.Y = _recoil.Y * Config.CellSize;
+                characterTemplate.AddForce(force);
+            }
+        }
+
+        DoFire(owner, enemyGlobalPosition);
+        _lastFiringTime = nowTime;
     }
 
     /// <summary>
