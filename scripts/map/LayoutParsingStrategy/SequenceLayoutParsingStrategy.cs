@@ -19,30 +19,37 @@ namespace ColdMint.scripts.map.LayoutParsingStrategy;
 public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
 {
     private LevelGraphEditorSaveData? _levelGraphEditorSaveData;
-
-    //Check whether data Settings are valid
-    //设置数据时，是否检查合法了
+    
+    /// <summary>
+    /// <para>Check whether data Settings are valid</para>
+    /// <para>设置数据时，是否检查合法了</para>
+    /// </summary>
     private bool _checkLegality;
 
 
-    //The connection index of the query
-    //查询的连接索引
+    /// <summary>
+    /// <para>The connection index of the query</para>
+    /// <para>查询的连接索引</para>
+    /// </summary>
     private int _index;
     private int _maxIndex;
-    private Dictionary<string, RoomNodeData> _roomNodeDataDictionary = new Dictionary<string, RoomNodeData>();
+    /// <summary>
+    /// <para>Room ID Indicates the dictionary of room node data</para>
+    /// <para>房间ID对应房间节点数据的字典</para>
+    /// </summary>
+    private readonly Dictionary<string, RoomNodeData> _roomNodeDataDictionary = new();
 
     public void SetLevelGraph(LevelGraphEditorSaveData levelGraphEditorSaveData)
     {
-        _checkLegality = false;
-        _index = -1;
-        _levelGraphEditorSaveData = levelGraphEditorSaveData;
-        if (_levelGraphEditorSaveData.RoomNodeDataList == null || _levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
+        if (levelGraphEditorSaveData.RoomNodeDataList == null || levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
             //No room data, unable to parse.
             //没有房间数据，无法解析。
             return;
         }
-
+        _checkLegality = false;
+        _index = -1;
+        _levelGraphEditorSaveData = levelGraphEditorSaveData;
         if (_levelGraphEditorSaveData.ConnectionDataList == null ||
             _levelGraphEditorSaveData.ConnectionDataList.Count == 0)
         {

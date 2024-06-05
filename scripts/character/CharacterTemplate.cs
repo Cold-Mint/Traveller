@@ -130,7 +130,7 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Sets the amount of Hp a character has after resurrection</para>
     ///<para>设置角色复活后拥有的Hp</para>
     /// </remarks>
-    public void Revive(int newHp)
+    public virtual void Revive(int newHp)
     {
         //If the new Hp is less than or equal to 0, there is no need to resurrect
         //如果新的Hp小于等于0，那么不需要复活

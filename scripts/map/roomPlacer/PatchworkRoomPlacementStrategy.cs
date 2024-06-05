@@ -263,6 +263,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             if (mainRoomSlot == null || mainRoomSlot.Matched)
             {
+                //If it's already a match, it's no longer a match
                 //如果已经匹配过了，就不再匹配
                 continue;
             }
@@ -276,6 +277,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
                 if (newRoomSlot.Matched)
                 {
+                    //If it's already a match, it's no longer a match
                     //如果已经匹配过了，就不再匹配
                     continue;
                 }

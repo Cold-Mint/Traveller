@@ -9,6 +9,10 @@ using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
 
+/// <summary>
+/// <para>Game scene loader</para>
+/// <para>游戏场景加载器</para>
+/// </summary>
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
     private Label? _seedLabel;
@@ -55,7 +59,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         _seedLabel = GetNodeOrNull<Label>("CanvasLayer/Control/SeedLabel");
         if (_seedLabel != null)
         {
-            _seedLabel.Visible = Config.IsDebug();
+            _seedLabel.Visible = debugMode;
         }
 
         MapGenerator.MapRoot = GetNode<Node>("MapRoot");
@@ -77,16 +81,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             //If you have a seedLabel, then set the seed to it.
             //如果有seedLabel，那么将种子设置上去。
             var seedInfo = TranslationServerUtils.TranslateWithFormat("seed_info", MapGenerator.Seed);
-            if (seedInfo == null)
-            {
-                _seedLabel.Text = $"Seed: {MapGenerator.Seed}";
-            }
-            else
-            {
-                _seedLabel.Text = seedInfo;
-            }
+            _seedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
         }
-
         await MapGenerator.GenerateMap();
     }
 }

@@ -11,17 +11,17 @@ namespace ColdMint.scripts.map.layoutStrategy;
 /// </summary>
 public class TestLayoutStrategy : ILayoutStrategy
 {
-    private string _path = "res://data/levelGraphs/test.json";
+    private const string Path = "res://data/levelGraphs/test.json";
 
     public Task<LevelGraphEditorSaveData?> GetLayout()
     {
-        var exists = FileAccess.FileExists(_path);
+        var exists = FileAccess.FileExists(Path);
         if (!exists)
         {
             return Task.FromResult<LevelGraphEditorSaveData?>(null);
         }
 
-        var json = FileAccess.GetFileAsString(_path);
+        var json = FileAccess.GetFileAsString(Path);
         if (json == null)
         {
             return Task.FromResult<LevelGraphEditorSaveData?>(null);

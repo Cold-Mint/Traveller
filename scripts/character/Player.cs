@@ -378,6 +378,18 @@ public partial class Player : CharacterTemplate
         }
     }
 
+    public override void Revive(int newHp)
+    {
+        base.Revive(newHp);
+        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        if (healthBarUi!=null)
+        {
+            //The purpose of setting Hp to the current Hp is to cause the life bar to refresh.
+            //将Hp设置为当前Hp的目的是，使生命条刷新。
+            healthBarUi.CurrentHp = CurrentHp;
+        }
+    }
+
     protected override async Task OnDie(DamageTemplate damageTemplate)
     {
         Visible = false;
