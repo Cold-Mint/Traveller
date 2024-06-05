@@ -3,10 +3,19 @@ using Godot;
 
 namespace ColdMint.scripts;
 
+/// <summary>
+/// <para>HealthBarUi</para>
+/// <para>健康条UI</para>
+/// </summary>
 public partial class HealthBarUi : HBoxContainer
 {
     private int _maxHp;
     private int _currentHp;
+    private Texture2D? _heartFull;
+    private Texture2D? _heartEmpty;
+    private Texture2D? _heartHalf;
+    private Texture2D? _heartQuarter;
+    private Texture2D? _heartThreeFourths;
 
     public int CurrentHp
     {
@@ -139,11 +148,6 @@ public partial class HealthBarUi : HBoxContainer
         }
     }
 
-    private Texture2D? _heartFull;
-    private Texture2D? _heartEmpty;
-    private Texture2D? _heartHalf;
-    private Texture2D? _heartQuarter;
-    private Texture2D? _heartThreeFourths;
 
     public override void _Ready()
     {

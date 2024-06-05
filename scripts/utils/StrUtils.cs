@@ -1,6 +1,10 @@
 ﻿namespace ColdMint.scripts.utils;
 
-public class StrUtils
+/// <summary>
+/// <para>StrUtils</para>
+/// <para>字符串工具</para>
+/// </summary>
+public static class StrUtils
 {
 
     /// <summary>

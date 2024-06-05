@@ -13,7 +13,7 @@ namespace ColdMint.scripts.weapon;
 /// </summary>
 public partial class WeaponTemplate : RigidBody2D, IItem
 {
-    public float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     public string? Id { get; set; }
     public int Quantity { get; set; }
@@ -42,7 +42,10 @@ public partial class WeaponTemplate : RigidBody2D, IItem
 
     private DateTime? _lastFiringTime;
 
-    //开火间隔
+    /// <summary>
+    /// <para>Firing interval</para>
+    /// <para>开火间隔</para>
+    /// </summary>
     private TimeSpan _firingInterval;
 
 
@@ -56,6 +59,10 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// </remarks>
     private Vector2 _recoil;
 
+    /// <summary>
+    /// <para>This area represents the collision range of the weapon, and when other nodes enter this area, they will deal damage.</para>
+    /// <para>这个区域表示武器的碰撞范围，当其他节点进入此区域时，会造成伤害。</para>
+    /// </summary>
     private Area2D? _area2D;
 
     protected RayCast2D? RayCast2D;
@@ -117,7 +124,6 @@ public partial class WeaponTemplate : RigidBody2D, IItem
 
         //If allowed to cause harm
         //如果允许造成伤害
-        Owner = null;
         var damage = new Damage
         {
             MaxDamage = Math.Abs(_maxContactInjury),
@@ -128,6 +134,9 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         damage.MoveLeft = LinearVelocity.X < 0;
         damage.Type = Config.DamageType.Physical;
         characterTemplate.Damage(damage);
+        //Can only cause one collision damage.
+        //仅能造成一次碰撞伤害。
+        EnableContactInjury = false;
     }
 
     /// <summary>

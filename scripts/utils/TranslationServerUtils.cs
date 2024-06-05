@@ -2,6 +2,10 @@
 
 namespace ColdMint.scripts.utils;
 
+/// <summary>
+/// <para>Translation server utils</para>
+/// <para>翻译服务器工具</para>
+/// </summary>
 public static class TranslationServerUtils
 {
     /// <summary>

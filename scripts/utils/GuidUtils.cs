@@ -2,7 +2,11 @@
 
 namespace ColdMint.scripts.utils;
 
-public class GuidUtils
+/// <summary>
+/// <para>GuidUtils</para>
+/// <para>Guid工具</para>
+/// </summary>
+public static class GuidUtils
 {
     /// <summary>
     /// <para>Get the new GUID</para>

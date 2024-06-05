@@ -38,12 +38,12 @@ public partial class AiCharacterSpawn : Marker2D
             return;
         }
 
-        if (GameSceneNodeHolder.AICharacterContainer == null)
+        if (GameSceneNodeHolder.AiCharacterContainer == null)
         {
             return;
         }
 
-        GameSceneNodeHolder.AICharacterContainer.AddChild(aiCharacter);
+        GameSceneNodeHolder.AiCharacterContainer.AddChild(aiCharacter);
         aiCharacter.Position = GlobalPosition;
     }
 

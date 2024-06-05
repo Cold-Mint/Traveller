@@ -3,7 +3,11 @@ using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts;
 
-public class EventManager
+/// <summary>
+/// <para>EventManager</para>
+/// <para>事件管理器</para>
+/// </summary>
+public static class EventManager
 {
     /// <summary>
     /// <para>Event when the AI character is generated</para>

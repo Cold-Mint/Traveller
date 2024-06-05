@@ -146,7 +146,9 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        CurrentHp = newHp;
+        //Check whether the new Hp is greater than the maximum Hp. If yes, set the current Hp to the maximum Hp. If no, set the current Hp to the new HP
+        //判断新的Hp是否大于最大Hp，若大于那么将当前Hp设置为最大Hp，否则设置为新的Hp
+        CurrentHp = newHp > MaxHp ? MaxHp : newHp;
         Visible = true;
     }
 
@@ -352,10 +354,10 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //If the time difference between the last injury and the current time is greater than the time displayed in the health bar, the health bar is hidden
         //如果上次受到伤害的时间与当前时间的时间差大于健康条显示时间，则隐藏健康条
-        var timeSpan = DateTime.Now - _lastDamageTime;
-        if (timeSpan > Config.HealthBarDisplaysTime)
+        if (_healthBar is { Visible: true })
         {
-            if (_healthBar != null)
+            var timeSpan = DateTime.Now - _lastDamageTime;
+            if (timeSpan > Config.HealthBarDisplaysTime)
             {
                 _healthBar.Visible = false;
             }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
@@ -149,9 +148,9 @@ public static class MapGenerator
             return;
         }
 
-        if (GameSceneNodeHolder.AICharacterContainer != null)
+        if (GameSceneNodeHolder.AiCharacterContainer != null)
         {
-            NodeUtils.DeleteAllChild(GameSceneNodeHolder.AICharacterContainer);
+            NodeUtils.DeleteAllChild(GameSceneNodeHolder.AiCharacterContainer);
         }
 
         NodeUtils.DeleteAllChild(_mapRoot);

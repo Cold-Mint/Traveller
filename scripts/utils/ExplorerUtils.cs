@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace ColdMint.scripts.utils;
 
@@ -6,7 +7,7 @@ namespace ColdMint.scripts.utils;
 /// <para>Explorer Utils</para>
 /// <para>资源管理器工具</para>
 /// </summary>
-public class ExplorerUtils
+public static class ExplorerUtils
 {
     /// <summary>
     /// <para>Call Explorer to open the directory</para>
@@ -53,6 +54,12 @@ public class ExplorerUtils
                 };
                 Process.Start(startInfoAndroid);
                 break;
+            case Config.OsEnum.Unknown:
+            case Config.OsEnum.Macos:
+            case Config.OsEnum.Ios:
+            case Config.OsEnum.Web:
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -64,14 +71,10 @@ public class ExplorerUtils
     public static bool SupportOpenDirectory()
     {
         var osEnum = Config.GetOs();
-        switch (osEnum)
+        return osEnum switch
         {
-            case Config.OsEnum.Windows:
-            case Config.OsEnum.Linux:
-            case Config.OsEnum.Android:
-                return true;
-            default:
-                return false;
-        }
+            Config.OsEnum.Windows or Config.OsEnum.Linux or Config.OsEnum.Android => true,
+            _ => false
+        };
     }
 }

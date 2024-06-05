@@ -8,7 +8,11 @@ namespace ColdMint.scripts;
 
 public static class Config
 {
-    public class BehaviorTreeId
+    /// <summary>
+    /// <para>ID of the behavior tree</para>
+    /// <para>行为树的ID</para>
+    /// </summary>
+    public static class BehaviorTreeId
     {
         /// <summary>
         /// <para>巡逻</para>
@@ -21,7 +25,7 @@ public static class Config
     /// <para>BehaviorTreeResult</para>
     /// <para>行为树的结果</para>
     /// </summary>
-    public class BehaviorTreeResult
+    public static class BehaviorTreeResult
     {
         /// <summary>
         /// <para>Running</para>
@@ -149,20 +153,25 @@ public static class Config
         return OS.HasFeature("editor");
     }
 
-    public class RoomInjectionProcessorId
+    /// <summary>
+    /// <para>Room Injector ID</para>
+    /// <para>房间注入器ID</para>
+    /// </summary>
+    public static class RoomInjectionProcessorId
     {
         /// <summary>
         /// <para>Chance</para>
         /// <para>概率的</para>
         /// </summary>
         public const string Chance = "Chance";
+
         /// <summary>
         /// <para>TimeInterval</para>
         /// <para>时间范围的</para>
         /// </summary>
         public const string TimeInterval = "TimeInterval";
     }
-    
+
     public enum OsEnum
     {
         //unknown
@@ -191,11 +200,7 @@ public static class Config
 
         //The host operating system is a web browser
         //宿主操作系统是网页浏览器
-        Web,
-
-        //Editor
-        //编辑器
-        // Editor
+        Web
     }
 
     /// <summary>
@@ -205,11 +210,6 @@ public static class Config
     /// <returns></returns>
     public static OsEnum GetOs()
     {
-        // if (OS.HasFeature("editor"))
-        // {
-        //     return OsEnum.Editor;
-        // }
-
         if (OS.HasFeature("windows"))
         {
             return OsEnum.Windows;
@@ -239,9 +239,15 @@ public static class Config
         {
             return OsEnum.Ios;
         }
+
         return OsEnum.Unknown;
     }
 
+    /// <summary>
+    /// <para>Get the game version</para>
+    /// <para>获取游戏版本</para>
+    /// </summary>
+    /// <returns></returns>
     public static string GetVersion()
     {
         var stringBuilder = new StringBuilder();
@@ -347,7 +353,7 @@ public static class Config
     /// <para>Physical collision layer number</para>
     /// <para>物理碰撞层 序号</para>
     /// </summary>
-    public class LayerNumber
+    public static class LayerNumber
     {
         public const int RoomArea = 1;
         public const int Ground = 2;
@@ -357,24 +363,8 @@ public static class Config
         public const int Platform = 6;
         public const int Mob = 7;
     }
-    
-    /// <summary>
-    /// <para>The event of entering the room</para>
-    /// <para>进入房间的事件</para>
-    /// </summary>
-    public class EnterRoomEventId
-    {
-    }
-    
-    /// <summary>
-    /// <para>Exit the room event</para>
-    /// <para>退出房间的事件</para>
-    /// </summary>
-    public class ExitRoomEventId
-    {
-    }
-    
-    public class RoomDataTag
+
+    public static class RoomDataTag
     {
         /// <summary>
         /// <para>Mark the starting room</para>
@@ -387,7 +377,7 @@ public static class Config
     /// <para>Specify the type of damage used in the game</para>
     /// <para>指定游戏内使用的伤害类型</para>
     /// </summary>
-    public class DamageType
+    public static class DamageType
     {
         /// <summary>
         /// <para>physical injury</para>

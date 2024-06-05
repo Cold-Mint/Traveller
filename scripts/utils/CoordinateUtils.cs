@@ -2,7 +2,11 @@
 
 namespace ColdMint.scripts.utils;
 
-public class CoordinateUtils
+/// <summary>
+/// <para>CoordinateUtils</para>
+/// <para>坐标工具类</para>
+/// </summary>
+public static class CoordinateUtils
 {
     /// <summary>
     /// <para>方向描述</para>

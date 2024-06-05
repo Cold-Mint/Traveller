@@ -8,12 +8,14 @@ namespace ColdMint.scripts;
 /// </summary>
 public partial class FpsLabel : Label
 {
-    bool _enable;
+    private bool _enable;
     private LabelSettings? _labelSettings;
 
     public override void _Ready()
     {
         Text = null;
+        //Enabled only in debug mode.
+        //仅在调试模式启用。
         if (Config.IsDebug())
         {
             _labelSettings = new LabelSettings();

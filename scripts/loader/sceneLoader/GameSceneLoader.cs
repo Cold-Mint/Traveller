@@ -34,7 +34,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //Load AICharacter container
         //加载AICharacter容器
         var aiCharacterContainer = GetNode<Node2D>("AICharacterContainer");
-        GameSceneNodeHolder.AICharacterContainer = aiCharacterContainer;
+        GameSceneNodeHolder.AiCharacterContainer = aiCharacterContainer;
         //Load player container
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");

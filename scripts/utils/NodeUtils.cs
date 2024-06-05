@@ -4,7 +4,11 @@ using Godot;
 
 namespace ColdMint.scripts.utils;
 
-public class NodeUtils
+/// <summary>
+/// <para>Node Utils</para>
+/// <para>节点工具</para>
+/// </summary>
+public static class NodeUtils
 {
     /// <summary>
     /// <para>Delete all child nodes</para>
@@ -81,11 +85,10 @@ public class NodeUtils
                 continue;
             }
 
-            var distance = node2D.GlobalPosition - origin.GlobalPosition;
-            var distanceLength = distance.Length();
-            if (distanceLength < closestDistance)
+            var distance = node2D.GlobalPosition.DistanceTo(origin.GlobalPosition);
+            if (distance < closestDistance)
             {
-                closestDistance = distanceLength;
+                closestDistance = distance;
                 closestNode = node2D;
             }
         }

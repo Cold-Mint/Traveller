@@ -3,6 +3,10 @@ using ColdMint.scripts.debug;
 
 namespace ColdMint.scripts.utils;
 
+/// <summary>
+/// <para>Time Utils</para>
+/// <para>时间工具</para>
+/// </summary>
 public static class TimeUtils
 {
     /// <summary>

@@ -6,7 +6,7 @@ namespace ColdMint.scripts.utils;
 /// <para>ParabolicUtils</para>
 /// <para>抛物线工具</para>
 /// </summary>
-public class ParabolicUtils
+public static class ParabolicUtils
 {
     /// <summary>
     /// <para>Calculated parabola</para>
@@ -40,7 +40,7 @@ public class ParabolicUtils
         // 初始化结果数组
         var points = new Vector2[numSteps];
         // 计算每个采样点的位置
-        for (int i = 0; i < numSteps; i++)
+        for (var i = 0; i < numSteps; i++)
         {
             // 计算当前时间
             var t = i * steps;

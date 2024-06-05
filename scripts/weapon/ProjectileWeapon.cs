@@ -5,9 +5,26 @@ using Godot;
 
 namespace ColdMint.scripts.weapon;
 
+/// <summary>
+/// <para>Projectile weapons</para>
+/// <para>抛射体武器</para>
+/// </summary>
+/// <remarks>
+///<para>These weapons can fire projectiles to attack the enemy.For example: guns and scepters.Generate a bullet to attack the enemy.</para>
+///<para>这类武器可发射抛射体，攻击敌人。例如：枪支和法杖。生成一个子弹攻击敌人。</para>
+/// </remarks>
 public partial class ProjectileWeapon : WeaponTemplate
 {
+    /// <summary>
+    /// <para>The formation position of the projectile</para>
+    /// <para>抛射体的生成位置</para>
+    /// </summary>
     private Marker2D? _marker2D;
+    
+    /// <summary>
+    /// <para>List of projectiles</para>
+    /// <para>抛射体列表</para>
+    /// </summary>
     private string[]? _projectiles;
     private Dictionary<string, PackedScene>? _projectileCache;
     private Node2D? _projectileContainer;
@@ -21,6 +38,10 @@ public partial class ProjectileWeapon : WeaponTemplate
         foreach (var projectileItem in _projectiles)
         {
             var packedScene = GD.Load<PackedScene>(projectileItem);
+            if (packedScene == null)
+            {
+                continue;
+            }
             _projectileCache.Add(projectileItem, packedScene);
         }
 
@@ -30,26 +51,25 @@ public partial class ProjectileWeapon : WeaponTemplate
 
     protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
-        if (_projectiles.IsEmpty())
-        {
-            LogCat.LogError("projectiles_is_empty");
-            return;
-        }
-
         if (_projectileCache == null || _projectiles == null || owner == null || _projectileContainer == null ||
             _marker2D == null)
         {
             return;
         }
-
+        
+        if (_projectiles.IsEmpty())
+        {
+            LogCat.LogError("projectiles_is_empty");
+            return;
+        }
         //Get the first projectile
+        //获取第一个抛射体
         var projectileScene = _projectileCache[_projectiles[0]];
         var projectile = projectileScene.Instantiate() as ProjectileTemplate;
         if (projectile != null)
         {
             projectile.Owner = owner;
-            var vector2 = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
-            projectile.Velocity = vector2;
+            projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
             projectile.Position = _marker2D.GlobalPosition;
         }
 

@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 
 namespace ColdMint.scripts.serialization;
 
+/// <summary>
+/// <para>JsonSerialization</para>
+/// <para>Json序列化工具</para>
+/// </summary>
 public static class JsonSerialization
 {
-    private static JsonSerializerOptions _options = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions Options = new()
     {
         //Case-insensitive attribute matching
         //不区分大小写的属性匹配
@@ -30,7 +34,7 @@ public static class JsonSerialization
     public static async Task<T?> ReadJsonFileToObj<T>(string path)
     {
         await using var openStream = File.OpenRead(path);
-        return await JsonSerializer.DeserializeAsync<T>(openStream, _options);
+        return await JsonSerializer.DeserializeAsync<T>(openStream, Options);
     }
 
     /// <summary>
@@ -41,7 +45,7 @@ public static class JsonSerialization
     /// <returns></returns>
     public static string Serialize(object obj)
     {
-        return JsonSerializer.Serialize(obj, _options);
+        return JsonSerializer.Serialize(obj, Options);
     }
     
     /// <summary>
@@ -53,11 +57,11 @@ public static class JsonSerialization
     /// <returns></returns>
     public static T? Deserialize<T>(string json)
     {
-        return JsonSerializer.Deserialize<T>(json, _options);
+        return JsonSerializer.Deserialize<T>(json, Options);
     }
 
     public static async Task<T?> ReadJsonFileToObj<T>(Stream openStream)
     {
-        return await JsonSerializer.DeserializeAsync<T>(openStream, _options);
+        return await JsonSerializer.DeserializeAsync<T>(openStream, Options);
     }
 }

@@ -8,7 +8,7 @@ namespace ColdMint.scripts.camp;
 /// </summary>
 public class Camp
 {
-    private string _id;
+    private readonly string _id;
     private readonly List<string> _friendlyCampIdList;
 
     public Camp(string id)

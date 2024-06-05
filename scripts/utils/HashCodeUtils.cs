@@ -2,7 +2,11 @@
 
 namespace ColdMint.scripts.utils;
 
-public class HashCodeUtils
+/// <summary>
+/// <para>Hash code utils</para>
+/// <para>哈希码工具</para>
+/// </summary>
+public static class HashCodeUtils
 {
     /// <summary>
     /// <para>Gets the hash code for a string</para>
@@ -15,6 +19,8 @@ public class HashCodeUtils
     /// <returns></returns>
     public static uint GetFixedHashCode(string str)
     {
+        //Turn off overflow checking to improve performance
+        //关闭溢出检查，以提高性能
         unchecked
         {
             return str.Aggregate(2166136261, (current, c) => (current ^ c) * 16777619);
