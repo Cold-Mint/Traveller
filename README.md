@@ -1,6 +1,6 @@
-English [简体中文](README_ZH.md) [にほんご](README_JP.md)
-
 [![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+
+English [简体中文](README_ZH.md) [にほんご](README_JP.md)
 
 ## Intro
 
