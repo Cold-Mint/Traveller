@@ -1,5 +1,7 @@
 English [简体中文](README_ZH.md) [にほんご](README_JP.md)
 
+[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+
 ## Intro
 
 Mint's new game.
@@ -10,9 +12,10 @@ A pixel cross-platform roguelite game.
 
 | Task                                                   | status        |
 | ----------------------------------------------------------- | ------------------ |
-| Randomly generated map                         | In progress |
-| loot                                                 | await         |
+| Randomly generated map                         | complete |
+| loot                                                 | In progress |
 | Support still out of the knapsack system | await                |
+| Add AI agents to creatures | await |
 
 ## Screenshot
 
@@ -54,6 +57,8 @@ Support commercial, anyone can modify, build, and sell or distribute for free. F
 > Note: You have the right to sell the modified version, but not the original.
 >
 
-## Star History
+## Contributor
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+<a href="https://github.com/Cold-Mint/Traveller/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Cold-Mint/Traveller" />
+</a>

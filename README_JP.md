@@ -1,5 +1,7 @@
 [English](README.md) [简体中文](README_ZH.md) にほんご
 
+[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+
 ## こくじ
 
 ミントの新作ゲームです。
@@ -10,9 +12,10 @@
 
 | ミッション                                              | じょうたい   |
 | ----------------------------------------------------------- | ------------------ |
-| マップをランダムに生成します           | 進行中です |
-| 戦利品                                              | すたんばい |
+| マップをランダムに生成します           | 成し遂げる |
+| 戦利品                                              | 進行中です |
 | バックパックのシステムをサポートしています | すたんばい           |
+| 生物にAIエージェントを追加します | すたんばい |
 ## スクリーンショットです
 
 ゲームのシーンです
@@ -53,6 +56,8 @@ git clone https://github.com/Cold-Mint/Traveller.git
 
 > 注意:修正版を販売する権利はありますが、オリジナル版は販売できません。
 
-## 歴史にいいですね
+## 貢献者です
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+<a href="https://github.com/Cold-Mint/Traveller/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Cold-Mint/Traveller" />
+</a>

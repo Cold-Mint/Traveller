@@ -1,5 +1,8 @@
 [English](README.md) 简体中文 [にほんご](README_JP.md)
 
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+
 ## 简介
 
 薄荷的新作游戏。
@@ -10,9 +13,10 @@
 
 | 任务                                                   | 状态        |
 | ----------------------------------------------------------- | ------------------ |
-| 随机生成地图                         | 进行中 |
-| 战利品                                                 | 等待         |
+| 随机生成地图                         | 完成   |
+| 战利品                                                 | 进行中      |
 | 支持仍出的背包系统 | 等待                |
+| 为生物添加AI代理 | 等待 |
 
 ## 屏幕截图
 
@@ -55,6 +59,8 @@ git clone https://github.com/Cold-Mint/Traveller.git
 
 > 注意：您有权售卖修改后的版本，但不能售卖原版。
 
-## 点赞历史
+## 贡献者
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
+<a href="https://github.com/Cold-Mint/Traveller/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Cold-Mint/Traveller" />
+</a>
