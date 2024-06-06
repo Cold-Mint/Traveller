@@ -14,6 +14,12 @@ public partial class HotBar : HBoxContainer, IItemContainer
 
     private List<ItemSlotNode>? _itemSlotNodes;
 
+    /// <summary>
+    /// <para>UnknownIndex</para>
+    /// <para>未知位置</para>
+    /// </summary>
+    private const int UnknownIndex = -1;
+
     //_selectIndex默认为0.
     private int _selectIndex;
 
@@ -160,17 +166,14 @@ public partial class HotBar : HBoxContainer, IItemContainer
             return;
         }
 
-        var count = _itemSlotNodes.Count;
-        if (count == 0)
+        var safeIndex = GetSafeIndex(shortcutKeyIndex);
+        if (safeIndex == UnknownIndex)
         {
-            //Prevents the dividend from being 0
-            //防止被除数为0
             return;
         }
 
-        var newIndex = shortcutKeyIndex % count;
-        SelectItemSlot(_selectIndex, newIndex);
-        _selectIndex = newIndex;
+        SelectItemSlot(_selectIndex, safeIndex);
+        _selectIndex = safeIndex;
     }
 
 
@@ -183,6 +186,27 @@ public partial class HotBar : HBoxContainer, IItemContainer
     public bool RemoveItemFromItemSlotBySelectIndex(int number)
     {
         return RemoveItemFromItemSlot(_selectIndex, number);
+    }
+
+    public int GetItemSlotCount()
+    {
+        if (_itemSlotNodes == null)
+        {
+            return 0;
+        }
+
+        return _itemSlotNodes.Count;
+    }
+
+    public ItemSlotNode? GetItemSlotNode(int index)
+    {
+        if (_itemSlotNodes == null)
+        {
+            return null;
+        }
+
+        var safeIndex = GetSafeIndex(index);
+        return _itemSlotNodes[safeIndex];
     }
 
     /// <summary>
@@ -204,17 +228,41 @@ public partial class HotBar : HBoxContainer, IItemContainer
             return false;
         }
 
+        var safeIndex = GetSafeIndex(itemSlotIndex);
+        if (safeIndex == UnknownIndex)
+        {
+            return false;
+        }
+
+        var itemSlot = _itemSlotNodes[safeIndex];
+        return itemSlot.RemoveItem(number);
+    }
+
+    /// <summary>
+    /// <para>Gets a secure subscript index</para>
+    /// <para>获取安全的下标索引</para>
+    /// </summary>
+    /// <param name="itemSlotIndex"></param>
+    /// <returns>
+    ///<para>-1 is returned on failure, and the index that does not result in an out-of-bounds subscript is returned on success</para>
+    ///<para>失败返回-1，成功返回不会导致下标越界的索引</para>
+    /// </returns>
+    private int GetSafeIndex(int itemSlotIndex)
+    {
+        if (_itemSlotNodes == null)
+        {
+            return UnknownIndex;
+        }
+
         var count = _itemSlotNodes.Count;
         if (count == 0)
         {
             //Prevents the dividend from being 0
             //防止被除数为0
-            return false;
+            return UnknownIndex;
         }
 
-        var newIndex = itemSlotIndex % count;
-        var itemSlot = _itemSlotNodes[newIndex];
-        return itemSlot.RemoveItem(number);
+        return itemSlotIndex % count;
     }
 
     /// <summary>
@@ -292,6 +340,11 @@ public partial class HotBar : HBoxContainer, IItemContainer
             return false;
         }
         return itemSlotNode.SetItem(item);
+    }
+
+    public int GetSelectIndex()
+    {
+        return _selectIndex;
     }
 
     public ItemSlotNode? GetSelectItemSlotNode()

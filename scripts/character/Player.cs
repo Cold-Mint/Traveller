@@ -43,9 +43,6 @@ public partial class Player : CharacterTemplate
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private double _platformCollisionRecoveryTime = 0.2f;
 
-    //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
-    private readonly double _itemCollisionRecoveryTime = 0.045f;
-
 
     public override void _Ready()
     {
@@ -255,7 +252,7 @@ public partial class Player : CharacterTemplate
         //抬起手时，抛出物品
         if (Input.IsActionJustReleased("throw"))
         {
-            if (CurrentItem == null)
+            if (ItemContainer == null)
             {
                 return;
             }
@@ -265,46 +262,8 @@ public partial class Player : CharacterTemplate
                 _parabola.Points = new[] { Vector2.Zero };
             }
 
-            CurrentItem.Reparent(GameSceneNodeHolder.WeaponContainer);
-            switch (CurrentItem)
-            {
-                case WeaponTemplate weaponTemplate:
-                {
-                    var timer = new Timer();
-                    weaponTemplate.AddChild(timer);
-                    timer.WaitTime = _itemCollisionRecoveryTime;
-                    timer.OneShot = true;
-                    timer.Timeout += () =>
-                    {
-                        //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
-                        //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
-                        weaponTemplate.EnableContactInjury = true;
-                        weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
-                        weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
-                        timer.QueueFree();
-                    };
-                    timer.Start();
-                    weaponTemplate.Sleeping = false;
-                    weaponTemplate.LinearVelocity = Vector2.Zero;
-                    break;
-                }
-            }
-
-            //We apply force to objects.
-            //我们给物品施加力。
-            switch (CurrentItem)
-            {
-                case CharacterBody2D characterBody2D:
-                    characterBody2D.Velocity = GetThrowVelocity();
-                    break;
-                case RigidBody2D rigidBody2D:
-                    rigidBody2D.LinearVelocity = GetThrowVelocity();
-                    break;
-            }
-
+            ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
             CurrentItem = null;
-            var hotBar = GameSceneNodeHolder.HotBar;
-            hotBar?.RemoveItemFromItemSlotBySelectIndex(1);
         }
     }
 
@@ -313,6 +272,10 @@ public partial class Player : CharacterTemplate
         UpdateOperationTip();
     }
 
+    /// <summary>
+    /// <para>当玩家手动抛出物品时，施加到物品上的速度值</para>
+    /// </summary>
+    /// <returns></returns>
     private Vector2 GetThrowVelocity()
     {
         //We take the mouse position, normalize it, and then multiply it by the distance the player can throw
@@ -382,7 +345,7 @@ public partial class Player : CharacterTemplate
     {
         base.Revive(newHp);
         var healthBarUi = GameSceneNodeHolder.HealthBarUi;
-        if (healthBarUi!=null)
+        if (healthBarUi != null)
         {
             //The purpose of setting Hp to the current Hp is to cause the life bar to refresh.
             //将Hp设置为当前Hp的目的是，使生命条刷新。

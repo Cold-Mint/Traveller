@@ -27,11 +27,50 @@ public interface IItemContainer
     bool AddItem(IItem item);
 
     /// <summary>
+    /// <para>Gets the selected location</para>
+    /// <para>获取选中的位置</para>
+    /// </summary>
+    /// <returns></returns>
+    int GetSelectIndex();
+
+    /// <summary>
     /// <para>Gets the currently selected node</para>
     /// <para>获取当前选中的节点</para>
     /// </summary>
     /// <returns></returns>
     ItemSlotNode? GetSelectItemSlotNode();
+
+    /// <summary>
+    /// <para>Removes an item from the inventory at the currently selected location</para>
+    /// <para>移除当前选中位置物品栏内的物品</para>
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    bool RemoveItemFromItemSlotBySelectIndex(int number);
+
+    /// <summary>
+    /// <para>Gets the number of item slots</para>
+    /// <para>获取物品槽的数量</para>
+    /// </summary>
+    /// <returns></returns>
+    int GetItemSlotCount();
+    
+    /// <summary>
+    /// <para>Gets the item slot for the specified location</para>
+    /// <para>获取指定位置的物品槽</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    ItemSlotNode? GetItemSlotNode(int index);
+
+    /// <summary>
+    /// <para>Removes an item from the item slot in the specified location</para>
+    /// <para>在指定位置的物品槽内移除物品</para>
+    /// </summary>
+    /// <param name="itemSlotIndex"></param>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    bool RemoveItemFromItemSlot(int itemSlotIndex, int number);
 
     /// <summary>
     /// <para>Based on the given item, match the item slots where it can be placed</para>

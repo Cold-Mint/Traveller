@@ -29,6 +29,9 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected const float JumpVelocity = -240;
 
+    //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
+    private readonly double _itemCollisionRecoveryTime = 0.045f;
+
     public string? ReadOnlyCharacterName => CharacterName;
 
     protected string? CharacterName;
@@ -264,12 +267,12 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return false;
         }
-        
+
         if (_itemContainer == null)
         {
             return false;
         }
-        
+
         //Get the currently selected node
         //拿到当前选择的节点
         var itemSlotNode = _itemContainer.GetSelectItemSlotNode();
@@ -523,6 +526,86 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         _animatedSprite2D.FlipH = FacingLeft;
+    }
+
+    /// <summary>
+    /// <para>Throw item</para>
+    /// <para>抛出物品</para>
+    /// </summary>
+    /// <param name="index">
+    ///<para>Item slot subscript in item container</para>
+    ///<para>物品容器内的物品槽下标</para>
+    /// </param>
+    /// <param name="number">
+    /// <para>How many to throw</para>
+    /// <para>要扔几个</para>
+    /// </param>
+    /// <param name="velocity">
+    ///<para>The speed to be applied to the item</para>
+    ///<para>要施加到物品上的速度</para>
+    /// </param>
+    protected void ThrowItem(int index, int number, Vector2 velocity)
+    {
+        if (_itemContainer == null)
+        {
+            return;
+        }
+
+        var itemSlotNode = _itemContainer.GetItemSlotNode(index);
+        if (itemSlotNode == null)
+        {
+            return;
+        }
+
+        var item = itemSlotNode.GetItem();
+        if (item == null)
+        {
+            return;
+        }
+        
+        switch (item)
+        {
+            case WeaponTemplate weaponTemplate:
+                if (GameSceneNodeHolder.WeaponContainer == null)
+                {
+                    return;
+                }
+
+                weaponTemplate.Reparent(GameSceneNodeHolder.WeaponContainer);
+                var timer = new Timer();
+                weaponTemplate.AddChild(timer);
+                timer.WaitTime = _itemCollisionRecoveryTime;
+                timer.OneShot = true;
+                timer.Timeout += () =>
+                {
+                    //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
+                    //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
+                    weaponTemplate.EnableContactInjury = true;
+                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
+                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
+                    timer.QueueFree();
+                };
+                timer.Start();
+                weaponTemplate.Sleeping = false;
+                // weaponTemplate.LinearVelocity = Vector2.Zero;
+                break;
+        }
+
+        //We apply force to objects.
+        //我们给物品施加力。
+        switch (CurrentItem)
+        {
+            case CharacterBody2D characterBody2D:
+                characterBody2D.Velocity = velocity;
+                break;
+            case RigidBody2D rigidBody2D:
+                rigidBody2D.LinearVelocity = velocity;
+                break;
+        }
+
+        //Remove items from the item container
+        //在物品容器内移除物品
+        itemSlotNode.RemoveItem(number);
     }
 
 
