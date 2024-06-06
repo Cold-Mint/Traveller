@@ -6,7 +6,7 @@ namespace ColdMint.scripts.camp;
 /// <para>Camp manager</para>
 /// <para>阵营管理器</para>
 /// </summary>
-public class CampManager
+public static class CampManager
 {
     private static readonly Dictionary<string, Camp?> Camps = new Dictionary<string, Camp?>();
 

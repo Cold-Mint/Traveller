@@ -3,6 +3,10 @@ using ColdMint.scripts.character;
 
 namespace ColdMint.scripts.behaviorTree.ai;
 
+/// <summary>
+/// <para>AI attack node</para>
+/// <para>AI的攻击节点</para>
+/// </summary>
 public class AiAttackNode : BehaviorTreeNodeTemplate
 {
     public AiCharacter? Character { get; set; }
@@ -29,47 +33,49 @@ public class AiAttackNode : BehaviorTreeNodeTemplate
         var selfCamp = CampManager.GetCamp(Character.CampId);
         foreach (var node in nodesInTheAttackRange)
         {
-            if (node is CharacterTemplate characterTemplate)
+            if (node is not CharacterTemplate characterTemplate)
             {
-                if (node == Character)
-                {
-                    continue;
-                }
+                continue;
+            }
+            
+            if (node == Character)
+            {
+                continue;
+            }
 
-                var characterCamp = CampManager.GetCamp(characterTemplate.CampId);
-                var canCause = CampManager.CanCauseHarm(selfCamp, characterCamp);
-                if (!canCause)
-                {
-                    continue;
-                }
+            var characterCamp = CampManager.GetCamp(characterTemplate.CampId);
+            var canCause = CampManager.CanCauseHarm(selfCamp, characterCamp);
+            if (!canCause)
+            {
+                continue;
+            }
 
-                if (selfCamp == null || characterCamp == null)
-                {
-                    continue;
-                }
+            if (selfCamp == null || characterCamp == null)
+            {
+                continue;
+            }
+            
+            if (selfCamp.Id == characterCamp.Id)
+            {
+                //If it is the same side, do not attack, if allowed friend damage, this code will prevent the AI from actively attacking the player.
+                //如果是同一阵营，不攻击，如果允许友伤，这段代码会阻止AI主动攻击玩家。
+                continue;
+            }
 
-                if (selfCamp.Id == characterCamp.Id)
-                {
-                    //如果是同一阵营，不攻击
-                    continue;
-                }
-
-                var distance = characterTemplate.GlobalPosition - Character.GlobalPosition;
-                var distanceLength = distance.Length();
-                if (distanceLength < closestDistance)
-                {
-                    closestDistance = distanceLength;
-                    closestEnemy = characterTemplate;
-                }
+            var distance = characterTemplate.GlobalPosition.DistanceTo(Character.GlobalPosition);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = characterTemplate;
             }
         }
 
         if (closestEnemy != null && Character.AttackObstacleDetection != null)
         {
-            //There are the closest enemies
-            //有距离最近的敌人
-            var distance = closestEnemy.GlobalPosition - Character.GlobalPosition;
-            Character.AttackObstacleDetection.TargetPosition = distance;
+            //With the nearest enemy and no obstacles
+            //有距离最近的敌人，且没有障碍物
+            var distanceVector2 = closestEnemy.GlobalPosition - Character.GlobalPosition;
+            Character.AttackObstacleDetection.TargetPosition = distanceVector2;
             if (Character.AttackObstacleDetection.GetCollider() == null)
             {
                 Character.StopMoving();

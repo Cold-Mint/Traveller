@@ -15,11 +15,6 @@ public partial class BehaviorNode : Node2D
         InvokeBehaviorTreeNode(true, delta);
     }
 
-    // public override void _Process(double delta)
-    // {
-    //     InvokeBehaviorTreeNode(false, delta);
-    // }
-
     /// <summary>
     /// <para>InvokeBehaviorTreeNode</para>
     /// <para>调用行为树节点</para>

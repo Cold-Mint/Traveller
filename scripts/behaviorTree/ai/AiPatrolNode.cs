@@ -4,6 +4,7 @@ using ColdMint.scripts.character;
 namespace ColdMint.scripts.behaviorTree.ai;
 
 /// <summary>
+/// <para>AI patrol node</para>
 /// <para>AI巡逻节点</para>
 /// </summary>
 public class AiPatrolNode : SelectorNode

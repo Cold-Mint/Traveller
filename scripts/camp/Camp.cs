@@ -8,12 +8,11 @@ namespace ColdMint.scripts.camp;
 /// </summary>
 public class Camp
 {
-    private readonly string _id;
     private readonly List<string> _friendlyCampIdList;
 
     public Camp(string id)
     {
-        _id = id;
+        Id = id;
         _friendlyCampIdList = new List<string>();
     }
 
@@ -21,7 +20,7 @@ public class Camp
     /// <para>Get camp ID</para>
     /// <para>获取阵营ID</para>
     /// </summary>
-    public string Id => _id;
+    public string Id { get; }
 
     /// <summary>
     /// <para>Get camp name</para>

@@ -9,7 +9,7 @@ namespace ColdMint.scripts.character;
 /// <para>The role played by computers</para>
 /// <para>由电脑扮演的角色</para>
 /// </summary>
-public partial class AiCharacter : CharacterTemplate
+public sealed partial class AiCharacter : CharacterTemplate
 {
     /// <summary>
     /// <para>How fast the character moves</para>
@@ -67,10 +67,11 @@ public partial class AiCharacter : CharacterTemplate
 
         if (_attackArea != null)
         {
+            //If true, the zone will detect objects or areas entering and leaving the zone.
             //如果为true，该区域将检测进出该区域的物体或区域。
             _attackArea.Monitoring = true;
-            //Other regions cannot detect our pick region
-            //其他区域不能检测到我们的拾取区域
+            //Other areas can't detect our attack zone
+            //其他区域不能检测到我们的攻击区域
             _attackArea.Monitorable = false;
             _attackArea.BodyEntered += EnterTheAttackArea;
             _attackArea.BodyExited += ExitTheAttackArea;
@@ -83,12 +84,12 @@ public partial class AiCharacter : CharacterTemplate
         // _behaviorNode.Root = patrolBehaviorTree.Root;
     }
 
-    protected virtual void EnterTheAttackArea(Node node)
+    private void EnterTheAttackArea(Node node)
     {
         _nodesInTheAttackRange?.Add(node);
     }
 
-    protected virtual void ExitTheAttackArea(Node node)
+    private void ExitTheAttackArea(Node node)
     {
         _nodesInTheAttackRange?.Remove(node);
     }

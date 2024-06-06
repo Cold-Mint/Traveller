@@ -14,7 +14,7 @@ public class SequenceNode : BehaviorTreeNodeTemplate
     /// <para>Check whether all child nodes are executed in sequence</para>
     /// <para>所有子节点是否按顺序执行完毕</para>
     /// </summary>
-    bool _complete = true;
+    private bool _complete = true;
 
     public override int Execute(bool isPhysicsProcess, double delta)
     {

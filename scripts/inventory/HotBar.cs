@@ -79,7 +79,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
         {
             _selectIndex = count - 1;
         }
-        
+
         SelectItemSlot(oldSelectIndex, _selectIndex);
     }
 
@@ -223,6 +223,11 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// </summary>
     private void SelectItemSlot(int oldSelectIndex, int newSelectIndex)
     {
+        if (oldSelectIndex == newSelectIndex)
+        {
+            return;
+        }
+
         if (_itemSlotNodes == null)
         {
             return;
@@ -286,10 +291,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
         {
             return false;
         }
-        else
-        {
-            return itemSlotNode.SetItem(item);
-        }
+        return itemSlotNode.SetItem(item);
     }
 
     public ItemSlotNode? GetSelectItemSlotNode()

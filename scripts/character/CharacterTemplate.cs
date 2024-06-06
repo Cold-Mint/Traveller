@@ -6,7 +6,6 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.weapon;
 using Godot;
@@ -259,25 +258,22 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </returns>
     public bool PickItem(Node2D? pickAbleItem)
     {
-        if (pickAbleItem == null)
+        //Empty reference checking is implicitly performed here.
+        //此处隐式的执行了空引用检查。
+        if (pickAbleItem is not IItem item)
         {
             return false;
         }
-
+        
         if (_itemContainer == null)
         {
             return false;
         }
-
+        
         //Get the currently selected node
         //拿到当前选择的节点
         var itemSlotNode = _itemContainer.GetSelectItemSlotNode();
         if (itemSlotNode == null)
-        {
-            return false;
-        }
-
-        if (pickAbleItem is not IItem item)
         {
             return false;
         }
@@ -368,7 +364,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Update the role's health bar</para>
     /// <para>更新角色的健康条</para>
     /// </summary>
-    private void UpDataHealthBar(DamageTemplate damageTemplate)
+    private void UpDataHealthBar()
     {
         if (_healthBar == null)
         {
@@ -441,7 +437,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return true;
         }
 
-        UpDataHealthBar(damageTemplate);
+        UpDataHealthBar();
         return true;
     }
 
