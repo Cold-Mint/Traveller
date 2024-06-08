@@ -6,10 +6,10 @@ uid="uid://dbgkevd34vb0d"
 
 [deps]
 
-files=["res://locals/Slogan.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.jp.translation"]
+files=["res://locals/Slogan.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.ja.translation"]
 
 source_file="res://locals/Slogan.csv"
-dest_files=["res://locals/Slogan.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.jp.translation"]
+dest_files=["res://locals/Slogan.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.ja.translation"]
 
 [params]
 

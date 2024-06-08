@@ -6,10 +6,10 @@ uid="uid://dwx0hwuy0uqio"
 
 [deps]
 
-files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.jp.translation"]
+files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.ja.translation"]
 
 source_file="res://locals/DeathInfo.csv"
-dest_files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.jp.translation"]
+dest_files=["res://locals/DeathInfo.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.ja.translation"]
 
 [params]
 
