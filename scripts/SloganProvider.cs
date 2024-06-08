@@ -1,4 +1,5 @@
 ﻿using ColdMint.scripts.utils;
+
 using Godot;
 
 namespace ColdMint.scripts;
@@ -9,7 +10,14 @@ namespace ColdMint.scripts;
 /// </summary>
 public static class SloganProvider
 {
-    private const int MaxSloganIndex = 5;
+    static SloganProvider()
+    {
+        // Calculate SloganCount From translation file
+        var sloganTrans = ResourceLoader.Load<OptimizedTranslation>("res://locals/Slogan.en.translation")!;
+        SloganCount = sloganTrans.GetTranslatedMessageList().Length;
+    }
+
+    private static int SloganCount { get; }
 
 
     /// <summary>
@@ -19,7 +27,7 @@ public static class SloganProvider
     /// <returns></returns>
     public static string? GetSlogan()
     {
-        var index = GD.Randi() % MaxSloganIndex + 1;
-        return TranslationServerUtils.Translate("slogan_" + index);
+        var index = GD.Randi() % SloganCount;
+        return TranslationServerUtils.Translate($"slogan_{index}");
     }
 }
