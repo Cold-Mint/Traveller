@@ -25,6 +25,7 @@ public partial class PlayerSpawn : Marker2D
     {
         if (GameSceneNodeHolder.Player != null)
         {
+            GameSceneNodeHolder.Player.ProcessMode = ProcessModeEnum.Inherit;
             GameSceneNodeHolder.Player.Position = GlobalPosition;
             GameSceneNodeHolder.Player.Revive(GameSceneNodeHolder.Player.MaxHp);
             return;

@@ -97,7 +97,7 @@ public partial class ItemSlotNode : MarginContainer
 
         if (_quantityLabel != null)
         {
-            _quantityLabel.Visible = false;
+            _quantityLabel.Hide();
         }
     }
 
@@ -213,16 +213,16 @@ public partial class ItemSlotNode : MarginContainer
         switch (quantity)
         {
             case null:
-                _quantityLabel.Visible = false;
+                _quantityLabel.Hide();
                 return;
             case > 1:
                 //When the quantity is greater than 1, we display the quantity.
                 //当数量大于1时，我们显示数量
                 _quantityLabel.Text = quantity.ToString();
-                _quantityLabel.Visible = true;
+                _quantityLabel.Show();
                 break;
             default:
-                _quantityLabel.Visible = false;
+                _quantityLabel.Hide();
                 break;
         }
     }
@@ -236,6 +236,6 @@ public partial class ItemSlotNode : MarginContainer
         _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/CenterContainer/IconTextureRect");
         _quantityLabel = GetNode<Label>("Control/QuantityLabel");
         _control = GetNode<Control>("Control");
-        _quantityLabel.Visible = false;
+        _quantityLabel.Hide();
     }
 }

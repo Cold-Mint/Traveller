@@ -15,7 +15,7 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
 
     public override void InitializeUi()
     {
-        Visible = false;
+        Hide();
     }
 
     public override void InitializeData()
@@ -34,7 +34,7 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
             {
                 var replayEvent = new GameReplayEvent();
                 EventManager.GameReplayEvent?.Invoke(replayEvent);
-                Visible = false;
+                Hide();
             };
         }
     }
@@ -46,7 +46,7 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
             return;
         }
 
-        Visible = true;
+        Show();
         _deathInfoLabel.Text = gameOverEvent.DeathInfo;
     }
 

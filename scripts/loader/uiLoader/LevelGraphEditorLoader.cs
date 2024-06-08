@@ -269,12 +269,12 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             {
                 if (_nodeBinding.GraphEdit != null)
                 {
-                    _nodeBinding.GraphEdit.Visible = false;
+                    _nodeBinding.GraphEdit.Hide();
                 }
 
                 if (_nodeBinding.CreateOrEditorPanel != null)
                 {
-                    _nodeBinding.CreateOrEditorPanel.Visible = true;
+                    _nodeBinding.CreateOrEditorPanel.Show();
                 }
 
                 if (_nodeBinding.RoomNameLineEdit != null && _defaultRoomName != null)
@@ -301,7 +301,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.HBoxContainer != null)
                 {
-                    _nodeBinding.HBoxContainer.Visible = false;
+                    _nodeBinding.HBoxContainer.Hide();
                 }
             };
         }
@@ -377,7 +377,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             {
                 if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanel.Visible = false;
+                    _nodeBinding.SaveOrLoadPanel.Hide();
                 }
             };
         }
@@ -388,7 +388,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             {
                 if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanel.Visible = false;
+                    _nodeBinding.SaveOrLoadPanel.Hide();
                 }
             };
         }
@@ -399,7 +399,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             {
                 if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanel.Visible = true;
+                    _nodeBinding.SaveOrLoadPanel.Show();
                 }
 
                 if (_nodeBinding.ActionButton != null)
@@ -427,7 +427,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             {
                 if (_nodeBinding.SaveOrLoadPanel != null)
                 {
-                    _nodeBinding.SaveOrLoadPanel.Visible = true;
+                    _nodeBinding.SaveOrLoadPanel.Show();
                 }
 
                 if (_nodeBinding.ActionButton != null)
@@ -716,17 +716,17 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     {
         if (_nodeBinding.GraphEdit != null)
         {
-            _nodeBinding.GraphEdit.Visible = true;
+            _nodeBinding.GraphEdit.Show();
         }
 
         if (_nodeBinding.CreateOrEditorPanel != null)
         {
-            _nodeBinding.CreateOrEditorPanel.Visible = false;
+            _nodeBinding.CreateOrEditorPanel.Hide();
         }
 
         if (_nodeBinding.HBoxContainer != null)
         {
-            _nodeBinding.HBoxContainer.Visible = true;
+            _nodeBinding.HBoxContainer.Show();
         }
     }
 }

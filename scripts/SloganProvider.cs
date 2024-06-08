@@ -13,6 +13,7 @@ public static class SloganProvider
     static SloganProvider()
     {
         // Calculate SloganCount From translation file
+        // 从翻译文件中计算口号计数
         var sloganTrans = ResourceLoader.Load<OptimizedTranslation>("res://locals/Slogan.en.translation")!;
         SloganCount = sloganTrans.GetTranslatedMessageList().Length;
     }

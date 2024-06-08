@@ -151,7 +151,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //Check whether the new Hp is greater than the maximum Hp. If yes, set the current Hp to the maximum Hp. If no, set the current Hp to the new HP
         //判断新的Hp是否大于最大Hp，若大于那么将当前Hp设置为最大Hp，否则设置为新的Hp
         CurrentHp = newHp > MaxHp ? MaxHp : newHp;
-        Visible = true;
+        Show();
     }
 
     /// <summary>
@@ -318,7 +318,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
         else
         {
-            pickAbleItem.Visible = false;
+            pickAbleItem.Hide();
             pickAbleItem.ProcessMode = ProcessModeEnum.Disabled;
         }
 
@@ -358,7 +358,7 @@ public partial class CharacterTemplate : CharacterBody2D
             var timeSpan = DateTime.Now - _lastDamageTime;
             if (timeSpan > Config.HealthBarDisplaysTime)
             {
-                _healthBar.Visible = false;
+                _healthBar.Hide();
             }
         }
     }
@@ -410,7 +410,7 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
-        _healthBar.Visible = true;
+        _healthBar.Show();
         _healthBar.Value = CurrentHp;
     }
 
@@ -437,6 +437,7 @@ public partial class CharacterTemplate : CharacterBody2D
             //Character death
             //角色死亡
             OnDie(damageTemplate);
+            ThrowAllItemOnDie();
             return true;
         }
 
@@ -529,6 +530,44 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
+    /// <para>Throw all items when the creature dies</para>
+    /// <para>当生物死亡后抛出所有物品</para>
+    /// </summary>
+    private void ThrowAllItemOnDie()
+    {
+        //If the item container is null, then return
+        //如果物品容器为null，那么返回
+        if (_itemContainer == null)
+        {
+            return;
+        }
+
+        var len = _itemContainer.GetItemSlotCount();
+        if (len == 0)
+        {
+            return;
+        }
+
+        CurrentItem = null;
+        const float height = -Config.CellSize * 7;
+        const float horizontalDirection = Config.CellSize * 15;
+        for (var i = 0; i < len; i++)
+        {
+            //Generates a random number that controls the horizontal velocity of thrown items (range: 0.01 to 1)
+            //生成一个随机数，用于控制抛出物品的水平方向速度(范围为：0.01到1)
+            var percent = GD.Randf() + 0.01f;
+            if (GD.Randf() > 0.5)
+            {
+                ThrowItem(i, -1, new Vector2(horizontalDirection * percent, height));
+            }
+            else
+            {
+                ThrowItem(i, -1, new Vector2(-horizontalDirection * percent, height));
+            }
+        }
+    }
+
+    /// <summary>
     /// <para>Throw item</para>
     /// <para>抛出物品</para>
     /// </summary>
@@ -539,6 +578,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="number">
     /// <para>How many to throw</para>
     /// <para>要扔几个</para>
+    /// <para>The amount passed into a negative number will throw all the items in the slot at once.</para>
+    /// <para>数量传入一个负数，将一次扔出槽内的所有物品。</para>
     /// </param>
     /// <param name="velocity">
     ///<para>The speed to be applied to the item</para>
@@ -562,7 +603,12 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
-        
+
+        if (item is not Node2D node2D)
+        {
+            return;
+        }
+
         switch (item)
         {
             case WeaponTemplate weaponTemplate:
@@ -571,7 +617,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     return;
                 }
 
-                weaponTemplate.Reparent(GameSceneNodeHolder.WeaponContainer);
+                CallDeferred("WeaponTemplateReparent", weaponTemplate);
                 var timer = new Timer();
                 weaponTemplate.AddChild(timer);
                 timer.WaitTime = _itemCollisionRecoveryTime;
@@ -587,13 +633,17 @@ public partial class CharacterTemplate : CharacterBody2D
                 };
                 timer.Start();
                 weaponTemplate.Sleeping = false;
-                // weaponTemplate.LinearVelocity = Vector2.Zero;
+                //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
+                //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
+                weaponTemplate.LinearVelocity = Vector2.Zero;
                 break;
         }
 
+        node2D.ProcessMode = ProcessModeEnum.Inherit;
+        node2D.Show();
         //We apply force to objects.
         //我们给物品施加力。
-        switch (CurrentItem)
+        switch (node2D)
         {
             case CharacterBody2D characterBody2D:
                 characterBody2D.Velocity = velocity;
@@ -605,9 +655,25 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Remove items from the item container
         //在物品容器内移除物品
-        itemSlotNode.RemoveItem(number);
+        if (number < 0)
+        {
+            itemSlotNode.RemoveItem(item.Quantity);
+        }
+        else
+        {
+            itemSlotNode.RemoveItem(number);
+        }
     }
 
+    /// <summary>
+    /// <para>Replace the parent node of the weapon</para>
+    /// <para>替换武器的父节点</para>
+    /// </summary>
+    /// <param name="weaponTemplate"></param>
+    private void WeaponTemplateReparent(WeaponTemplate weaponTemplate)
+    {
+        weaponTemplate.Reparent(GameSceneNodeHolder.WeaponContainer);
+    }
 
     public sealed override void _PhysicsProcess(double delta)
     {

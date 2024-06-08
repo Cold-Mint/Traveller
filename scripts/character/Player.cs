@@ -353,9 +353,15 @@ public partial class Player : CharacterTemplate
         }
     }
 
+    /// <summary>
+    /// <para>When the player dies</para>
+    /// <para>当玩家死亡的时候</para>
+    /// </summary>
+    /// <param name="damageTemplate"></param>
     protected override async Task OnDie(DamageTemplate damageTemplate)
     {
-        Visible = false;
+        Hide();
+        ProcessMode = ProcessModeEnum.Disabled;
         if (EventManager.GameOverEvent == null)
         {
             return;

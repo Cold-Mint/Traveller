@@ -45,3 +45,18 @@ script = ExtResource("2_6p8mv")
 
 [node name="StaffOfTheUndead" parent="." instance=ExtResource("3_ud0w8")]
 position = Vector2(231, 116)
+
+[node name="StaffOfTheUndead2" parent="." instance=ExtResource("3_ud0w8")]
+position = Vector2(113, 149)
+
+[node name="StaffOfTheUndead5" parent="." instance=ExtResource("3_ud0w8")]
+position = Vector2(213, 177)
+
+[node name="StaffOfTheUndead6" parent="." instance=ExtResource("3_ud0w8")]
+position = Vector2(290, 167)
+
+[node name="StaffOfTheUndead3" parent="." instance=ExtResource("3_ud0w8")]
+position = Vector2(70, 88)
+
+[node name="StaffOfTheUndead4" parent="." instance=ExtResource("3_ud0w8")]
+position = Vector2(367, 85)
