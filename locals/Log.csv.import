@@ -6,10 +6,10 @@ uid="uid://btmjafjh5r6bk"
 
 [deps]
 
-files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.jp.translation"]
+files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.ja.translation"]
 
 source_file="res://locals/Log.csv"
-dest_files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.jp.translation"]
+dest_files=["res://locals/Log.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.ja.translation"]
 
 [params]
 

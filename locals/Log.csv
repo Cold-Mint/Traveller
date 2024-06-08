@@ -1,9 +1,9 @@
-id,zh,en,jp
+id,zh,en,ja
 map_generator_is_running,地图生成器正在运行中，请稍后重试。,"Map Generator is running, please try again later.",マップ生成器が動作中ですので、後ほどリトライしてください。
 missing_parameters,缺少参数。,Missing parameters.,パラメータが不足しています。
-room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be Node2D.,ルートノードはNode2Dでなければなりません。
+room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be an instance of Node2D.,ルートノードはNode2Dでなければなりません。
 width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.,部屋の溝の幅または高さは1でなければなりません。
-connected_room_timeout,连接房间超时。,Connecting the room timed out.,接続部屋はタイムアウトです。
+connected_room_timeout,连接房间超时。,Timeout when connecting rooms.,接続部屋はタイムアウトです。
 projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
 map_generator_missing_parameters,地图生成器缺少参数。,Map generator missing parameters.,マップジェネレータが不足しています。
 map_generator_attempts_to_parse_empty_layout_diagrams,地图生成器尝试解析空的布局图。,Map generator attempts to parse empty layout diagrams.,マップジェネレータは空のレイアウト図を解析しようとしています。
@@ -11,7 +11,7 @@ map_generator_has_no_starting_room_data,地图生成器没有起点房间数据�
 room_placement_strategy_terminates_map_generation,房间的放置策略终止了地图生成。,The room placement strategy terminates map generation.,部屋の配置ポリシーはマップ作成を終了します。
 start_room_placement_information_returns_empty,起始房间放置信息返回空。,Start room placement information returns empty.,スタートルーム放置情報は空に戻ります。
 start_room_placement_failed,起始房间放置失败。,Start room placement failed.,スタートルーム放置失敗です。
-room_data_missing,房间数据缺失。,Room data missing.,部屋データが欠落しています。
+room_data_missing,房间数据缺失。,Missing room data.,部屋データが欠落しています。
 failed_to_calculate_the_room_location,计算房间{0}位置时失败。,Failed to calculate the location of room {0}.,部屋{0}の位置を計算するのに失敗します。
 place_existing_rooms,放置已存在的房间{0}。,Place existing rooms {0}.,既存の部屋を置きます{0}。
 room_placement_failed,房间{0}放置失败。,Room {0} placement failed.,部屋{0}の放置に失敗します。

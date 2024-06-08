@@ -146,7 +146,7 @@ hotbar_previous={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locals/UI.en.translation", "res://locals/UI.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.zh.translation", "res://locals/Weapon.en.translation", "res://locals/Weapon.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.zh.translation", "res://locals/InputMapping.jp.translation", "res://locals/Log.jp.translation", "res://locals/UI.jp.translation", "res://locals/Weapon.jp.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.jp.translation", "res://locals/Slogan.zh.translation", "res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.jp.translation", "res://locals/DeathInfo.zh.translation")
+locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.ja.translation", "res://locals/DeathInfo.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.ja.translation", "res://locals/InputMapping.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.ja.translation", "res://locals/Log.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.ja.translation", "res://locals/Slogan.zh.translation", "res://locals/UI.en.translation", "res://locals/UI.ja.translation", "res://locals/UI.zh.translation", "res://locals/Weapon.en.translation", "res://locals/Weapon.ja.translation", "res://locals/Weapon.zh.translation")
 
 [layer_names]
 
