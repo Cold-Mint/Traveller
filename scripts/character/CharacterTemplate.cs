@@ -112,6 +112,11 @@ public partial class CharacterTemplate : CharacterBody2D
     public string CampId = null!;
 
     private DamageNumberNodeSpawn? _damageNumber;
+    /// <summary>
+    /// <para>Character referenced loot table</para>
+    /// <para>角色引用的战利品表</para>
+    /// </summary>
+    private LootList? _lootList;
 
     private HealthBar? _healthBar;
     private DateTime _lastDamageTime;
@@ -207,6 +212,13 @@ public partial class CharacterTemplate : CharacterBody2D
         CharacterName = GetMeta("Name", Name).AsString();
         CampId = GetMeta("CampId", Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
+        string lootListId = GetMeta("LootListId", string.Empty).AsString();
+        if (!string.IsNullOrEmpty(lootListId))
+        {
+            //If a loot table is specified, get the loot table.
+            //如果指定了战利品表，那么获取战利品表。
+            _lootList = LootListManager.GetLootList(lootListId);
+        }
         if (MaxHp <= 0)
         {
             //If Max blood volume is 0 or less, set Max blood volume to 10
