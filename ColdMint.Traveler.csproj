@@ -6,5 +6,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>ColdMint</RootNamespace>
     <Nullable>enable</Nullable>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 </Project>
