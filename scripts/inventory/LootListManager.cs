@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using ColdMint.scripts.debug;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -16,10 +18,15 @@ public static class LootListManager
     /// <para>Register loot table</para>
     /// <para>注册战利品表</para>
     /// </summary>
-    /// <param name="id"></param>
     /// <param name="lootList"></param>
-    public static bool RegisterLootList(string id, LootList lootList)
+    public static bool RegisterLootList(LootList lootList)
     {
+        var id = lootList.Id;
+        if (id == null)
+        {
+            return false;
+        }
+
         if (_lootListDictionary != null) return _lootListDictionary.TryAdd(id, lootList);
         _lootListDictionary = new Dictionary<string, LootList> { { id, lootList } };
         return true;
@@ -40,25 +47,19 @@ public static class LootListManager
     /// <para>Generate loot objects</para>
     /// <para>生成战利品对象</para>
     /// </summary>
-    /// <param name="lootDataArray">
-    ///<para>lootDataArray</para>
-    ///<para>战利品数组</para>
-    /// </param>
-    /// <param name="parentNode">
-    ///<para>parentNode</para>
-    ///<para>父节点</para>
-    /// </param>
-    public static void GenerateLootObjects(LootData[] lootDataArray, Node parentNode)
+    public static void GenerateLootObjects(Node parentNode, LootData[] lootDataArray, Vector2 position)
     {
         if (lootDataArray.Length == 0)
         {
             return;
         }
 
+        //Cache the loaded PackedScene object.
+        //缓存已加载的PackedScene对象。
         Dictionary<string, PackedScene> packedSceneDictionary = new();
         foreach (var lootData in lootDataArray)
         {
-            if (string.IsNullOrEmpty(lootData.ResPath))
+            if (string.IsNullOrEmpty(lootData.ResPath) || lootData.Quantity == 0)
             {
                 continue;
             }
@@ -69,24 +70,34 @@ public static class LootListManager
                 packedSceneDictionary.TryAdd(lootData.ResPath, packedScene);
             }
 
-            CreateLootObject(packedScene, parentNode);
+            for (var i = 0; i < lootData.Quantity; i++)
+            {
+                //Generate as many loot instance objects as there are loot.
+                //有多少个战利品就生成多少个战利品实例对象。
+                CreateLootInstanceObject(parentNode, packedScene, position);
+            }
         }
     }
 
-    private static void CreateLootObject(PackedScene? packedScene, Node parent)
+
+    /// <summary>
+    /// <para>Create a loot instance object</para>
+    /// <para>创建战利品实例对象</para>
+    /// </summary>
+    private static void CreateLootInstanceObject(Node parent, PackedScene? packedScene, Vector2 position)
     {
         if (packedScene == null)
         {
             return;
         }
 
-        var lootObject = packedScene.Instantiate();
-        if (lootObject is not Node2D node2D)
+        var lootObject = NodeUtils.InstantiatePackedScene<Node2D>(packedScene, parent);
+        if (lootObject == null)
         {
             return;
         }
 
-        parent.AddChild(node2D);
+        lootObject.Position = position;
     }
 
     /// <summary>

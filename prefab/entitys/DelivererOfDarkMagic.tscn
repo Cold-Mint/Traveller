@@ -34,6 +34,7 @@ script = ExtResource("1_ubaid")
 metadata/CampId = "Mazoku"
 metadata/MaxHp = 50
 metadata/Name = "死灵法师"
+metadata/LootListId = "Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

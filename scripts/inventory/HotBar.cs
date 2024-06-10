@@ -339,6 +339,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
         {
             return false;
         }
+
         return itemSlotNode.SetItem(item);
     }
 
@@ -396,7 +397,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
             return;
         }
 
-        var itemSlotNode = _itemSlotPackedScene.Instantiate() as ItemSlotNode;
+        var itemSlotNode = NodeUtils.InstantiatePackedScene<ItemSlotNode>(_itemSlotPackedScene);
         if (itemSlotNode == null)
         {
             return;

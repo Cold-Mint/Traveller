@@ -104,9 +104,14 @@ public class Room
     /// <param name="packedScene"></param>
     private void AnalyzeRoomData(PackedScene? packedScene)
     {
-        var node = packedScene?.Instantiate();
-        if (node is not Node2D node2D)
+        if (packedScene == null)
         {
+            return;
+        }
+        var node2D = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
+        if (node2D == null)
+        {
+            //The room node is not of Node2D type. An exception is thrown
             //房间节点不是Node2D类型，抛出异常
             LogCat.LogError("room_root_node_must_be_node2d");
             return;

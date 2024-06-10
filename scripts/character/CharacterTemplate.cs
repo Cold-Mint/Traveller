@@ -112,6 +112,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public string CampId = null!;
 
     private DamageNumberNodeSpawn? _damageNumber;
+
     /// <summary>
     /// <para>Character referenced loot table</para>
     /// <para>角色引用的战利品表</para>
@@ -212,13 +213,14 @@ public partial class CharacterTemplate : CharacterBody2D
         CharacterName = GetMeta("Name", Name).AsString();
         CampId = GetMeta("CampId", Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
-        string lootListId = GetMeta("LootListId", string.Empty).AsString();
+        var lootListId = GetMeta("LootListId", string.Empty).AsString();
         if (!string.IsNullOrEmpty(lootListId))
         {
             //If a loot table is specified, get the loot table.
             //如果指定了战利品表，那么获取战利品表。
             _lootList = LootListManager.GetLootList(lootListId);
         }
+
         if (MaxHp <= 0)
         {
             //If Max blood volume is 0 or less, set Max blood volume to 10
@@ -450,11 +452,48 @@ public partial class CharacterTemplate : CharacterBody2D
             //角色死亡
             OnDie(damageTemplate);
             ThrowAllItemOnDie();
+
             return true;
         }
 
         UpDataHealthBar();
         return true;
+    }
+
+    /// <summary>
+    /// <para>Create Loot Object</para>
+    /// <para>创建战利品对象</para>
+    /// </summary>
+    protected void CreateLootObject()
+    {
+        if (_lootList == null)
+        {
+            return;
+        }
+
+        var lootDataArray = _lootList.GenerateLootData();
+        if (lootDataArray.Length == 0)
+        {
+            return;
+        }
+
+
+        var finalGlobalPosition = GlobalPosition;
+        CallDeferred("GenerateLootObjects", this,lootDataArray, finalGlobalPosition);
+    }
+
+    /// <summary>
+    /// <para>GenerateLootObjects</para>
+    /// <para>生成战利品对象</para>
+    /// </summary>
+    /// <param name="parentNode"></param>
+    /// <param name="lootDataArray"></param>
+    /// <param name="position"></param>
+    public void GenerateLootObjects(Node parentNode,
+        LootData[] lootDataArray,
+        Vector2 position)
+    {
+        LootListManager.GenerateLootObjects(parentNode, lootDataArray, position);
     }
 
     /// <summary>
@@ -493,6 +532,7 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
+        CreateLootObject();
         QueueFree();
         return Task.CompletedTask;
     }

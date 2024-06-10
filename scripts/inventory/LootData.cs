@@ -1,6 +1,8 @@
-﻿namespace ColdMint.scripts.inventory;
+﻿using Godot;
 
-public class LootData
+namespace ColdMint.scripts.inventory;
+
+public partial class LootData : GodotObject
 {
     public string? ResPath { get; set; }
     public int Quantity { get; set; }

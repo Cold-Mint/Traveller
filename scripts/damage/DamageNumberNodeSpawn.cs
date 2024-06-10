@@ -1,3 +1,4 @@
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.damage;
@@ -99,7 +100,8 @@ public partial class DamageNumberNodeSpawn : Marker2D
             return;
         }
 
-        if (_damageNumberPackedScene.Instantiate() is not DamageNumber damageNumber)
+        var damageNumber = NodeUtils.InstantiatePackedScene<DamageNumber>(_damageNumberPackedScene);
+        if (damageNumber == null)
         {
             return;
         }

@@ -396,28 +396,29 @@ public partial class Player : CharacterTemplate
             //If there is a scene of floating text, then we generate floating text.
             //如果有悬浮文本的场景，那么我们生成悬浮文本。
             _floatLabel?.QueueFree();
-            _floatLabel = (Control)_floatLabelPackedScene.Instantiate();
-            var rotationDegreesNode2D = node2D.RotationDegrees;
-            var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
-            _floatLabel.Position = rotationDegreesNode2DAbs > 90
-                ? new Vector2(0, PromptTextDistance)
-                : new Vector2(0, -PromptTextDistance);
-            _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
-            var label = _floatLabel.GetNode<Label>("Label");
-            if (node is WeaponTemplate weapon)
+            _floatLabel = NodeUtils.InstantiatePackedScene<Control>(_floatLabelPackedScene, node);
+            if (_floatLabel != null)
             {
-                var stringBuilder = new StringBuilder();
-                if (weapon.Owner is CharacterTemplate characterTemplate)
+                var rotationDegreesNode2D = node2D.RotationDegrees;
+                var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
+                _floatLabel.Position = rotationDegreesNode2DAbs > 90
+                    ? new Vector2(0, PromptTextDistance)
+                    : new Vector2(0, -PromptTextDistance);
+                _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
+                var label = _floatLabel.GetNode<Label>("Label");
+                if (node is WeaponTemplate weapon)
                 {
-                    stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
-                    stringBuilder.Append(TranslationServerUtils.Translate("de"));
+                    var stringBuilder = new StringBuilder();
+                    if (weapon.Owner is CharacterTemplate characterTemplate)
+                    {
+                        stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
+                        stringBuilder.Append(TranslationServerUtils.Translate("de"));
+                    }
+
+                    stringBuilder.Append(TranslationServerUtils.Translate(weapon.Name));
+                    label.Text = stringBuilder.ToString();
                 }
-
-                stringBuilder.Append(TranslationServerUtils.Translate(weapon.Name));
-                label.Text = stringBuilder.ToString();
             }
-
-            node.AddChild(_floatLabel);
         }
 
         UpdateOperationTip();

@@ -18,7 +18,20 @@ public static class Config
         /// <para>巡逻</para>
         /// <para>Patrol</para>
         /// </summary>
-        public const string? Patrol = "Patrol";
+        public const string Patrol = "Patrol";
+    }
+    
+    /// <summary>
+    /// <para>Loot table ID</para>
+    /// <para>战利品表ID</para>
+    /// </summary>
+    public static class LootListId
+    {
+        /// <summary>
+        /// <para>A trophy table for testing</para>
+        /// <para>测试用的战利品表</para>
+        /// </summary>
+        public const string Test = "Test";
     }
 
     /// <summary>
