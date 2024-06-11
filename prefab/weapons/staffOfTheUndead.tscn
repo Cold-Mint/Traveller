@@ -22,11 +22,11 @@ metadata/ID = "StaffOfTheUndead"
 metadata/MaxStackQuantity = 1
 metadata/Description = "staff_of_the_undead_desc"
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8
-collision_mask = 68
+collision_mask = 71
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
 position = Vector2(25.5, 0.5)
 shape = SubResource("RectangleShape2D_obcq2")
 
@@ -40,8 +40,3 @@ shape = SubResource("RectangleShape2D_14m1g")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(65, 0)
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(26, -8)
-target_position = Vector2(0, 20)
-collision_mask = 34

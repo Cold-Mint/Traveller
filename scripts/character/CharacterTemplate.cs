@@ -318,6 +318,7 @@ public partial class CharacterTemplate : CharacterBody2D
         if (pickAbleItem is WeaponTemplate weaponTemplate)
         {
             weaponTemplate.Owner = this;
+            weaponTemplate.Picked = true;
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
             weaponTemplate.EnableContactInjury = false;
@@ -479,7 +480,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
 
         var finalGlobalPosition = GlobalPosition;
-        CallDeferred("GenerateLootObjects", this,lootDataArray, finalGlobalPosition);
+        CallDeferred("GenerateLootObjects", this, lootDataArray, finalGlobalPosition);
     }
 
     /// <summary>
@@ -669,6 +670,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     return;
                 }
 
+                weaponTemplate.Picked = false;
                 CallDeferred("WeaponTemplateReparent", weaponTemplate);
                 var timer = new Timer();
                 weaponTemplate.AddChild(timer);
@@ -770,5 +772,15 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
+        //The cost of applying force in the X direction.
+        //对X方向施加力消耗。
+        if ((int)velocity.X == 0)
+        {
+            velocity.X = 0;
+        }
+        else
+        {
+            velocity.X *= 0.95f;
+        }
     }
 }

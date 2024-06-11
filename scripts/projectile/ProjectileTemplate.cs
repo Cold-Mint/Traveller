@@ -2,6 +2,7 @@ using System;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -105,8 +106,15 @@ public partial class ProjectileTemplate : CharacterBody2D
 
         if (target is TileMap)
         {
-            //When we hit the tile, we return true in order to place the bullet through the tile.
-            //撞击到瓦片时，我们返回true，是为了放置子弹穿透瓦片。
+            //When we hit the tile, we return true to prevent the bullet from penetrating the tile.
+            //撞击到瓦片时，我们返回true，是为了防止子弹穿透瓦片。
+            return true;
+        }
+
+        if (target is WeaponTemplate)
+        {
+            //Bullets are allowed to strike objects.
+            //允许子弹撞击物品。
             return true;
         }
 
@@ -130,39 +138,56 @@ public partial class ProjectileTemplate : CharacterBody2D
     /// <param name="target"></param>
     private void DoDamage(Node2D? owner, Node2D target)
     {
-        if (target is not CharacterTemplate characterTemplate)
+        if (target is CharacterTemplate characterTemplate)
         {
-            return;
-        }
-
-        //Allow damage to be caused
-        //允许造成伤害
-        var damage = new Damage
-        {
-            Attacker = owner,
-            MaxDamage = MaxDamage,
-            MinDamage = MinDamage
-        };
-        damage.CreateDamage();
-        damage.MoveLeft = Velocity.X < 0;
-        damage.Type = DamageType;
-        characterTemplate.Damage(damage);
-        if (KnockbackForce != Vector2.Zero)
-        {
-            //If we set the attack force, then apply the force to the object
-            //如果我们设置了攻退力，那么将力应用到对象上
-            var force = new Vector2();
-            var forceX = Math.Abs(KnockbackForce.X);
-            if (Velocity.X < 0)
+            //Allow damage to be caused
+            //允许造成伤害
+            var damage = new Damage
             {
-                //Beat back to port
-                //向左击退
-                forceX = -forceX;
-            }
+                Attacker = owner,
+                MaxDamage = MaxDamage,
+                MinDamage = MinDamage
+            };
+            damage.CreateDamage();
+            damage.MoveLeft = Velocity.X < 0;
+            damage.Type = DamageType;
+            characterTemplate.Damage(damage);
+            if (KnockbackForce != Vector2.Zero)
+            {
+                //If we set the attack force, then apply the force to the object
+                //如果我们设置了攻退力，那么将力应用到对象上
+                var force = new Vector2();
+                var forceX = Math.Abs(KnockbackForce.X);
+                if (Velocity.X < 0)
+                {
+                    //Beat back to port
+                    //向左击退
+                    forceX = -forceX;
+                }
 
-            force.X = forceX * Config.CellSize;
-            force.Y = KnockbackForce.Y * Config.CellSize;
-            characterTemplate.AddForce(force);
+                force.X = forceX * Config.CellSize;
+                force.Y = KnockbackForce.Y * Config.CellSize;
+                characterTemplate.AddForce(force);
+            }
+        }else if (target is WeaponTemplate weaponTemplate)
+        {
+            if (KnockbackForce != Vector2.Zero)
+            {
+                //If we set the attack force, then apply the force to the object
+                //如果我们设置了攻退力，那么将力应用到对象上
+                var force = new Vector2();
+                var forceX = Math.Abs(KnockbackForce.X);
+                if (Velocity.X < 0)
+                {
+                    //Beat back to port
+                    //向左击退
+                    forceX = -forceX;
+                }
+
+                force.X = forceX * Config.CellSize;
+                force.Y = KnockbackForce.Y * Config.CellSize;
+                weaponTemplate.ApplyImpulse(force);
+            }
         }
     }
 
