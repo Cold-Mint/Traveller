@@ -1,11 +1,13 @@
 using System;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.inventory;
+
 using Godot;
 
-namespace ColdMint.scripts.weapon;
+namespace ColdMint.scripts.item.weapon;
 
 /// <summary>
 /// <para>WeaponTemplate</para>

@@ -28,7 +28,7 @@ public static class ItemTypeManager
     /// <para>Returns null when the id is not registered.</para>
     /// </summary>
     public static IItem_New? NewItem(string id) =>
-        Registry.TryGetValue(id, out var itemType) ? itemType.Getter() : null;
+        Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
 
     /// <summary>
     /// Get the translated default name of the item type for the given id
@@ -54,6 +54,9 @@ public static class ItemTypeManager
     /// </returns>
     public static Texture2D DefaultIconOf(string id) =>
         Registry.TryGetValue(id, out var itemType)
-            ? itemType.Texture ?? DefaultTexture
+            ? itemType.Icon ?? DefaultTexture
             : DefaultTexture;
+
+    public static int MaxStackQuantityOf(string id) => Registry.TryGetValue(id, out var itemType) ? itemType.MaxStackQuantity : 0;
+    public static StackType? StackTypeOf(string id) => Registry.TryGetValue(id, out var itemType) ? itemType.StackType : null;
 }

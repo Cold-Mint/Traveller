@@ -396,8 +396,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
             return;
         }
 
-        var itemSlotNode = _itemSlotPackedScene.Instantiate() as ItemSlotNode;
-        if (itemSlotNode == null)
+        if (_itemSlotPackedScene.Instantiate() is not ItemSlotNode itemSlotNode)
         {
             return;
         }

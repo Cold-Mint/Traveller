@@ -13,13 +13,17 @@ public readonly struct ItemType
     /// <summary>
     /// <para>A function returns a new item instance of this type</para>
     /// </summary>
-    public Func<IItem_New> Getter { get; init; }
+    public Func<IItem_New> NewItemFunc { get; init; }
     /// <summary>
     /// <para>Default icon of items of this type</para>
     /// </summary>
-    public Texture2D? Texture { get; init; }
+    public Texture2D? Icon { get; init; }
     /// <summary>
     /// <para>Max number in item stack of this type</para>
     /// </summary>
     public int MaxStackQuantity { get; init; }
+    /// <summary>
+    /// <para>Determines how items of this type will be stacked</para>
+    /// </summary>
+    public StackType StackType { get; init; }
 }

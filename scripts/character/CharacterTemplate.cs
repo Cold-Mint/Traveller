@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.weapon;
+using ColdMint.scripts.item.weapon;
+
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -69,9 +71,7 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Update finished items</para>
     ///<para>更新完成后的物品</para>
     /// </param>
-    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem)
-    {
-    }
+    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem) { }
 
     //Define a pick up range
     //定义一个拾起范围
@@ -210,8 +210,8 @@ public partial class CharacterTemplate : CharacterBody2D
         base._Ready();
         PickingRangeBodiesList = new List<Node>();
         CharacterName = GetMeta("Name", Name).AsString();
-        CampId = GetMeta("CampId", Config.CampId.Default).AsString();
-        MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
+        CampId = GetMeta("CampId",      Config.CampId.Default).AsString();
+        MaxHp = GetMeta("MaxHp",        Config.DefaultMaxHp).AsInt32();
         string lootListId = GetMeta("LootListId", string.Empty).AsString();
         if (!string.IsNullOrEmpty(lootListId))
         {
@@ -219,6 +219,7 @@ public partial class CharacterTemplate : CharacterBody2D
             //如果指定了战利品表，那么获取战利品表。
             _lootList = LootListManager.GetLootList(lootListId);
         }
+
         if (MaxHp <= 0)
         {
             //If Max blood volume is 0 or less, set Max blood volume to 10
@@ -317,7 +318,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             weaponTemplate.Owner = this;
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
+            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
             weaponTemplate.EnableContactInjury = false;
             weaponTemplate.Sleeping = true;
         }
@@ -467,9 +468,7 @@ public partial class CharacterTemplate : CharacterBody2D
         _additionalForce = force;
     }
 
-    protected virtual void OnHit(DamageTemplate damageTemplate)
-    {
-    }
+    protected virtual void OnHit(DamageTemplate damageTemplate) { }
 
     /// <summary>
     /// <para>Handle the event of character death</para>
@@ -599,22 +598,9 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </param>
     protected void ThrowItem(int index, int number, Vector2 velocity)
     {
-        if (_itemContainer == null)
-        {
-            return;
-        }
+        var itemSlotNode = _itemContainer?.GetItemSlotNode(index);
 
-        var itemSlotNode = _itemContainer.GetItemSlotNode(index);
-        if (itemSlotNode == null)
-        {
-            return;
-        }
-
-        var item = itemSlotNode.GetItem();
-        if (item == null)
-        {
-            return;
-        }
+        var item = itemSlotNode?.GetItem();
 
         if (item is not Node2D node2D)
         {
@@ -639,7 +625,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     weaponTemplate.EnableContactInjury = true;
-                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
+                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   true);
                     weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
@@ -669,11 +655,11 @@ public partial class CharacterTemplate : CharacterBody2D
         //在物品容器内移除物品
         if (number < 0)
         {
-            itemSlotNode.RemoveItem(item.Quantity);
+            itemSlotNode!.RemoveItem(item.Quantity);
         }
         else
         {
-            itemSlotNode.RemoveItem(number);
+            itemSlotNode!.RemoveItem(number);
         }
     }
 
@@ -728,7 +714,5 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
 
-    protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta)
-    {
-    }
+    protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta) { }
 }

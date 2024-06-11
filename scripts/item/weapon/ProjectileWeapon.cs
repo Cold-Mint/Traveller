@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
+
 using Godot;
 
-namespace ColdMint.scripts.weapon;
+namespace ColdMint.scripts.item.weapon;
 
 /// <summary>
 /// <para>Projectile weapons</para>
