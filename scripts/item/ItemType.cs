@@ -22,8 +22,4 @@ public readonly struct ItemType
     /// <para>Max number in item stack of this type</para>
     /// </summary>
     public int MaxStackQuantity { get; init; }
-    /// <summary>
-    /// <para>Determines how items of this type will be stacked</para>
-    /// </summary>
-    public StackType StackType { get; init; }
 }

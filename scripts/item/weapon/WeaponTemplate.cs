@@ -13,18 +13,27 @@ namespace ColdMint.scripts.item.weapon;
 /// <para>WeaponTemplate</para>
 /// <para>武器模板</para>
 /// </summary>
-public partial class WeaponTemplate : RigidBody2D, IItem
+public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
 {
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-    public string? Id { get; set; }
-    public int Quantity { get; set; }
-    public int MaxStackQuantity { get; set; }
-    public Texture2D? Icon { get; set; }
-    public new string? Name { get; set; }
-    public string? Description { get; set; }
-    public Action<IItem>? OnUse { get; set; }
-    public Func<IItem, Node>? OnInstantiation { get; set; }
+    //Implements IItem
+    [Export] public virtual string Id { get; private set; } = "ID";
+
+    protected virtual Texture2D? UniqueIcon { get; set; }
+    public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
+
+    protected string? UniqueName { get; set; }
+    public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
+
+    protected string? UniqueDescription { get; set; }
+    public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
+
+
+    public void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    {
+        Fire(owner, targetGlobalPosition);
+    }
 
     /// <summary>
     /// <para>Owner</para>
@@ -39,8 +48,8 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// </summary>
     public bool EnableContactInjury;
 
-    private int _minContactInjury;
-    private int _maxContactInjury;
+    [Export] private int _minContactInjury = 1;
+    [Export] private int _maxContactInjury = 2;
 
     private DateTime? _lastFiringTime;
 
@@ -49,6 +58,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <para>开火间隔</para>
     /// </summary>
     private TimeSpan _firingInterval;
+    [Export] private long _firingIntervalAsMillisecond = 100;
 
 
     /// <summary>
@@ -59,7 +69,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     ///<para>When the weapon is fired, how much recoil is applied to the user, in units: the number of cells, and the X direction of the force is automatically inferred.</para>
     ///<para>武器开火，要对使用者施加多大的后坐力，单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    private Vector2 _recoil;
+    [Export] private Vector2 _recoil;
 
     /// <summary>
     /// <para>This area represents the collision range of the weapon, and when other nodes enter this area, they will deal damage.</para>
@@ -75,16 +85,18 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         RayCast2D = GetNode<RayCast2D>("RayCast2D");
         _area2D = GetNode<Area2D>("Area2D");
         _area2D.BodyEntered += OnBodyEnter;
-        Id = GetMeta("ID", "1").AsString();
-        Quantity = GetMeta("Quantity", "1").AsInt32();
-        MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
-        Icon = GetMeta("Icon", "").As<Texture2D>();
-        Name = GetMeta("Name", "").AsString();
-        Description = GetMeta("Description", "").AsString();
-        _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
-        _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
-        _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
-        _recoil = GetMeta("Recoil", Vector2.Zero).AsVector2();
+        // Id = GetMeta("ID",                             "1").AsString();
+        // Quantity = GetMeta("Quantity",                 "1").AsInt32();
+        // MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
+        // Icon = GetMeta("Icon",                         "").As<Texture2D>();
+        // Name = GetMeta("Name",                         "").AsString();
+        // Description = GetMeta("Description",           "").AsString();
+        // _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
+        // _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
+        // _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
+        // _recoil = GetMeta("Recoil",                     Vector2.Zero).AsVector2();
+
+        _firingInterval = TimeSpan.FromMilliseconds(_firingIntervalAsMillisecond);
     }
 
 
@@ -118,7 +130,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
         //Determine if your side can cause damage
         //判断所属的阵营是否可以造成伤害
         var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-            CampManager.GetCamp(characterTemplate.CampId));
+                                                    CampManager.GetCamp(characterTemplate.CampId));
         if (!canCauseHarm)
         {
             return;
@@ -145,9 +157,7 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <para>翻转武器</para>
     /// </summary>
     /// <param name="facingLeft"></param>
-    public void Flip(bool facingLeft)
-    {
-    }
+    public void Flip(bool facingLeft) { }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -224,7 +234,5 @@ public partial class WeaponTemplate : RigidBody2D, IItem
     /// <para>Execute fire</para>
     /// <para>执行开火</para>
     /// </summary>
-    protected virtual void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
-    {
-    }
+    protected abstract void DoFire(Node2D? owner, Vector2 enemyGlobalPosition);
 }

@@ -7,6 +7,7 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
 
@@ -352,9 +353,9 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        if (_currentItem is WeaponTemplate weaponTemplate)
+        if (_currentItem is IItem_New item)
         {
-            weaponTemplate.Fire(this, position);
+            item.Use(this, position);
         }
 
         return true;

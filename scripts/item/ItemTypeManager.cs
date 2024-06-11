@@ -58,5 +58,4 @@ public static class ItemTypeManager
             : DefaultTexture;
 
     public static int MaxStackQuantityOf(string id) => Registry.TryGetValue(id, out var itemType) ? itemType.MaxStackQuantity : 0;
-    public static StackType? StackTypeOf(string id) => Registry.TryGetValue(id, out var itemType) ? itemType.StackType : null;
 }

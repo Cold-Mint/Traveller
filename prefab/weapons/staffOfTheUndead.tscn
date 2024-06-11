@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://e6670ykyq145" path="res://sprites/weapon/staffOfTheUndead.png" id="1_ms3us"]
-[ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
+[ext_resource type="Script" path="res://scripts/item/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="Texture2D" uid="uid://b2blj0yf4ohx3" path="res://icon.svg" id="2_l5lni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
@@ -14,6 +14,7 @@ size = Vector2(49, 5.25)
 collision_layer = 8
 collision_mask = 34
 script = ExtResource("1_w8hhv")
+Id = "staff_of_the_undead"
 metadata/Projectiles = PackedStringArray("res://prefab/projectile/curseOfTheUndead.tscn")
 metadata/Name = "staff_of_the_undead"
 metadata/FiringIntervalArray = PackedInt64Array(5000, 500, 250)

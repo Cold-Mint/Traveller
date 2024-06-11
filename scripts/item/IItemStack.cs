@@ -40,12 +40,10 @@ public interface IItemStack
     /// <summary>
     /// Create a new ItemStack with the given item as the first item
     /// </summary>
-    public static IItemStack? FromItem(IItem_New item) => ItemTypeManager.StackTypeOf(item.Id) switch
+    public static IItemStack FromItem(IItem_New item) => ItemTypeManager.MaxStackQuantityOf(item.Id) switch
     {
-        StackType.Common      => throw new NotImplementedException(),
-        StackType.Unique      => throw new NotImplementedException(),
-        StackType.Unstackable => new SingleItemStack(item),
-        null                  => null,
-        _                     => throw new ArgumentException()
+        1         => new SingleItemStack(item),
+        > 1       => throw new NotImplementedException(),
+        var other => throw new ArgumentException($"item {item} of type '{item.Id}' has unexpected max stack quantity {other}")
     };
 }
