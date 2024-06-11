@@ -1,4 +1,6 @@
+using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
+
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -9,7 +11,8 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ItemSlotNode : MarginContainer
 {
-    private IItem? _item;
+    //private IItem? _item;
+    private IItemStack? _itemStack;
     private TextureRect? _backgroundTextureRect;
     private TextureRect? _iconTextureRect;
     private Label? _quantityLabel;
@@ -35,56 +38,69 @@ public partial class ItemSlotNode : MarginContainer
     public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
 
     /// <summary>
-    /// <para>Get the items in the item slot</para>
-    /// <para>获取物品槽内的物品</para>
+    /// <para>Get the item stack in the item slot</para>
+    /// <para>获取物品槽内的物品堆</para>
     /// </summary>
     /// <returns></returns>
-    public IItem? GetItem()
-    {
-        return _item;
-    }
+    public IItemStack GetItemStack() => _itemStack;
 
     /// <summary>
     /// <para>Removes the specified number of items from the item slot</para>
     /// <para>在物品槽内移除指定数量的物品</para>
     /// </summary>
     /// <param name="number"></param>
-    /// <returns></returns>
-    public bool RemoveItem(int number)
+    /// <returns>
+    /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
+    /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
+    /// </returns>
+    public int RemoveItem(int number)
     {
-        if (_item == null)
+        if (_itemStack == null)
         {
-            return false;
+            return number;
         }
 
-        var newNumber = _item.Quantity - number;
-        if (newNumber <= 0)
-        {
-            //If the specified number of items is removed, the number of items is less than or equal to 0. Then we return the removal successful and empty the inventory.
-            //如果移除指定数量的物品后，物品数量小于或等于0。那么我们返回移除成功，并清空物品栏。
-            ClearItem();
-            return true;
-        }
+        var result = _itemStack.RemoveItem(number);
+        //If the specified number of items is removed, the number of items is less than or equal to 0. Then we empty the inventory.
+        //如果移除指定数量的物品后，物品数量小于或等于0。那么我们清空物品栏。
+        if (_itemStack.Quantity == 0) ClearSlot();
         else
         {
-            _item.Quantity = newNumber;
-            UpdateTooltipText(_item);
-            UpdateQuantityLabel(_item.Quantity);
-            return true;
+            UpdateTooltipText(_itemStack);
+            UpdateQuantityLabel(_itemStack.Quantity);
         }
+
+        return result;
+
+        // var newNumber = _item.Quantity - number;
+        // if (newNumber <= 0)
+        // {
+        //     //If the specified number of items is removed, the number of items is less than or equal to 0. Then we return the removal successful and empty the inventory.
+        //     //如果移除指定数量的物品后，物品数量小于或等于0。那么我们返回移除成功，并清空物品栏。
+        //     ClearItem();
+        //     return true;
+        // }
+        // else
+        // {
+        //     _item.Quantity = newNumber;
+        //     UpdateTooltipText(_item);
+        //     UpdateQuantityLabel(_item.Quantity);
+        //     return true;
+        // }
     }
 
     /// <summary>
-    /// <para>Empty the items in the item slot</para>
-    /// <para>清空物品槽内的物品</para>
+    /// <para>Empty the item slot</para>
+    /// <para>清空物品槽</para>
     /// </summary>
     /// <remarks>
-    ///<para>This method does not calculate how many items should be left. If you want to remove a specified number of items, call the RemoveItem method.</para>
-    ///<para>此方法不会计算物品应该剩余多少个。若您希望移除指定数量的物品，请调用RemoveItem方法。</para>
+    ///<para>This method does not calculate how many items should be left. If you want to remove a specified number of items, call the <see cref="RemoveItem"/> method.</para>
+    ///<para>此方法不会计算物品应该剩余多少个。若您希望移除指定数量的物品，请调用<see cref="RemoveItem"/>方法。</para>
     /// </remarks>
-    public void ClearItem()
+    public void ClearSlot()
     {
-        _item = null;
+        _itemStack = null;
+        
         if (_iconTextureRect != null)
         {
             _iconTextureRect.Texture = null;
@@ -95,12 +111,10 @@ public partial class ItemSlotNode : MarginContainer
             _control.TooltipText = null;
         }
 
-        if (_quantityLabel != null)
-        {
-            _quantityLabel.Hide();
-        }
+        _quantityLabel?.Hide();
     }
 
+    //Todo: I searched until here.
 
     /// <summary>
     /// <para>Can the specified item be placed in the item slot?</para>
@@ -186,9 +200,9 @@ public partial class ItemSlotNode : MarginContainer
             if (debugText != null)
             {
                 _control.TooltipText = string.Format(debugText, item.Id,
-                    TranslationServerUtils.Translate(item.Name),
-                    item.Quantity, item.MaxStackQuantity, item.GetType().Name,
-                    TranslationServerUtils.Translate(item.Description));
+                                                     TranslationServerUtils.Translate(item.Name),
+                                                     item.Quantity, item.MaxStackQuantity, item.GetType().Name,
+                                                     TranslationServerUtils.Translate(item.Description));
             }
         }
         else

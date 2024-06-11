@@ -277,7 +277,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Empty reference checking is implicitly performed here.
         //此处隐式的执行了空引用检查。
-        if (pickAbleItem is not IItem item)
+        if (pickAbleItem is not IItem_New item)
         {
             return false;
         }

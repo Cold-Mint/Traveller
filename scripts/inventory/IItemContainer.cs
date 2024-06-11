@@ -1,4 +1,6 @@
-﻿namespace ColdMint.scripts.inventory;
+﻿using ColdMint.scripts.item;
+
+namespace ColdMint.scripts.inventory;
 
 /// <summary>
 /// <para>item container</para>
@@ -16,7 +18,7 @@ public interface IItemContainer
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    bool CanAddItem(IItem item);
+    bool CanAddItem(IItem_New item);
 
     /// <summary>
     /// <para>Implement methods for adding items</para>
@@ -24,7 +26,7 @@ public interface IItemContainer
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    bool AddItem(IItem item);
+    bool AddItem(IItem_New item);
 
     /// <summary>
     /// <para>Gets the selected location</para>
@@ -81,5 +83,5 @@ public interface IItemContainer
     ///<para>Return null if there is no slot to place the item in</para>
     ///<para>若没有槽可放置此物品，则返回null</para>
     /// </returns>
-    ItemSlotNode? Matching(IItem item);
+    ItemSlotNode? Matching(IItem_New item);
 }

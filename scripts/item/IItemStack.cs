@@ -38,6 +38,17 @@ public interface IItemStack
 
 
     /// <summary>
+    /// <para>Removes the specified number of items from current item stack</para>
+    /// <para>在当前物品堆移除指定数量的物品</para>
+    /// </summary>
+    /// <param name="number"></param>
+    /// <returns>
+    /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
+    /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
+    /// </returns>
+    public int RemoveItem(int number);
+
+    /// <summary>
     /// Create a new ItemStack with the given item as the first item
     /// </summary>
     public static IItemStack FromItem(IItem_New item) => ItemTypeManager.MaxStackQuantityOf(item.Id) switch

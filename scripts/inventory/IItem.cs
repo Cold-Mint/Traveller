@@ -3,6 +3,7 @@ using Godot;
 
 namespace ColdMint.scripts.inventory;
 
+/*
 public interface IItem
 {
     /// <summary>
@@ -54,3 +55,4 @@ public interface IItem
     /// </summary>
     Func<IItem, Node>? OnInstantiation { get; set; }
 }
+*/
