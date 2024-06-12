@@ -90,13 +90,17 @@ public partial class ItemSlotNode : MarginContainer
     /// <para>Removes the specified number of items from the item slot</para>
     /// <para>在物品槽内移除指定数量的物品</para>
     /// </summary>
-    /// <param name="number"></param>
+    /// <param name="number">
+    /// <para>Quantity to be removed, inputs below zero represent all items</para>
+    /// <para>要删除的数量，小于0的输入代表全部物品</para>
+    /// </param>
     /// <returns>
     /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
     /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
     /// </returns>
     /// <remarks>
-    /// <para>会将移除的物品从游戏中删除，如果目的并非如此，请考虑使用</para>
+    /// <para>Will remove the removed items from the game, if that is not the intent, consider using the <see cref="PickItems"/></para>
+    /// <para>会将移除的物品从游戏中删除，如果目的并非如此，请考虑使用<see cref="PickItems"/></para>
     /// </remarks>
     public int RemoveItem(int number)
     {
@@ -200,16 +204,16 @@ public partial class ItemSlotNode : MarginContainer
     /// <para>尝试将一个物品堆合并至该槽位中</para>
     /// </summary>
     /// <returns>
-    /// <para>Number of items remaining in the source item pile after the operation is completed</para>
-    /// <para>操作完成后，源物品堆中剩余的物品数</para>
+    /// <para>If the source item stack is empty after the operation is completed</para>
+    /// <para>操作完成后，源物品堆是否被取空</para>
     /// </returns>
-    public int AddItemStack(IItemStack itemStack)
+    public bool AddItemStack(IItemStack itemStack)
     {
-        int result;
+        bool result;
         if (_itemStack is null)
         {
             _itemStack = itemStack;
-            result = 0;
+            result = false;
         }
         else
         {

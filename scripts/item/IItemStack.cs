@@ -70,9 +70,9 @@ public interface IItemStack
     /// <para>被移入当前堆的物品堆</para>
     /// </param>
     /// <returns>
-    /// <para>操作结束后原物品堆中剩余的物品数</para>
+    /// <para>操作结束后原物品堆是否为空</para>
     /// </returns>
-    public int TakeFrom(IItemStack itemStack);
+    public bool TakeFrom(IItemStack itemStack);
 
     /// <summary>
     /// <para>Get item instance at the top of current stack without removing it from stack</para>
@@ -112,10 +112,13 @@ public interface IItemStack
     /// </para>
     /// <para>
     /// 在当前物品堆移除指定数量的物品，被移除的物品应当从游戏中移除。<br/>
-    /// 如果您不想将它们从游戏中移除，请考虑： <see cref="PickItem"/>、<see cref="PickItems"/>
+    /// 如果您并不打算将它们从游戏中移除，请考虑使用 <see cref="PickItem"/> 和 <see cref="PickItems"/>
     /// </para>
     /// </summary>
-    /// <param name="number"></param>
+    /// <param name="number">
+    /// <para>Quantity to be removed, inputs below zero represent all items</para>
+    /// <para>要删除的数量，小于0的输入代表全部物品</para>
+    /// </param>
     /// <returns>
     /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
     /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>

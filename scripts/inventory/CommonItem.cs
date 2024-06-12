@@ -3,6 +3,7 @@ using Godot;
 
 namespace ColdMint.scripts.inventory;
 
+/*
 /// <summary>
 /// <para>Common goods</para>
 /// <para>普通的物品</para>
@@ -18,3 +19,4 @@ public class CommonItem : IItem
     public Action<IItem>? OnUse { get; set; }
     public Func<IItem, Node>? OnInstantiation { get; set; }
 }
+*/
