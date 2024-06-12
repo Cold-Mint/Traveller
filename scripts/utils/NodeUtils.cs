@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.weapon;
 using Godot;
 
@@ -121,6 +122,11 @@ public static class NodeUtils
         if (GameSceneNodeHolder.WeaponContainer != null && childNode is WeaponTemplate)
         {
             return GameSceneNodeHolder.WeaponContainer;
+        }
+
+        if (GameSceneNodeHolder.PacksackContainer!= null && childNode is Packsack)
+        {
+            return GameSceneNodeHolder.PacksackContainer;
         }
         return defaultParentNode;
     }

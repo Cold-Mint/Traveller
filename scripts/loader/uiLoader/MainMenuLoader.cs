@@ -47,14 +47,22 @@ public partial class MainMenuLoader : UiLoaderTemplate
             {
                 Id = Config.LootListId.Test
             };
-            var lootEntry = new LootEntry
+            var staffOfTheUndead = new LootEntry
             {
-                Chance = 1f,
+                Chance = 0.05f,
                 MaxQuantity = 5,
                 MinQuantity = 1,
                 ResPath = "res://prefab/weapons/staffOfTheUndead.tscn"
             };
-            testLootList.AddLootEntry(lootEntry);
+            testLootList.AddLootEntry(staffOfTheUndead);
+            var packsack = new LootEntry
+            {
+                Chance = 1f,
+                MaxQuantity = 1,
+                MinQuantity = 1,
+                ResPath = "res://prefab/packsacks/packsack.tscn"
+            };
+            testLootList.AddLootEntry(packsack);
             LootListManager.RegisterLootList(testLootList);
         }
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
