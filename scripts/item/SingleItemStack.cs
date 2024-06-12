@@ -10,7 +10,7 @@ namespace ColdMint.scripts.item;
 /// <para>Item stack of single item</para>
 /// </summary>
 //maybe we'd move this into inventory namespace
-public struct SingleItemStack(IItem_New item) : IItemStack
+public class SingleItemStack(IItem_New item) : IItemStack
 {
     public IItem_New Item { get; init; } = item;
 
@@ -28,14 +28,29 @@ public struct SingleItemStack(IItem_New item) : IItemStack
     public int CanTakeFrom(IItemStack itemStack) => 0;
 
     public int TakeFrom(IItemStack itemStack) => 0;
+    
+    public IItem_New? GetItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IItem_New? PickItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IItemStack? PickItems(int value)
+    {
+        throw new NotImplementedException();
+    }
 
     public int RemoveItem(int number)
     {
-        
+        throw new NotImplementedException();
     }
 
     public void ClearStack()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }
