@@ -485,8 +485,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="lootDataArray"></param>
     /// <param name="position"></param>
     public void GenerateLootObjects(Node parentNode,
-        LootData[] lootDataArray,
-        Vector2 position)
+                                    LootData[] lootDataArray,
+                                    Vector2 position)
     {
         LootListManager.GenerateLootObjects(parentNode, lootDataArray, position);
     }
@@ -617,8 +617,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>抛出物品</para>
     /// </summary>
     /// <param name="index">
-    ///<para>Item slot subscript in item container</para>
-    ///<para>物品容器内的物品槽下标</para>
+    ///<para>Item slot index in item container</para>
+    ///<para>物品容器内的物品槽位置</para>
     /// </param>
     /// <param name="number">
     /// <para>How many to throw</para>
@@ -633,8 +633,41 @@ public partial class CharacterTemplate : CharacterBody2D
     protected void ThrowItem(int index, int number, Vector2 velocity)
     {
         var itemSlotNode = ItemContainer?.GetItemSlotNode(index);
+        if (itemSlotNode is null) return;
 
-        var item = itemSlotNode?.GetItem();
+        if (number < 0)
+        {
+            while (!itemSlotNode.IsEmpty())
+            {
+                ThrowOneItem(itemSlotNode, velocity);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < number && !itemSlotNode.IsEmpty(); i++)
+            {
+                ThrowOneItem(itemSlotNode, velocity);
+            }
+        }
+    }
+
+    /// <summary>
+    /// <para>Throw item</para>
+    /// <para>抛出物品</para>
+    /// </summary>
+    /// <param name="index">
+    ///<para>Item slot index in item container</para>
+    ///<para>物品容器内的物品槽位置</para>
+    /// </param>
+    /// <param name="velocity">
+    ///<para>The speed to be applied to the item</para>
+    ///<para>要施加到物品上的速度</para>
+    /// </param>
+    protected void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
+    {
+        //Pick an item from the item container
+        //从物品容器内取出一个物品
+        var item = itemSlotNode?.PickItem();
 
         if (item is not Node2D node2D)
         {
@@ -684,17 +717,6 @@ public partial class CharacterTemplate : CharacterBody2D
             case RigidBody2D rigidBody2D:
                 rigidBody2D.LinearVelocity = velocity;
                 break;
-        }
-
-        //Remove items from the item container
-        //在物品容器内移除物品
-        if (number < 0)
-        {
-            itemSlotNode!.RemoveItem(item.Quantity);
-        }
-        else
-        {
-            itemSlotNode!.RemoveItem(number);
         }
     }
 

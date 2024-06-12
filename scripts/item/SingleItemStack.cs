@@ -27,8 +27,8 @@ public class SingleItemStack(IItem_New item) : IItemStack
 
     public int CanTakeFrom(IItemStack itemStack) => 0;
 
-    public int TakeFrom(IItemStack itemStack) => 0;
-    
+    public bool TakeFrom(IItemStack itemStack) => false;
+
     public IItem_New? GetItem()
     {
         throw new NotImplementedException();

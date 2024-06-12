@@ -1,8 +1,11 @@
 using System;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.weapon;
+using ColdMint.scripts.item;
+using ColdMint.scripts.item.weapon;
+
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -64,10 +67,10 @@ public partial class ProjectileTemplate : CharacterBody2D
         Area2D.Monitoring = true;
         Area2D.BodyEntered += OnBodyEnter;
         Area2D.BodyExited += OnBodyExited;
-        Durability = GetMeta("Durability", "1").AsDouble();
-        MaxDamage = GetMeta("MaxDamage", "7").AsInt32();
-        MinDamage = GetMeta("MinDamage", "5").AsInt32();
-        DamageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
+        Durability = GetMeta("Durability",    "1").AsDouble();
+        MaxDamage = GetMeta("MaxDamage",      "7").AsInt32();
+        MinDamage = GetMeta("MinDamage",      "5").AsInt32();
+        DamageType = GetMeta("DamageType",    Config.DamageType.Physical).AsInt32();
         KnockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
         //life(ms)
         //子弹的存在时间(毫秒)
@@ -111,7 +114,9 @@ public partial class ProjectileTemplate : CharacterBody2D
             return true;
         }
 
-        if (target is WeaponTemplate)
+        //Match any item now
+        //现在使它识别任何物品
+        if (target is IItem_New)
         {
             //Bullets are allowed to strike objects.
             //允许子弹撞击物品。
@@ -126,7 +131,7 @@ public partial class ProjectileTemplate : CharacterBody2D
         //First get the owner's camp and compare it with the target camp
         //先获取主人的阵营与目标阵营进行比较
         var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-            CampManager.GetCamp(characterTemplate.CampId));
+                                                    CampManager.GetCamp(characterTemplate.CampId));
         return canCauseHarm;
     }
 
@@ -169,7 +174,8 @@ public partial class ProjectileTemplate : CharacterBody2D
                 force.Y = KnockbackForce.Y * Config.CellSize;
                 characterTemplate.AddForce(force);
             }
-        }else if (target is WeaponTemplate weaponTemplate)
+        }
+        else if (target is WeaponTemplate weaponTemplate)
         {
             if (KnockbackForce != Vector2.Zero)
             {
@@ -225,9 +231,7 @@ public partial class ProjectileTemplate : CharacterBody2D
     /// <para>当子弹离开节点时</para>
     /// </summary>
     /// <param name="node"></param>
-    protected virtual void OnBodyExited(Node2D node)
-    {
-    }
+    protected virtual void OnBodyExited(Node2D node) { }
 
 
     /// <summary>

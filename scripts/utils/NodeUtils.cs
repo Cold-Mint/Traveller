@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.weapon;
+using ColdMint.scripts.item.weapon;
 using Godot;
 
 namespace ColdMint.scripts.utils;

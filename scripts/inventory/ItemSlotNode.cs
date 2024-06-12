@@ -37,6 +37,8 @@ public partial class ItemSlotNode : MarginContainer
 
     public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
 
+    public bool IsEmpty() => _itemStack == null;
+
     /// <summary>
     /// <para>Get the item stack in the item slot</para>
     /// <para>获取物品槽内的物品堆</para>

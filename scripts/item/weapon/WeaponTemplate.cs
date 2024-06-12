@@ -35,6 +35,11 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
         Fire(owner, targetGlobalPosition);
     }
 
+    public virtual void Destroy()
+    {
+        QueueFree();
+    }
+
 
     /// <summary>
     /// <para>Whether the weapon is currently picked up</para>
@@ -168,7 +173,7 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
 
             //Determine if your side can cause damage
             //判断所属的阵营是否可以造成伤害
-            var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId), 
+            var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
                                                         CampManager.GetCamp(characterTemplate.CampId));
             if (!canCauseHarm)
             {
