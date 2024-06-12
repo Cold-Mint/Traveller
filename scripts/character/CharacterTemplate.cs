@@ -67,7 +67,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </param>
     protected virtual void WhenUpdateCurrentItem(Node2D? currentItem) { }
 
-    //Define a pick up range
+    //Define a pickup range
     //定义一个拾起范围
     private Area2D? _pickingArea;
 
@@ -122,7 +122,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     protected List<Node>? PickingRangeBodiesList;
 
-    public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? Array.Empty<Node>();
+    public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
     /// <summary>
     /// <para>Resurrected character</para>
@@ -155,7 +155,7 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
-    /// <para>Find the nearest item within the pick up area(Does not include items currently held)</para>
+    /// <para>Find the nearest item within the pickup area(Does not include items currently held)</para>
     /// <para>在拾捡范围内查找距离最近的物品（不包括当前持有的物品）</para>
     /// </summary>
     /// <returns></returns>
@@ -179,7 +179,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
 
     /// <summary>
-    /// <para>Get all weapons within range of the pick up</para>
+    /// <para>Get all weapons within range of the pickup</para>
     /// <para>获取所有在拾捡范围内的武器</para>
     /// </summary>
     /// <returns></returns>
@@ -401,7 +401,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 {
                     if (targetCamp.Id == playerCamp.Id)
                     {
-                        //If an attack is allowed and you are on the same side, it is displayed as a friendly color (friend damage).
+                        //If an attack is allowed, and you are on the same side, it is displayed as a friendly color (friend damage).
                         //如果允许攻击，且属于同一阵营，则显示为友好颜色（友伤）
                         _healthBar.SetFriendlyTones();
                     }
@@ -537,7 +537,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void EnterThePickingRangeBody(Node node)
     {
-        if (node is not IItem_New item)
+        if (node is not IItem_New)
         {
             return;
         }
@@ -651,23 +651,20 @@ public partial class CharacterTemplate : CharacterBody2D
         }
     }
 
-    /// <summary>
-    /// <para>Throw item</para>
-    /// <para>抛出物品</para>
-    /// </summary>
-    /// <param name="index">
-    ///<para>Item slot index in item container</para>
-    ///<para>物品容器内的物品槽位置</para>
-    /// </param>
-    /// <param name="velocity">
-    ///<para>The speed to be applied to the item</para>
-    ///<para>要施加到物品上的速度</para>
-    /// </param>
-    protected void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
+    ///  <summary>
+    ///  <para>Throw item</para>
+    ///  <para>抛出物品</para>
+    ///  </summary>
+    ///  <param name="itemSlotNode"></param>
+    ///  <param name="velocity">
+    /// <para>The speed to be applied to the item</para>
+    /// <para>要施加到物品上的速度</para>
+    ///  </param>
+    private void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
     {
         //Pick an item from the item container
         //从物品容器内取出一个物品
-        var item = itemSlotNode?.PickItem();
+        var item = itemSlotNode.PickItem();
 
         if (item is not Node2D node2D)
         {

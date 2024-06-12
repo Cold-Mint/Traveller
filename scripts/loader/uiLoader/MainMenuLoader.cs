@@ -1,12 +1,15 @@
 using System;
 using System.IO;
 using System.Text;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.item;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
+
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -57,6 +60,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
             testLootList.AddLootEntry(lootEntry);
             LootListManager.RegisterLootList(testLootList);
         }
+
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());
@@ -82,6 +86,10 @@ public partial class MainMenuLoader : UiLoaderTemplate
         var aborigines = new Camp(Config.CampId.Aborigines);
         CampManager.AddCamp(aborigines);
         _gameScene = (PackedScene)GD.Load("res://scenes/game.tscn");
+
+        //Temp: Register ItemType
+        //临时：注册物品类型
+        ItemTypeManager.StaticRegister();
     }
 
     public override void InitializeUi()

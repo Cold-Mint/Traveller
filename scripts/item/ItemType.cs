@@ -4,22 +4,22 @@ using Godot;
 
 namespace ColdMint.scripts.item;
 
-public readonly struct ItemType
+public readonly struct ItemType(string id, Func<IItem_New> newItemFunc, Texture2D? icon, int maxStackQuantity)
 {
     /// <summary>
     /// <para>Item id of this type</para>
     /// </summary>
-    public string Id { get; init; }
+    public string Id { get; init; } = id;
     /// <summary>
     /// <para>A function returns a new item instance of this type</para>
     /// </summary>
-    public Func<IItem_New> NewItemFunc { get; init; }
+    public Func<IItem_New> NewItemFunc { get; init; } = newItemFunc;
     /// <summary>
     /// <para>Default icon of items of this type</para>
     /// </summary>
-    public Texture2D? Icon { get; init; }
+    public Texture2D? Icon { get; init; } = icon;
     /// <summary>
     /// <para>Max number in item stack of this type</para>
     /// </summary>
-    public int MaxStackQuantity { get; init; }
+    public int MaxStackQuantity { get; init; } = maxStackQuantity;
 }

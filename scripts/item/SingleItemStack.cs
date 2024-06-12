@@ -31,26 +31,35 @@ public class SingleItemStack(IItem_New item) : IItemStack
 
     public IItem_New? GetItem()
     {
-        throw new NotImplementedException();
+        return Quantity == 1 ? Item : null;
     }
 
     public IItem_New? PickItem()
     {
-        throw new NotImplementedException();
+        Quantity = 0;
+        return Item;
     }
 
     public IItemStack? PickItems(int value)
     {
-        throw new NotImplementedException();
+        if (value == 0) return null;
+        else
+        {
+            Quantity = 0;
+            return new SingleItemStack(Item);
+        }
     }
 
     public int RemoveItem(int number)
     {
-        throw new NotImplementedException();
+        if (number == 0) return 0;
+        Quantity = 0;
+        Item.Destroy();
+        return Math.Max(number - 1, 0);
     }
 
     public void ClearStack()
     {
-        throw new NotImplementedException();
+        RemoveItem(1);
     }
 }

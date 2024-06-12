@@ -162,17 +162,17 @@ public class UniversalItemContainer : IItemContainer
 
     public ItemSlotNode? Match(IItemStack stack)
     {
-        throw new NotImplementedException();
+        return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(stack.GetItem()!));
     }
 
     public ItemSlotNode? Match(Func<IItemStack?, bool> predicate)
     {
-        throw new NotImplementedException();
+        return _itemSlotNodes?.FirstOrDefault(node => predicate(node.GetItemStack()));
     }
 
     public IEnumerable<ItemSlotNode> MatchAll(Func<IItemStack?, bool> predicate)
     {
-        throw new NotImplementedException();
+        return from node in _itemSlotNodes where predicate(node.GetItemStack()) select node;
     }
 
 

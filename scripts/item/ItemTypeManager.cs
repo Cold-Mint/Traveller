@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using ColdMint.scripts.utils;
 
@@ -10,14 +9,19 @@ namespace ColdMint.scripts.item;
 public static class ItemTypeManager
 {
     // Register items statically here
-    static ItemTypeManager() { }
+    public static void StaticRegister()
+    {
+        var staffOfTheUndeadScene = ResourceLoader.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
+        var staffOfTheUndead = new ItemType("staff_of_the_undead", () => staffOfTheUndeadScene.Instantiate<IItem_New>(), null, 1);
+        Register(staffOfTheUndead);
+    }
 
     private static Dictionary<string, ItemType> Registry { get; } = [];
     private static Texture2D DefaultTexture { get; } = new PlaceholderTexture2D();
 
 
     /// <summary>
-    /// Register a item type.
+    /// Register an item type.
     /// Return false if the item id already exist.
     /// </summary>
     /// <returns>Whether the registration was successful.</returns>

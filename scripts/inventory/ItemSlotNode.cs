@@ -62,8 +62,8 @@ public partial class ItemSlotNode : MarginContainer
         if (_itemStack is null) return null;
 
         var result = _itemStack.PickItem();
-        if (_itemStack.Quantity == 0) ClearSlot();
-        else UpdateAllDisplay();
+        if (_itemStack.Quantity == 0) _itemStack = null;
+        UpdateAllDisplay();
 
         return result;
     }
@@ -82,8 +82,8 @@ public partial class ItemSlotNode : MarginContainer
         if (_itemStack is null) return null;
 
         var result = _itemStack.PickItems(value);
-        if (_itemStack.Quantity == 0) ClearSlot();
-        else UpdateAllDisplay();
+        if (_itemStack.Quantity == 0) _itemStack = null;
+        UpdateAllDisplay();
 
         return result;
     }
@@ -114,8 +114,8 @@ public partial class ItemSlotNode : MarginContainer
         var result = _itemStack.RemoveItem(number);
         //If the specified number of items is removed, the number of items is less than or equal to 0. Then we empty the inventory.
         //如果移除指定数量的物品后，物品数量小于或等于0。那么我们清空物品栏。
-        if (_itemStack.Quantity == 0) ClearSlot();
-        else UpdateAllDisplay();
+        if (_itemStack.Quantity == 0) _itemStack = null;
+        UpdateAllDisplay();
 
         return result;
     }
