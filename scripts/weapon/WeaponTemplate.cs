@@ -2,7 +2,6 @@ using System;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using Godot;
 

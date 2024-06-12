@@ -161,7 +161,3 @@ locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "
 [physics]
 
 2d/default_gravity=480.0
-
-[rendering]
-
-renderer/rendering_method="mobile"

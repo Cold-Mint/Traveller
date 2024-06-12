@@ -1,6 +1,6 @@
 [![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
 
-English [简体中文](README_ZH.md) [にほんご](README_JP.md)
+English [简体中文](README_ZH.md) [にほんご](README_JA.md)
 
 ## Intro
 
@@ -13,8 +13,8 @@ A pixel cross-platform roguelite game.
 | Task                                                   | status        |
 | ----------------------------------------------------------- | ------------------ |
 | Randomly generated map                         | complete |
-| loot                                                 | In progress |
-| Support still out of the knapsack system | await                |
+| loot                                                 | complete |
+| Support still out of the knapsack system | In progress                |
 | Add AI agents to creatures | await |
 
 ## Screenshot

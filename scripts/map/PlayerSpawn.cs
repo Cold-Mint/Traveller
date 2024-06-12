@@ -58,7 +58,7 @@ public partial class PlayerSpawn : Marker2D
         {
             return;
         }
-        playerNode.ItemContainer = GameSceneNodeHolder.HotBar;
+        playerNode.ItemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
         GameSceneNodeHolder.Player = playerNode;
         playerNode.Position = GlobalPosition;
         LogCat.LogWithFormat("player_spawn_debug", playerNode.ReadOnlyCharacterName, playerNode.Position);
