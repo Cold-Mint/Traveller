@@ -50,14 +50,14 @@ public partial class ItemSlotNode : MarginContainer
     /// <para>If present, get the item at the top of the item stack in this slot</para>
     /// <para>如果存在，获取该槽位中物品堆顶部的物品</para>
     /// </summary>
-    public IItem_New? GetItem() => _itemStack?.GetItem();
+    public IItem? GetItem() => _itemStack?.GetItem();
 
     /// <summary>
     /// <para>If present, remove an item in this slot and return it.</para>
     /// <para>如果存在，移除该槽位中的一个物品并将其返回</para>
     /// </summary>
     /// <seealso cref="PickItems"/>
-    public IItem_New? PickItem()
+    public IItem? PickItem()
     {
         if (_itemStack is null) return null;
 
@@ -149,7 +149,7 @@ public partial class ItemSlotNode : MarginContainer
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public bool CanAddItem(IItem_New item)
+    public bool CanAddItem(IItem item)
     {
         if (_itemStack == null) return true;
         return _itemStack.CanAddItem(item);
@@ -180,7 +180,7 @@ public partial class ItemSlotNode : MarginContainer
     /// <para>Try to add an item to this slot, if it can't be added to this slot, return false</para>
     /// <para>尝试向当前槽位中加入物品，如果该物品不能被放入该槽位，返回false</para>
     /// </summary>
-    public bool AddItem(IItem_New item)
+    public bool AddItem(IItem item)
     {
         bool result;
         if (_itemStack is null)

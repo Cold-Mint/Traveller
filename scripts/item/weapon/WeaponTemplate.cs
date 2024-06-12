@@ -13,7 +13,7 @@ namespace ColdMint.scripts.item.weapon;
 /// <para>WeaponTemplate</para>
 /// <para>武器模板</para>
 /// </summary>
-public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
+public abstract partial class WeaponTemplate : RigidBody2D, IItem
 {
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 

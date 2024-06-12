@@ -10,9 +10,9 @@ namespace ColdMint.scripts.item;
 /// <para>Item stack of single item</para>
 /// </summary>
 //maybe we'd move this into inventory namespace
-public class SingleItemStack(IItem_New item) : IItemStack
+public class SingleItemStack(IItem item) : IItemStack
 {
-    public IItem_New Item { get; init; } = item;
+    public IItem Item { get; init; } = item;
 
     public string Id => Item.Id;
     public int MaxQuantity => 1;
@@ -21,20 +21,20 @@ public class SingleItemStack(IItem_New item) : IItemStack
     public string Name => Item.Name;
     public string? Description => Item.Description;
 
-    public bool CanAddItem(IItem_New item) => false;
+    public bool CanAddItem(IItem item) => false;
 
-    public bool AddItem(IItem_New item) => false;
+    public bool AddItem(IItem item) => false;
 
     public int CanTakeFrom(IItemStack itemStack) => 0;
 
     public bool TakeFrom(IItemStack itemStack) => false;
 
-    public IItem_New? GetItem()
+    public IItem? GetItem()
     {
         return Quantity == 1 ? Item : null;
     }
 
-    public IItem_New? PickItem()
+    public IItem? PickItem()
     {
         Quantity = 0;
         return Item;

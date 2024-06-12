@@ -35,12 +35,12 @@ public class UniversalItemContainer : IItemContainer
     //_selectIndex默认为0.
     private int _selectIndex;
 
-    public bool CanAddItem(IItem_New item)
+    public bool CanAddItem(IItem item)
     {
         return Match(item) != null;
     }
 
-    public bool AddItem(IItem_New item)
+    public bool AddItem(IItem item)
     {
         var itemSlotNode = Match(item);
         if (itemSlotNode == null)
@@ -87,7 +87,7 @@ public class UniversalItemContainer : IItemContainer
         return null;
     }
 
-    public IItem_New? PickItemFromItemSlotBySelectIndex() => PickItemFromItemSlot(_selectIndex);
+    public IItem? PickItemFromItemSlotBySelectIndex() => PickItemFromItemSlot(_selectIndex);
 
     public IItemStack? PickItemsFromItemSlotBySelectIndex(int value) => PickItemsFromItemSlot(_selectIndex, value);
 
@@ -114,7 +114,7 @@ public class UniversalItemContainer : IItemContainer
         return _itemSlotNodes[safeIndex];
     }
 
-    public IItem_New? PickItemFromItemSlot(int itemSlotIndex)
+    public IItem? PickItemFromItemSlot(int itemSlotIndex)
     {
         if (_itemSlotNodes == null) return null;
         var safeIndex = GetSafeIndex(itemSlotIndex);
@@ -153,7 +153,7 @@ public class UniversalItemContainer : IItemContainer
         return itemSlot.RemoveItem(number);
     }
 
-    public ItemSlotNode? Match(IItem_New item)
+    public ItemSlotNode? Match(IItem item)
     {
         //Find and return the first slot that can hold this item, if the list is null or not found, return null
         //寻找并返回第一个遇到的可放置此物品的物品槽，若列表为空或不存在，将返回null

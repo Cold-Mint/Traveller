@@ -12,7 +12,7 @@ public static class ItemTypeManager
     public static void StaticRegister()
     {
         var staffOfTheUndeadScene = ResourceLoader.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
-        var staffOfTheUndead = new ItemType("staff_of_the_undead", () => staffOfTheUndeadScene.Instantiate<IItem_New>(), null, 1);
+        var staffOfTheUndead = new ItemType("staff_of_the_undead", () => staffOfTheUndeadScene.Instantiate<IItem>(), null, 1);
         Register(staffOfTheUndead);
     }
 
@@ -31,7 +31,7 @@ public static class ItemTypeManager
     /// <para>Creates a new instance of the item registered to the given id.</para>
     /// <para>Returns null when the id is not registered.</para>
     /// </summary>
-    public static IItem_New? NewItem(string id) =>
+    public static IItem? NewItem(string id) =>
         Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
 
     /// <summary>

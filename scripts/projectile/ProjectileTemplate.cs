@@ -116,7 +116,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 
         //Match any item now
         //现在使它识别任何物品
-        if (target is IItem_New)
+        if (target is IItem)
         {
             //Bullets are allowed to strike objects.
             //允许子弹撞击物品。

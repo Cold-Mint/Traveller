@@ -2,8 +2,7 @@
 
 namespace ColdMint.scripts.item;
 
-//Todo: Merge this with IItem (and, then change this ugly name
-public interface IItem_New
+public interface IItem
 {
     /// <summary>
     /// <para>ID of current item</para>

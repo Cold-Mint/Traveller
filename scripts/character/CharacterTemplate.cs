@@ -271,7 +271,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Empty reference checking is implicitly performed here.
         //此处隐式的执行了空引用检查。
-        if (pickAbleItem is not IItem_New item)
+        if (pickAbleItem is not IItem item)
         {
             return false;
         }
@@ -348,7 +348,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        if (_currentItem is IItem_New item)
+        if (_currentItem is IItem item)
         {
             item.Use(this, position);
         }
@@ -537,7 +537,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void EnterThePickingRangeBody(Node node)
     {
-        if (node is not IItem_New)
+        if (node is not IItem)
         {
             return;
         }
@@ -552,7 +552,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void ExitThePickingRangeBody(Node node)
     {
-        if (node is not IItem_New)
+        if (node is not IItem)
         {
             return;
         }

@@ -24,7 +24,7 @@ public interface IItemContainer
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    bool CanAddItem(IItem_New item);
+    bool CanAddItem(IItem item);
 
     /// <summary>
     /// <para>Implement methods for adding items</para>
@@ -32,7 +32,7 @@ public interface IItemContainer
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    bool AddItem(IItem_New item);
+    bool AddItem(IItem item);
 
     /// <summary>
     /// <para>Add an stack of items to this container</para>
@@ -64,7 +64,7 @@ public interface IItemContainer
     /// <para>如果存在，移除当前选中位置的槽位中的一个物品并将其返回</para>
     /// </summary>
     /// <seealso cref="PickItemFromItemSlot"/><seealso cref="PickItemsFromItemSlotBySelectIndex"/>
-    IItem_New? PickItemFromItemSlotBySelectIndex();
+    IItem? PickItemFromItemSlotBySelectIndex();
 
     /// <summary>
     /// <para>Remove the specified number of items from the item slot at the currently selected location, and return them as a new item stack</para>
@@ -115,7 +115,7 @@ public interface IItemContainer
     /// <para>如果存在，移除指定位置的槽位中的一个物品并将其返回</para>
     /// </summary>
     /// <seealso cref="PickItemsFromItemSlot"/>
-    IItem_New? PickItemFromItemSlot(int itemSlotIndex);
+    IItem? PickItemFromItemSlot(int itemSlotIndex);
 
     /// <summary>
     /// <para>Remove the specified number of items from the item slot in the specified location, and return them as a new item stack</para>
@@ -157,7 +157,7 @@ public interface IItemContainer
     /// <para>Return null if there is no slot to place the item in</para>
     /// <para>若没有槽可放置此物品，则返回null</para>
     /// </returns>
-    ItemSlotNode? Match(IItem_New item);
+    ItemSlotNode? Match(IItem item);
 
     /// <summary>
     /// <para>Based on the given item stack, match the item slots where it can be added to</para>

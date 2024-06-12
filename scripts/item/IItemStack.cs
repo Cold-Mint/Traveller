@@ -45,14 +45,14 @@ public interface IItemStack
     /// <para>判断能否容纳指定物品</para>
     /// </summary>
     /// <returns></returns>
-    public bool CanAddItem(IItem_New item);
+    public bool CanAddItem(IItem item);
 
     /// <summary>
     /// <para>Hold a given item</para>
     /// </summary>
     /// <param name="item">Item to hold by current stack</param>
     /// <returns>Whether successful</returns>
-    public bool AddItem(IItem_New item);
+    public bool AddItem(IItem item);
 
     /// <summary>
     /// <para>判断能从指定物品堆中接收的物品数量</para>
@@ -81,7 +81,7 @@ public interface IItemStack
     /// <seealso cref="PickItem"/>
     /// </summary>
     /// <returns></returns>
-    public IItem_New? GetItem();
+    public IItem? GetItem();
 
     /// <summary>
     /// <para>Pop the item instance at the top of current item stack and return it</para>
@@ -89,7 +89,7 @@ public interface IItemStack
     /// <seealso cref="GetItem"/><seealso cref="PickItems"/>
     /// </summary>
     /// <returns></returns>
-    public IItem_New? PickItem();
+    public IItem? PickItem();
 
     /// <summary>
     /// <para>Remove the specified number of items and return them as a new item stack</para>
@@ -134,7 +134,7 @@ public interface IItemStack
     /// <summary>
     /// Create a new ItemStack with the given item as the first item
     /// </summary>
-    public static IItemStack FromItem(IItem_New item) => ItemTypeManager.MaxStackQuantityOf(item.Id) switch
+    public static IItemStack FromItem(IItem item) => ItemTypeManager.MaxStackQuantityOf(item.Id) switch
     {
         1         => new SingleItemStack(item),
         > 1       => throw new NotImplementedException(),
