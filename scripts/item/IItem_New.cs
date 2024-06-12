@@ -28,4 +28,9 @@ public interface IItem_New
     /// <param name="owner">Owner of current item, if any</param>
     /// <param name="targetGlobalPosition">Target position, such as the position of the cursor when used by the player</param>
     void Use(Node2D? owner, Vector2 targetGlobalPosition);
+
+    /// <summary>
+    /// <para>Execute when current item be removed from game.</para>
+    /// </summary>
+    void Destroy();
 }

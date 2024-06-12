@@ -339,7 +339,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
         {
             return false;
         }
-        return itemSlotNode.SetItem(item);
+        return itemSlotNode.ReplaceItemStack(item);
     }
 
     public int GetSelectIndex()
@@ -374,7 +374,7 @@ public partial class HotBar : HBoxContainer, IItemContainer
 
         foreach (var itemSlotNode in _itemSlotNodes)
         {
-            if (itemSlotNode.CanSetItem(item))
+            if (itemSlotNode.CanAddItem(item))
             {
                 //If there is an item slot to put this item in, then we return it.
                 //如果有物品槽可放置此物品，那么我们返回它。

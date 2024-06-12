@@ -41,14 +41,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //Item containers are used to store items.
     //物品容器用于存储物品。
-    private IItemContainer? _itemContainer;
-
-
-    public IItemContainer? ItemContainer
-    {
-        get => _itemContainer;
-        set => _itemContainer = value;
-    }
+    public IItemContainer? ItemContainer { get; set; }
 
     //Items currently held
     //当前持有的物品
@@ -282,14 +275,14 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        if (_itemContainer == null)
+        if (ItemContainer == null)
         {
             return false;
         }
 
         //Get the currently selected node
         //拿到当前选择的节点
-        var itemSlotNode = _itemContainer.GetSelectItemSlotNode();
+        var itemSlotNode = ItemContainer.GetSelectItemSlotNode();
         if (itemSlotNode == null)
         {
             return false;
@@ -297,7 +290,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //First check if we can pick up the item.
         //先检查我们能否拾起此物品。
-        var canPick = _itemContainer.CanAddItem(item);
+        var canPick = ItemContainer.CanAddItem(item);
         if (!canPick)
         {
             return false;
@@ -305,7 +298,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Is it successfully added to the container?
         //再检查是否成功的添加到容器内了？
-        var addSuccess = _itemContainer.AddItem(item);
+        var addSuccess = ItemContainer.AddItem(item);
         if (!addSuccess)
         {
             return false;
@@ -504,7 +497,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void EnterThePickingRangeBody(Node node)
     {
-        if (node is not IItem)
+        if (node is not IItem_New item)
         {
             return;
         }
@@ -519,7 +512,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="node"></param>
     protected virtual void ExitThePickingRangeBody(Node node)
     {
-        if (node is not IItem)
+        if (node is not IItem_New)
         {
             return;
         }
@@ -549,12 +542,12 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //If the item container is null, then return
         //如果物品容器为null，那么返回
-        if (_itemContainer == null)
+        if (ItemContainer == null)
         {
             return;
         }
 
-        var len = _itemContainer.GetItemSlotCount();
+        var len = ItemContainer.GetItemSlotCount();
         if (len == 0)
         {
             return;
@@ -599,7 +592,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </param>
     protected void ThrowItem(int index, int number, Vector2 velocity)
     {
-        var itemSlotNode = _itemContainer?.GetItemSlotNode(index);
+        var itemSlotNode = ItemContainer?.GetItemSlotNode(index);
 
         var item = itemSlotNode?.GetItem();
 
