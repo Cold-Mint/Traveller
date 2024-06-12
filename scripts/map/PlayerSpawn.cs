@@ -1,6 +1,7 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.map;
@@ -30,6 +31,7 @@ public partial class PlayerSpawn : Marker2D
             GameSceneNodeHolder.Player.Revive(GameSceneNodeHolder.Player.MaxHp);
             return;
         }
+
         SpawnPlayer();
     }
 
@@ -50,17 +52,16 @@ public partial class PlayerSpawn : Marker2D
             return;
         }
 
-        var playerNode = _playerPackedScene.Instantiate();
-        if (playerNode is not Player player)
+        var playerNode =
+            NodeUtils.InstantiatePackedScene<Player>(_playerPackedScene, GameSceneNodeHolder.PlayerContainer);
+        if (playerNode == null)
         {
             return;
         }
-
-        player.ItemContainer = GameSceneNodeHolder.HotBar;
-        GameSceneNodeHolder.PlayerContainer.AddChild(player);
-        GameSceneNodeHolder.Player = player;
-        player.Position = GlobalPosition;
-        LogCat.LogWithFormat("player_spawn_debug", player.ReadOnlyCharacterName, player.Position);
+        playerNode.ItemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
+        GameSceneNodeHolder.Player = playerNode;
+        playerNode.Position = GlobalPosition;
+        LogCat.LogWithFormat("player_spawn_debug", playerNode.ReadOnlyCharacterName, playerNode.Position);
     }
 
     private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)

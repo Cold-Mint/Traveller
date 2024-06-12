@@ -4,6 +4,7 @@ using System.Text;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
 using Godot;
@@ -39,6 +40,23 @@ public partial class MainMenuLoader : UiLoaderTemplate
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
 
+        //注册测试使用的战利品表
+        if (Config.IsDebug())
+        {
+            var testLootList = new LootList
+            {
+                Id = Config.LootListId.Test
+            };
+            var lootEntry = new LootEntry
+            {
+                Chance = 1f,
+                MaxQuantity = 5,
+                MinQuantity = 1,
+                ResPath = "res://prefab/weapons/staffOfTheUndead.tscn"
+            };
+            testLootList.AddLootEntry(lootEntry);
+            LootListManager.RegisterLootList(testLootList);
+        }
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());

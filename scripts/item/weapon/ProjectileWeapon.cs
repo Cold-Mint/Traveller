@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
+using ColdMint.scripts.utils;
 
 using Godot;
 
@@ -22,12 +23,13 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>抛射体的生成位置</para>
     /// </summary>
     private Marker2D? _marker2D;
-    
+
     /// <summary>
     /// <para>List of projectiles</para>
     /// <para>抛射体列表</para>
     /// </summary>
     private string[]? _projectiles;
+
     private Dictionary<string, PackedScene>? _projectileCache;
     private Node2D? _projectileContainer;
 
@@ -44,6 +46,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             {
                 continue;
             }
+
             _projectileCache.Add(projectileItem, packedScene);
         }
 
@@ -58,23 +61,20 @@ public partial class ProjectileWeapon : WeaponTemplate
         {
             return;
         }
-        
+
         if (_projectiles.IsEmpty())
         {
             LogCat.LogError("projectiles_is_empty");
             return;
         }
+
         //Get the first projectile
         //获取第一个抛射体
         var projectileScene = _projectileCache[_projectiles[0]];
-        var projectile = projectileScene.Instantiate() as ProjectileTemplate;
-        if (projectile != null)
-        {
-            projectile.Owner = owner;
-            projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
-            projectile.Position = _marker2D.GlobalPosition;
-        }
-
-        _projectileContainer.AddChild(projectile);
+        var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene, _projectileContainer);
+        if (projectile == null) return;
+        projectile.Owner = owner;
+        projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
+        projectile.Position = _marker2D.GlobalPosition;
     }
 }

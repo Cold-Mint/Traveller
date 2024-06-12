@@ -1,4 +1,6 @@
-﻿using ColdMint.scripts.item;
+using ColdMint.scripts.item;
+
+using Godot;
 
 namespace ColdMint.scripts.inventory;
 
@@ -56,7 +58,7 @@ public interface IItemContainer
     /// </summary>
     /// <returns></returns>
     int GetItemSlotCount();
-    
+
     /// <summary>
     /// <para>Gets the item slot for the specified location</para>
     /// <para>获取指定位置的物品槽</para>
@@ -84,4 +86,31 @@ public interface IItemContainer
     ///<para>若没有槽可放置此物品，则返回null</para>
     /// </returns>
     ItemSlotNode? Matching(IItem_New item);
+
+    /// <summary>
+    /// <para>AddItemSlot</para>
+    /// <para>添加物品槽</para>
+    /// </summary>
+    /// <param name="rootNode"></param>
+    /// <param name="index"></param>
+    void AddItemSlot(Node rootNode, int index);
+
+    /// <summary>
+    /// <para>SelectTheNextItemSlot</para>
+    /// <para>选择下一个物品槽</para>
+    /// </summary>
+    void SelectTheNextItemSlot();
+
+    /// <summary>
+    /// <para>SelectThePreviousItemSlot</para>
+    /// <para>选择上一个物品槽</para>
+    /// </summary>
+    void SelectThePreviousItemSlot();
+
+    /// <summary>
+    /// <para>选择物品槽</para>
+    /// <para>SelectItemSlot</para>
+    /// </summary>
+    /// <param name="newSelectIndex"></param>
+    void SelectItemSlot(int newSelectIndex);
 }

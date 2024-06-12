@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using ColdMint.scripts.character;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -8,85 +8,22 @@ namespace ColdMint.scripts.inventory;
 /// <para>HotBar</para>
 /// <para>快捷物品栏</para>
 /// </summary>
-public partial class HotBar : HBoxContainer, IItemContainer
+public partial class HotBar : HBoxContainer
 {
-    private PackedScene? _itemSlotPackedScene;
-
-    private List<ItemSlotNode>? _itemSlotNodes;
-
-    /// <summary>
-    /// <para>UnknownIndex</para>
-    /// <para>未知位置</para>
-    /// </summary>
-    private const int UnknownIndex = -1;
-
-    //_selectIndex默认为0.
-    private int _selectIndex;
+    private UniversalItemContainer? _universalItemContainer;
 
     public override void _Ready()
     {
         base._Ready();
+        _universalItemContainer = new UniversalItemContainer
+        {
+            CharacterTemplate = new Player()
+        };
         NodeUtils.DeleteAllChild(this);
-        _itemSlotNodes = new List<ItemSlotNode>();
-        _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
         for (var i = 0; i < Config.HotBarSize; i++)
         {
-            AddItemSlot(i);
+            _universalItemContainer.AddItemSlot(this, i);
         }
-    }
-
-    /// <summary>
-    /// <para>Select the next item slot</para>
-    /// <para>选择下一个物品槽</para>
-    /// </summary>
-    private void SelectTheNextItemSlot()
-    {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        var count = _itemSlotNodes.Count;
-        if (count == 0)
-        {
-            return;
-        }
-
-        var oldSelectIndex = _selectIndex;
-        _selectIndex++;
-        if (_selectIndex >= count)
-        {
-            _selectIndex = 0;
-        }
-
-        SelectItemSlot(oldSelectIndex, _selectIndex);
-    }
-
-    /// <summary>
-    /// <para>Select the previous item slot</para>
-    /// <para>选择上一个物品槽</para>
-    /// </summary>
-    private void SelectThePreviousItemSlot()
-    {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        var count = _itemSlotNodes.Count;
-        if (count == 0)
-        {
-            return;
-        }
-
-        var oldSelectIndex = _selectIndex;
-        _selectIndex--;
-        if (_selectIndex < 0)
-        {
-            _selectIndex = count - 1;
-        }
-
-        SelectItemSlot(oldSelectIndex, _selectIndex);
     }
 
     public override void _Process(double delta)
@@ -96,14 +33,14 @@ public partial class HotBar : HBoxContainer, IItemContainer
         {
             //Mouse wheel down
             //鼠标滚轮向下
-            SelectTheNextItemSlot();
+            _universalItemContainer?.SelectTheNextItemSlot();
         }
 
         if (Input.IsActionJustPressed("hotbar_previous"))
         {
             //Mouse wheel up
             //鼠标滚轮向上
-            SelectThePreviousItemSlot();
+            _universalItemContainer?.SelectThePreviousItemSlot();
         }
 
         if (Input.IsActionJustPressed("hotbar_1"))
@@ -161,248 +98,15 @@ public partial class HotBar : HBoxContainer, IItemContainer
     /// <param name="shortcutKeyIndex"></param>
     private void SelectItemSlotByHotBarShortcutKey(int shortcutKeyIndex)
     {
-        if (_itemSlotNodes == null)
+        if (_universalItemContainer == null)
         {
             return;
         }
-
-        var safeIndex = GetSafeIndex(shortcutKeyIndex);
-        if (safeIndex == UnknownIndex)
-        {
-            return;
-        }
-
-        SelectItemSlot(_selectIndex, safeIndex);
-        _selectIndex = safeIndex;
+        _universalItemContainer.SelectItemSlot(shortcutKeyIndex);
     }
 
-
-    /// <summary>
-    /// <para>Removes an item from the currently selected inventory</para>
-    /// <para>移除当前选中的物品栏内的物品</para>
-    /// </summary>
-    /// <param name="number"></param>
-    /// <returns></returns>
-    public bool RemoveItemFromItemSlotBySelectIndex(int number)
+    public IItemContainer? GetItemContainer()
     {
-        return RemoveItemFromItemSlot(_selectIndex, number);
-    }
-
-    public int GetItemSlotCount()
-    {
-        if (_itemSlotNodes == null)
-        {
-            return 0;
-        }
-
-        return _itemSlotNodes.Count;
-    }
-
-    public ItemSlotNode? GetItemSlotNode(int index)
-    {
-        if (_itemSlotNodes == null)
-        {
-            return null;
-        }
-
-        var safeIndex = GetSafeIndex(index);
-        return _itemSlotNodes[safeIndex];
-    }
-
-    /// <summary>
-    /// <para>Remove items from the item slot</para>
-    /// <para>从物品槽内移除物品</para>
-    /// </summary>
-    /// <param name="itemSlotIndex">
-    ///<para>When this number is greater than the number of item slots, residual filtering is used.</para>
-    ///<para>当此数量大于物品槽的数量时，会使用余数筛选。</para>
-    /// </param>
-    /// <param name="number">
-    ///<para>The number of items removed</para>
-    ///<para>移除物品的数量</para>
-    /// </param>
-    public bool RemoveItemFromItemSlot(int itemSlotIndex, int number)
-    {
-        if (_itemSlotNodes == null)
-        {
-            return false;
-        }
-
-        var safeIndex = GetSafeIndex(itemSlotIndex);
-        if (safeIndex == UnknownIndex)
-        {
-            return false;
-        }
-
-        var itemSlot = _itemSlotNodes[safeIndex];
-        return itemSlot.RemoveItem(number);
-    }
-
-    /// <summary>
-    /// <para>Gets a secure subscript index</para>
-    /// <para>获取安全的下标索引</para>
-    /// </summary>
-    /// <param name="itemSlotIndex"></param>
-    /// <returns>
-    ///<para>-1 is returned on failure, and the index that does not result in an out-of-bounds subscript is returned on success</para>
-    ///<para>失败返回-1，成功返回不会导致下标越界的索引</para>
-    /// </returns>
-    private int GetSafeIndex(int itemSlotIndex)
-    {
-        if (_itemSlotNodes == null)
-        {
-            return UnknownIndex;
-        }
-
-        var count = _itemSlotNodes.Count;
-        if (count == 0)
-        {
-            //Prevents the dividend from being 0
-            //防止被除数为0
-            return UnknownIndex;
-        }
-
-        return itemSlotIndex % count;
-    }
-
-    /// <summary>
-    /// <para>Select an item slot</para>
-    /// <para>选中某个物品槽</para>
-    /// </summary>
-    private void SelectItemSlot(int oldSelectIndex, int newSelectIndex)
-    {
-        if (oldSelectIndex == newSelectIndex)
-        {
-            return;
-        }
-
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        _itemSlotNodes[oldSelectIndex].IsSelect = false;
-        _itemSlotNodes[newSelectIndex].IsSelect = true;
-        var oldItem = _itemSlotNodes[oldSelectIndex].GetItem();
-        if (oldItem != null && oldItem is Node2D oldNode2D)
-        {
-            oldNode2D.ProcessMode = ProcessModeEnum.Disabled;
-            oldNode2D.Hide();
-        }
-
-        var item = _itemSlotNodes[newSelectIndex].GetItem();
-        if (item == null)
-        {
-            if (GameSceneNodeHolder.Player != null)
-            {
-                GameSceneNodeHolder.Player.CurrentItem = null;
-            }
-        }
-        else
-        {
-            if (item is Node2D node2D)
-            {
-                node2D.ProcessMode = ProcessModeEnum.Inherit;
-                node2D.Show();
-                if (GameSceneNodeHolder.Player != null)
-                {
-                    GameSceneNodeHolder.Player.CurrentItem = node2D;
-                }
-            }
-            else
-            {
-                if (GameSceneNodeHolder.Player != null)
-                {
-                    GameSceneNodeHolder.Player.CurrentItem = null;
-                }
-            }
-        }
-    }
-
-
-    public bool CanAddItem(IItem item)
-    {
-        return Matching(item) != null;
-    }
-
-
-    /// <summary>
-    /// <para>Add an item to the HotBar</para>
-    /// <para>在HotBar内添加一个物品</para>
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public bool AddItem(IItem item)
-    {
-        var itemSlotNode = Matching(item);
-        if (itemSlotNode == null)
-        {
-            return false;
-        }
-        return itemSlotNode.ReplaceItemStack(item);
-    }
-
-    public int GetSelectIndex()
-    {
-        return _selectIndex;
-    }
-
-    public ItemSlotNode? GetSelectItemSlotNode()
-    {
-        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
-        {
-            return null;
-        }
-
-        if (_selectIndex < _itemSlotNodes.Count)
-        {
-            //Prevent subscripts from going out of bounds.
-            //防止下标越界。
-            return _itemSlotNodes[_selectIndex];
-        }
-
-        return null;
-    }
-
-    public ItemSlotNode? Matching(IItem item)
-    {
-        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
-        {
-            return null;
-        }
-
-
-        foreach (var itemSlotNode in _itemSlotNodes)
-        {
-            if (itemSlotNode.CanAddItem(item))
-            {
-                //If there is an item slot to put this item in, then we return it.
-                //如果有物品槽可放置此物品，那么我们返回它。
-                return itemSlotNode;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// <para>Add items tank</para>
-    /// <para>添加物品槽</para>
-    /// </summary>
-    private void AddItemSlot(int index)
-    {
-        if (_itemSlotNodes == null || _itemSlotPackedScene == null)
-        {
-            return;
-        }
-
-        if (_itemSlotPackedScene.Instantiate() is not ItemSlotNode itemSlotNode)
-        {
-            return;
-        }
-
-        AddChild(itemSlotNode);
-        itemSlotNode.IsSelect = index == _selectIndex;
-        _itemSlotNodes.Add(itemSlotNode);
+        return _universalItemContainer;
     }
 }

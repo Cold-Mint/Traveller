@@ -1,6 +1,6 @@
 [![Star History Chart](https://api.star-history.com/svg?repos=Cold-Mint/Traveller&type=Date)](https://star-history.com/#Cold-Mint/Traveller&Date)
 
-[English](README.md) 简体中文 [にほんご](README_JP.md)
+[English](README.md) 简体中文 [にほんご](README_JA.md)
 
 ## 简介
 
@@ -10,11 +10,11 @@
 
 ## 近期研发进度
 
-| 任务                                                   | 状态        |
-| ----------------------------------------------------------- | ------------------ |
-| 随机生成地图                         | 完成   |
-| 战利品                                                 | 进行中      |
-| 支持仍出的背包系统 | 等待                |
+| 任务                                                   | 状态 |
+| ----------------------------------------------------------- |----|
+| 随机生成地图                         | 完成 |
+| 战利品                                                 | 完成 |
+| 支持仍出的背包系统 | 进行中 |
 | 为生物添加AI代理 | 等待 |
 
 ## 屏幕截图

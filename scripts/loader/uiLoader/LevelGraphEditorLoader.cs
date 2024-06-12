@@ -19,7 +19,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 {
     private string? _defaultRoomName;
 
-    private readonly LevelGraphEditorBinding _nodeBinding = new LevelGraphEditorBinding();
+    private readonly LevelGraphEditorBinding _nodeBinding = new();
 
     /// <summary>
     /// <para>Index of the room</para>
@@ -35,7 +35,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
     private PackedScene? _roomNodeScene;
 
-    private readonly List<Node> _selectedNodes = new List<Node>();
+    private readonly List<Node> _selectedNodes = new();
 
     /// <summary>
     /// <para>Displays the time to enter the suggestion</para>
@@ -47,7 +47,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// <para>Offset to append when a new node is created.</para>
     /// <para>创建新节点时追加的偏移量。</para>
     /// </summary>
-    private Vector2 _positionOffset = new Vector2(100, 100);
+    private Vector2 _positionOffset = new(100, 100);
 
     /// <summary>
     /// <para>Is the press event of an active button saved?</para>
@@ -99,7 +99,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             return null;
         }
 
-        var node = _roomNodeScene.Instantiate();
+        var node = NodeUtils.InstantiatePackedScene<Node>(_roomNodeScene);
         if (node == null)
         {
             return null;

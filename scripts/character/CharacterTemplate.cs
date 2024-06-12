@@ -106,6 +106,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public string CampId = null!;
 
     private DamageNumberNodeSpawn? _damageNumber;
+
     /// <summary>
     /// <para>Character referenced loot table</para>
     /// <para>角色引用的战利品表</para>
@@ -206,7 +207,7 @@ public partial class CharacterTemplate : CharacterBody2D
         CharacterName = GetMeta("Name", Name).AsString();
         CampId = GetMeta("CampId",      Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp",        Config.DefaultMaxHp).AsInt32();
-        string lootListId = GetMeta("LootListId", string.Empty).AsString();
+        var lootListId = GetMeta("LootListId", string.Empty).AsString();
         if (!string.IsNullOrEmpty(lootListId))
         {
             //If a loot table is specified, get the loot table.
@@ -311,6 +312,7 @@ public partial class CharacterTemplate : CharacterBody2D
         if (pickAbleItem is WeaponTemplate weaponTemplate)
         {
             weaponTemplate.Owner = this;
+            weaponTemplate.Picked = true;
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
             weaponTemplate.EnableContactInjury = false;
@@ -445,11 +447,48 @@ public partial class CharacterTemplate : CharacterBody2D
             //角色死亡
             OnDie(damageTemplate);
             ThrowAllItemOnDie();
+
             return true;
         }
 
         UpDataHealthBar();
         return true;
+    }
+
+    /// <summary>
+    /// <para>Create Loot Object</para>
+    /// <para>创建战利品对象</para>
+    /// </summary>
+    protected void CreateLootObject()
+    {
+        if (_lootList == null)
+        {
+            return;
+        }
+
+        var lootDataArray = _lootList.GenerateLootData();
+        if (lootDataArray.Length == 0)
+        {
+            return;
+        }
+
+
+        var finalGlobalPosition = GlobalPosition;
+        CallDeferred("GenerateLootObjects", this, lootDataArray, finalGlobalPosition);
+    }
+
+    /// <summary>
+    /// <para>GenerateLootObjects</para>
+    /// <para>生成战利品对象</para>
+    /// </summary>
+    /// <param name="parentNode"></param>
+    /// <param name="lootDataArray"></param>
+    /// <param name="position"></param>
+    public void GenerateLootObjects(Node parentNode,
+        LootData[] lootDataArray,
+        Vector2 position)
+    {
+        LootListManager.GenerateLootObjects(parentNode, lootDataArray, position);
     }
 
     /// <summary>
@@ -486,6 +525,7 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
+        CreateLootObject();
         QueueFree();
         return Task.CompletedTask;
     }
@@ -609,6 +649,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     return;
                 }
 
+                weaponTemplate.Picked = false;
                 CallDeferred("WeaponTemplateReparent", weaponTemplate);
                 var timer = new Timer();
                 weaponTemplate.AddChild(timer);
@@ -708,5 +749,17 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
 
-    protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta) { }
+    protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    {
+        //The cost of applying force in the X direction.
+        //对X方向施加力消耗。
+        if ((int)velocity.X == 0)
+        {
+            velocity.X = 0;
+        }
+        else
+        {
+            velocity.X *= 0.95f;
+        }
+    }
 }

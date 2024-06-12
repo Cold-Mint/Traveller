@@ -35,6 +35,13 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
         Fire(owner, targetGlobalPosition);
     }
 
+
+    /// <summary>
+    /// <para>Whether the weapon is currently picked up</para>
+    /// <para>当前武器是否被捡起了</para>
+    /// </summary>
+    public bool Picked { get; set; }
+
     /// <summary>
     /// <para>Owner</para>
     /// <para>主人</para>
@@ -75,16 +82,21 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
     /// <para>This area represents the collision range of the weapon, and when other nodes enter this area, they will deal damage.</para>
     /// <para>这个区域表示武器的碰撞范围，当其他节点进入此区域时，会造成伤害。</para>
     /// </summary>
-    private Area2D? _area2D;
+    private Area2D? _damageArea2D;
 
-    protected RayCast2D? RayCast2D;
+    /// <summary>
+    /// <para>The number of tile maps in contact with this weapon</para>
+    /// <para>与此武器接触的瓦片地图数量</para>
+    /// </summary>
+    private int _tileMapNumber;
 
 
     public override void _Ready()
     {
-        RayCast2D = GetNode<RayCast2D>("RayCast2D");
-        _area2D = GetNode<Area2D>("Area2D");
-        _area2D.BodyEntered += OnBodyEnter;
+        _damageArea2D = GetNode<Area2D>("DamageArea2D");
+        _damageArea2D.BodyEntered += OnBodyEnter;
+        _damageArea2D.BodyExited += OnBodyExited;
+
         // Id = GetMeta("ID",                             "1").AsString();
         // Quantity = GetMeta("Quantity",                 "1").AsInt32();
         // MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
@@ -99,6 +111,27 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
         _firingInterval = TimeSpan.FromMilliseconds(_firingIntervalAsMillisecond);
     }
 
+    private void OnBodyExited(Node node)
+    {
+        if (Picked)
+        {
+            return;
+        }
+
+        //If it leaves the ground or walls.
+        //如果离开了地面或墙壁。
+        if (node is TileMap tileMap)
+        {
+            _tileMapNumber--;
+            if (_tileMapNumber == 0)
+            {
+                //No longer in contact with any shingles can cause injury
+                //不再与任何瓦片接触后，可以造成伤害
+                EnableContactInjury = true;
+                SetCollisionMaskValue(Config.LayerNumber.Player, false);
+            }
+        }
+    }
 
     /// <summary>
     /// <para>Use weapons against the enemy</para>
@@ -107,50 +140,57 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
     /// <param name="node"></param>
     private void OnBodyEnter(Node node)
     {
-        if (!EnableContactInjury)
+        if (Picked)
         {
             return;
         }
 
-        if (Owner == null)
+        if (node is TileMap tileMap)
         {
-            return;
+            _tileMapNumber++;
+            EnableContactInjury = false;
+            //Items can be pushed by the player when they are on the ground
+            //当物品在地面上时，可被玩家推动
+            SetCollisionMaskValue(Config.LayerNumber.Player, true);
         }
-
-        if (Owner is not CharacterTemplate ownerCharacterTemplate)
+        else if (node is CharacterTemplate characterTemplate)
         {
-            return;
+            if (!EnableContactInjury)
+            {
+                return;
+            }
+
+
+            if (Owner is not CharacterTemplate ownerCharacterTemplate)
+            {
+                return;
+            }
+
+            //Determine if your side can cause damage
+            //判断所属的阵营是否可以造成伤害
+            var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId), 
+                                                        CampManager.GetCamp(characterTemplate.CampId));
+            if (!canCauseHarm)
+            {
+                return;
+            }
+
+            //If allowed to cause harm
+            //如果允许造成伤害
+            var damage = new Damage
+            {
+                MaxDamage = Math.Abs(_maxContactInjury),
+                MinDamage = Math.Abs(_minContactInjury),
+                Attacker = ownerCharacterTemplate
+            };
+            damage.CreateDamage();
+            damage.MoveLeft = LinearVelocity.X < 0;
+            damage.Type = Config.DamageType.Physical;
+            characterTemplate.Damage(damage);
+            //Reduce speed after hitting enemies.
+            //击中敌人后减少速度。
+            LinearVelocity *= 1 - Config.ThrownItemsHitEnemiesReduceSpeedByPercentage;
         }
-
-        if (node is not CharacterTemplate characterTemplate)
-        {
-            return;
-        }
-
-        //Determine if your side can cause damage
-        //判断所属的阵营是否可以造成伤害
-        var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-                                                    CampManager.GetCamp(characterTemplate.CampId));
-        if (!canCauseHarm)
-        {
-            return;
-        }
-
-        //If allowed to cause harm
-        //如果允许造成伤害
-        var damage = new Damage
-        {
-            MaxDamage = Math.Abs(_maxContactInjury),
-            MinDamage = Math.Abs(_minContactInjury),
-            Attacker = ownerCharacterTemplate
-        };
-        damage.CreateDamage();
-        damage.MoveLeft = LinearVelocity.X < 0;
-        damage.Type = Config.DamageType.Physical;
-        characterTemplate.Damage(damage);
-        //Can only cause one collision damage.
-        //仅能造成一次碰撞伤害。
-        EnableContactInjury = false;
     }
 
     /// <summary>
@@ -158,27 +198,6 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem_New
     /// </summary>
     /// <param name="facingLeft"></param>
     public void Flip(bool facingLeft) { }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        base._PhysicsProcess(delta);
-        if (RayCast2D != null)
-        {
-            if (RayCast2D.IsColliding())
-            {
-                //If the weapon hits the ground, we disable physical damage.
-                //如果武器落到地面了，我们禁用物理伤害。
-                EnableContactInjury = false;
-                //Items can be pushed by the player when they are on the ground
-                //当物品在地面上时，可被玩家推动
-                SetCollisionMaskValue(Config.LayerNumber.Player, true);
-            }
-            else
-            {
-                SetCollisionMaskValue(Config.LayerNumber.Player, false);
-            }
-        }
-    }
 
 
     /// <summary>

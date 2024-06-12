@@ -1,6 +1,7 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.map;
@@ -32,18 +33,16 @@ public partial class AiCharacterSpawn : Marker2D
     /// <param name="aiCharacterGenerateEvent"></param>
     public void OnAiCharacterGenerateEvent(AiCharacterGenerateEvent aiCharacterGenerateEvent)
     {
-        var node = _packedScene?.Instantiate();
-        if (node is not AiCharacter aiCharacter)
+        if (_packedScene == null)
         {
             return;
         }
 
-        if (GameSceneNodeHolder.AiCharacterContainer == null)
+        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(_packedScene,GameSceneNodeHolder.AiCharacterContainer);
+        if (aiCharacter == null)
         {
             return;
         }
-
-        GameSceneNodeHolder.AiCharacterContainer.AddChild(aiCharacter);
         aiCharacter.Position = GlobalPosition;
     }
 
