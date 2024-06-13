@@ -40,6 +40,8 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem
         QueueFree();
     }
 
+    public bool CanStackWith(IItem item) => false;
+
 
     /// <summary>
     /// <para>Whether the weapon is currently picked up</para>

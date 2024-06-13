@@ -37,6 +37,8 @@ public partial class Packsack : RigidBody2D, IItem
         QueueFree();
     }
 
+    public bool CanStackWith(IItem item) => false;
+
     private IItemContainer? _itemContainer;
 
     public override void _Ready()

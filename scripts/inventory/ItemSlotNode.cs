@@ -1,4 +1,5 @@
 using ColdMint.scripts.item;
+using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
 
 using Godot;
@@ -256,7 +257,7 @@ public partial class ItemSlotNode : MarginContainer
             var debugText = TranslationServerUtils.Translate("item_prompt_debug");
             if (debugText != null)
             {
-                _control.TooltipText = string.Format(debugText, _itemStack.Id,
+                _control.TooltipText = string.Format(debugText, _itemStack.GetItem()?.Id,
                                                      TranslationServerUtils.Translate(_itemStack.Name),
                                                      _itemStack.Quantity, _itemStack.MaxQuantity, _itemStack.GetType().Name,
                                                      TranslationServerUtils.Translate(_itemStack.Description));

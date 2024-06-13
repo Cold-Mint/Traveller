@@ -1,22 +1,21 @@
 ﻿using System;
 
-using ColdMint.scripts.inventory;
-
 using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.item.itemStacks;
 
 /// <summary>
-/// <para>Item stack of single item</para>
+/// <para>One of the basic item stacks, there are always one item in stack</para>
+/// <para>单身狗物品堆，基础物品堆之一，堆中永远只会有一个物品</para>
 /// </summary>
-//maybe we'd move this into inventory namespace
+/// <seealso cref="UniqueItemStack"/><seealso cref="CommonItemStack"/>
 public class SingleItemStack(IItem item) : IItemStack
 {
     public IItem Item { get; init; } = item;
 
-    public string Id => Item.Id;
     public int MaxQuantity => 1;
-    public int Quantity { get; set; } = 1;
+    public int Quantity => 1;
+    public bool Empty { get; private set; } = false;
     public Texture2D Icon => Item.Icon;
     public string Name => Item.Name;
     public string? Description => Item.Description;
@@ -31,29 +30,28 @@ public class SingleItemStack(IItem item) : IItemStack
 
     public IItem? GetItem()
     {
-        return Quantity == 1 ? Item : null;
+        return Empty ? null : Item;
     }
 
     public IItem? PickItem()
     {
-        Quantity = 0;
+        if (Empty) return null;
+        Empty = true;
         return Item;
     }
 
     public IItemStack? PickItems(int value)
     {
-        if (value == 0) return null;
-        else
-        {
-            Quantity = 0;
-            return new SingleItemStack(Item);
-        }
+        if (value == 0 || Empty) return null;
+
+        Empty = true;
+        return new SingleItemStack(Item);
     }
 
     public int RemoveItem(int number)
     {
-        if (number == 0) return 0;
-        Quantity = 0;
+        if (number == 0 || Empty) return 0;
+        Empty = true;
         Item.Destroy();
         return Math.Max(number - 1, 0);
     }

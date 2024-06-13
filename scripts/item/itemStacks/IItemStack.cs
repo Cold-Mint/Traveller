@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
 using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.item.itemStacks;
 
 /// <summary>
 /// <para>Item stack in an inventory slot</para>
 /// </summary>
 public interface IItemStack
 {
-    /// <summary>
-    /// <para>ID of items inside current stack</para>
-    /// </summary>
-    string Id { get; }
-
     /// <summary>
     /// <para>Max number of current stack</para>
     /// </summary>
@@ -24,6 +18,11 @@ public interface IItemStack
     /// <para>Quantity of current stack</para>
     /// </summary>
     int Quantity { get; }
+
+    /// <summary>
+    /// <para>True if this stack is empty</para>
+    /// </summary>
+    bool Empty { get; }
 
     /// <summary>
     /// <para>Icon of current item</para>
@@ -134,10 +133,12 @@ public interface IItemStack
     /// <summary>
     /// Create a new ItemStack with the given item as the first item
     /// </summary>
-    public static IItemStack FromItem(IItem item) => ItemTypeManager.MaxStackQuantityOf(item.Id) switch
-    {
-        1         => new SingleItemStack(item),
-        > 1       => throw new NotImplementedException(),
-        var other => throw new ArgumentException($"item {item} of type '{item.Id}' has unexpected max stack quantity {other}")
-    };
+    public static IItemStack FromItem(IItem item) =>
+        item.SpecialStack() ??
+        ItemTypeManager.MaxStackQuantityOf(item.Id) switch
+        {
+            1         => new SingleItemStack(item),
+            > 1       => item is ICommonItem commonItem ? new CommonItemStack(commonItem) : new UniqueItemStack(item),
+            var other => throw new ArgumentException($"item {item} of type '{item.Id}' has unexpected max stack quantity {other}")
+        };
 }

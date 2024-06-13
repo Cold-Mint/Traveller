@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using ColdMint.scripts.item;
+using ColdMint.scripts.item.itemStacks;
 
 using Godot;
 
