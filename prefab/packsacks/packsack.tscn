@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cn10fimoem04m"]
 
-[ext_resource type="Script" path="res://scripts/inventory/Packsack.cs" id="1_8ehup"]
+[ext_resource type="Script" path="res://scripts/item/Packsack.cs" id="1_slakl"]
 [ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_e1ale"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqyue"]
@@ -9,12 +9,7 @@ size = Vector2(41, 57)
 [node name="RigidBody2D" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 38
-script = ExtResource("1_8ehup")
-metadata/Id = "Packsack"
-metadata/MaxStackQuantity = 1
-metadata/Icon = ExtResource("2_e1ale")
-metadata/Name = "packsack"
-metadata/Description = "packsack_desc"
+script = ExtResource("1_slakl")
 
 [node name="Player" type="Sprite2D" parent="."]
 texture = ExtResource("2_e1ale")

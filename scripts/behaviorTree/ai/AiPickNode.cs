@@ -1,5 +1,6 @@
 ﻿using ColdMint.scripts.character;
-using ColdMint.scripts.weapon;
+
+using ColdMint.scripts.item.weapon;
 
 namespace ColdMint.scripts.behaviorTree.ai;
 

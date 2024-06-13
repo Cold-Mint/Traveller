@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.weapon;
+using ColdMint.scripts.item.weapon;
+
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -38,14 +41,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //Item containers are used to store items.
     //物品容器用于存储物品。
-    private IItemContainer? _itemContainer;
-
-
-    public IItemContainer? ItemContainer
-    {
-        get => _itemContainer;
-        set => _itemContainer = value;
-    }
+    public IItemContainer? ItemContainer { get; set; }
 
     //Items currently held
     //当前持有的物品
@@ -69,11 +65,9 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Update finished items</para>
     ///<para>更新完成后的物品</para>
     /// </param>
-    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem)
-    {
-    }
+    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem) { }
 
-    //Define a pick up range
+    //Define a pickup range
     //定义一个拾起范围
     private Area2D? _pickingArea;
 
@@ -128,7 +122,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     protected List<Node>? PickingRangeBodiesList;
 
-    public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? Array.Empty<Node>();
+    public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
     /// <summary>
     /// <para>Resurrected character</para>
@@ -161,7 +155,7 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
-    /// <para>Find the nearest item within the pick up area(Does not include items currently held)</para>
+    /// <para>Find the nearest item within the pickup area(Does not include items currently held)</para>
     /// <para>在拾捡范围内查找距离最近的物品（不包括当前持有的物品）</para>
     /// </summary>
     /// <returns></returns>
@@ -185,7 +179,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
 
     /// <summary>
-    /// <para>Get all weapons within range of the pick up</para>
+    /// <para>Get all weapons within range of the pickup</para>
     /// <para>获取所有在拾捡范围内的武器</para>
     /// </summary>
     /// <returns></returns>
@@ -211,8 +205,8 @@ public partial class CharacterTemplate : CharacterBody2D
         base._Ready();
         PickingRangeBodiesList = new List<Node>();
         CharacterName = GetMeta("Name", Name).AsString();
-        CampId = GetMeta("CampId", Config.CampId.Default).AsString();
-        MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
+        CampId = GetMeta("CampId",      Config.CampId.Default).AsString();
+        MaxHp = GetMeta("MaxHp",        Config.DefaultMaxHp).AsInt32();
         var lootListId = GetMeta("LootListId", string.Empty).AsString();
         if (!string.IsNullOrEmpty(lootListId))
         {
@@ -282,14 +276,14 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        if (_itemContainer == null)
+        if (ItemContainer == null)
         {
             return false;
         }
 
         //Get the currently selected node
         //拿到当前选择的节点
-        var itemSlotNode = _itemContainer.GetSelectItemSlotNode();
+        var itemSlotNode = ItemContainer.GetSelectItemSlotNode();
         if (itemSlotNode == null)
         {
             return false;
@@ -297,7 +291,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //First check if we can pick up the item.
         //先检查我们能否拾起此物品。
-        var canPick = _itemContainer.CanAddItem(item);
+        var canPick = ItemContainer.CanAddItem(item);
         if (!canPick)
         {
             return false;
@@ -305,7 +299,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Is it successfully added to the container?
         //再检查是否成功的添加到容器内了？
-        var addSuccess = _itemContainer.AddItem(item);
+        var addSuccess = ItemContainer.AddItem(item);
         if (!addSuccess)
         {
             return false;
@@ -320,7 +314,7 @@ public partial class CharacterTemplate : CharacterBody2D
             weaponTemplate.Owner = this;
             weaponTemplate.Picked = true;
             weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
+            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
             weaponTemplate.EnableContactInjury = false;
             weaponTemplate.Sleeping = true;
         }
@@ -354,9 +348,9 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        if (_currentItem is WeaponTemplate weaponTemplate)
+        if (_currentItem is IItem item)
         {
-            weaponTemplate.Fire(this, position);
+            item.Use(this, position);
         }
 
         return true;
@@ -407,7 +401,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 {
                     if (targetCamp.Id == playerCamp.Id)
                     {
-                        //If an attack is allowed and you are on the same side, it is displayed as a friendly color (friend damage).
+                        //If an attack is allowed, and you are on the same side, it is displayed as a friendly color (friend damage).
                         //如果允许攻击，且属于同一阵营，则显示为友好颜色（友伤）
                         _healthBar.SetFriendlyTones();
                     }
@@ -491,8 +485,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="lootDataArray"></param>
     /// <param name="position"></param>
     public void GenerateLootObjects(Node parentNode,
-        LootData[] lootDataArray,
-        Vector2 position)
+                                    LootData[] lootDataArray,
+                                    Vector2 position)
     {
         LootListManager.GenerateLootObjects(parentNode, lootDataArray, position);
     }
@@ -507,9 +501,7 @@ public partial class CharacterTemplate : CharacterBody2D
         _additionalForce = force;
     }
 
-    protected virtual void OnHit(DamageTemplate damageTemplate)
-    {
-    }
+    protected virtual void OnHit(DamageTemplate damageTemplate) { }
 
     /// <summary>
     /// <para>Handle the event of character death</para>
@@ -590,12 +582,12 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //If the item container is null, then return
         //如果物品容器为null，那么返回
-        if (_itemContainer == null)
+        if (ItemContainer == null)
         {
             return;
         }
 
-        var len = _itemContainer.GetItemSlotCount();
+        var len = ItemContainer.GetItemSlotCount();
         if (len == 0)
         {
             return;
@@ -625,8 +617,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>抛出物品</para>
     /// </summary>
     /// <param name="index">
-    ///<para>Item slot subscript in item container</para>
-    ///<para>物品容器内的物品槽下标</para>
+    ///<para>Item slot index in item container</para>
+    ///<para>物品容器内的物品槽位置</para>
     /// </param>
     /// <param name="number">
     /// <para>How many to throw</para>
@@ -640,22 +632,39 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </param>
     protected void ThrowItem(int index, int number, Vector2 velocity)
     {
-        if (_itemContainer == null)
-        {
-            return;
-        }
+        var itemSlotNode = ItemContainer?.GetItemSlotNode(index);
+        if (itemSlotNode is null) return;
 
-        var itemSlotNode = _itemContainer.GetItemSlotNode(index);
-        if (itemSlotNode == null)
+        if (number < 0)
         {
-            return;
+            while (!itemSlotNode.IsEmpty())
+            {
+                ThrowOneItem(itemSlotNode, velocity);
+            }
         }
+        else
+        {
+            for (int i = 0; i < number && !itemSlotNode.IsEmpty(); i++)
+            {
+                ThrowOneItem(itemSlotNode, velocity);
+            }
+        }
+    }
 
-        var item = itemSlotNode.GetItem();
-        if (item == null)
-        {
-            return;
-        }
+    ///  <summary>
+    ///  <para>Throw item</para>
+    ///  <para>抛出物品</para>
+    ///  </summary>
+    ///  <param name="itemSlotNode"></param>
+    ///  <param name="velocity">
+    /// <para>The speed to be applied to the item</para>
+    /// <para>要施加到物品上的速度</para>
+    ///  </param>
+    private void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
+    {
+        //Pick an item from the item container
+        //从物品容器内取出一个物品
+        var item = itemSlotNode.PickItem();
 
         if (item is not Node2D node2D)
         {
@@ -681,7 +690,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     weaponTemplate.EnableContactInjury = true;
-                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
+                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   true);
                     weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
@@ -705,17 +714,6 @@ public partial class CharacterTemplate : CharacterBody2D
             case RigidBody2D rigidBody2D:
                 rigidBody2D.LinearVelocity = velocity;
                 break;
-        }
-
-        //Remove items from the item container
-        //在物品容器内移除物品
-        if (number < 0)
-        {
-            itemSlotNode.RemoveItem(item.Quantity);
-        }
-        else
-        {
-            itemSlotNode.RemoveItem(number);
         }
     }
 

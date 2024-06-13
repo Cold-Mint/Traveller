@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
 using ColdMint.scripts.utils;
+
 using Godot;
 
-namespace ColdMint.scripts.weapon;
+namespace ColdMint.scripts.item.weapon;
 
 /// <summary>
 /// <para>Projectile weapons</para>
@@ -22,31 +24,14 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// </summary>
     private Marker2D? _marker2D;
 
-    /// <summary>
-    /// <para>List of projectiles</para>
-    /// <para>抛射体列表</para>
-    /// </summary>
-    private string[]? _projectiles;
+    [Export] protected PackedScene[] ProjectileScenes { get; set; } = [];
 
-    private Dictionary<string, PackedScene>? _projectileCache;
     private Node2D? _projectileContainer;
 
     public override void _Ready()
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
-        _projectileCache = new Dictionary<string, PackedScene>();
-        _projectiles = GetMeta("Projectiles", "").AsStringArray();
-        foreach (var projectileItem in _projectiles)
-        {
-            var packedScene = GD.Load<PackedScene>(projectileItem);
-            if (packedScene == null)
-            {
-                continue;
-            }
-
-            _projectileCache.Add(projectileItem, packedScene);
-        }
 
         _projectileContainer = GetNode("/root/Game/ProjectileContainer") as Node2D;
     }
@@ -54,13 +39,10 @@ public partial class ProjectileWeapon : WeaponTemplate
 
     protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
-        if (_projectileCache == null || _projectiles == null || owner == null || _projectileContainer == null ||
-            _marker2D == null)
-        {
-            return;
-        }
+        if (owner == null || _projectileContainer == null || _marker2D == null) return;
 
-        if (_projectiles.IsEmpty())
+        //空列表检查
+        if (ProjectileScenes is [])
         {
             LogCat.LogError("projectiles_is_empty");
             return;
@@ -68,7 +50,8 @@ public partial class ProjectileWeapon : WeaponTemplate
 
         //Get the first projectile
         //获取第一个抛射体
-        var projectileScene = _projectileCache[_projectiles[0]];
+        var projectileScene = ProjectileScenes[0];
+        // var projectileScene = _projectileCache[_projectiles[0]];
         var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene, _projectileContainer);
         if (projectile == null) return;
         projectile.Owner = owner;
