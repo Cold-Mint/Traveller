@@ -2,16 +2,6 @@ id,zh,en,ja
 ui_product_name,异界旅人,A traveler from another world,異界の旅人です
 ui_start_game,开始游戏,Start game,ゲームを始めます
 ui_settings,设置,Settings,備え付け
-ui_pick_up,拾捡,Pick up ,拾います
-ui_move_left,向左移动,Move left,左に移動します
-ui_move_right,向右移动,Move right,右に移動します
-ui_jump,跳跃,Jump,飛
-ui_throw,抛出,Throw a ,ほうしゅつ
-ui_use_item,使用,Use,しよう
-ui_jump_down,跳下平台,Jump off platform,踊り場から飛び降ります
-ui_de,的,"'s",の
-ui_default_player_name,白纸,blankPaper,しらかみ
-ui_item_prompt_debug,ID：{0}\n名称：{1}\n数量：{2}\n最大叠加数量：{3}\n数据类型：{4}\n描述：{5},ID: {0}\nName: {1}\nQuantity: {2}\nMaximum stacking quantity: {3}\nData type: {4}\nDescription：{5},id:{0}\n名称:{1}\nの数は最大{2}\nシナジー数:{3}\nデータタイプ:{4}\n述べ表わす:{5}
 ui_level_graph_editor,关卡图编辑器,Level graph editor,ステージマップエディター
 ui_create_room,创建房间,Create room,部屋を作ります
 ui_close,关闭,Close,閉じます

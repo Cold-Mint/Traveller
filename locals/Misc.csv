@@ -1,0 +1,4 @@
+id,zh,en,ja
+de,的,"'s",の
+default_player_name,白纸,blankPaper,しらかみ
+item_prompt_debug,ID：{0}\n名称：{1}\n数量：{2}\n最大叠加数量：{3}\n数据类型：{4}\n描述：{5},ID: {0}\nName: {1}\nQuantity: {2}\nMaximum stacking quantity: {3}\nData type: {4}\nDescription：{5},id:{0}\n名称:{1}\nの数は最大{2}\nシナジー数:{3}\nデータタイプ:{4}\n述べ表わす:{5}
