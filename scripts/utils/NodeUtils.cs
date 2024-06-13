@@ -6,6 +6,8 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.item.weapon;
 using Godot;
 
+using Packsack = ColdMint.scripts.item.Packsack;
+
 namespace ColdMint.scripts.utils;
 
 /// <summary>

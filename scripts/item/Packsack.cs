@@ -1,11 +1,8 @@
-﻿using System;
-
-using ColdMint.scripts.debug;
-using ColdMint.scripts.item;
+﻿using ColdMint.scripts.inventory;
 
 using Godot;
 
-namespace ColdMint.scripts.inventory;
+namespace ColdMint.scripts.item;
 
 /// <summary>
 /// <para>packsack</para>
