@@ -10,6 +10,7 @@ size = Vector2(41, 57)
 collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_8ehup")
+Id = "packsack"
 metadata/Id = "Packsack"
 metadata/MaxStackQuantity = 1
 metadata/Icon = ExtResource("2_e1ale")

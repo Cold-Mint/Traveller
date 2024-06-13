@@ -1,5 +1,8 @@
 ﻿using System;
+
 using ColdMint.scripts.debug;
+using ColdMint.scripts.item;
+
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -10,26 +13,41 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class Packsack : RigidBody2D, IItem
 {
-    public string? Id { get; set; }
-    public int Quantity { get; set; }
-    public int MaxStackQuantity { get; set; }
-    public Texture2D? Icon { get; set; }
-    public new string? Name { get; set; }
-    public string? Description { get; set; }
-    public Action<IItem>? OnUse { get; set; }
-    public Func<IItem, Node>? OnInstantiation { get; set; }
+    [Export] public string Id { get; protected set; } = "place_holder_id";
+
+    protected Texture2D? UniqueIcon { get; set; }
+    public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
+
+    protected string? UniqueName { get; set; }
+    public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
+
+    protected string? UniqueDescription { get; set; }
+    public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
+
+    public void Use(Node2D? owner, Vector2 targetGlobalPosition) { }
+
+    public void Destroy()
+    {
+        if (_itemContainer == null) return;
+        foreach (var itemSlot in _itemContainer)
+        {
+            itemSlot.ClearSlot();
+        }
+
+        QueueFree();
+    }
 
     private IItemContainer? _itemContainer;
 
     public override void _Ready()
     {
         base._Ready();
-        Id = GetMeta("ID", "1").AsString();
-        Quantity = GetMeta("Quantity", "1").AsInt32();
-        MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
-        Icon = GetMeta("Icon", "").As<Texture2D>();
-        Name = GetMeta("Name", "").AsString();
-        Description = GetMeta("Description", "").AsString();
+        // Id = GetMeta("ID",                             "1").AsString();
+        // Quantity = GetMeta("Quantity",                 "1").AsInt32();
+        // MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
+        // Icon = GetMeta("Icon",                         "").As<Texture2D>();
+        // Name = GetMeta("Name",                         "").AsString();
+        // Description = GetMeta("Description",           "").AsString();
         _itemContainer = new UniversalItemContainer();
     }
 

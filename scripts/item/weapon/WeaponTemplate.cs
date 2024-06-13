@@ -20,7 +20,7 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem
     //Implements IItem
     [Export] public virtual string Id { get; private set; } = "ID";
 
-    protected virtual Texture2D? UniqueIcon { get; set; }
+    protected Texture2D? UniqueIcon { get; set; }
     public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
 
     protected string? UniqueName { get; set; }

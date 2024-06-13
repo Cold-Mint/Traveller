@@ -6,6 +6,7 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.item;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;

@@ -12,8 +12,15 @@ public static class ItemTypeManager
     public static void StaticRegister()
     {
         var staffOfTheUndeadScene = ResourceLoader.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
-        var staffOfTheUndead = new ItemType("staff_of_the_undead", () => staffOfTheUndeadScene.Instantiate<IItem>(), null, 1);
+        var staffOfTheUndeadIcon = ResourceLoader.Load<Texture2D>("res://sprites/weapon/staffOfTheUndead.png");
+        var staffOfTheUndead =
+            new ItemType("staff_of_the_undead", () => staffOfTheUndeadScene.Instantiate<IItem>(), staffOfTheUndeadIcon, 1);
         Register(staffOfTheUndead);
+
+        var packsackScene = ResourceLoader.Load<PackedScene>("res://prefab/packsacks/packsack.tscn");
+        var packsackIcon = ResourceLoader.Load<Texture2D>("res://sprites/Player.png");
+        var packsack = new ItemType("packsack", () => packsackScene.Instantiate<IItem>(), packsackIcon, 1);
+        Register(packsack);
     }
 
     private static Dictionary<string, ItemType> Registry { get; } = [];
