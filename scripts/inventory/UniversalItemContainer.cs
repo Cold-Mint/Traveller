@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,8 @@ using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
 
 using Godot;
+
+using JetBrains.Annotations;
 
 namespace ColdMint.scripts.inventory;
 
@@ -347,5 +350,18 @@ public class UniversalItemContainer : IItemContainer
         }
 
         _selectIndex = newSelectIndex;
+    }
+
+
+    [MustDisposeResource]
+    public IEnumerator<ItemSlotNode> GetEnumerator()
+    {
+        return _itemSlotNodes?.GetEnumerator() ?? Enumerable.Empty<ItemSlotNode>().GetEnumerator();
+    }
+
+    [MustDisposeResource]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

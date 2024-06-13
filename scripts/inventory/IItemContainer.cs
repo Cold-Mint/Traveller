@@ -16,7 +16,7 @@ namespace ColdMint.scripts.inventory;
 ///<para>Item containers can store items. Things like backpacks and Hotbars are containers with visual pages.</para>
 ///<para>物品容器可以储存物品。像背包和hotbar是具有可视化页面的容器。</para>
 /// </remarks>
-public interface IItemContainer
+public interface IItemContainer : IEnumerable<ItemSlotNode>
 {
     /// <summary>
     /// <para>Can the specified item be added to the container?</para>
@@ -58,7 +58,7 @@ public interface IItemContainer
     /// </summary>
     /// <returns></returns>
     ItemSlotNode? GetSelectItemSlotNode();
-    
+
     /// <summary>
     /// <para>If present, remove an item from the slot at the currently selected location and return it.</para>
     /// <para>如果存在，移除当前选中位置的槽位中的一个物品并将其返回</para>
@@ -75,7 +75,7 @@ public interface IItemContainer
     /// <para>要取出的数量，小于0的输入代表全部物品</para>
     /// </param>
     /// <seealso cref="PickItemsFromItemSlot"/><seealso cref="PickItemFromItemSlotBySelectIndex"/>
-    IItemStack? PickItemsFromItemSlotBySelectIndex( int value);
+    IItemStack? PickItemsFromItemSlotBySelectIndex(int value);
 
     /// <summary>
     /// <para>Removes an item from the inventory at the currently selected location</para>
@@ -111,6 +111,14 @@ public interface IItemContainer
     ItemSlotNode? GetItemSlotNode(int index);
 
     /// <summary>
+    /// <para>Gets the item slot for the specified location, equals to <see cref="GetItemSlotNode"/></para>
+    /// <para>获取指定位置的物品槽，等同于<see cref="GetItemSlotNode"/></para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    ItemSlotNode? this[int index] => GetItemSlotNode(index);
+
+    /// <summary>
     /// <para>If present, remove an item from the slot in the specified location and return it.</para>
     /// <para>如果存在，移除指定位置的槽位中的一个物品并将其返回</para>
     /// </summary>
@@ -128,7 +136,7 @@ public interface IItemContainer
     /// </param>
     /// <seealso cref="PickItemFromItemSlot"/>
     IItemStack? PickItemsFromItemSlot(int itemSlotIndex, int value);
-    
+
     /// <summary>
     /// <para>Removes an item from the item slot in the specified location</para>
     /// <para>在指定位置的物品槽内移除物品</para>
