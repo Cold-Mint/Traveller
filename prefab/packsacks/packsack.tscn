@@ -10,6 +10,7 @@ size = Vector2(41, 57)
 collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
+Id = "packsack"
 
 [node name="Player" type="Sprite2D" parent="."]
 texture = ExtResource("2_e1ale")

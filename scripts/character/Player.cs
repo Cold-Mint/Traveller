@@ -82,21 +82,21 @@ public partial class Player : CharacterTemplate
         operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_left")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("move_left"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("action_move_left"));
         operationTipBuilder.Append(' ');
         operationTipBuilder.Append("[color=");
         operationTipBuilder.Append(Config.OperationTipActionColor);
         operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_right")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("move_right"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("action_move_right"));
         operationTipBuilder.Append(' ');
         operationTipBuilder.Append("[color=");
         operationTipBuilder.Append(Config.OperationTipActionColor);
         operationTipBuilder.Append(']');
         operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
         operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("jump"));
+        operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump"));
         if (_collidingWithPlatform)
         {
             operationTipBuilder.Append(' ');
@@ -106,7 +106,7 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(
                                        TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("jump_down"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump_down"));
         }
 
         //If the PickingRangeBodiesList is not null and the length is greater than 0
@@ -120,7 +120,7 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(
                                        TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("pick_up"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("action_pick_up"));
             operationTipLabel.Text = operationTipBuilder.ToString();
         }
 
@@ -132,7 +132,7 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(']');
             operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
             operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("throw"));
+            operationTipBuilder.Append(TranslationServerUtils.Translate("action_throw"));
             if (CurrentItem is IItem item)
             {
                 operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
@@ -143,7 +143,7 @@ public partial class Player : CharacterTemplate
                 operationTipBuilder.Append(
                                            TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
                 operationTipBuilder.Append("[/color]");
-                operationTipBuilder.Append(TranslationServerUtils.Translate("use_item"));
+                operationTipBuilder.Append(TranslationServerUtils.Translate("action_use_item"));
                 operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
             }
         }

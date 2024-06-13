@@ -70,7 +70,7 @@ public static class LogCat
         }
 
         StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss : "));
-        StringBuilder.Append(TranslationServerUtils.Translate(message));
+        StringBuilder.Append(TranslationServerUtils.Translate($"log_{message}"));
         return StringBuilder;
     }
 
