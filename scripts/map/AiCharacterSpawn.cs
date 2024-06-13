@@ -1,5 +1,4 @@
 ﻿using ColdMint.scripts.character;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;

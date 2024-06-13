@@ -1,10 +1,10 @@
 ﻿using System;
-
 using Godot;
 
 namespace ColdMint.scripts.item.itemStacks;
 
 /// <summary>
+/// <para>物品槽中的物品堆</para>
 /// <para>Item stack in an inventory slot</para>
 /// </summary>
 public interface IItemStack
@@ -60,13 +60,21 @@ public interface IItemStack
     public bool CanAddItem(IItem item);
 
     /// <summary>
-    /// <para>Hold a given item</para>
+    /// <para>Add items to the itemStack</para>
+    /// <para>添加物品到物品堆内</para>
     /// </summary>
-    /// <param name="item">Item to hold by current stack</param>
-    /// <returns>Whether successful</returns>
+    /// <param name="item">
+    ///<para>Items to add</para>
+    ///<para>需要添加的物品</para>
+    /// </param>
+    /// <returns>
+    ///<para>Whether successful</para>
+    ///<para>是否成功</para>
+    /// </returns>
     public bool AddItem(IItem item);
 
     /// <summary>
+    /// <para>Determines the number of items that can be received from the specified pile</para>
     /// <para>判断能从指定物品堆中接收的物品数量</para>
     /// </summary>
     /// <param name="itemStack">
@@ -77,19 +85,22 @@ public interface IItemStack
     public int CanTakeFrom(IItemStack itemStack);
 
     /// <summary>
+    /// <para>Move as many items as possible from the specified item pile to the current item pile. Items that have been moved to the current item pile should be removed from the original item pile.</para>
     /// <para>将指定物品堆中尽可能多的物品移动至当前物品堆中，被移入当前堆的物品应从原物品堆中移除。</para>
     /// </summary>
     /// <param name="itemStack">
+    /// <para>The pile of items that are moved into the current pile</para>
     /// <para>被移入当前堆的物品堆</para>
     /// </param>
     /// <returns>
+    /// <para>Whether the original stack is empty after the operation</para>
     /// <para>操作结束后原物品堆是否为空</para>
     /// </returns>
     public bool TakeFrom(IItemStack itemStack);
 
     /// <summary>
-    /// <para>Get item instance at the top of current stack without removing it from stack</para>
-    /// <para>获取当前物品堆顶部的物品实例而不取出该物品</para>
+    /// <para>Gets an item instance of the current item pile without retrieving the item</para>
+    /// <para>获取当前物品堆的物品实例而不取出该物品</para>
     /// <seealso cref="PickItem"/>
     /// </summary>
     /// <returns></returns>
@@ -152,8 +163,9 @@ public interface IItemStack
         item.SpecialStack() ??
         ItemTypeManager.MaxStackQuantityOf(item.Id) switch
         {
-            1         => new SingleItemStack(item),
-            > 1       => item is ICommonItem commonItem ? new CommonItemStack(commonItem) : new UniqueItemStack(item),
-            var other => throw new ArgumentException($"item {item} of type '{item.Id}' has unexpected max stack quantity {other}")
+            1 => new SingleItemStack(item),
+            > 1 => item is ICommonItem commonItem ? new CommonItemStack(commonItem) : new UniqueItemStack(item),
+            var other => throw new ArgumentException(
+                $"item {item} of type '{item.Id}' has unexpected max stack quantity {other}")
         };
 }

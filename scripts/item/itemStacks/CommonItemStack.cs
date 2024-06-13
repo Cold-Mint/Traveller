@@ -1,18 +1,22 @@
 ﻿using System;
-
 using Godot;
 
 namespace ColdMint.scripts.item.itemStacks;
 
 /// <summary>
-/// <para>
-///     one of the basic item stacks, where there is only one instance of an item actually held in the stack,
-///     meaning that all items are identical (or completely random in some ways)
-/// </para>
-/// <para>平凡物品堆，基础物品堆之一，堆中实际保存的物品实例仅有一个，意味着所有物品都完全一致（或某些方面完全随机）</para>
+/// <para>An ordinary item pile, in which only one instance of the item is actually saved.</para>
+/// <para>普通的物品堆，堆中实际保存的物品实例仅有一个。</para>
 /// </summary>
-/// <param name="innerItem"></param>
-/// <seealso cref="UniqueItemStack"/><seealso cref="SingleItemStack"/>
+/// <remarks>
+///<para>When the <see cref="AddItem"/> method is called in this implementation, the number of internal items is increased by one and new items passed in are destroyed.</para>
+///<para>在此实现下调用<see cref="AddItem"/>方法时，会对内部物品的数量加一，并销毁传递进来的新物品。</para>
+/// </remarks>
+/// <param name="innerItem">
+///<para>innerItem</para>
+///<para>内部物品</para>
+/// </param>
+/// <seealso cref="UniqueItemStack"/>
+/// <seealso cref="SingleItemStack"/>
 public class CommonItemStack(ICommonItem innerItem) : IItemStack
 {
     public int MaxQuantity { get; } = ItemTypeManager.MaxStackQuantityOf(innerItem.Id);
@@ -31,12 +35,18 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
     {
         if (!CanAddItem(item)) return false;
         Quantity++;
+        item.Destroy();
         return true;
     }
 
     public int CanTakeFrom(IItemStack itemStack)
     {
-        if (itemStack.Empty || !innerItem.CanStackWith(itemStack.GetItem()!)) return 0;
+        var item = itemStack.GetItem();
+        if (item == null)
+        {
+            return 0;
+        }
+        if (itemStack.Empty || !innerItem.CanStackWith(item)) return 0;
         return Math.Min(itemStack.Quantity, MaxQuantity - Quantity);
     }
 
@@ -55,10 +65,11 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
 
     public IItem? PickItem()
     {
-        if (Empty) return null;
+        if(Empty) return null;
         Quantity--;
-        if (Empty) innerItem.Destroy();
-        return innerItem.CopyInstance();
+        var result = innerItem.CopyInstance();
+        if(Empty) innerItem.Destroy();
+        return result;
     }
 
     public IItemStack? PickItems(int value)
@@ -66,6 +77,10 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
         if (Empty) return null;
         var result = new CommonItemStack(innerItem.CopyInstance());
         var n = Math.Min(Quantity, value);
+        if (n < 0)
+        {
+            n = Quantity;
+        }
         result.Quantity = n;
         Quantity -= n;
         if (Empty) innerItem.Destroy();
@@ -75,6 +90,10 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
     public int RemoveItem(int number)
     {
         var n = Math.Min(number, Quantity);
+        if (n < 0)
+        {
+            n = Quantity;
+        }
         Quantity -= n;
         if (Empty) innerItem.Destroy();
         return number - n;
