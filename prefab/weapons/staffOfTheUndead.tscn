@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://e6670ykyq145" path="res://sprites/weapon/staffOfTheUndead.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/item/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
-[ext_resource type="Texture2D" uid="uid://b2blj0yf4ohx3" path="res://icon.svg" id="2_l5lni"]
+[ext_resource type="PackedScene" uid="uid://c01av43yk1q71" path="res://prefab/projectile/curseOfTheUndead.tscn" id="2_34250"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
 size = Vector2(49, 5)
@@ -14,14 +14,9 @@ size = Vector2(49, 5.25)
 collision_layer = 8
 collision_mask = 34
 script = ExtResource("1_w8hhv")
+ProjectileScenes = [ExtResource("2_34250")]
 Id = "staff_of_the_undead"
 metadata/Projectiles = PackedStringArray("res://prefab/projectile/curseOfTheUndead.tscn")
-metadata/Name = "staff_of_the_undead"
-metadata/FiringIntervalArray = PackedInt64Array(5000, 500, 250)
-metadata/Icon = ExtResource("2_l5lni")
-metadata/ID = "StaffOfTheUndead"
-metadata/MaxStackQuantity = 1
-metadata/Description = "staff_of_the_undead_desc"
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

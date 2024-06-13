@@ -11,11 +11,6 @@ collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_8ehup")
 Id = "packsack"
-metadata/Id = "Packsack"
-metadata/MaxStackQuantity = 1
-metadata/Icon = ExtResource("2_e1ale")
-metadata/Name = "packsack"
-metadata/Description = "packsack_desc"
 
 [node name="Player" type="Sprite2D" parent="."]
 texture = ExtResource("2_e1ale")
