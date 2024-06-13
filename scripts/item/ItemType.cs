@@ -4,7 +4,7 @@ using Godot;
 
 namespace ColdMint.scripts.item;
 
-public readonly struct ItemType(string id, Func<IItem> newItemFunc, Texture2D? icon, int maxStackQuantity)
+public readonly struct ItemType(string id, Func<IItem?> newItemFunc, Texture2D? icon, int maxStackQuantity)
 {
     /// <summary>
     /// <para>Item id of this type</para>
@@ -15,7 +15,7 @@ public readonly struct ItemType(string id, Func<IItem> newItemFunc, Texture2D? i
     /// <para>A function returns a new item instance of this type</para>
     /// <para>用于创建该类型的物品实例的函数</para>
     /// </summary>
-    public Func<IItem> NewItemFunc { get; init; } = newItemFunc;
+    public Func<IItem?> NewItemFunc { get; init; } = newItemFunc;
     /// <summary>
     /// <para>Default icon of items of this type</para>
     /// <para>该类型物品的默认图标</para>

@@ -3,8 +3,6 @@ using System;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.inventory;
-
 using Godot;
 
 namespace ColdMint.scripts.item.weapon;
@@ -116,7 +114,7 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem
 
         //If it leaves the ground or walls.
         //如果离开了地面或墙壁。
-        if (node is TileMap tileMap)
+        if (node is TileMap)
         {
             _tileMapNumber--;
             if (_tileMapNumber == 0)
@@ -141,7 +139,7 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem
             return;
         }
 
-        if (node is TileMap tileMap)
+        if (node is TileMap)
         {
             _tileMapNumber++;
             EnableContactInjury = false;

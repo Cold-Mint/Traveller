@@ -29,7 +29,7 @@ public class PatrolBehaviorTree : BehaviorTreeTemplate
         return patrolNode;
     }
 
-    protected override string? CreateId()
+    protected override string CreateId()
     {
         return Config.BehaviorTreeId.Patrol;
     }

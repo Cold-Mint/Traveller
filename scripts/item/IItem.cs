@@ -8,23 +8,28 @@ public interface IItem
 {
     /// <summary>
     /// <para>ID of current item</para>
+    /// <para>当前项目的ID</para>
     /// </summary>
     string Id { get; }
     /// <summary>
     /// <para>Icon of current item</para>
+    /// <para>当前项目的图标</para>
     /// </summary>
     Texture2D Icon { get; }
     /// <summary>
     /// <para>Display name of current item</para>
+    /// <para>显示当前Item的名称</para>
     /// </summary>
     string Name { get; }
     /// <summary>
     /// <para>Description of current item, which may show in inventory</para>
+    /// <para>当前项目的描述</para>
     /// </summary>
     string? Description { get; }
 
     /// <summary>
     /// <para>Execute when current item is used <br/> e.g. when player clicks left mouse button with current item in hand</para>
+    /// <para>当前项被使用时执行 <br/> e.g. 当玩家用鼠标左键点击当前物品时</para>
     /// </summary>
     /// <param name="owner">Owner of current item, if any</param>
     /// <param name="targetGlobalPosition">Target position, such as the position of the cursor when used by the player</param>
@@ -32,6 +37,7 @@ public interface IItem
 
     /// <summary>
     /// <para>Execute when current item be removed from game.</para>
+    /// <para>当前物品从游戏中移除时执行。</para>
     /// </summary>
     void Destroy();
 
@@ -67,7 +73,7 @@ public interface IItem
     /// </summary>
     /// <remarks>
     /// <para>DO NOT use this method to create stack from item, use <see cref="IItemStack.FromItem"/> instead</para>
-    /// <para>**不要**使用此方法从一个物品创建堆，请使用 <see cref="IItemStack.FromItem"/></para>。
+    /// <para>不要使用此方法从一个物品创建堆，请使用 <see cref="IItemStack.FromItem"/></para>。
     /// </remarks>
     /// <seealso cref="CanStackWith"/>
     IItemStack? SpecialStack() => null;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using Godot;
 
 namespace ColdMint.scripts.item.itemStacks;
@@ -22,6 +20,7 @@ public class UniqueItemStack : IItemStack
         MaxQuantity = ItemTypeManager.MaxStackQuantityOf(item.Id);
     }
 
+    
     private UniqueItemStack(UniqueItemStack from)
     {
         _items = from._items;
@@ -91,9 +90,10 @@ public class UniqueItemStack : IItemStack
         if (value < 0) value = Quantity;
 
         var result = new UniqueItemStack(PickItem()!);
+        //Calculate the amount left to take out
         //计算剩余的要取出的数量
         var restToMove = Math.Min(value - 1, Quantity);
-        for (int i = 0; i < restToMove; i++)
+        for (var i = 0; i < restToMove; i++)
         {
             result.AddItem(PickItem()!);
         }

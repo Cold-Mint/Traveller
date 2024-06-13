@@ -3,13 +3,9 @@
 namespace ColdMint.scripts.item;
 
 /// <summary>
-/// <para>Special item interface that make item common, which means will stack in a <see cref="CommonItemStack"/></para>
-/// <para>该特殊的物品接口使得物品成为平凡物品，换言之，将会堆叠在<see cref="CommonItemStack"/></para>中。
+/// <para>The special item interface makes the item a normal item, in other words, will be stacked in<see cref="CommonItemStack"/></para>
+/// <para>该特殊的物品接口使得物品成为普通的物品，换言之，将会堆叠在<see cref="CommonItemStack"/>中。</para>
 /// </summary>
-/// <typeparam name="TSelf">
-/// <para>Make this the class itself</para>
-/// <para>应当为当前类自身</para>
-/// </typeparam>
 /// <remarks>
 /// <para>
 ///     Notice when you implement: To avoid unexpected behavior, unless you understand what you're doing, the <see cref="IItem.CanStackWith"/> method

@@ -5,17 +5,18 @@ using Godot;
 namespace ColdMint.scripts.item.itemStacks;
 
 /// <summary>
-/// <para>One of the basic item stacks, there are always one item in stack</para>
-/// <para>单身狗物品堆，基础物品堆之一，堆中永远只会有一个物品</para>
+/// <para>One of the basic item stacks, there are always one item in stack(Stack not supported)</para>
+/// <para>单身狗物品堆，基础物品堆之一，堆中永远只会有一个物品（不支持堆叠）</para>
 /// </summary>
-/// <seealso cref="UniqueItemStack"/><seealso cref="CommonItemStack"/>
+/// <seealso cref="UniqueItemStack"/>
+/// <seealso cref="CommonItemStack"/>
 public class SingleItemStack(IItem item) : IItemStack
 {
     public IItem Item { get; init; } = item;
 
     public int MaxQuantity => 1;
     public int Quantity => 1;
-    public bool Empty { get; private set; } = false;
+    public bool Empty { get; private set; }
     public Texture2D Icon => Item.Icon;
     public string Name => Item.Name;
     public string? Description => Item.Description;
