@@ -11,31 +11,44 @@ public interface IItemStack
 {
     /// <summary>
     /// <para>Max number of current stack</para>
+    /// <para>当前物品堆的最大物品数量</para>
     /// </summary>
     int MaxQuantity { get; }
 
     /// <summary>
     /// <para>Quantity of current stack</para>
+    /// <para>当前物品堆的物品数量</para>
     /// </summary>
     int Quantity { get; }
 
     /// <summary>
     /// <para>True if this stack is empty</para>
+    /// <para>当物品堆空时为真</para>
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     This attribute is used to check if the item stack is empty after the operation for subsequent processing,<br/>
+    ///     i.e. there should not be any item stacks with this attribute true outside of the operation process
+    /// </para>
+    /// <para>此属性用于检查操作后该物品堆是否为空以便后续处理，也就是说在操作过程以外的时候不应当存在任何该属性为true的物品堆</para>
+    /// </remarks>
     bool Empty { get; }
 
     /// <summary>
-    /// <para>Icon of current item</para>
+    /// <para>Icon of current item stack</para>
+    /// <para>当前物品堆显示的图标</para>
     /// </summary>
     Texture2D Icon { get; }
 
     /// <summary>
-    /// <para>Display name of current item</para>
+    /// <para>Display name of current item stack</para>
+    /// <para>当前物品堆显示的名称</para>
     /// </summary>
     string Name { get; }
 
     /// <summary>
-    /// <para>Description of current item, which may show in inventory</para>
+    /// <para>Description of current item stack, which may show in inventory</para>
+    /// <para>当前物品堆的描述，可能显示在物品栏中</para>
     /// </summary>
     string? Description { get; }
 
@@ -126,12 +139,14 @@ public interface IItemStack
     public int RemoveItem(int number);
 
     /// <summary>
-    /// <para>Clear current stack, which means should dispose all items inside current stack here</para>
+    /// <para>Clear current stack, which means should remove all items inside current stack from the game here</para>
+    /// <para>清除当前物品堆，意味着从游戏中移除当前堆中的所有物品</para>。
     /// </summary>
     public void ClearStack();
 
     /// <summary>
-    /// Create a new ItemStack with the given item as the first item
+    /// <para>Create a new ItemStack with the given item as the first item</para>
+    /// <para>以给定的物品为第一个物品创建物品堆</para>
     /// </summary>
     public static IItemStack FromItem(IItem item) =>
         item.SpecialStack() ??

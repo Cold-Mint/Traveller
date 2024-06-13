@@ -44,12 +44,6 @@ public partial class Packsack : RigidBody2D, IItem
     public override void _Ready()
     {
         base._Ready();
-        // Id = GetMeta("ID",                             "1").AsString();
-        // Quantity = GetMeta("Quantity",                 "1").AsInt32();
-        // MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
-        // Icon = GetMeta("Icon",                         "").As<Texture2D>();
-        // Name = GetMeta("Name",                         "").AsString();
-        // Description = GetMeta("Description",           "").AsString();
         _itemContainer = new UniversalItemContainer();
     }
 

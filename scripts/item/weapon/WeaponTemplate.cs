@@ -104,17 +104,6 @@ public abstract partial class WeaponTemplate : RigidBody2D, IItem
         _damageArea2D.BodyEntered += OnBodyEnter;
         _damageArea2D.BodyExited += OnBodyExited;
 
-        // Id = GetMeta("ID",                             "1").AsString();
-        // Quantity = GetMeta("Quantity",                 "1").AsInt32();
-        // MaxStackQuantity = GetMeta("MaxStackQuantity", Config.MaxStackQuantity).AsInt32();
-        // Icon = GetMeta("Icon",                         "").As<Texture2D>();
-        // Name = GetMeta("Name",                         "").AsString();
-        // Description = GetMeta("Description",           "").AsString();
-        // _firingInterval = TimeSpan.FromMilliseconds(GetMeta("FiringInterval", "100").AsInt64());
-        // _minContactInjury = GetMeta("MinContactInjury", "1").AsInt32();
-        // _maxContactInjury = GetMeta("MaxContactInjury", "2").AsInt32();
-        // _recoil = GetMeta("Recoil",                     Vector2.Zero).AsVector2();
-
         _firingInterval = TimeSpan.FromMilliseconds(_firingIntervalAsMillisecond);
     }
 

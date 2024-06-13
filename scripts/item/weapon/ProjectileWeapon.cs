@@ -24,14 +24,6 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// </summary>
     private Marker2D? _marker2D;
 
-    // /// <summary>
-    // /// <para>List of projectiles</para>
-    // /// <para>抛射体列表</para>
-    // /// </summary>
-    // private string[]? _projectiles;
-    //
-    // private Dictionary<string, PackedScene>? _projectileCache;
-
     [Export] protected PackedScene[] ProjectileScenes { get; set; } = [];
 
     private Node2D? _projectileContainer;
@@ -40,19 +32,6 @@ public partial class ProjectileWeapon : WeaponTemplate
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
-
-        // _projectileCache = new Dictionary<string, PackedScene>();
-        // _projectiles = GetMeta("Projectiles", "").AsStringArray();
-        // foreach (var projectileItem in _projectiles)
-        // {
-        //     var packedScene = GD.Load<PackedScene>(projectileItem);
-        //     if (packedScene == null)
-        //     {
-        //         continue;
-        //     }
-        //
-        //     _projectileCache.Add(projectileItem, packedScene);
-        // }
 
         _projectileContainer = GetNode("/root/Game/ProjectileContainer") as Node2D;
     }

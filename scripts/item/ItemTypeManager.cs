@@ -8,7 +8,9 @@ namespace ColdMint.scripts.item;
 
 public static class ItemTypeManager
 {
-    // Register items statically here
+    /// <summary>
+    /// Register items statically here
+    /// </summary>
     public static void StaticRegister()
     {
         var staffOfTheUndeadScene = ResourceLoader.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
