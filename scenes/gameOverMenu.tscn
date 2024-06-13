@@ -37,7 +37,7 @@ layout_mode = 2
 [node name="GameOverLabel" type="Label" parent="CenterContainer/VBoxContainer/CenterContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "game_over_title"
+text = "ui_game_over_title"
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -48,7 +48,7 @@ layout_mode = 2
 
 [node name="DeathInfoLabel" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer/CenterContainer2"]
 layout_mode = 2
-text = "death_info_describe"
+text = "ui_death_info_describe"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -57,4 +57,4 @@ theme_override_constants/margin_bottom = 150
 
 [node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
-text = "restart"
+text = "ui_restart"

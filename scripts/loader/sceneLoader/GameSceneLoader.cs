@@ -84,7 +84,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         {
             //If you have a seedLabel, then set the seed to it.
             //如果有seedLabel，那么将种子设置上去。
-            var seedInfo = TranslationServerUtils.TranslateWithFormat("seed_info", MapGenerator.Seed);
+            var seedInfo = TranslationServerUtils.TranslateWithFormat("ui_seed_info", MapGenerator.Seed);
             _seedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
         }
         await MapGenerator.GenerateMap();
