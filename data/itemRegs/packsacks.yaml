@@ -1,0 +1,4 @@
+- id: packsack
+  scene_path: res://prefab/packsacks/packsack.tscn
+  max_stack_value: 1
+  icon_path: res://sprites/Player.png
