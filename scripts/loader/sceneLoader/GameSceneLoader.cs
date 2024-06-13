@@ -35,6 +35,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");
         GameSceneNodeHolder.WeaponContainer = weaponContainer;
+        //Load Packsack container
+        //加载背包容器
+        var packsackContainer = GetNode<Node2D>("PacksackContainer");
+        GameSceneNodeHolder.PacksackContainer = packsackContainer;
         //Load AICharacter container
         //加载AICharacter容器
         var aiCharacterContainer = GetNode<Node2D>("AICharacterContainer");

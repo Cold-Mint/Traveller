@@ -300,7 +300,6 @@ public static class MapGenerator
         {
             Tag = AiCharacterGenerateEvent.TagMapGenerationComplete
         };
-        LogCat.Log("触发事件" + (EventManager.AiCharacterGenerateEvent == null));
         EventManager.AiCharacterGenerateEvent?.Invoke(aiCharacterGenerateEvent);
     }
 

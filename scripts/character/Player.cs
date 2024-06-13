@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
+using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
@@ -132,10 +134,9 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
             operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServerUtils.Translate("throw"));
-            if (CurrentItem is WeaponTemplate weaponTemplate)
+            if (CurrentItem is IItem item)
             {
-                operationTipBuilder.Append(TranslationServerUtils.Translate(weaponTemplate.Name));
-                //提示武器攻击
+                operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
                 operationTipBuilder.Append(' ');
                 operationTipBuilder.Append("[color=");
                 operationTipBuilder.Append(Config.OperationTipActionColor);
@@ -144,7 +145,7 @@ public partial class Player : CharacterTemplate
                                            TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
                 operationTipBuilder.Append("[/color]");
                 operationTipBuilder.Append(TranslationServerUtils.Translate("use_item"));
-                operationTipBuilder.Append(TranslationServerUtils.Translate(weaponTemplate.Name));
+                operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
             }
         }
 

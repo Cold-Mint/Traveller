@@ -671,6 +671,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
+        CallDeferred("NodeReparent", node2D);
         switch (item)
         {
             case WeaponTemplate weaponTemplate:
@@ -680,7 +681,6 @@ public partial class CharacterTemplate : CharacterBody2D
                 }
 
                 weaponTemplate.Picked = false;
-                CallDeferred("WeaponTemplateReparent", weaponTemplate);
                 var timer = new Timer();
                 weaponTemplate.AddChild(timer);
                 timer.WaitTime = _itemCollisionRecoveryTime;
@@ -718,13 +718,13 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
-    /// <para>Replace the parent node of the weapon</para>
-    /// <para>替换武器的父节点</para>
+    /// <para>Replace the parent node of a node</para>
+    /// <para>替换节点的父节点</para>
     /// </summary>
-    /// <param name="weaponTemplate"></param>
-    private void WeaponTemplateReparent(WeaponTemplate weaponTemplate)
+    /// <param name="node"></param>
+    private void NodeReparent(Node node)
     {
-        weaponTemplate.Reparent(GameSceneNodeHolder.WeaponContainer);
+        node.Reparent(NodeUtils.FindContainerNode(node, GetNode("/root")));
     }
 
     public sealed override void _PhysicsProcess(double delta)

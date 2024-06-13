@@ -96,3 +96,5 @@ visible = false
 [node name="PlayerContainer" type="Node2D" parent="."]
 
 [node name="AICharacterContainer" type="Node2D" parent="."]
+
+[node name="PacksackContainer" type="Node2D" parent="."]
