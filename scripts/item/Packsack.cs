@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.inventory;
 using ColdMint.scripts.item.itemStacks;
-
 using Godot;
 
 namespace ColdMint.scripts.item;
@@ -37,7 +36,7 @@ public partial class Packsack : RigidBody2D, IItem
 
     public bool CanStackWith(IItem item) => false;
 
-    public IItemStack? SpecialStack()
+    public IItemStack SpecialStack()
     {
         return new PacksackStack(this);
     }
@@ -49,8 +48,5 @@ public partial class Packsack : RigidBody2D, IItem
     {
         base._Ready();
         ItemContainer = new UniversalItemContainer();
-
-        //Test: Add one ItemSlot for pack
-        ItemContainer.AddItemSlot(this);
     }
 }

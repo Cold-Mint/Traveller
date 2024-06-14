@@ -25,3 +25,11 @@ ui_room_injection_processor,房间注入处理器,Room injection processor,部�
 ui_game_over_title,游戏结束！,Game Over!,ゲームオーバー!
 ui_death_info_describe,死因,death,死因
 ui_restart,重新开始,Restart,ぶり返す
+ui_contributor_tips,由{0}位贡献者共同打造,Built by {0} contributors,{0}のコントリビューターが共同で作り上げました
+ui_contributor,贡献者,contributor,貢献者です
+ui_coder,编程,coder,程序设计
+ui_artist,美术,artist,びじゅつ
+ui_musician,音乐,musician,音楽
+ui_character_voice,角色配音,character_voice,キャラクターボイスです
+ui_translator,翻译,translator,翻訳
+ui_unordered_list_tip,排名不分先后,Ranking is not in order,順位は関係ありません

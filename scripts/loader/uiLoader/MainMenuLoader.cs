@@ -3,13 +3,14 @@ using System.IO;
 using System.Text;
 
 using ColdMint.scripts.camp;
+using ColdMint.scripts.contribute;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
-
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -24,9 +25,12 @@ public partial class MainMenuLoader : UiLoaderTemplate
     private Label? _copyrightLabel;
     private StringBuilder? _copyrightBuilder;
     private PackedScene? _gameScene;
+    private PackedScene? _contributor;
+    private PackedScene? _levelGraphEditor;
     private Label? _sloganLabel;
     private Label? _versionLabel;
     private Button? _levelGraphEditorButton;
+    private LinkButton? _contributorButton;
 
     public override void InitializeData()
     {
@@ -69,6 +73,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
             LootListManager.RegisterLootList(testLootList);
         }
 
+        ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());
@@ -93,7 +98,9 @@ public partial class MainMenuLoader : UiLoaderTemplate
         CampManager.AddCamp(mazoku);
         var aborigines = new Camp(Config.CampId.Aborigines);
         CampManager.AddCamp(aborigines);
-        _gameScene = (PackedScene)GD.Load("res://scenes/game.tscn");
+        _gameScene = GD.Load<PackedScene>("res://scenes/game.tscn");
+        _contributor = GD.Load<PackedScene>("res://scenes/contributor.tscn");
+        _levelGraphEditor = GD.Load<PackedScene>("res://scenes/levelGraphEditor.tscn");
 
         //Register ItemTypes from file
         //从文件注册物品类型
@@ -105,6 +112,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
     public override void InitializeUi()
     {
+        _contributorButton = GetNode<LinkButton>("VBoxContainer2/ContributorButton");
         _startGameButton = GetNode<Button>("StartGameButton");
         _levelGraphEditorButton = GetNode<Button>("levelGraphEditorButton");
         //The level map editor is only available in debug mode.
@@ -132,6 +140,9 @@ public partial class MainMenuLoader : UiLoaderTemplate
         _copyrightLabel.Text = _copyrightBuilder.ToString();
         _versionLabel.Text = "ver." + Config.GetVersion();
         _sloganLabel.Text = SloganProvider.GetSlogan();
+        _contributorButton.Text =
+            TranslationServerUtils.TranslateWithFormat("ui_contributor_tips",
+                ContributorDataManager.GetContributorTotals());
     }
 
     public override void LoadUiActions()
@@ -141,7 +152,23 @@ public partial class MainMenuLoader : UiLoaderTemplate
             _startGameButton.Pressed += () =>
             {
                 LogCat.Log("start_game");
+                if (_gameScene == null)
+                {
+                    return;
+                }
                 GetTree().ChangeSceneToPacked(_gameScene);
+            };
+        }
+
+        if (_contributorButton!=null)
+        {
+            _contributorButton.Pressed += () =>
+            {
+                if (_contributor == null)
+                {
+                    return;
+                }
+                GetTree().ChangeSceneToPacked(_contributor);
             };
         }
 
@@ -150,7 +177,11 @@ public partial class MainMenuLoader : UiLoaderTemplate
             _levelGraphEditorButton.Pressed += () =>
             {
                 LogCat.Log("level_graph_editor");
-                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/levelGraphEditor.tscn"));
+                if (_levelGraphEditor == null)
+                {
+                    return;
+                }
+                GetTree().ChangeSceneToPacked(_levelGraphEditor);
             };
         }
     }

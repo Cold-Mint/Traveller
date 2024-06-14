@@ -210,7 +210,6 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>IEnumerable for the item slot matched to, will be empty if there's no slot satisfies the predicate</para>
     /// <para>包含匹配到的槽位的IEnumerable，当没有满足条件的槽位时为空</para>
     /// </returns>
-    /// <seealso cref="Match(Func{IItemStack?,bool})"/>
     IEnumerable<ItemSlotNode> MatchAll(Func<ItemSlotNode, bool> predicate);
 
 
