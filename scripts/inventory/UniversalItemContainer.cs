@@ -55,6 +55,16 @@ public class UniversalItemContainer : IItemContainer
         return itemSlotNode.AddItem(item);
     }
 
+    public int CanAddItemStack(IItemStack itemStack)
+    {
+        var testItem = itemStack.GetItem();
+        if (testItem is null) return 0;
+        var slots = MatchAll(slot => slot.CanAddItem(testItem));
+        return
+            Math.Min(itemStack.Quantity,
+                     slots.Select(slot => slot.CanAddItemStack(itemStack)).Sum());
+    }
+
     public bool AddItemStack(IItemStack itemStack)
     {
         while (true)
@@ -169,14 +179,14 @@ public class UniversalItemContainer : IItemContainer
         return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(stack.GetItem()!));
     }
 
-    public ItemSlotNode? Match(Func<IItemStack?, bool> predicate)
+    public ItemSlotNode? Match(Func<ItemSlotNode, bool> predicate)
     {
-        return _itemSlotNodes?.FirstOrDefault(node => predicate(node.GetItemStack()));
+        return _itemSlotNodes?.FirstOrDefault(predicate);
     }
 
-    public IEnumerable<ItemSlotNode> MatchAll(Func<IItemStack?, bool> predicate)
+    public IEnumerable<ItemSlotNode> MatchAll(Func<ItemSlotNode, bool> predicate)
     {
-        return from node in _itemSlotNodes where predicate(node.GetItemStack()) select node;
+        return from node in _itemSlotNodes where predicate(node) select node;
     }
 
 

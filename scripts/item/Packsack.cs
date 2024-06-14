@@ -1,4 +1,5 @@
 ﻿using ColdMint.scripts.inventory;
+using ColdMint.scripts.item.itemStacks;
 
 using Godot;
 
@@ -25,8 +26,8 @@ public partial class Packsack : RigidBody2D, IItem
 
     public void Destroy()
     {
-        if (_itemContainer == null) return;
-        foreach (var itemSlot in _itemContainer)
+        if (ItemContainer == null) return;
+        foreach (var itemSlot in ItemContainer)
         {
             itemSlot.ClearSlot();
         }
@@ -36,16 +37,17 @@ public partial class Packsack : RigidBody2D, IItem
 
     public bool CanStackWith(IItem item) => false;
 
-    private IItemContainer? _itemContainer;
+    public IItemStack? SpecialStack()
+    {
+        return new PacksackStack(this);
+    }
+
+
+    public IItemContainer? ItemContainer { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
-        _itemContainer = new UniversalItemContainer();
-    }
-
-    public IItemContainer? GetItemContainer()
-    {
-        return _itemContainer;
+        ItemContainer = new UniversalItemContainer();
     }
 }
