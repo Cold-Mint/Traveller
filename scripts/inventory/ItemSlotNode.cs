@@ -144,18 +144,6 @@ public partial class ItemSlotNode : MarginContainer
     }
 
     /// <summary>
-    /// <para>Can the specified item be placed in the item slot?</para>
-    /// <para>指定的物品是否可设置在物品槽内？</para>
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public bool CanAddItem(IItem item)
-    {
-        if (_itemStack == null) return true;
-        return _itemStack.CanAddItem(item);
-    }
-
-    /// <summary>
     /// <para>
     /// Set item stack for this slot, this will completely replace current item stack.
     /// If you want the item stack to be added to current stack, use the <see cref="AddItemStack"/>.
@@ -174,6 +162,18 @@ public partial class ItemSlotNode : MarginContainer
         UpdateAllDisplay();
 
         return result;
+    }
+
+    /// <summary>
+    /// <para>Can the specified item be placed in the item slot?</para>
+    /// <para>指定的物品是否可设置在物品槽内？</para>
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public bool CanAddItem(IItem item)
+    {
+        if (_itemStack == null) return true;
+        return _itemStack.CanAddItem(item);
     }
 
     /// <summary>
@@ -199,6 +199,21 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// <para>Determines the number of items that can be received from the specified pile</para>
+    /// <para>判断能从指定物品堆中接收的物品数量</para>
+    /// </summary>
+    /// <param name="itemStack">
+    /// <para>Item stack to add to the current slot</para>
+    /// <para>向该物品槽中放入物品的物品堆</para>
+    /// </param>
+    /// <returns></returns>
+    public int CanAddItemStack(IItemStack itemStack)
+    {
+        if (_itemStack is null) return itemStack.Quantity;
+        return _itemStack.CanTakeFrom(itemStack);
     }
 
     /// <summary>
