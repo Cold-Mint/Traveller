@@ -12,7 +12,6 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ItemSlotNode : MarginContainer
 {
-    //private IItem? _item;
     private IItemStack? _itemStack;
     private TextureRect? _backgroundTextureRect;
     private TextureRect? _iconTextureRect;

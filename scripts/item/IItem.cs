@@ -71,10 +71,6 @@ public interface IItem
     /// <para>If this item need a special stack type, return the special item stack instance that contains the item. If else, just leave this null.</para>
     /// <para>如果该项目需要特殊的物品堆类型，重写此方法来返回包含该物品的特殊物品堆实例。否则，保留原本的null返回值。</para>
     /// </summary>
-    /// <remarks>
-    /// <para>DO NOT use this method to create stack from item, use <see cref="IItemStack.FromItem"/> instead</para>
-    /// <para>不要使用此方法从一个物品创建堆，请使用 <see cref="IItemStack.FromItem"/></para>。
-    /// </remarks>
     /// <seealso cref="CanStackWith"/>
     IItemStack? SpecialStack() => null;
 }

@@ -159,6 +159,10 @@ public interface IItemStack
     /// <para>Create a new ItemStack with the given item as the first item</para>
     /// <para>以给定的物品为第一个物品创建物品堆</para>
     /// </summary>
+    /// <remarks>
+    ///<para>Assuming the item implements the <see cref="IItem.SpecialStack"/> method, then use the return value of the SpecialStack method, otherwise extrapolate from the maximum number of stacks of items.</para>
+    ///<para>假设物品实现了<see cref="IItem.SpecialStack"/>方法，那么使用SpecialStack方法的返回值，否则根据物品的最大堆叠数量来推断。</para>
+    /// </remarks>
     public static IItemStack FromItem(IItem item) =>
         item.SpecialStack() ??
         ItemTypeManager.MaxStackQuantityOf(item.Id) switch
