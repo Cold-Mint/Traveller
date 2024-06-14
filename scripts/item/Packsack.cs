@@ -49,5 +49,8 @@ public partial class Packsack : RigidBody2D, IItem
     {
         base._Ready();
         ItemContainer = new UniversalItemContainer();
+
+        //Test: Add one ItemSlot for pack
+        ItemContainer.AddItemSlot(this);
     }
 }

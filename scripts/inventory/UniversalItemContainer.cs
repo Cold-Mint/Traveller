@@ -22,7 +22,7 @@ public class UniversalItemContainer : IItemContainer
 {
     private readonly PackedScene? _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
 
-    private readonly List<ItemSlotNode>? _itemSlotNodes = new();
+    private readonly List<ItemSlotNode>? _itemSlotNodes = [];
 
     /// <summary>
     /// <para>Character</para>
@@ -221,7 +221,7 @@ public class UniversalItemContainer : IItemContainer
     /// <para>Add items tank</para>
     /// <para>添加物品槽</para>
     /// </summary>
-    public void AddItemSlot(Node rootNode, int index)
+    public void AddItemSlot(Node rootNode)
     {
         if (_itemSlotNodes == null || _itemSlotPackedScene == null)
         {
@@ -234,7 +234,7 @@ public class UniversalItemContainer : IItemContainer
             return;
         }
 
-        itemSlotNode.IsSelect = index == _selectIndex;
+        itemSlotNode.IsSelect = (_itemSlotNodes.Count ) == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
     }
 
