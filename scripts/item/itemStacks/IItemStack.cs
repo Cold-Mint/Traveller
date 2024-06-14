@@ -78,8 +78,8 @@ public interface IItemStack
     /// <para>判断能从指定物品堆中接收的物品数量</para>
     /// </summary>
     /// <param name="itemStack">
-    /// <para>向该物品堆中放入物品的物品堆</para>
     /// <para>Item stack to add to the current stack</para>
+    /// <para>向该物品堆中放入物品的物品堆</para>
     /// </param>
     /// <returns></returns>
     public int CanTakeFrom(IItemStack itemStack);

@@ -20,7 +20,7 @@ public partial class HotBar : HBoxContainer
         NodeUtils.DeleteAllChild(this);
         for (var i = 0; i < Config.HotBarSize; i++)
         {
-            _itemContainer.AddItemSlot(this, i);
+            _itemContainer.AddItemSlot(this);
         }
     }
 

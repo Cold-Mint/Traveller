@@ -35,6 +35,17 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     bool AddItem(IItem item);
 
     /// <summary>
+    /// <para>Determines the number of items that can be received from the specified pile</para>
+    /// <para>判断能从指定物品堆中接收的物品数量</para>
+    /// </summary>
+    /// <param name="itemStack">
+    /// <para>Item stack to add to the current container</para>
+    /// <para>向该容器中放入物品的物品堆</para>
+    /// </param>
+    /// <returns></returns>
+    int CanAddItemStack(IItemStack itemStack);
+
+    /// <summary>
     /// <para>Add an stack of items to this container</para>
     /// <para>向当前容器中存入一堆物品</para>
     /// </summary>
@@ -179,8 +190,8 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     ItemSlotNode? Match(IItemStack stack);
 
     /// <summary>
-    /// <para>Match the first item slot that has item stack that satisfies the predicate</para>
-    /// <para>匹配首个拥有满足指定条件的物品堆的物品槽</para>
+    /// <para>Match the first item slot that satisfies the predicate</para>
+    /// <para>匹配首个拥有满足指定条件的物品槽</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns>
@@ -188,11 +199,11 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>若没有满足条件的槽位，返回null</para>
     /// </returns>
     /// <seealso cref="MatchAll"/>
-    ItemSlotNode? Match(Func<IItemStack?, bool> predicate);
+    ItemSlotNode? Match(Func<ItemSlotNode, bool> predicate);
 
     /// <summary>
-    /// <para>Match all item slots that has item stack that satisfies the predicate</para>
-    /// <para>匹配所有拥有满足指定条件的物品堆的物品槽</para>
+    /// <para>Match all item slots that satisfies the predicate</para>
+    /// <para>匹配所有拥有满足指定条件的物品槽</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns>
@@ -200,7 +211,7 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>包含匹配到的槽位的IEnumerable，当没有满足条件的槽位时为空</para>
     /// </returns>
     /// <seealso cref="Match(Func{IItemStack?,bool})"/>
-    IEnumerable<ItemSlotNode> MatchAll(Func<IItemStack?, bool> predicate);
+    IEnumerable<ItemSlotNode> MatchAll(Func<ItemSlotNode, bool> predicate);
 
 
     /// <summary>
@@ -208,8 +219,7 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>添加物品槽</para>
     /// </summary>
     /// <param name="rootNode"></param>
-    /// <param name="index"></param>
-    void AddItemSlot(Node rootNode, int index);
+    void AddItemSlot(Node rootNode);
 
     /// <summary>
     /// <para>SelectTheNextItemSlot</para>
