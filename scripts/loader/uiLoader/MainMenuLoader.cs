@@ -97,7 +97,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
         //Register ItemTypes from file
         //从文件注册物品类型
-        ItemTypeManager.RegisterFromFile();
+        ItemTypeRegister.RegisterFromFile();
         //Hardcoded ItemTypes Register
         //硬编码注册物品类型
         ItemTypeManager.StaticRegister();
