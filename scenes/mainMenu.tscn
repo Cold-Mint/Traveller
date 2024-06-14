@@ -23,7 +23,7 @@ offset_top = 170.0
 offset_right = 47.5
 offset_bottom = 201.0
 grow_horizontal = 2
-text = "start_game"
+text = "ui_start_game"
 
 [node name="SettingsButton" type="Button" parent="."]
 layout_mode = 1
@@ -35,7 +35,7 @@ offset_top = 215.0
 offset_right = 50.5
 offset_bottom = 248.0
 grow_horizontal = 2
-text = "settings"
+text = "ui_settings"
 
 [node name="levelGraphEditorButton" type="Button" parent="."]
 layout_mode = 1
@@ -47,7 +47,7 @@ offset_top = 269.0
 offset_right = 50.5
 offset_bottom = 302.0
 grow_horizontal = 2
-text = "level_graph_editor"
+text = "ui_level_graph_editor"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -87,7 +87,7 @@ grow_horizontal = 2
 [node name="Label" type="Label" parent="CenterContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 45
-text = "product_name"
+text = "ui_product_name"
 
 [node name="CenterContainer2" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -99,7 +99,7 @@ grow_horizontal = 2
 
 [node name="SloganLabel" type="Label" parent="CenterContainer2"]
 layout_mode = 2
-text = "slogan"
+text = "ui_slogan"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 layout_mode = 1

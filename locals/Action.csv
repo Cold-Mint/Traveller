@@ -1,0 +1,8 @@
+id,zh,en,ja
+action_pick_up,拾捡,Pick up ,拾います
+action_move_left,向左移动,Move left,左に移動します
+action_move_right,向右移动,Move right,右に移動します
+action_jump,跳跃,Jump,飛
+action_throw,抛出,Throw a ,ほうしゅつ
+action_use_item,使用,Use,しよう
+action_jump_down,跳下平台,Jump off platform,踊り場から飛び降ります

@@ -18,4 +18,4 @@ script = ExtResource("1_jiu7r")
 
 [node name="DescribeLabel" type="Label" parent="."]
 layout_mode = 2
-text = "describe"
+text = "ui_describe"

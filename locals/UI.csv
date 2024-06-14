@@ -1,37 +1,27 @@
 id,zh,en,ja
-product_name,异界旅人,A traveler from another world,異界の旅人です
-start_game,开始游戏,Start game,ゲームを始めます
-settings,设置,Settings,備え付け
-pick_up,拾捡,Pick up ,拾います
-move_left,向左移动,Move left,左に移動します
-move_right,向右移动,Move right,右に移動します
-jump,跳跃,Jump,飛
-throw,抛出,Throw a ,ほうしゅつ
-use_item,使用,Use,しよう
-jump_down,跳下平台,Jump off platform,踊り場から飛び降ります
-de,的,"'s",の
-default_player_name,白纸,blankPaper,しらかみ
-item_prompt_debug,ID：{0}\n名称：{1}\n数量：{2}\n最大叠加数量：{3}\n数据类型：{4}\n描述：{5},ID: {0}\nName: {1}\nQuantity: {2}\nMaximum stacking quantity: {3}\nData type: {4}\nDescription：{5},id:{0}\n名称:{1}\nの数は最大{2}\nシナジー数:{3}\nデータタイプ:{4}\n述べ表わす:{5}
-level_graph_editor,关卡图编辑器,Level graph editor,ステージマップエディター
-create_room,创建房间,Create room,部屋を作ります
-close,关闭,Close,閉じます
-name,名称,Name,めいしょう
-describe,描述,Describe,ないよう
-creation,创建,Creation,創建
-default_room_name,房间{0},Room{0},部屋{0}です
-room_template_collection_prompt,房间模板集(传入路径为文件夹，将选择文件夹内的所有子文件),"Room template set (incoming path is folder, all subfiles in folder will be selected)",部屋テンプレートセット(着信経路をフォルダにして、フォルダ内のすべてのサブファイルを選択します。)
-error_specifying_room_template_line,位于{0}错误，文件或文件夹不存在。,"Located at {0} error, file or folder does not exist.",{0}エラーに位置し、ファイルやフォルダが存在しません。
-line_errors_must_start_with_res,位于{0}错误，必须以res://开头。,"Located at {0} error, must start with res://.",{0}エラーに位置し、res://で始めなければなりません。
-open_the_export_directory,打开导出目录,Open the export directory,エクスポートディレクトリを開きます
-save,保存,Save,保留
-filename,文件名,File name,ファイル名
-cancel,取消,Cancel,キャンセル
-load,加载,Load,ろーど
-delete_selected_node,删除选中的节点,Delete selected node,選択されたノードを削除します
-re_create_map,重新创建地图,Re-create map,地図を再作成します
-seed_info,种子：{0},Seed: {0},シード:{0}
-tags,标签,Tags,と呼ぶ
-room_injection_processor,房间注入处理器,Room injection processor,部屋注入処理器
-game_over_title,游戏结束！,Game Over!,ゲームオーバー!
-death_info_describe,死因,death,死因
-restart,重新开始,Restart,ぶり返す
+ui_product_name,异界旅人,A traveler from another world,異界の旅人です
+ui_start_game,开始游戏,Start game,ゲームを始めます
+ui_settings,设置,Settings,備え付け
+ui_level_graph_editor,关卡图编辑器,Level graph editor,ステージマップエディター
+ui_create_room,创建房间,Create room,部屋を作ります
+ui_close,关闭,Close,閉じます
+ui_name,名称,Name,めいしょう
+ui_describe,描述,Describe,ないよう
+ui_creation,创建,Creation,創建
+ui_default_room_name,房间{0},Room{0},部屋{0}です
+ui_room_template_collection_prompt,房间模板集(传入路径为文件夹，将选择文件夹内的所有子文件),"Room template set (incoming path is folder, all subfiles in folder will be selected)",部屋テンプレートセット(着信経路をフォルダにして、フォルダ内のすべてのサブファイルを選択します。)
+ui_error_specifying_room_template_line,位于{0}错误，文件或文件夹不存在。,"Located at {0} error, file or folder does not exist.",{0}エラーに位置し、ファイルやフォルダが存在しません。
+ui_line_errors_must_start_with_res,位于{0}错误，必须以res://开头。,"Located at {0} error, must start with res://.",{0}エラーに位置し、res://で始めなければなりません。
+ui_open_the_export_directory,打开导出目录,Open the export directory,エクスポートディレクトリを開きます
+ui_save,保存,Save,セーブ
+ui_filename,文件名,File name,ファイル名
+ui_cancel,取消,Cancel,キャンセル
+ui_load,加载,Load,ロード
+ui_delete_selected_node,删除选中的节点,Delete selected node,選択されたノードを削除します
+ui_re_create_map,重新创建地图,Re-create map,地図を再作成します
+ui_seed_info,种子：{0},Seed: {0},シード:{0}
+ui_tags,标签,Tags,と呼ぶ
+ui_room_injection_processor,房间注入处理器,Room injection processor,部屋注入処理器
+ui_game_over_title,游戏结束！,Game Over!,ゲームオーバー!
+ui_death_info_describe,死因,death,死因
+ui_restart,重新开始,Restart,ぶり返す

@@ -95,8 +95,11 @@ public partial class MainMenuLoader : UiLoaderTemplate
         CampManager.AddCamp(aborigines);
         _gameScene = (PackedScene)GD.Load("res://scenes/game.tscn");
 
-        //Temp: Register ItemType
-        //临时：注册物品类型
+        //Register ItemTypes from file
+        //从文件注册物品类型
+        ItemTypeManager.RegisterFromFile();
+        //Hardcoded ItemTypes Register
+        //硬编码注册物品类型
         ItemTypeManager.StaticRegister();
     }
 

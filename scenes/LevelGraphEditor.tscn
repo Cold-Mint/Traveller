@@ -32,7 +32,7 @@ offset_left = 11.0
 offset_top = 7.0
 offset_right = 143.0
 offset_bottom = 32.0
-text = "level_graph_editor"
+text = "ui_level_graph_editor"
 
 [node name="CreateOrEditorPanel" type="Panel" parent="."]
 visible = false
@@ -193,27 +193,27 @@ grow_horizontal = 0
 
 [node name="DeleteSelectedNodeButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "delete_selected_node"
+text = "ui_delete_selected_node"
 
 [node name="OpenExportFolderButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "open_the_export_directory"
+text = "ui_open_the_export_directory"
 
 [node name="ShowSavePanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "save"
+text = "ui_save"
 
 [node name="ShowLoadPanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "load"
+text = "ui_load"
 
 [node name="ShowCreateRoomPanelButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "create_room"
+text = "ui_create_room"
 
 [node name="ReturnButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
-text = "close"
+text = "ui_close"
 
 [node name="SaveOrLoadPanel" type="Panel" parent="."]
 visible = false

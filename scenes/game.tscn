@@ -72,7 +72,7 @@ script = ExtResource("5_dis4v")
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-text = "re_create_map"
+text = "ui_re_create_map"
 
 [node name="SeedLabel" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1

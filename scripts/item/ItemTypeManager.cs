@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
-using ColdMint.scripts.item.weapon;
+
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
+
 using Godot;
+
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace ColdMint.scripts.item;
 
@@ -11,26 +16,61 @@ namespace ColdMint.scripts.item;
 /// </summary>
 public static class ItemTypeManager
 {
+    //Use for yaml deserialization
+    private record struct ItemTypeInfo(string Id, string ScenePath, string IconPath, int MaxStackValue) { }
+
+    /// <summary>
+    /// <para>Register items from yaml file</para>
+    /// <para>从文件注册物品</para>
+    /// </summary>
+    public static void RegisterFromFile()
+    {
+        LogCat.Log("start_item_register_from_file");
+
+        // initialize yaml deserializer
+        var deserializer = new DeserializerBuilder()
+                          .WithNamingConvention(UnderscoredNamingConvention.Instance) // convent snake_case
+                          .Build();
+
+        // initialize file dir
+        string itemRegsDirPath = "res://data/itemRegs/";
+        var itemRegsDir = DirAccess.Open(itemRegsDirPath);
+        if (DirAccess.GetOpenError() is not Error.Ok)
+        {
+            LogCat.LogError("error_when_open_item_regs_dir");
+        }
+
+        // traverse the dir, find files to register
+        foreach (var file in itemRegsDir.GetFiles())
+        {
+            if (file is null) continue;
+            LogCat.LogWithFormat("item_register_from_file", file);
+
+            // read file, parse to an IEnumerable of type infos
+            var yamlFile = FileAccess.Open($"{itemRegsDirPath}/{file}", FileAccess.ModeFlags.Read);
+            var yamlString = yamlFile.GetAsText();
+            var typeInfos = deserializer.Deserialize<IEnumerable<ItemTypeInfo>>(yamlString);
+            yamlFile.Close();
+
+            // traverse type infos and register them.
+            foreach (var typeInfo in typeInfos)
+            {
+                LogCat.LogWithFormat("item_register_find_item_in_file", typeInfo.Id);
+                var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
+                var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
+                var itemType = new ItemType(typeInfo.Id,
+                                            () => NodeUtils.InstantiatePackedScene<Packsack>(scene),
+                                            icon, typeInfo.MaxStackValue);
+                Register(itemType);
+            }
+        }
+    }
+
     /// <summary>
     /// <para>Register items here</para>
     /// <para>在这里注册物品</para>
     /// </summary>
-    public static void StaticRegister()
-    {
-        var staffOfTheUndeadScene = ResourceLoader.Load<PackedScene>("res://prefab/weapons/staffOfTheUndead.tscn");
-        var staffOfTheUndeadIcon = ResourceLoader.Load<Texture2D>("res://sprites/weapon/staffOfTheUndead.png");
-        var staffOfTheUndead =
-            new ItemType("staff_of_the_undead",
-                () => NodeUtils.InstantiatePackedScene<ProjectileWeapon>(staffOfTheUndeadScene), staffOfTheUndeadIcon,
-                1);
-        Register(staffOfTheUndead);
-
-        var packsackScene = ResourceLoader.Load<PackedScene>("res://prefab/packsacks/packsack.tscn");
-        var packsackIcon = ResourceLoader.Load<Texture2D>("res://sprites/Player.png");
-        var packsack = new ItemType("packsack", () => NodeUtils.InstantiatePackedScene<Packsack>(packsackScene),
-            packsackIcon, 1);
-        Register(packsack);
-    }
+    public static void StaticRegister() { }
 
     private static Dictionary<string, ItemType> Registry { get; } = [];
     private static Texture2D DefaultTexture { get; } = new PlaceholderTexture2D();
@@ -49,13 +89,18 @@ public static class ItemTypeManager
 
     /// <summary>
     /// <para>Creates a new instance of the item registered to the given id.</para>
-    /// <para>Returns null when the id is not registered.</para>
+    /// <para>创建给定物品id的新物品实例</para>
     /// </summary>
+    /// <returns>
+    /// <para>Returns null when the id is not registered.</para>
+    /// <para>当物品id没有注册时返回null</para>
+    /// </returns>
     public static IItem? NewItem(string id) =>
         Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
 
     /// <summary>
-    /// Get the translated default name of the item type for the given id
+    /// <para>Get the translated default name of the item type for the given id</para>
+    /// <para>获取指定物品id翻译后的物品名</para>
     /// </summary>
     /// <returns>
     /// Translated default name of the item id if it exists. Else, return the id itself
@@ -63,7 +108,8 @@ public static class ItemTypeManager
     public static string DefaultNameOf(string id) => TranslationServerUtils.Translate($"item_{id}") ?? id;
 
     /// <summary>
-    /// Get the translated default description of the item type for the given id
+    /// <para>Get the translated default description of the item type for the given id</para>
+    /// <para>获取指定物品id翻译后的描述</para>
     /// </summary>
     /// <returns>
     /// Translated default description of the item id if it exists. Else, return null
@@ -71,10 +117,12 @@ public static class ItemTypeManager
     public static string? DefaultDescriptionOf(string id) => TranslationServerUtils.Translate($"item_{id}_desc");
 
     /// <summary>
-    /// Get the default icon of the item type for the given id
+    /// <para>Get the default icon of the item type for the given id</para>
+    /// <para>获取指定物品id的默认图标</para>
     /// </summary>
     /// <returns>
-    /// Translated default icon of the item id if it exists. Else, return a placeholder
+    /// <para>Default icon of the item id if it exists. Else, return a <see cref="PlaceholderTexture2D"/></para>
+    /// <para>当前物品id的默认图标，若无则返回一个<see cref="PlaceholderTexture2D"/></para>
     /// </returns>
     public static Texture2D DefaultIconOf(string id) =>
         Registry.TryGetValue(id, out var itemType)

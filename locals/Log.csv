@@ -1,28 +1,33 @@
 id,zh,en,ja
-map_generator_is_running,地图生成器正在运行中，请稍后重试。,"Map Generator is running, please try again later.",マップ生成器が動作中ですので、後ほどリトライしてください。
-missing_parameters,缺少参数。,Missing parameters.,パラメータが不足しています。
-room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be an instance of Node2D.,ルートノードはNode2Dでなければなりません。
-width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.,部屋の溝の幅または高さは1でなければなりません。
-connected_room_timeout,连接房间超时。,Timeout when connecting rooms.,接続部屋はタイムアウトです。
-projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
-map_generator_missing_parameters,地图生成器缺少参数。,Map generator missing parameters.,マップジェネレータが不足しています。
-map_generator_attempts_to_parse_empty_layout_diagrams,地图生成器尝试解析空的布局图。,Map generator attempts to parse empty layout diagrams.,マップジェネレータは空のレイアウト図を解析しようとしています。
-map_generator_has_no_starting_room_data,地图生成器没有起点房间数据。,Map generator has no starting room data.,マップ生成器に起点部屋データはありません。
-room_placement_strategy_terminates_map_generation,房间的放置策略终止了地图生成。,The room placement strategy terminates map generation.,部屋の配置ポリシーはマップ作成を終了します。
-start_room_placement_information_returns_empty,起始房间放置信息返回空。,Start room placement information returns empty.,スタートルーム放置情報は空に戻ります。
-start_room_placement_failed,起始房间放置失败。,Start room placement failed.,スタートルーム放置失敗です。
-room_data_missing,房间数据缺失。,Missing room data.,部屋データが欠落しています。
-failed_to_calculate_the_room_location,计算房间{0}位置时失败。,Failed to calculate the location of room {0}.,部屋{0}の位置を計算するのに失敗します。
-place_existing_rooms,放置已存在的房间{0}。,Place existing rooms {0}.,既存の部屋を置きます{0}。
-room_placement_failed,房间{0}放置失败。,Room {0} placement failed.,部屋{0}の放置に失敗します。
-room_placement_information,房间{0}已被成功放置在{1}。,Room {0} has been successfully placed in {1}.,部屋{0}を{1}に配置しました。
-room_injection_processor_does_not_exist,找不到房间注入处理器{0}，请检测是否在MapGenerator内注册。,"Room injection processor {0} not found, check to see if it is registered in MapGenerator.",部屋注入プロセッサ{0}が見つかりません、MapGenerator内に登録されているかどうか検出してください。
-time_range_debug,当前时间：{0}起始时间：{1}，结束时间{2}，是否在范围内{3},"Current time: {0} Start time: {1}, end time {2}, whether in range {3}",現在時間:{0}開始時間:{1}終了時間{2}範囲内かどうか{3}です
-player_spawn_debug,玩家{0}生成在{1}。,"Player {0} spawned at {1}.",プレイヤー{0}が{1}に生成されました。
-player_packed_scene_not_exist,玩家预制场景不存在。,Player packed scene does not exist.,プレイヤーのパックされたシーンが存在しません。
-exit_the_room_debug,节点{0}退出房间{1}。,"Node {0} exits room {1}.",ノード{0}が部屋{1}を退出します。
-enter_the_room_debug,节点{0}进入房间{1}。,"Node {0} enters room {1}.",ノード{0}が部屋{1}に入ります。
-death_info,生物{0}被{1}击败。,"Creature {0} was defeated by {1}.",生物{0}が{1}によって打ち負かされました。
-loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Loot list with ID {0}, no entry specified.",ID{0}の戦利品テーブルは、エントリ指定されていません。
-not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
-loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
+log_map_generator_is_running,地图生成器正在运行中，请稍后重试。,"Map Generator is running, please try again later.",マップ生成器が動作中ですので、後ほどリトライしてください。
+log_missing_parameters,缺少参数。,Missing parameters.,パラメータが不足しています。
+log_room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be an instance of Node2D.,ルートノードはNode2Dでなければなりません。
+log_width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.,部屋の溝の幅または高さは1でなければなりません。
+log_connected_room_timeout,连接房间超时。,Timeout when connecting rooms.,接続部屋はタイムアウトです。
+log_projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
+log_map_generator_missing_parameters,地图生成器缺少参数。,Map generator missing parameters.,マップジェネレータが不足しています。
+log_map_generator_attempts_to_parse_empty_layout_diagrams,地图生成器尝试解析空的布局图。,Map generator attempts to parse empty layout diagrams.,マップジェネレータは空のレイアウト図を解析しようとしています。
+log_map_generator_has_no_starting_room_data,地图生成器没有起点房间数据。,Map generator has no starting room data.,マップ生成器に起点部屋データはありません。
+log_room_placement_strategy_terminates_map_generation,房间的放置策略终止了地图生成。,The room placement strategy terminates map generation.,部屋の配置ポリシーはマップ作成を終了します。
+log_start_room_placement_information_returns_empty,起始房间放置信息返回空。,Start room placement information returns empty.,スタートルーム放置情報は空に戻ります。
+log_start_room_placement_failed,起始房间放置失败。,Start room placement failed.,スタートルーム放置失敗です。
+log_room_data_missing,房间数据缺失。,Missing room data.,部屋データが欠落しています。
+log_failed_to_calculate_the_room_location,计算房间{0}位置时失败。,Failed to calculate the location of room {0}.,部屋{0}の位置を計算するのに失敗します。
+log_place_existing_rooms,放置已存在的房间{0}。,Place existing rooms {0}.,既存の部屋を置きます{0}。
+log_room_placement_failed,房间{0}放置失败。,Room {0} placement failed.,部屋{0}の放置に失敗します。
+log_room_placement_information,房间{0}已被成功放置在{1}。,Room {0} has been successfully placed in {1}.,部屋{0}を{1}に配置しました。
+log_room_injection_processor_does_not_exist,找不到房间注入处理器{0}，请检测是否在MapGenerator内注册。,"Room injection processor {0} not found, check to see if it is registered in MapGenerator.",部屋注入プロセッサ{0}が見つかりません、MapGenerator内に登録されているかどうか検出してください。
+log_time_range_debug,当前时间：{0}起始时间：{1}，结束时间{2}，是否在范围内{3},"Current time: {0} Start time: {1}, end time {2}, whether in range {3}",現在時間:{0}開始時間:{1}終了時間{2}範囲内かどうか{3}です
+log_player_spawn_debug,玩家{0}生成在{1}。,"Player {0} spawned at {1}.",プレイヤー{0}が{1}に生成されました。
+log_player_packed_scene_not_exist,玩家预制场景不存在。,Player packed scene does not exist.,プレイヤーのパックされたシーンが存在しません。
+log_exit_the_room_debug,节点{0}退出房间{1}。,"Node {0} exits room {1}.",ノード{0}が部屋{1}を退出します。
+log_enter_the_room_debug,节点{0}进入房间{1}。,"Node {0} enters room {1}.",ノード{0}が部屋{1}に入ります。
+log_death_info,生物{0}被{1}击败。,"Creature {0} was defeated by {1}.",生物{0}が{1}によって打ち負かされました。
+log_loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Loot list with ID {0}, no entry specified.",ID{0}の戦利品テーブルは、エントリ指定されていません。
+log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
+log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
+
+log_start_item_register_from_file,开始从文件注册物品信息,Start registering item information from files,アイテム情報をファイルから登録開始
+log_item_register_from_file,从文件{0}中注册物品信息,Registering item information from file {0},ファイル{0}からアイテム情報を登録する
+log_item_register_find_item_in_file,注册发现的物品{0},Register discovered item {0},見つかったアイテム{0}を登録
+log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误,Error when opening itemRegs dir,アイテム情報カタログを開こうとしてエラーが発生しました。
