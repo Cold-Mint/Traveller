@@ -28,6 +28,6 @@ log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的�
 log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
 
 log_start_item_register_from_file,开始从文件注册物品信息,Start registering item information from files,アイテム情報をファイルから登録開始
-log_item_register_from_file,从文件{0}中注册物品信息,Registering item information from file {0},ファイル{0}からアイテム情報を登録する
-log_item_register_find_item_in_file,注册发现的物品{0},Register discovered item {0},見つかったアイテム{0}を登録
+log_found_files,找到{0}个文件,Found {0} files,{0}ファイルが見つかりました
+log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types in files,ファイルから{0}個のアイテム・タイプが見つかった
 log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误,Error when opening itemRegs dir,アイテム情報カタログを開こうとしてエラーが発生しました。

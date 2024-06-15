@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
@@ -36,32 +38,43 @@ public static class ItemTypeRegister
             LogCat.LogError("error_when_open_item_regs_dir");
         }
 
-        // traverse the dir, find files to register
-        foreach (var file in itemRegsDir.GetFiles())
+        // find files
+        var files = itemRegsDir.GetFiles();
+        LogCat.LogWithFormat("found_files", files.Length);
+
+        // parse files to item type infos
+        IEnumerable<ItemTypeInfo> typeInfos =
+            files.SelectMany(file => ParseFile(deserializer, $"{itemRegsDirPath}/{file}")).ToList();
+        LogCat.LogWithFormat("found_item_types", typeInfos.Count());
+
+        // traverse type infos and register them.
+        foreach (var typeInfo in typeInfos)
         {
-            if (file is null) continue;
-            LogCat.LogWithFormat("item_register_from_file", file);
-
-            // read file, parse to an IEnumerable of type infos
-            var yamlFile = FileAccess.Open($"{itemRegsDirPath}/{file}", FileAccess.ModeFlags.Read);
-            var yamlString = yamlFile.GetAsText();
-            var typeInfos = deserializer.Deserialize<IEnumerable<ItemTypeInfo>>(yamlString);
-            yamlFile.Close();
-
-            // traverse type infos and register them.
-            foreach (var typeInfo in typeInfos)
-            {
-                LogCat.LogWithFormat("item_register_find_item_in_file", typeInfo.Id);
-                var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
-                var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
-                var itemType = new ItemType(typeInfo.Id,
-                                            () => NodeUtils.InstantiatePackedScene<Packsack>(scene),
-                                            icon, typeInfo.MaxStackValue);
-                ItemTypeManager.Register(itemType);
-            }
+            RegisterTypeInfo(typeInfo);
         }
     }
-    
+
+    private static IList<ItemTypeInfo> ParseFile(IDeserializer deserializer, string filePath)
+    {
+        string itemRegsDirPath;
+        string file;
+        var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+        var yamlString = yamlFile.GetAsText();
+        var typeInfos = deserializer.Deserialize<IList<ItemTypeInfo>>(yamlString);
+        yamlFile.Close();
+        return typeInfos;
+    }
+
+    private static void RegisterTypeInfo(ItemTypeInfo typeInfo)
+    {
+        var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
+        var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
+        var itemType = new ItemType(typeInfo.Id,
+                                    () => NodeUtils.InstantiatePackedScene<Packsack>(scene),
+                                    icon, typeInfo.MaxStackValue);
+        ItemTypeManager.Register(itemType);
+    }
+
     //Use for yaml deserialization
     private record struct ItemTypeInfo(string Id, string ScenePath, string IconPath, int MaxStackValue) { }
 }
