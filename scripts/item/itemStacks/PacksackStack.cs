@@ -45,7 +45,7 @@ public class PacksackStack(Packsack packsack) : IItemStack
 
     public IItem? GetItem()
     {
-        return Empty ? packsack : null;
+        return Empty ? null : packsack;
     }
 
     public IItem? PickItem()
