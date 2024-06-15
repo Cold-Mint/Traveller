@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using ColdMint.scripts.debug;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.weapon;
+
 using Godot;
 
 
@@ -69,7 +71,7 @@ public static class NodeUtils
     /// </param>
     /// <returns></returns>
     public static Node2D? GetTheNearestNode(Node2D origin, Node[] array, HashSet<Node>? exclude = null,
-        bool excludeInvisibleNodes = true)
+                                            bool excludeInvisibleNodes = true)
     {
         var closestDistance = float.MaxValue;
         Node2D? closestNode = null;
@@ -125,10 +127,11 @@ public static class NodeUtils
             return GameSceneNodeHolder.WeaponContainer;
         }
 
-        if (GameSceneNodeHolder.PacksackContainer!= null && childNode is Packsack)
+        if (GameSceneNodeHolder.PacksackContainer != null && childNode is Packsack)
         {
             return GameSceneNodeHolder.PacksackContainer;
         }
+
         return defaultParentNode;
     }
 
@@ -153,37 +156,68 @@ public static class NodeUtils
     /// <para>默认父节点，如果传入null，则不会将实例化后的节点放入父节点内。您需要手动放置，这对于延迟设置父节点相当有用。</para>
     /// </param>
     /// <returns></returns>
-    public static T? InstantiatePackedScene<T>(PackedScene packedScene, Node? defaultParentNode = null,
-        bool assignedByRootNodeType = true) where T : Node
+    /// <seealso cref="InstantiatePackedScene{T}"/>
+    public static Node InstantiatePackedScene(PackedScene packedScene, Node? defaultParentNode = null,
+                                              bool assignedByRootNodeType = true)
     {
-        try
+        var instantiateNode = packedScene.Instantiate();
+        //An attempt is made to place an instantiated node under a parent node only after the default parent node is set.
+        //只有设定了默认父节点后才会尝试将实例化的节点放置到父节点下。
+        if (defaultParentNode != null)
         {
-            var instantiateNode = packedScene.Instantiate<T>();
-            //An attempt is made to place an instantiated node under a husband node only after the default parent node is set.
-            //只有设定了默认父节点后才会尝试将实例化的节点放置到夫节点下。
-            if (defaultParentNode != null)
+            if (assignedByRootNodeType)
             {
-                if (assignedByRootNodeType)
-                {
-                    var containerNode = FindContainerNode(instantiateNode, defaultParentNode);
-                    containerNode.AddChild(instantiateNode);
-                }
-                else
-                {
-                    //If you do not need to assign by type, place it under the default parent node.
-                    //如果不需要按照类型分配，那么将其放到默认父节点下。
-                    defaultParentNode.AddChild(instantiateNode);
-                }
+                var containerNode = FindContainerNode(instantiateNode, defaultParentNode);
+                containerNode.AddChild(instantiateNode);
             }
+            else
+            {
+                //If you do not need to assign by type, place it under the default parent node.
+                //如果不需要按照类型分配，那么将其放到默认父节点下。
+                defaultParentNode.AddChild(instantiateNode);
+            }
+        }
 
-            return instantiateNode;
-        }
-        catch (InvalidCastException e)
-        {
-            //null is returned if the type conversion fails.
-            //在类型转换失败时，返回null。
-            LogCat.WhenCaughtException(e);
-            return null;
-        }
+        return instantiateNode;
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Generic version of <see cref="InstantiatePackedScene"/> that transforms the created node to <see cref="T"/> type,
+    ///     if the created node can't be transformed to the specified type, return null and release it.
+    /// </para>
+    /// <para><see cref="InstantiatePackedScene"/>的泛型版本，转换创建的节点至<see cref="T"/>类型，如果创建的节点无法转型至指定的类型，返回null并释放它</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>This method is recommended in place of all packedScene.Instantiate&lt;T&gt;() calls within a project, using it to instantiate a scene, optionally assigned to a container that matches the type of the root node.</para>
+    ///<para>推荐使用此方法代替项目内所有的packedScene.Instantiate&lt;T&gt;()调用，使用此方法实例化场景，可选择将其分配到与根节点类型相匹配的容器内。</para>
+    /// </remarks>
+    /// <param name="packedScene">
+    ///<para>packedScene</para>
+    ///<para>打包的场景</para>
+    /// </param>
+    /// <param name="assignedByRootNodeType">
+    ///<para>Enabled by default, whether to place a node into a container node that matches the type of the root node after it is instantiated. If the assignment fails by type, it is placed under the default parent node.</para>
+    ///<para>默认启用，实例化节点后，是否将其放置到与根节点类型相匹配的容器节点内。如果按照类型分配失败，则放置在默认父节点下。</para>
+    /// </param>
+    /// <param name="defaultParentNode">
+    /// <para>Default parent. If null is passed, the instantiated node is not put into the parent. You need to place it manually, which is quite useful for delaying setting the parent node.</para>
+    /// <para>默认父节点，如果传入null，则不会将实例化后的节点放入父节点内。您需要手动放置，这对于延迟设置父节点相当有用。</para>
+    /// </param>
+    /// <returns>
+    /// <para>If new node cannot cast to given type, return null</para>
+    /// <para>如果创建的节点无法转型至指定的类型，返回null</para>
+    /// </returns>
+    public static T? InstantiatePackedScene<T>(PackedScene packedScene, Node? defaultParentNode = null,
+                                               bool assignedByRootNodeType = true)
+        where T : class
+    {
+        var node = InstantiatePackedScene(packedScene, defaultParentNode, assignedByRootNodeType);
+        // 检查类型转化，成功返回结果
+        if (node is T result) return result;
+        //如果转型失败，释放所创建的节点
+        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to",node,nameof(T));
+        node.QueueFree();
+        return null;
     }
 }

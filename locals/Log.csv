@@ -27,6 +27,8 @@ log_loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Lo
 log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
 log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
 
+log_warning_node_cannot_cast_to,创建的物品{0}无法被转型为类型{1},Created items {0} cannot be cast into type {1},作成されたアイテム {0} をタイプ {1} にキャストすることはできません。
+
 log_start_item_register_from_file,开始从文件注册物品信息,Start registering item information from files,アイテム情報をファイルから登録開始
 log_found_files,找到{0}个文件,Found {0} files,{0}ファイルが見つかりました
 log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types in files,ファイルから{0}個のアイテム・タイプが見つかった
