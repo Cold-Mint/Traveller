@@ -53,7 +53,7 @@ offset_left = 10.0
 offset_top = 13.0
 offset_right = 97.0
 offset_bottom = 38.0
-text = "create_room"
+text = "ui_create_room"
 
 [node name="Label3" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -61,7 +61,7 @@ offset_left = 12.0
 offset_top = 106.0
 offset_right = 72.0
 offset_bottom = 131.0
-text = "describe"
+text = "ui_describe"
 
 [node name="Label4" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -69,7 +69,7 @@ offset_left = 15.0
 offset_top = 152.0
 offset_right = 75.0
 offset_bottom = 177.0
-text = "room_template_collection_prompt"
+text = "ui_room_template_collection_prompt"
 
 [node name="RoomTemplateTipsLabel" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -109,7 +109,7 @@ offset_top = 6.0
 offset_right = -11.0
 offset_bottom = 39.0
 grow_horizontal = 0
-text = "close"
+text = "ui_close"
 
 [node name="Label2" type="Label" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -117,7 +117,7 @@ offset_left = 13.0
 offset_top = 60.0
 offset_right = 48.0
 offset_bottom = 85.0
-text = "name"
+text = "ui_name"
 
 [node name="CreateRoomButton" type="Button" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -132,7 +132,7 @@ offset_right = -13.0
 offset_bottom = -13.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "creation"
+text = "ui_creation"
 
 [node name="RoomTemplateCollectionTextEdit" type="TextEdit" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -150,7 +150,7 @@ offset_left = 16.0
 offset_top = 289.0
 offset_right = 56.0
 offset_bottom = 314.0
-text = "tags"
+text = "ui_tags"
 
 [node name="TagLineEdit" type="LineEdit" parent="CreateOrEditorPanel"]
 layout_mode = 1
@@ -168,7 +168,7 @@ offset_left = 14.0
 offset_top = 368.0
 offset_right = 283.0
 offset_bottom = 393.0
-text = "room_injection_processor"
+text = "ui_room_injection_processor"
 
 [node name="RoomInjectionProcessorDataTextEdit" type="TextEdit" parent="CreateOrEditorPanel"]
 layout_mode = 1
