@@ -67,7 +67,7 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
     {
         if(Empty) return null;
         Quantity--;
-        var result = innerItem.CopyInstance();
+        var result = innerItem.CloneInstance();
         if(Empty) innerItem.Destroy();
         return result;
     }
@@ -75,7 +75,7 @@ public class CommonItemStack(ICommonItem innerItem) : IItemStack
     public IItemStack? PickItems(int value)
     {
         if (Empty) return null;
-        var result = new CommonItemStack(innerItem.CopyInstance());
+        var result = new CommonItemStack(innerItem.CloneInstance());
         var n = Math.Min(Quantity, value);
         if (n < 0)
         {

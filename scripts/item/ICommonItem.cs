@@ -16,9 +16,9 @@ namespace ColdMint.scripts.item;
 public interface ICommonItem : IItem
 {
     /// <summary>
-    /// <para>Method to copy an instance same with self. Will be used to pick out item instance from a <see cref="CommonItemStack"/></para>
+    /// <para>Method to clone an instance same with self. Will be used to pick out item instance from a <see cref="CommonItemStack"/></para>
     /// <para>复制与自身相同的实例的方法。将用于从 <see cref="CommonItemStack"/> 中拿取新的物品实例。</para>
     /// </summary>
     /// <returns></returns>
-    ICommonItem CopyInstance();
+    ICommonItem CloneInstance();
 }

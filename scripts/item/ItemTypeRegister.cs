@@ -56,25 +56,88 @@ public static class ItemTypeRegister
 
     private static IList<ItemTypeInfo> ParseFile(IDeserializer deserializer, string filePath)
     {
-        string itemRegsDirPath;
-        string file;
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+        //Read & deserialize
         var yamlString = yamlFile.GetAsText();
         var typeInfos = deserializer.Deserialize<IList<ItemTypeInfo>>(yamlString);
+        
         yamlFile.Close();
         return typeInfos;
     }
 
     private static void RegisterTypeInfo(ItemTypeInfo typeInfo)
     {
+        //Load scene and icon
         var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
         var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
+        
+        //Create init delegate
+        Func<IItem?> newItemFunc;
+        if (typeInfo.CustomArgs is null or [])
+        {
+            newItemFunc = () => NodeUtils.InstantiatePackedScene<IItem>(scene);
+        }
+        else
+        {
+            Action<Node?>? setArgs = null;
+            foreach (var arg in typeInfo.CustomArgs)
+            {
+                setArgs +=
+                    node => node?.SetDeferred(arg.Name, arg.ParseValue());
+            }
+
+            newItemFunc = () =>
+            {
+                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
+                setArgs?.Invoke(newItem as Node);
+                return newItem;
+            };
+        }
+
+        //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
-                                    () => NodeUtils.InstantiatePackedScene<Packsack>(scene),
+                                    newItemFunc,
                                     icon, typeInfo.MaxStackValue);
         ItemTypeManager.Register(itemType);
     }
 
     //Use for yaml deserialization
-    private record struct ItemTypeInfo(string Id, string ScenePath, string IconPath, int MaxStackValue) { }
+    private record struct ItemTypeInfo(
+        string Id, string ScenePath, string IconPath, int MaxStackValue,
+        IList<CustomArg>? CustomArgs) { }
+
+    private readonly record struct CustomArg(string Name, CustomArgType Type, string Value)
+    {
+        public Variant ParseValue() =>
+            Type switch
+            {
+                CustomArgType.String  => Value,
+                CustomArgType.Int     => int.Parse(Value),
+                CustomArgType.Float   => double.Parse(Value),
+                CustomArgType.Vector2 => ParseVector2FromString(Value),
+                CustomArgType.Texture => ResourceLoader.Load<Texture2D>("res://sprites/" + Value),
+                _                     => throw new ArgumentOutOfRangeException($"Unknown Arg Type {Type}")
+            };
+
+        private Vector2 ParseVector2FromString(string s)
+        {
+            var ss = s.Split(',');
+            if (ss.Length != 2)
+            {
+                LogCat.LogErrorWithFormat("wrong_custom_arg", "Vector2", s);
+                return Vector2.Zero;
+            }
+
+            return new Vector2(float.Parse(ss[0]), float.Parse(ss[1]));
+        }
+    }
+
+    private enum CustomArgType
+    {
+        String,
+        Int,
+        Float,
+        Vector2,
+        Texture,
+    }
 }
