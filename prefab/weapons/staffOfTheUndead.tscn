@@ -16,6 +16,7 @@ collision_mask = 34
 script = ExtResource("1_w8hhv")
 ProjectileScenes = [ExtResource("2_34250")]
 Id = "staff_of_the_undead"
+FiringIntervalAsMillisecond = 300
 metadata/Projectiles = PackedStringArray("res://prefab/projectile/curseOfTheUndead.tscn")
 
 [node name="DamageArea2D" type="Area2D" parent="."]
