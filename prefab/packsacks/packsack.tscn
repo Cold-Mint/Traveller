@@ -1,20 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://cn10fimoem04m"]
+[gd_scene load_steps=5 format=3 uid="uid://cn10fimoem04m"]
 
 [ext_resource type="Script" path="res://scripts/item/Packsack.cs" id="1_slakl"]
-[ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_e1ale"]
+[ext_resource type="Texture2D" uid="uid://dvx10dfjctn7t" path="res://sprites/packsack.png" id="2_40jca"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_brthl"]
+size = Vector2(21, 29)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqyue"]
-size = Vector2(41, 57)
+size = Vector2(21, 29)
 
 [node name="RigidBody2D" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
 Id = "packsack"
+_minContactInjury = null
+_maxContactInjury = null
 
-[node name="Player" type="Sprite2D" parent="."]
-texture = ExtResource("2_e1ale")
+[node name="DamageArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 102
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
+position = Vector2(-2.5, 1.5)
+shape = SubResource("RectangleShape2D_brthl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 3.5)
+position = Vector2(-2.5, 1.5)
 shape = SubResource("RectangleShape2D_xqyue")
+
+[node name="Packsack" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_40jca")

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
-
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -193,7 +191,10 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>Match the first item slot that satisfies the predicate</para>
     /// <para>匹配首个拥有满足指定条件的物品槽</para>
     /// </summary>
-    /// <param name="predicate"></param>
+    /// <param name="predicate">
+    ///<para>predicate</para>
+    ///<para>谓语</para>
+    /// </param>
     /// <returns>
     /// <para>Return null if there is no slot satisfies the predicate</para>
     /// <para>若没有满足条件的槽位，返回null</para>
@@ -210,7 +211,6 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>IEnumerable for the item slot matched to, will be empty if there's no slot satisfies the predicate</para>
     /// <para>包含匹配到的槽位的IEnumerable，当没有满足条件的槽位时为空</para>
     /// </returns>
-    /// <seealso cref="Match(Func{IItemStack?,bool})"/>
     IEnumerable<ItemSlotNode> MatchAll(Func<ItemSlotNode, bool> predicate);
 
 

@@ -6,6 +6,7 @@
 [node name="ItemSlot" type="MarginContainer"]
 offset_right = 38.0
 offset_bottom = 38.0
+size_flags_vertical = 3
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
@@ -16,16 +17,18 @@ script = ExtResource("1_fbwot")
 layout_mode = 2
 texture = ExtResource("1_y2wyt")
 
-[node name="CenterContainer" type="CenterContainer" parent="BackgroundTexture"]
-layout_mode = 2
-offset_right = 160.0
-offset_bottom = 160.0
+[node name="IconTextureRect" type="TextureRect" parent="BackgroundTexture"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.2, 0.2)
-
-[node name="IconTextureRect" type="TextureRect" parent="BackgroundTexture/CenterContainer"]
-layout_mode = 2
+expand_mode = 1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

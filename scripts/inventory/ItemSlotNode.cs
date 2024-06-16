@@ -12,7 +12,6 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ItemSlotNode : MarginContainer
 {
-    //private IItem? _item;
     private IItemStack? _itemStack;
     private TextureRect? _backgroundTextureRect;
     private TextureRect? _iconTextureRect;
@@ -328,7 +327,7 @@ public partial class ItemSlotNode : MarginContainer
         _backgroundTextureWhenSelect = GD.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
         _backgroundTextureRect =
             GetNode<TextureRect>("BackgroundTexture");
-        _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/CenterContainer/IconTextureRect");
+        _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/IconTextureRect");
         _quantityLabel = GetNode<Label>("Control/QuantityLabel");
         _control = GetNode<Control>("Control");
         _quantityLabel.Hide();

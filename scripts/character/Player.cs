@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.item;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.item.weapon;
-
+using ColdMint.scripts.pickable;
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -24,7 +24,7 @@ public partial class Player : CharacterTemplate
 
     //Empty object projectile
     //空的物品抛射线
-    private readonly Vector2[] _emptyVector2Array = new[] { Vector2.Zero };
+    private readonly Vector2[] _emptyVector2Array = [Vector2.Zero];
 
     //抛物线
     private Line2D? _parabola;
@@ -337,9 +337,9 @@ public partial class Player : CharacterTemplate
         base.Flip();
         //If there is a weapon, flip it too
         //如果有武器的话，也要翻转
-        if (CurrentItem is WeaponTemplate weapon)
+        if (CurrentItem is PickAbleTemplate pickAbleTemplate)
         {
-            weapon.Flip(FacingLeft);
+            pickAbleTemplate.Flip(FacingLeft);
         }
     }
 
@@ -408,16 +408,16 @@ public partial class Player : CharacterTemplate
                                            : new Vector2(0, -PromptTextDistance);
                 _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
                 var label = _floatLabel.GetNode<Label>("Label");
-                if (node is WeaponTemplate weapon)
+                if (node is PickAbleTemplate pickAbleTemplate)
                 {
                     var stringBuilder = new StringBuilder();
-                    if (weapon.Owner is CharacterTemplate characterTemplate)
+                    if (pickAbleTemplate.Owner is CharacterTemplate characterTemplate)
                     {
                         stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
                         stringBuilder.Append(TranslationServerUtils.Translate("de"));
                     }
 
-                    stringBuilder.Append(TranslationServerUtils.Translate(weapon.Name));
+                    stringBuilder.Append(TranslationServerUtils.Translate(pickAbleTemplate.Name));
                     label.Text = stringBuilder.ToString();
                 }
             }

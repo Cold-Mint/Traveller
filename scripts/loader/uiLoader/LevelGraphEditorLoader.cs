@@ -36,6 +36,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private PackedScene? _roomNodeScene;
 
     private readonly List<Node> _selectedNodes = new();
+    private PackedScene? _mainMenu;
 
     /// <summary>
     /// <para>Displays the time to enter the suggestion</para>
@@ -59,7 +60,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void InitializeData()
     {
         base.InitializeData();
-        _roomNodeScene = (PackedScene)GD.Load("res://prefab/ui/RoomNode.tscn");
+        _mainMenu = GD.Load<PackedScene>("res://scenes/mainMenu.tscn");
+        _roomNodeScene = GD.Load<PackedScene>("res://prefab/ui/RoomNode.tscn");
         _defaultRoomName = TranslationServerUtils.Translate("ui_default_room_name");
         var folder = Config.GetLevelGraphExportDirectory();
         if (!Directory.Exists(folder))
@@ -310,7 +312,11 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         {
             _nodeBinding.ReturnButton.Pressed += () =>
             {
-                GetTree().ChangeSceneToPacked((PackedScene)GD.Load("res://scenes/mainMenu.tscn"));
+                if (_mainMenu == null)
+                {
+                    return;
+                }
+                GetTree().ChangeSceneToPacked(_mainMenu);
             };
         }
 

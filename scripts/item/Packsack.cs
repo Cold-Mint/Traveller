@@ -1,6 +1,6 @@
 ﻿using ColdMint.scripts.inventory;
-using ColdMint.scripts.item.itemStacks;
-
+using ColdMint.scripts.pickable;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.item;
@@ -9,22 +9,12 @@ namespace ColdMint.scripts.item;
 /// <para>packsack</para>
 /// <para>背包</para>
 /// </summary>
-public partial class Packsack : RigidBody2D, IItem
+public partial class Packsack : PickAbleTemplate
 {
-    [Export] public string Id { get; protected set; } = "place_holder_id";
+    private PackedScene? _packedScene;
+    private PacksackUi? _packsackUi;
 
-    protected Texture2D? UniqueIcon { get; set; }
-    public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
-
-    protected string? UniqueName { get; set; }
-    public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
-
-    protected string? UniqueDescription { get; set; }
-    public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
-
-    public void Use(Node2D? owner, Vector2 targetGlobalPosition) { }
-
-    public void Destroy()
+    public override void Destroy()
     {
         if (ItemContainer == null) return;
         foreach (var itemSlot in ItemContainer)
@@ -35,13 +25,18 @@ public partial class Packsack : RigidBody2D, IItem
         QueueFree();
     }
 
-    public bool CanStackWith(IItem item) => false;
-
-    public IItemStack? SpecialStack()
+    public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
-        return new PacksackStack(this);
+        if (_packedScene == null)
+        {
+            return;
+        }
+        if (_packsackUi == null)
+        {
+            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene,this);
+        }
+        _packsackUi?.Show();
     }
-
 
     public IItemContainer? ItemContainer { get; private set; }
 
@@ -49,8 +44,7 @@ public partial class Packsack : RigidBody2D, IItem
     {
         base._Ready();
         ItemContainer = new UniversalItemContainer();
-
-        //Test: Add one ItemSlot for pack
-        ItemContainer.AddItemSlot(this);
+        _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
+        
     }
 }
