@@ -18,6 +18,12 @@ namespace ColdMint.scripts.item;
 public static class ItemTypeRegister
 {
     /// <summary>
+    /// <para>Register items here</para>
+    /// <para>在这里注册物品</para>
+    /// </summary>
+    public static void StaticRegister() { }
+    
+    /// <summary>
     /// <para>Register items from yaml file</para>
     /// <para>从文件注册物品</para>
     /// </summary>

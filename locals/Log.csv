@@ -23,9 +23,11 @@ log_player_packed_scene_not_exist,玩家预制场景不存在。,Player packed s
 log_exit_the_room_debug,节点{0}退出房间{1}。,"Node {0} exits room {1}.",ノード{0}が部屋{1}を退出します。
 log_enter_the_room_debug,节点{0}进入房间{1}。,"Node {0} enters room {1}.",ノード{0}が部屋{1}に入ります。
 log_death_info,生物{0}被{1}击败。,"Creature {0} was defeated by {1}.",生物{0}が{1}によって打ち負かされました。
+
 log_loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Loot list with ID {0}, no entry specified.",ID{0}の戦利品テーブルは、エントリ指定されていません。
 log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
 log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
+log_loot_data_add,生成战利品{0},Add loot {0},戦利品{0}を生成する
 
 log_warning_node_cannot_cast_to,创建的物品{0}无法被转型为类型{1},Created items {0} cannot be cast into type {1},作成されたアイテム {0} をタイプ {1} にキャストすることはできません。
 

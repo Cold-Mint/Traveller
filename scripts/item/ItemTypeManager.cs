@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 
 using Godot;
-
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace ColdMint.scripts.item;
 
@@ -16,12 +12,6 @@ namespace ColdMint.scripts.item;
 /// </summary>
 public static class ItemTypeManager
 {
-    /// <summary>
-    /// <para>Register items here</para>
-    /// <para>在这里注册物品</para>
-    /// </summary>
-    public static void StaticRegister() { }
-
     private static Dictionary<string, ItemType> Registry { get; } = [];
     private static Texture2D DefaultTexture { get; } = new PlaceholderTexture2D();
 
@@ -45,8 +35,65 @@ public static class ItemTypeManager
     /// <para>Returns null when the id is not registered.</para>
     /// <para>当物品id没有注册时返回null</para>
     /// </returns>
+    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
     public static IItem? NewItem(string id) =>
         Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
+
+    /// <summary>
+    /// <para>Creates new instances in given amount of the item registered to the given id.</para>
+    /// <para>创建给定数量的注册到给定 id 的物品的新实例。</para>
+    /// </summary>
+    /// <returns></returns>
+    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
+    public static IList<IItem> NewItems(string id, int amount)
+    {
+        IList<IItem> result = [];
+        for (int i = 0; i < amount; i++)
+        {
+            if (NewItem(id) is { } item) result.Add(item);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// <para>Creates new instance of the item registered to the given id, and put it into given position in both node tree and 2D space</para>
+    /// <para>创建以给定 id 注册的物品的新实例，并将其放到节点树和二维空间中的给定位置</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="parent"></param>
+    /// <param name="position">
+    /// <para>Position in global coordinate</para>
+    /// <para>全局坐标中的位置</para>
+    /// </param>
+    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
+    public static void CreateItem(string id, Node? parent = null, Vector2? position = null)
+    {
+        var item = NewItem(id);
+        parent?.AddChild(item as Node);
+        if (item is not Node2D node) return;
+        if (position is { } pos) node.GlobalPosition = pos;
+    }
+
+    /// <summary>
+    /// <para>Creates new instances in given amount of the item registered to the given id, and put them into given position in both node tree and 2D space</para>
+    /// <para>创建以给定 id 注册的物品的给定数量的新实例，并将其放到节点树和二维空间中的给定位置</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="amount"></param>
+    /// <param name="parent"></param>
+    /// <param name="position">
+    /// <para>Position in global coordinate</para>
+    /// <para>全局坐标中的位置</para>
+    /// </param>
+    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
+    public static void CreateItems(string id, int amount, Node? parent = null, Vector2? position = null)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            CreateItem(id, parent, position);
+        }
+    }
 
     /// <summary>
     /// <para>Get the translated default name of the item type for the given id</para>

@@ -2,3 +2,7 @@
   scene_path: res://prefab/weapons/staffOfTheUndead.tscn
   icon_path: res://sprites/weapon/staffOfTheUndead.png
   max_stack_value: 1
+  custom_args:
+    - name: FiringIntervalAsMillisecond
+      type: int
+      value: 1000

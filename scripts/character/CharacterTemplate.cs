@@ -10,6 +10,7 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
+using ColdMint.scripts.loot;
 
 using Godot;
 
@@ -107,11 +108,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     private DamageNumberNodeSpawn? _damageNumber;
 
-    /// <summary>
-    /// <para>Character referenced loot table</para>
-    /// <para>角色引用的战利品表</para>
-    /// </summary>
-    private LootList? _lootList;
+    [Export] public string LootListId { get; private set; } = "";
 
     private HealthBar? _healthBar;
     private DateTime _lastDamageTime;
@@ -208,12 +205,6 @@ public partial class CharacterTemplate : CharacterBody2D
         CampId = GetMeta("CampId",      Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp",        Config.DefaultMaxHp).AsInt32();
         var lootListId = GetMeta("LootListId", string.Empty).AsString();
-        if (!string.IsNullOrEmpty(lootListId))
-        {
-            //If a loot table is specified, get the loot table.
-            //如果指定了战利品表，那么获取战利品表。
-            _lootList = LootListManager.GetLootList(lootListId);
-        }
 
         if (MaxHp <= 0)
         {
@@ -461,20 +452,11 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     protected void CreateLootObject()
     {
-        if (_lootList == null)
-        {
-            return;
-        }
-
-        var lootDataArray = _lootList.GenerateLootData();
-        if (lootDataArray.Length == 0)
-        {
-            return;
-        }
-
-
+        var lootData = LootListManager.GenerateLootData(LootListId);
         var finalGlobalPosition = GlobalPosition;
-        CallDeferred("GenerateLootObjects", this, lootDataArray, finalGlobalPosition);
+        //Todo : change name str to nameof(), like this
+        // CallDeferred(nameof(GenerateLootObjects), this, lootData, finalGlobalPosition);
+        GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
     }
 
     /// <summary>
@@ -482,13 +464,17 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>生成战利品对象</para>
     /// </summary>
     /// <param name="parentNode"></param>
-    /// <param name="lootDataArray"></param>
+    /// <param name="lootData"></param>
     /// <param name="position"></param>
     public void GenerateLootObjects(Node parentNode,
-                                    LootData[] lootDataArray,
+                                    IEnumerable<LootDatum> lootData,
                                     Vector2 position)
     {
-        LootListManager.GenerateLootObjects(parentNode, lootDataArray, position);
+        foreach (var lootDatum in lootData)
+        {
+            var (id, amount) = lootDatum.Value;
+            ItemTypeManager.CreateItems(id, amount, parentNode, position);
+        }
     }
 
     /// <summary>
@@ -601,14 +587,8 @@ public partial class CharacterTemplate : CharacterBody2D
             //Generates a random number that controls the horizontal velocity of thrown items (range: 0.01 to 1)
             //生成一个随机数，用于控制抛出物品的水平方向速度(范围为：0.01到1)
             var percent = GD.Randf() + 0.01f;
-            if (GD.Randf() > 0.5)
-            {
-                ThrowItem(i, -1, new Vector2(horizontalDirection * percent, height));
-            }
-            else
-            {
-                ThrowItem(i, -1, new Vector2(-horizontalDirection * percent, height));
-            }
+            var horizontalVelocity = horizontalDirection * percent * GD.Randf() > 0.5 ? 1f : -1f;
+            ThrowItem(i, -1, new Vector2(horizontalVelocity, height));
         }
     }
 

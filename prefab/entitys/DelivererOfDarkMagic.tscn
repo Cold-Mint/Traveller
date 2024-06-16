@@ -31,10 +31,10 @@ radius = 129.027
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
+LootListId = "test"
 metadata/CampId = "Mazoku"
 metadata/MaxHp = 50
 metadata/Name = "死灵法师"
-metadata/LootListId = "Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

@@ -7,6 +7,7 @@ using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
+using ColdMint.scripts.loot;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
 
@@ -43,31 +44,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
 
-        //注册测试使用的战利品表
-        if (Config.IsDebug())
-        {
-            var testLootList = new LootList
-            {
-                Id = Config.LootListId.Test
-            };
-            var staffOfTheUndead = new LootEntry
-            {
-                Chance = 0.05f,
-                MaxQuantity = 5,
-                MinQuantity = 1,
-                ResPath = "res://prefab/weapons/staffOfTheUndead.tscn"
-            };
-            testLootList.AddLootEntry(staffOfTheUndead);
-            var packsack = new LootEntry
-            {
-                Chance = 1f,
-                MaxQuantity = 1,
-                MinQuantity = 1,
-                ResPath = "res://prefab/packsacks/packsack.tscn"
-            };
-            testLootList.AddLootEntry(packsack);
-            LootListManager.RegisterLootList(testLootList);
-        }
 
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
@@ -82,6 +58,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
             Directory.CreateDirectory(dataPath);
         }
 
+
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)
@@ -94,13 +71,16 @@ public partial class MainMenuLoader : UiLoaderTemplate
         var aborigines = new Camp(Config.CampId.Aborigines);
         CampManager.AddCamp(aborigines);
         _gameScene = (PackedScene)GD.Load("res://scenes/game.tscn");
-
+        
         //Register ItemTypes from file
         //从文件注册物品类型
         ItemTypeRegister.RegisterFromFile();
         //Hardcoded ItemTypes Register
         //硬编码注册物品类型
-        ItemTypeManager.StaticRegister();
+        ItemTypeRegister.StaticRegister();
+        
+        //静态注册掉落表
+        LootRegister.StaticRegister();
     }
 
     public override void InitializeUi()

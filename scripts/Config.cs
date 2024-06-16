@@ -31,7 +31,7 @@ public static class Config
         /// <para>A trophy table for testing</para>
         /// <para>测试用的战利品表</para>
         /// </summary>
-        public const string Test = "Test";
+        public const string Test = "test";
     }
 
     /// <summary>
