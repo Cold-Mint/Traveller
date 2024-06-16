@@ -67,12 +67,13 @@ public static class ItemTypeManager
     /// <para>全局坐标中的位置</para>
     /// </param>
     /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
-    public static void CreateItem(string id, Node? parent = null, Vector2? position = null)
+    public static IItem? CreateItem(string id, Node? parent = null, Vector2? position = null)
     {
         var item = NewItem(id);
-        parent?.AddChild(item as Node);
-        if (item is not Node2D node) return;
+        parent?.CallDeferred("add_child", (item as Node)!);
+        if (item is not Node2D node) return item;
         if (position is { } pos) node.GlobalPosition = pos;
+        return item;
     }
 
     /// <summary>
@@ -87,12 +88,16 @@ public static class ItemTypeManager
     /// <para>全局坐标中的位置</para>
     /// </param>
     /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
-    public static void CreateItems(string id, int amount, Node? parent = null, Vector2? position = null)
+    public static IList<IItem> CreateItems(string id, int amount, Node? parent = null, Vector2? position = null)
     {
+        IList<IItem> result = [];
         for (int i = 0; i < amount; i++)
         {
-            CreateItem(id, parent, position);
+            if (CreateItem(id, parent, position) is { } item)
+                result.Add(item);
         }
+
+        return result;
     }
 
     /// <summary>
