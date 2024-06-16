@@ -238,7 +238,7 @@ offset_top = 15.0
 offset_right = 21.5
 offset_bottom = 40.0
 grow_horizontal = 2
-text = "save"
+text = "ui_save"
 
 [node name="FileNameLineEdit" type="LineEdit" parent="SaveOrLoadPanel"]
 layout_mode = 1
@@ -263,7 +263,7 @@ offset_top = -38.0
 offset_right = 80.0
 offset_bottom = -13.0
 grow_vertical = 2
-text = "filename"
+text = "ui_filename"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SaveOrLoadPanel"]
 layout_mode = 1
@@ -281,8 +281,8 @@ grow_vertical = 0
 
 [node name="CancelButton" type="Button" parent="SaveOrLoadPanel/HBoxContainer"]
 layout_mode = 2
-text = "cancel"
+text = "ui_cancel"
 
 [node name="ActionButton" type="Button" parent="SaveOrLoadPanel/HBoxContainer"]
 layout_mode = 2
-text = "save"
+text = "ui_save"

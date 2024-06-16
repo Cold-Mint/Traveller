@@ -54,7 +54,6 @@ texture = ExtResource("2_n1yht")
 [node name="OperationTip" type="RichTextLabel" parent="CanvasLayer/Control/VBoxContainer"]
 layout_mode = 2
 bbcode_enabled = true
-text = "OperationTip"
 fit_content = true
 
 [node name="FPSLabel" type="Label" parent="CanvasLayer/Control"]
@@ -85,6 +84,7 @@ offset_bottom = 25.0
 grow_horizontal = 2
 
 [node name="BackpackUIContainer" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

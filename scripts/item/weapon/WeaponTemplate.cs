@@ -2,8 +2,6 @@ using System;
 
 using ColdMint.scripts.character;
 using ColdMint.scripts.pickable;
-using ColdMint.scripts.damage;
-
 using Godot;
 
 namespace ColdMint.scripts.item.weapon;

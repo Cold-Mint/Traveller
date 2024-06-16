@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 
-using Godot;
-
 namespace ColdMint.scripts.loot;
 
 /// <summary>

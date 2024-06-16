@@ -11,7 +11,7 @@ namespace ColdMint.scripts.map.layoutStrategy;
 /// </summary>
 public class TestLayoutStrategy : ILayoutStrategy
 {
-    private const string Path = "res://data/levelGraphs/test.json";
+    private const string Path = "res://data/levelGraphs/test.yaml";
 
     public Task<LevelGraphEditorSaveData?> GetLayout()
     {
@@ -27,6 +27,6 @@ public class TestLayoutStrategy : ILayoutStrategy
             return Task.FromResult<LevelGraphEditorSaveData?>(null);
         }
 
-        return Task.FromResult(JsonSerialization.Deserialize<LevelGraphEditorSaveData>(json));
+        return Task.FromResult(YamlSerialization.Deserialize<LevelGraphEditorSaveData?>(json));
     }
 }

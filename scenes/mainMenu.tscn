@@ -127,6 +127,7 @@ underline = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 8
 
 [node name="GodotLabel" type="Label" parent="VBoxContainer2/HBoxContainer"]
 layout_mode = 2

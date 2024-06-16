@@ -14,20 +14,15 @@ public abstract class RoomInjectionProcessorTemplate<TConfig> : IRoomInjectionPr
 {
     public abstract string GetId();
 
-    public Task<bool> CanBePlaced(RandomNumberGenerator randomNumberGenerator, string? jsonConfigData)
+    public Task<bool> CanBePlaced(RandomNumberGenerator randomNumberGenerator, string? yamlConfigData)
     {
-        if (jsonConfigData == null)
+        if (yamlConfigData == null)
         {
             return Task.FromResult(false);
         }
 
-        var configData = JsonSerialization.Deserialize<TConfig>(jsonConfigData);
-        if (configData == null)
-        {
-            return Task.FromResult(false);
-        }
-
-        return OnCreateConfigData(randomNumberGenerator, configData);
+        var configData = YamlSerialization.Deserialize<TConfig>(yamlConfigData);
+        return configData == null ? Task.FromResult(false) : OnCreateConfigData(randomNumberGenerator, configData);
     }
 
     /// <summary>

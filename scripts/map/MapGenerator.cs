@@ -178,7 +178,6 @@ public static class MapGenerator
         var roomDictionary = new Dictionary<string, Room>();
         var randomNumberGenerator = new RandomNumberGenerator();
         randomNumberGenerator.Seed = _seed;
-        LogCat.LogWithFormat("seed_info", _seed);
         var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {
@@ -223,8 +222,8 @@ public static class MapGenerator
             if (_roomInjectionProcessorsDictionary != null && !string.IsNullOrEmpty(roomInjectionProcessorData))
             {
                 var roomInjectionProcessorDataArray =
-                    JsonSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
-                if (roomInjectionProcessorDataArray != null && roomInjectionProcessorDataArray.Length > 0)
+                    YamlSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
+                if (roomInjectionProcessorDataArray.Length > 0)
                 {
                     foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
                     {

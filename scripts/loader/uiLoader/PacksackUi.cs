@@ -1,5 +1,4 @@
-﻿using ColdMint.scripts.debug;
-using ColdMint.scripts.inventory;
+﻿using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using Godot;
 

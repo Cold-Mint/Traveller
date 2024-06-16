@@ -13,4 +13,4 @@
       value: 1000
     - name: UniqueName
       type: string
-      value: 劣化的死灵法杖
+      value: item_staff_of_the_undead_desc

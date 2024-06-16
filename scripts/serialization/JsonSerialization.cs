@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,6 +10,12 @@ namespace ColdMint.scripts.serialization;
 /// <para>JsonSerialization</para>
 /// <para>Json序列化工具</para>
 /// </summary>
+/// <remarks>
+///<para>This serializer is no longer recommended and Yaml is recommended instead of Json.</para>
+///<para>此序列化器已不再推荐使用，建议用Yaml代替Json。</para>
+/// </remarks>
+/// <seealso cref="YamlSerialization"/>
+[Obsolete("The Json serializer is out of date, we recommend yaml serialization.\nJson序列化器已过时了，我们推荐使用Yaml。", true)]
 public static class JsonSerialization
 {
     private static readonly JsonSerializerOptions Options = new()
@@ -47,7 +54,7 @@ public static class JsonSerialization
     {
         return JsonSerializer.Serialize(obj, Options);
     }
-    
+
     /// <summary>
     /// <para>Deserialize Json to an object</para>
     /// <para>将Json反序列化为对象</para>

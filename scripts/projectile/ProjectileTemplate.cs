@@ -5,7 +5,7 @@ using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.weapon;
-
+using ColdMint.scripts.pickable;
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -175,7 +175,7 @@ public partial class ProjectileTemplate : CharacterBody2D
                 characterTemplate.AddForce(force);
             }
         }
-        else if (target is WeaponTemplate weaponTemplate)
+        else if (target is PickAbleTemplate pickAbleTemplate)
         {
             if (KnockbackForce != Vector2.Zero)
             {
@@ -192,7 +192,7 @@ public partial class ProjectileTemplate : CharacterBody2D
 
                 force.X = forceX * Config.CellSize;
                 force.Y = KnockbackForce.Y * Config.CellSize;
-                weaponTemplate.ApplyImpulse(force);
+                pickAbleTemplate.ApplyImpulse(force);
             }
         }
     }

@@ -583,7 +583,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         }
 
         var filePath = Path.Join(Config.GetLevelGraphExportDirectory(), FileNameToActualName(fileName));
-        await File.WriteAllTextAsync(filePath, JsonSerialization.Serialize(levelGraphEditorSaveData));
+        await File.WriteAllTextAsync(filePath, YamlSerialization.Serialize(levelGraphEditorSaveData));
     }
 
     /// <summary>
@@ -598,13 +598,13 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     private string FileNameToActualName(string fileName)
     {
         string actualName;
-        if (fileName.EndsWith(".json"))
+        if (fileName.EndsWith(".yaml"))
         {
             actualName = fileName;
         }
         else
         {
-            actualName = fileName + ".json";
+            actualName = fileName + ".yaml";
         }
 
         return actualName;
@@ -627,7 +627,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         }
 
         var levelGraphEditorSaveData =
-            await JsonSerialization.ReadJsonFileToObj<LevelGraphEditorSaveData>(filePath);
+            await YamlSerialization.ReadYamlFileToObj<LevelGraphEditorSaveData>(filePath);
         if (levelGraphEditorSaveData == null)
         {
             //Deserialization failed.

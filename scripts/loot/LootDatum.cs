@@ -1,6 +1,4 @@
-﻿using Godot;
-
-namespace ColdMint.scripts.loot;
+﻿namespace ColdMint.scripts.loot;
 
 public readonly record struct LootDatum(string ItemId, int Quantity)
 {

@@ -24,10 +24,10 @@ public interface IRoomInjectionProcessor
     ///<para>Random probability generator based on world seed</para>
     ///<para>根据世界种子确定的随机概率生成器</para>
     /// </param>
-    /// <param name="jsonConfigData">
+    /// <param name="yamlConfigData">
     ///<para>Inject data into the processor</para>
     ///<para>注入处理器的数据</para>
     /// </param>
     /// <returns></returns>
-    public Task<bool> CanBePlaced(RandomNumberGenerator randomNumberGenerator, string? jsonConfigData);
+    public Task<bool> CanBePlaced(RandomNumberGenerator randomNumberGenerator, string? yamlConfigData);
 }
