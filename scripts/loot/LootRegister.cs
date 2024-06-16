@@ -14,13 +14,13 @@ public static class LootRegister
         if (Config.IsDebug())
         {
             IList<LootGroup> lootGroups = [];
+            lootGroups.Add(new LootGroup(0.8,
+            [
+                new LootEntry("degraded_staff_of_the_undead", weight: 2), new LootEntry("staff_of_the_undead")
+            ]));
             lootGroups.Add(new LootGroup(1,
             [
-                new LootEntry("packsack", weight: 2), new LootEntry("staff_of_the_undead", minQuantity: 2, maxQuantity: 4)
-            ]));
-            lootGroups.Add(new LootGroup(0.3,
-            [
-                new LootEntry("packsack")
+                new LootEntry("packsack", minQuantity: 2, maxQuantity: 4)
             ]));
 
             var testLootList = new LootList(Config.LootListId.Test, lootGroups);

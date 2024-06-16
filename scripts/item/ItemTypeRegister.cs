@@ -22,7 +22,7 @@ public static class ItemTypeRegister
     /// <para>在这里注册物品</para>
     /// </summary>
     public static void StaticRegister() { }
-    
+
     /// <summary>
     /// <para>Register items from yaml file</para>
     /// <para>从文件注册物品</para>
@@ -66,7 +66,7 @@ public static class ItemTypeRegister
         //Read & deserialize
         var yamlString = yamlFile.GetAsText();
         var typeInfos = deserializer.Deserialize<IList<ItemTypeInfo>>(yamlString);
-        
+
         yamlFile.Close();
         return typeInfos;
     }
@@ -76,7 +76,7 @@ public static class ItemTypeRegister
         //Load scene and icon
         var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
         var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
-        
+
         //Create init delegate
         Func<IItem?> newItemFunc;
         if (typeInfo.CustomArgs is null or [])
@@ -104,7 +104,8 @@ public static class ItemTypeRegister
         var itemType = new ItemType(typeInfo.Id,
                                     newItemFunc,
                                     icon, typeInfo.MaxStackValue);
-        ItemTypeManager.Register(itemType);
+        var succeed = ItemTypeManager.Register(itemType);
+        LogCat.LogWithFormat("register_item", itemType.Id, succeed);
     }
 
     //Use for yaml deserialization

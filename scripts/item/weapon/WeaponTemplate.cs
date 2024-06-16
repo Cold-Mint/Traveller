@@ -1,4 +1,5 @@
 using System;
+
 using ColdMint.scripts.character;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.damage;
@@ -14,6 +15,7 @@ namespace ColdMint.scripts.item.weapon;
 public abstract partial class WeaponTemplate : PickAbleTemplate
 {
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
         Fire(owner, targetGlobalPosition);
@@ -49,16 +51,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// </remarks>
     [Export] private Vector2 _recoil;
 
-    public override void _Ready()
-    {
-        
-    }
-
-   
-
- 
-
-
+    public override void _Ready() { }
 
     /// <summary>
     /// <para>Discharge of the weapon</para>

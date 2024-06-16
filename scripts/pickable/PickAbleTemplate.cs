@@ -1,8 +1,10 @@
 ﻿using System;
+
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.item;
+
 using Godot;
 
 namespace ColdMint.scripts.pickable;
@@ -14,12 +16,12 @@ namespace ColdMint.scripts.pickable;
 public partial class PickAbleTemplate : RigidBody2D, IItem
 {
     [Export] public virtual string Id { get; set; } = "ID";
-    protected Texture2D? UniqueIcon { get; set; }
+    [Export] protected Texture2D? UniqueIcon { get; set; }
     public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
-    protected string? UniqueName { get; set; }
+    [Export] protected string? UniqueName { get; set; }
     public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
-    protected string? UniqueDescription { get; set; }
-    
+    [Export] protected string? UniqueDescription { get; set; }
+
     /// <summary>
     /// <para>Owner</para>
     /// <para>主人</para>
@@ -55,9 +57,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// </summary>
     public bool Picked { get; set; }
 
-    public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
-    {
-    }
+    public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition) { }
 
     public override void _Ready()
     {
@@ -124,7 +124,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             //Determine if your side can cause damage
             //判断所属的阵营是否可以造成伤害
             var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-                CampManager.GetCamp(characterTemplate.CampId));
+                                                        CampManager.GetCamp(characterTemplate.CampId));
             if (!canCauseHarm)
             {
                 return;
@@ -147,8 +147,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             LinearVelocity *= 1 - Config.ThrownItemsHitEnemiesReduceSpeedByPercentage;
         }
     }
-    
-    
+
+
     /// <summary>
     /// <para>Flip item</para>
     /// <para>翻转物品</para>

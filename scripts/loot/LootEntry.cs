@@ -55,10 +55,9 @@ public readonly record struct LootGroup(double Chance, IEnumerable<LootEntry> En
         foreach (var e in Entries)
         {
             w -= e.Weight;
-            if (w < 0)
-            {
-                entry = e;
-            }
+            if (w >= 0) continue;
+            entry = e;
+            break;
         }
 
         var quantity = random.Next(entry.MinQuantity, entry.MaxQuantity + 1);
