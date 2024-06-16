@@ -211,7 +211,7 @@ text = "ui_load"
 layout_mode = 2
 text = "ui_create_room"
 
-[node name="ReturnButton" type="Button" parent="HBoxContainer"]
+[node name="ExitButton" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "ui_close"
 

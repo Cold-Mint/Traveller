@@ -176,7 +176,8 @@ public class UniversalItemContainer : IItemContainer
 
     public ItemSlotNode? Match(IItemStack stack)
     {
-        return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(stack.GetItem()!));
+        var item = stack.GetItem();
+        return item == null ? null : _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(item));
     }
 
     public ItemSlotNode? Match(Func<ItemSlotNode, bool> predicate)

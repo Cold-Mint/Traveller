@@ -308,9 +308,9 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
             };
         }
 
-        if (_nodeBinding.ReturnButton != null)
+        if (_nodeBinding.ExitButton != null)
         {
-            _nodeBinding.ReturnButton.Pressed += () =>
+            _nodeBinding.ExitButton.Pressed += () =>
             {
                 if (_mainMenu == null)
                 {

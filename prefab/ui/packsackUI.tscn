@@ -1,32 +1,54 @@
 [gd_scene load_steps=2 format=3 uid="uid://dsat7xk63bfg2"]
 
-[ext_resource type="Script" path="res://scripts/inventory/PacksackUi.cs" id="1_jgs18"]
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/PacksackUi.cs" id="1_wm4bu"]
 
 [node name="PacksackUi" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 33.0
-offset_top = 81.0
-offset_right = -58.0
-offset_bottom = -35.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jgs18")
+script = ExtResource("1_wm4bu")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 0.294118)
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 3.0
-offset_top = -43.0
-offset_right = 43.0
-offset_bottom = -18.0
-text = "背包"
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "ui_name"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = 57.0
+offset_right = -34.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -75.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 41.0
+grow_horizontal = 0
+text = "ui_close"
