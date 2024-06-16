@@ -377,7 +377,7 @@ public static class Config
         public const int RoomArea = 1;
         public const int Ground = 2;
         public const int Player = 3;
-        public const int Weapon = 4;
+        public const int PickAbleItem = 4;
         public const int Projectile = 5;
         public const int Platform = 6;
         public const int Mob = 7;

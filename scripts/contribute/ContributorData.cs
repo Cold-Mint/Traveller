@@ -19,6 +19,12 @@ public class ContributorData
     public string? Url { get; set; }
     
     /// <summary>
+    /// <para>ToolTip</para>
+    /// <para>工具提示</para>
+    /// </summary>
+    public string? ToolTip { get; set; }
+    
+    /// <summary>
     /// <para>Type of contribution</para>
     /// <para>贡献的类型</para>
     /// </summary>

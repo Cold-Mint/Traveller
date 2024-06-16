@@ -1,4 +1,4 @@
-﻿using ColdMint.scripts.utils;
+using ColdMint.scripts.utils;
 
 using Godot;
 

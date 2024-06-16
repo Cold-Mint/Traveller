@@ -73,8 +73,18 @@ public partial class ContributorGroupLoader : UiLoaderTemplate
         foreach (var contributorData in contributorDataArray)
         {
             var linkButton = new LinkButton();
+            linkButton.Underline = LinkButton.UnderlineMode.OnHover;
             linkButton.Text = contributorData.Name;
             linkButton.Uri = contributorData.Url;
+            var toolTip = contributorData.ToolTip;
+            if (toolTip == null)
+            {
+                linkButton.TooltipText = contributorData.Url;
+            }
+            else
+            {
+                linkButton.TooltipText = contributorData.ToolTip;
+            }
             _flowContainer.AddChild(linkButton);
         }
     }

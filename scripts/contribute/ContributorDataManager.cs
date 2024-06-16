@@ -18,19 +18,27 @@ public static class ContributorDataManager
         {
             Name = "Cold-Mint",
             Url = "https://github.com/Cold-Mint",
-            ContributorTypes = [ContributorType.Coder]
+            ContributorTypes = [ContributorType.Coder],
         },
         new ContributorData
         {
-            Name = "Web13234",
+            Name = "霧雨烨",
             Url = "https://github.com/Web13234",
             ContributorTypes = [ContributorType.Coder]
         },
         new ContributorData
         {
-            Name = "HYPERLINK BLOCKED",
+            Name = "[HYPERLINK BLOCKED]",
             Url = "https://www.pixiv.net/users/74412798",
-            ContributorTypes = [ContributorType.Artist]
+            ContributorTypes = [ContributorType.Artist],
+            ToolTip = "贡献死灵法杖和背包的贴图。"
+        },
+        new ContributorData
+        {
+            Name = "\u2605如爱生",
+            Url = "https://space.bilibili.com/425243934",
+            ContributorTypes = [ContributorType.Artist],
+            ToolTip = "贡献了一些枪械贴图。"
         }
     ];
 

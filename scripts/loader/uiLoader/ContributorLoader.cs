@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ColdMint.scripts.contribute;
+﻿using ColdMint.scripts.contribute;
 using ColdMint.scripts.utils;
 using Godot;
 

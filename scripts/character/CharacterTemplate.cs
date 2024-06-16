@@ -10,7 +10,7 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
-
+using ColdMint.scripts.pickable;
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -309,14 +309,14 @@ public partial class CharacterTemplate : CharacterBody2D
         //设置捡起物品的常规处理。
         //You can supplement picking up state handling for more types of objects here.
         //您可以在这里补充更多类型对象的捡起状态处理。
-        if (pickAbleItem is WeaponTemplate weaponTemplate)
+        if (pickAbleItem is PickAbleTemplate pickAbleTemplate)
         {
-            weaponTemplate.Owner = this;
-            weaponTemplate.Picked = true;
-            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
-            weaponTemplate.EnableContactInjury = false;
-            weaponTemplate.Sleeping = true;
+            pickAbleTemplate.Owner = this;
+            pickAbleTemplate.Picked = true;
+            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
+            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
+            pickAbleTemplate.EnableContactInjury = false;
+            pickAbleTemplate.Sleeping = true;
         }
 
         if (itemSlotNode.GetItem() != null && itemSlotNode.GetItem() == item && _currentItem == null)
@@ -674,31 +674,31 @@ public partial class CharacterTemplate : CharacterBody2D
         CallDeferred("NodeReparent", node2D);
         switch (item)
         {
-            case WeaponTemplate weaponTemplate:
+            case PickAbleTemplate pickAbleTemplate:
                 if (GameSceneNodeHolder.WeaponContainer == null)
                 {
                     return;
                 }
 
-                weaponTemplate.Picked = false;
+                pickAbleTemplate.Picked = false;
                 var timer = new Timer();
-                weaponTemplate.AddChild(timer);
+                pickAbleTemplate.AddChild(timer);
                 timer.WaitTime = _itemCollisionRecoveryTime;
                 timer.OneShot = true;
                 timer.Timeout += () =>
                 {
                     //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
-                    weaponTemplate.EnableContactInjury = true;
-                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   true);
-                    weaponTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
+                    pickAbleTemplate.EnableContactInjury = true;
+                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   true);
+                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
                 timer.Start();
-                weaponTemplate.Sleeping = false;
+                pickAbleTemplate.Sleeping = false;
                 //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
                 //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
-                weaponTemplate.LinearVelocity = Vector2.Zero;
+                pickAbleTemplate.LinearVelocity = Vector2.Zero;
                 break;
         }
 

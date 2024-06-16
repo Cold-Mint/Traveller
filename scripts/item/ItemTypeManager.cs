@@ -16,6 +16,7 @@ namespace ColdMint.scripts.item;
 /// </summary>
 public static class ItemTypeManager
 {
+    //用于yaml反序列化
     //Use for yaml deserialization
     private record struct ItemTypeInfo(string Id, string ScenePath, string IconPath, int MaxStackValue) { }
 
@@ -27,32 +28,37 @@ public static class ItemTypeManager
     {
         LogCat.Log("start_item_register_from_file");
 
+        // 初始化yaml反序列化器
         // initialize yaml deserializer
         var deserializer = new DeserializerBuilder()
                           .WithNamingConvention(UnderscoredNamingConvention.Instance) // convent snake_case
                           .Build();
 
-        // initialize file dir
-        string itemRegsDirPath = "res://data/itemRegs/";
+        //初始化文件目录
+        //initialize file dir
+        var itemRegsDirPath = "res://data/itemRegs/";
         var itemRegsDir = DirAccess.Open(itemRegsDirPath);
         if (DirAccess.GetOpenError() is not Error.Ok)
         {
             LogCat.LogError("error_when_open_item_regs_dir");
         }
 
-        // traverse the dir, find files to register
+        //遍历目录，找到要注册的文件
+        //traverse the dir, find files to register
         foreach (var file in itemRegsDir.GetFiles())
         {
             if (file is null) continue;
             LogCat.LogWithFormat("item_register_from_file", file);
 
-            // read file, parse to an IEnumerable of type infos
+            //读取文件，解析为类型为info的IEnumerable
+            //read file, parse to an IEnumerable of type infos
             var yamlFile = FileAccess.Open($"{itemRegsDirPath}/{file}", FileAccess.ModeFlags.Read);
             var yamlString = yamlFile.GetAsText();
             var typeInfos = deserializer.Deserialize<IEnumerable<ItemTypeInfo>>(yamlString);
             yamlFile.Close();
 
-            // traverse type infos and register them.
+            //遍历类型信息并注册它们。
+            //traverse type infos and register them.
             foreach (var typeInfo in typeInfos)
             {
                 LogCat.LogWithFormat("item_register_find_item_in_file", typeInfo.Id);
