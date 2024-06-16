@@ -1,19 +1,41 @@
-﻿using ColdMint.scripts.utils;
+﻿using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
+using ColdMint.scripts.utils;
 using Godot;
 
-namespace ColdMint.scripts.inventory;
+namespace ColdMint.scripts.loader.uiLoader;
 
 /// <summary>
 /// <para>Backpack UI</para>
 /// <para>背包UI</para>
 /// </summary>
-public partial class PacksackUi : Control
+public partial class PacksackUi : UiLoaderTemplate
 {
     private IItemContainer? _itemContainer;
 
     private PackedScene? _packedScene;
 
     private GridContainer? _gridContainer;
+
+    private Label? _titleLabel;
+
+    private string? _title;
+
+    private Button? _exitButton;
+
+    /// <summary>
+    /// <para>title</para>
+    /// <para>标题</para>
+    /// </summary>
+    public string? Title
+    {
+        get => _title;
+        set
+        {
+            _title = value;
+            SetTile(value);
+        }
+    }
 
     /// <summary>
     /// <para>Packsack</para>
@@ -48,13 +70,43 @@ public partial class PacksackUi : Control
         }
     }
 
-    public override void _Ready()
+    /// <summary>
+    /// <para>SetTile</para>
+    /// <para>设置标题</para>
+    /// </summary>
+    /// <param name="title"></param>
+    private void SetTile(string? title)
+    {
+        if (_titleLabel == null)
+        {
+            return;
+        }
+
+        _titleLabel.Text = title;
+    }
+
+    public override void InitializeData()
     {
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
+    }
+
+    public override void InitializeUi()
+    {
         _gridContainer = GetNode<GridContainer>("GridContainer");
+        _titleLabel = GetNode<Label>("TitleLabel");
+        _exitButton = GetNode<Button>("ExitButton");
         _gridContainer.Columns = Config.HotBarSize;
         //If the item container was set before this node was placed in the node tree, load it here.
         //若物品容器在此节点放置到节点树之前被设置了，那么在这里加载。
         PlaceItemSlot(_itemContainer);
+        SetTile(_title);
+    }
+
+    public override void LoadUiActions()
+    {
+        if (_exitButton != null)
+        {
+            _exitButton.Pressed += Hide;
+        }
     }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.weapon;
 
 using Godot;
+using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
 
 
 namespace ColdMint.scripts.utils;
@@ -132,6 +134,10 @@ public static class NodeUtils
             return GameSceneNodeHolder.PacksackContainer;
         }
 
+        if (GameSceneNodeHolder.BackpackUiContainer!=null && childNode is PacksackUi)
+        {
+            return GameSceneNodeHolder.BackpackUiContainer;
+        }
         return defaultParentNode;
     }
 

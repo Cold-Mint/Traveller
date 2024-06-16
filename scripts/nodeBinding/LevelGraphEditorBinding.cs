@@ -17,7 +17,7 @@ public class LevelGraphEditorBinding : INodeBinding
     public LineEdit? RoomNameLineEdit;
     public LineEdit? RoomDescriptionLineEdit;
     public Button? CreateRoomButton;
-    public Button? ReturnButton;
+    public Button? ExitButton;
     public TextEdit? RoomTemplateCollectionTextEdit;
     public Label? RoomTemplateTipsLabel;
     public Button? ShowSavePanelButton;
@@ -48,7 +48,7 @@ public class LevelGraphEditorBinding : INodeBinding
         GraphEdit = root.GetNode<GraphEdit>("GraphEdit");
         DeleteSelectedNodeButton = root.GetNode<Button>("HBoxContainer/DeleteSelectedNodeButton");
         ShowCreateRoomPanelButton = root.GetNode<Button>("HBoxContainer/ShowCreateRoomPanelButton");
-        ReturnButton = root.GetNode<Button>("HBoxContainer/ReturnButton");
+        ExitButton = root.GetNode<Button>("HBoxContainer/ExitButton");
         CreateOrEditorPanel = root.GetNode<Panel>("CreateOrEditorPanel");
         HideCreateRoomPanelButton = root.GetNode<Button>("CreateOrEditorPanel/HideCreateRoomPanelButton");
         RoomNameLineEdit = root.GetNode<LineEdit>("CreateOrEditorPanel/RoomNameLineEdit");

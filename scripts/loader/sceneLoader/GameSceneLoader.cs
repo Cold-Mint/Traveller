@@ -27,6 +27,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载HotBar
         var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
         GameSceneNodeHolder.HotBar = hotBar;
+        //Backpack Ui container
+        //背包Ui容器
+        var backpackUiContainer = GetNode<Control>("CanvasLayer/BackpackUIContainer");
+        GameSceneNodeHolder.BackpackUiContainer = backpackUiContainer;
         //Load operation prompt
         //加载操作提示
         var operationTip = GetNode<RichTextLabel>("CanvasLayer/Control/VBoxContainer/OperationTip");

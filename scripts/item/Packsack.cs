@@ -3,6 +3,7 @@ using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
 
 using Godot;
+using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
 
 namespace ColdMint.scripts.item;
 
@@ -37,7 +38,12 @@ public partial class Packsack : PickAbleTemplate
 
         if (_packsackUi == null)
         {
-            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene, this);
+            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene,this);
+            if (_packsackUi != null)
+            {
+                _packsackUi.Title = Name;
+                _packsackUi.ItemContainer = ItemContainer;
+            }
         }
 
         _packsackUi?.Show();

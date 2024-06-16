@@ -75,4 +75,14 @@ public static class GameSceneNodeHolder
     /// <para>操作提示</para>
     /// </summary>
     public static RichTextLabel? OperationTipLabel { get; set; }
+
+    /// <summary>
+    /// <para>BackpackUiContainer</para>
+    /// <para>背包Ui容器</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>The knapsack Ui container houses the container of the knapsack ui node. When a user uses a backpack, the node to which his backpack is attached is displayed from within the backpack ui container.</para>
+    ///<para>背包Ui容器内存放的是背包ui节点的容器。当用户使用背包时，会从背包ui容器内将其背包对于的节点展示出来。</para>
+    /// </remarks>
+    public static Control? BackpackUiContainer { get; set; }
 }
