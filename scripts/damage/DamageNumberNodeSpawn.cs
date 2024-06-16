@@ -106,7 +106,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
             return;
         }
 
-        CallDeferred("AddDamageNumberNode", damageNumber);
+        CallDeferred(nameof(AddDamageNumberNode), damageNumber);
         damageNumber.Position = GlobalPosition;
         if (damageTemplate.MoveLeft)
         {

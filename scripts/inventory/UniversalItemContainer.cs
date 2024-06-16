@@ -67,16 +67,16 @@ public class UniversalItemContainer : IItemContainer
 
     public bool AddItemStack(IItemStack itemStack)
     {
-        while (true)
+        ItemSlotNode? itemSlotNode = Match(itemStack);
+        while (itemSlotNode is not null)
         {
-            var itemSlotNode = Match(itemStack);
-
-            if (itemSlotNode == null)
-                return false;
-
             if (itemSlotNode.AddItemStack(itemStack))
                 return true;
+            
+            itemSlotNode = Match(itemStack);
         }
+
+        return false;
     }
 
     public int GetSelectIndex()
@@ -235,7 +235,7 @@ public class UniversalItemContainer : IItemContainer
             return;
         }
 
-        itemSlotNode.IsSelect = (_itemSlotNodes.Count ) == _selectIndex;
+        itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
     }
 

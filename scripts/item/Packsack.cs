@@ -1,6 +1,7 @@
 ﻿using ColdMint.scripts.inventory;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
+
 using Godot;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
 
@@ -14,6 +15,8 @@ public partial class Packsack : PickAbleTemplate
 {
     private PackedScene? _packedScene;
     private PacksackUi? _packsackUi;
+
+    public override bool CanPutInPack => false;
 
     public override void Destroy()
     {
@@ -32,6 +35,7 @@ public partial class Packsack : PickAbleTemplate
         {
             return;
         }
+
         if (_packsackUi == null)
         {
             _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene,this);
@@ -41,6 +45,7 @@ public partial class Packsack : PickAbleTemplate
                 _packsackUi.ItemContainer = ItemContainer;
             }
         }
+
         _packsackUi?.Show();
     }
 
@@ -51,6 +56,5 @@ public partial class Packsack : PickAbleTemplate
         base._Ready();
         ItemContainer = new UniversalItemContainer();
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
-        
     }
 }

@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 
 using Godot;
-
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace ColdMint.scripts.item;
 
@@ -16,68 +12,6 @@ namespace ColdMint.scripts.item;
 /// </summary>
 public static class ItemTypeManager
 {
-    //用于yaml反序列化
-    //Use for yaml deserialization
-    private record struct ItemTypeInfo(string Id, string ScenePath, string IconPath, int MaxStackValue) { }
-
-    /// <summary>
-    /// <para>Register items from yaml file</para>
-    /// <para>从文件注册物品</para>
-    /// </summary>
-    public static void RegisterFromFile()
-    {
-        LogCat.Log("start_item_register_from_file");
-
-        // 初始化yaml反序列化器
-        // initialize yaml deserializer
-        var deserializer = new DeserializerBuilder()
-                          .WithNamingConvention(UnderscoredNamingConvention.Instance) // convent snake_case
-                          .Build();
-
-        //初始化文件目录
-        //initialize file dir
-        var itemRegsDirPath = "res://data/itemRegs/";
-        var itemRegsDir = DirAccess.Open(itemRegsDirPath);
-        if (DirAccess.GetOpenError() is not Error.Ok)
-        {
-            LogCat.LogError("error_when_open_item_regs_dir");
-        }
-
-        //遍历目录，找到要注册的文件
-        //traverse the dir, find files to register
-        foreach (var file in itemRegsDir.GetFiles())
-        {
-            if (file is null) continue;
-            LogCat.LogWithFormat("item_register_from_file", file);
-
-            //读取文件，解析为类型为info的IEnumerable
-            //read file, parse to an IEnumerable of type infos
-            var yamlFile = FileAccess.Open($"{itemRegsDirPath}/{file}", FileAccess.ModeFlags.Read);
-            var yamlString = yamlFile.GetAsText();
-            var typeInfos = deserializer.Deserialize<IEnumerable<ItemTypeInfo>>(yamlString);
-            yamlFile.Close();
-
-            //遍历类型信息并注册它们。
-            //traverse type infos and register them.
-            foreach (var typeInfo in typeInfos)
-            {
-                LogCat.LogWithFormat("item_register_find_item_in_file", typeInfo.Id);
-                var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
-                var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
-                var itemType = new ItemType(typeInfo.Id,
-                                            () => NodeUtils.InstantiatePackedScene<Packsack>(scene),
-                                            icon, typeInfo.MaxStackValue);
-                Register(itemType);
-            }
-        }
-    }
-
-    /// <summary>
-    /// <para>Register items here</para>
-    /// <para>在这里注册物品</para>
-    /// </summary>
-    public static void StaticRegister() { }
-
     private static Dictionary<string, ItemType> Registry { get; } = [];
     private static Texture2D DefaultTexture { get; } = new PlaceholderTexture2D();
 
@@ -101,8 +35,70 @@ public static class ItemTypeManager
     /// <para>Returns null when the id is not registered.</para>
     /// <para>当物品id没有注册时返回null</para>
     /// </returns>
+    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
     public static IItem? NewItem(string id) =>
         Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
+
+    /// <summary>
+    /// <para>Creates new instances in given amount of the item registered to the given id.</para>
+    /// <para>创建给定数量的注册到给定 id 的物品的新实例。</para>
+    /// </summary>
+    /// <returns></returns>
+    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
+    public static IList<IItem> NewItems(string id, int amount)
+    {
+        IList<IItem> result = [];
+        for (int i = 0; i < amount; i++)
+        {
+            if (NewItem(id) is { } item) result.Add(item);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// <para>Creates new instance of the item registered to the given id, and put it into given position in both node tree and 2D space</para>
+    /// <para>创建以给定 id 注册的物品的新实例，并将其放到节点树和二维空间中的给定位置</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="parent"></param>
+    /// <param name="position">
+    /// <para>Position in global coordinate</para>
+    /// <para>全局坐标中的位置</para>
+    /// </param>
+    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
+    public static IItem? CreateItem(string id, Node? parent = null, Vector2? position = null)
+    {
+        var item = NewItem(id);
+        parent?.CallDeferred(GodotStringNameUtils.AddChild, (item as Node)!);
+        if (item is not Node2D node) return item;
+        if (position is { } pos) node.GlobalPosition = pos;
+        return item;
+    }
+
+    /// <summary>
+    /// <para>Creates new instances in given amount of the item registered to the given id, and put them into given position in both node tree and 2D space</para>
+    /// <para>创建以给定 id 注册的物品的给定数量的新实例，并将其放到节点树和二维空间中的给定位置</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="amount"></param>
+    /// <param name="parent"></param>
+    /// <param name="position">
+    /// <para>Position in global coordinate</para>
+    /// <para>全局坐标中的位置</para>
+    /// </param>
+    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
+    public static IList<IItem> CreateItems(string id, int amount, Node? parent = null, Vector2? position = null)
+    {
+        IList<IItem> result = [];
+        for (int i = 0; i < amount; i++)
+        {
+            if (CreateItem(id, parent, position) is { } item)
+                result.Add(item);
+        }
+
+        return result;
+    }
 
     /// <summary>
     /// <para>Get the translated default name of the item type for the given id</para>
