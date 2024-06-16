@@ -70,7 +70,7 @@ public static class ItemTypeManager
     public static IItem? CreateItem(string id, Node? parent = null, Vector2? position = null)
     {
         var item = NewItem(id);
-        parent?.CallDeferred("add_child", (item as Node)!);
+        parent?.CallDeferred(GodotStringNameUtils.AddChild, (item as Node)!);
         if (item is not Node2D node) return item;
         if (position is { } pos) node.GlobalPosition = pos;
         return item;

@@ -454,8 +454,6 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         var lootData = LootListManager.GenerateLootData(LootListId);
         var finalGlobalPosition = GlobalPosition;
-        //Todo : change name str to nameof(), like this
-        // CallDeferred(nameof(GenerateLootObjects), this, lootData, finalGlobalPosition);
         GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
     }
 
@@ -651,7 +649,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        CallDeferred("NodeReparent", node2D);
+        CallDeferred(nameof(NodeReparent), node2D);
         switch (item)
         {
             case WeaponTemplate weaponTemplate:
