@@ -26,6 +26,14 @@ public interface IItem
     /// <para>当前项目的描述</para>
     /// </summary>
     string? Description { get; }
+    /// <summary>
+    /// <para>
+    ///     Whether the current item can be put into item containers like packsack.<br/>
+    ///     This attribute is usually set to false for items of the backpack class to avoid pack nesting.
+    /// </para>
+    /// <para>当前物品是否可以放入背包类的容器中。一般将背包类物品的该属性设为false来避免背包嵌套。</para>
+    /// </summary>
+    bool CanPutInPack { get; }
 
     /// <summary>
     /// <para>Execute when current item is used <br/> e.g. when player clicks left mouse button with current item in hand</para>

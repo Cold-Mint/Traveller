@@ -21,6 +21,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     [Export] protected string? UniqueName { get; set; }
     public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
     [Export] protected string? UniqueDescription { get; set; }
+    public virtual bool CanPutInPack => true;
 
     /// <summary>
     /// <para>Owner</para>

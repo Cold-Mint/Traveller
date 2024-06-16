@@ -17,17 +17,16 @@ public class PacksackStack(Packsack packsack) : IItemStack
     public Texture2D Icon => packsack.Icon;
     public string Name => packsack.Name;
     public string? Description => packsack.Description;
-
-    //todo: 只拒绝是背包的物品是权宜之计，应该为物品加入一个“是否可以放入背包”的属性来实现这个判断。
+    
     public bool CanAddItem(IItem item)
     {
-        if (item is Packsack) return false;
+        if (!item.CanPutInPack) return false;
         return packsack.ItemContainer?.CanAddItem(item) ?? false;
     }
 
     public bool AddItem(IItem item)
     {
-        if (item is Packsack) return false;
+        if (!item.CanPutInPack) return false;
         return packsack.ItemContainer?.AddItem(item) ?? false;
     }
 
