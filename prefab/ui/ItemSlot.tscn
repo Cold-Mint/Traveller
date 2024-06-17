@@ -7,6 +7,7 @@
 offset_right = 38.0
 offset_bottom = 38.0
 size_flags_vertical = 3
+mouse_filter = 0
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
@@ -15,6 +16,7 @@ script = ExtResource("1_fbwot")
 
 [node name="BackgroundTexture" type="TextureRect" parent="."]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("1_y2wyt")
 
 [node name="IconTextureRect" type="TextureRect" parent="BackgroundTexture"]
@@ -28,10 +30,12 @@ offset_right = -3.0
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 expand_mode = 1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="QuantityLabel" type="Label" parent="Control"]
 layout_mode = 1

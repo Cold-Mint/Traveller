@@ -2,14 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using ColdMint.scripts.character;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
-
 using Godot;
-
 using JetBrains.Annotations;
 
 namespace ColdMint.scripts.inventory;
@@ -62,7 +59,7 @@ public class UniversalItemContainer : IItemContainer
         var slots = MatchAll(slot => slot.CanAddItem(testItem));
         return
             Math.Min(itemStack.Quantity,
-                     slots.Select(slot => slot.CanAddItemStack(itemStack)).Sum());
+                slots.Select(slot => slot.CanAddItemStack(itemStack)).Sum());
     }
 
     public bool AddItemStack(IItemStack itemStack)
@@ -72,7 +69,7 @@ public class UniversalItemContainer : IItemContainer
         {
             if (itemSlotNode.AddItemStack(itemStack))
                 return true;
-            
+
             itemSlotNode = Match(itemStack);
         }
 
@@ -222,21 +219,22 @@ public class UniversalItemContainer : IItemContainer
     /// <para>Add items tank</para>
     /// <para>添加物品槽</para>
     /// </summary>
-    public void AddItemSlot(Node rootNode)
+    public ItemSlotNode? AddItemSlot(Node rootNode)
     {
         if (_itemSlotNodes == null || _itemSlotPackedScene == null)
         {
-            return;
+            return null;
         }
 
         var itemSlotNode = NodeUtils.InstantiatePackedScene<ItemSlotNode>(_itemSlotPackedScene, rootNode);
         if (itemSlotNode == null)
         {
-            return;
+            return null;
         }
 
         itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
+        return itemSlotNode;
     }
 
     public void SelectTheNextItemSlot()

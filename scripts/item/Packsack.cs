@@ -15,6 +15,8 @@ public partial class Packsack : PickAbleTemplate
 {
     private PackedScene? _packedScene;
     private PacksackUi? _packsackUi;
+    [Export]
+    public int NumberSlots { get; set; }
 
     public override bool CanPutInPack => false;
 
@@ -45,7 +47,7 @@ public partial class Packsack : PickAbleTemplate
                 _packsackUi.ItemContainer = ItemContainer;
             }
         }
-
+        GameSceneNodeHolder.BackpackUiContainer?.Show();
         _packsackUi?.Show();
     }
 
@@ -55,6 +57,12 @@ public partial class Packsack : PickAbleTemplate
     {
         base._Ready();
         ItemContainer = new UniversalItemContainer();
+        //When the backpack is created, the item slot is generated.
+        //当背包被创建时，物品槽就被生成出来了。
+        for (var i = 0; i < NumberSlots; i++)
+        {
+            ItemContainer.AddItemSlot(this)?.Hide();
+        }
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
     }
 }

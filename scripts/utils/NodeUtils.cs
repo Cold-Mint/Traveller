@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using ColdMint.scripts.debug;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.weapon;
-
 using Godot;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
 
@@ -71,7 +69,7 @@ public static class NodeUtils
     /// </param>
     /// <returns></returns>
     public static Node2D? GetTheNearestNode(Node2D origin, Node[] array, HashSet<Node>? exclude = null,
-                                            bool excludeInvisibleNodes = true)
+        bool excludeInvisibleNodes = true)
     {
         var closestDistance = float.MaxValue;
         Node2D? closestNode = null;
@@ -132,10 +130,11 @@ public static class NodeUtils
             return GameSceneNodeHolder.PacksackContainer;
         }
 
-        if (GameSceneNodeHolder.BackpackUiContainer!=null && childNode is PacksackUi)
+        if (GameSceneNodeHolder.BackpackUiContainer != null && childNode is PacksackUi)
         {
             return GameSceneNodeHolder.BackpackUiContainer;
         }
+
         return defaultParentNode;
     }
 
@@ -162,7 +161,7 @@ public static class NodeUtils
     /// <returns></returns>
     /// <seealso cref="InstantiatePackedScene{T}"/>
     public static Node InstantiatePackedScene(PackedScene packedScene, Node? defaultParentNode = null,
-                                              bool assignedByRootNodeType = true)
+        bool assignedByRootNodeType = true)
     {
         var instantiateNode = packedScene.Instantiate();
         //An attempt is made to place an instantiated node under a parent node only after the default parent node is set.
@@ -213,14 +212,14 @@ public static class NodeUtils
     /// <para>如果创建的节点无法转型至指定的类型，返回null</para>
     /// </returns>
     public static T? InstantiatePackedScene<T>(PackedScene packedScene, Node? defaultParentNode = null,
-                                               bool assignedByRootNodeType = true)
+        bool assignedByRootNodeType = true)
         where T : class
     {
         var node = InstantiatePackedScene(packedScene, defaultParentNode, assignedByRootNodeType);
         // 检查类型转化，成功返回结果
         if (node is T result) return result;
         //如果转型失败，释放所创建的节点
-        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to",node,nameof(T));
+        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", node, nameof(T));
         node.QueueFree();
         return null;
     }

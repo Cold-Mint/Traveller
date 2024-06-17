@@ -14,7 +14,7 @@ public partial class PacksackUi : UiLoaderTemplate
 
     private PackedScene? _packedScene;
 
-    private GridContainer? _gridContainer;
+    private HFlowContainer? _hFlowContainer;
 
     private Label? _titleLabel;
 
@@ -57,15 +57,16 @@ public partial class PacksackUi : UiLoaderTemplate
     /// <param name="itemContainer"></param>
     private void PlaceItemSlot(IItemContainer? itemContainer)
     {
-        if (_gridContainer == null || itemContainer == null)
+        if (_hFlowContainer == null || itemContainer == null)
         {
             return;
         }
 
-        NodeUtils.DeleteAllChild(_gridContainer);
+        NodeUtils.DeleteAllChild(_hFlowContainer);
         foreach (var itemSlotNode in itemContainer)
         {
-            itemSlotNode.Reparent(_gridContainer);
+            itemSlotNode.Reparent(_hFlowContainer);
+            itemSlotNode.Show();
         }
     }
 
@@ -91,10 +92,9 @@ public partial class PacksackUi : UiLoaderTemplate
 
     public override void InitializeUi()
     {
-        _gridContainer = GetNode<GridContainer>("GridContainer");
+        _hFlowContainer = GetNode<HFlowContainer>("HFlowContainer");
         _titleLabel = GetNode<Label>("TitleLabel");
         _exitButton = GetNode<Button>("ExitButton");
-        _gridContainer.Columns = Config.HotBarSize;
         //If the item container was set before this node was placed in the node tree, load it here.
         //若物品容器在此节点放置到节点树之前被设置了，那么在这里加载。
         PlaceItemSlot(_itemContainer);
@@ -105,7 +105,11 @@ public partial class PacksackUi : UiLoaderTemplate
     {
         if (_exitButton != null)
         {
-            _exitButton.Pressed += Hide;
+            _exitButton.Pressed += () =>
+            {
+                GameSceneNodeHolder.BackpackUiContainer?.Hide();
+                Hide();
+            };
         }
     }
 }

@@ -219,7 +219,7 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>添加物品槽</para>
     /// </summary>
     /// <param name="rootNode"></param>
-    void AddItemSlot(Node rootNode);
+    ItemSlotNode? AddItemSlot(Node rootNode);
 
     /// <summary>
     /// <para>SelectTheNextItemSlot</para>

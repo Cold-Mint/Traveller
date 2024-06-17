@@ -13,7 +13,10 @@ size = Vector2(21, 29)
 collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
+NumberSlots = 30
 Id = "packsack"
+UniqueName = null
+UniqueDescription = null
 _minContactInjury = null
 _maxContactInjury = null
 

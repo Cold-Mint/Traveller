@@ -9,46 +9,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_wm4bu")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.294118)
 
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 30.0
+offset_bottom = 25.0
 grow_horizontal = 2
 text = "ui_name"
 horizontal_alignment = 1
-
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 36.0
-offset_top = 57.0
-offset_right = -34.0
-offset_bottom = -23.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="ExitButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -75.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = 41.0
+offset_left = -91.0
+offset_top = 11.0
+offset_right = -24.0
+offset_bottom = 44.0
 grow_horizontal = 0
 text = "ui_close"
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 26.0
+offset_top = 70.0
+offset_right = -29.0
+offset_bottom = 389.0
+grow_horizontal = 2
+mouse_filter = 2

@@ -1,7 +1,7 @@
+using ColdMint.scripts.debug;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
-
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -20,6 +20,34 @@ public partial class ItemSlotNode : MarginContainer
     private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
+
+    public override Variant _GetDragData(Vector2 atPosition)
+    {
+        if (_iconTextureRect == null)
+        {
+            return base._GetDragData(atPosition);
+        }
+
+        var textureRect = new TextureRect();
+        textureRect.ExpandMode = _iconTextureRect.ExpandMode;
+        textureRect.Size = _iconTextureRect.Size;
+        textureRect.Texture = _iconTextureRect.Texture;
+        SetDragPreview(textureRect);
+        return Variant.From(this);
+    }
+
+    public override bool _CanDropData(Vector2 atPosition, Variant data)
+    {
+        if (_iconTextureRect == null)
+        {
+            return false;
+        }
+
+        //TODO:在这里判断是否可以放置物品。物品槽必须是空的。
+        // var itemSlotNode = data.As<ItemSlotNode>();
+        // itemSlotNode._itemStack
+        return true;
+    }
 
     public bool IsSelect
     {
@@ -272,9 +300,9 @@ public partial class ItemSlotNode : MarginContainer
             if (debugText != null)
             {
                 _control.TooltipText = string.Format(debugText, _itemStack.GetItem()?.Id,
-                                                     TranslationServerUtils.Translate(_itemStack.Name),
-                                                     _itemStack.Quantity, _itemStack.MaxQuantity, _itemStack.GetType().Name,
-                                                     TranslationServerUtils.Translate(_itemStack.Description));
+                    TranslationServerUtils.Translate(_itemStack.Name),
+                    _itemStack.Quantity, _itemStack.MaxQuantity, _itemStack.GetType().Name,
+                    TranslationServerUtils.Translate(_itemStack.Description));
             }
         }
         else
