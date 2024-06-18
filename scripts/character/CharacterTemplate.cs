@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
+using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.pickable;
-
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -67,7 +66,9 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Update finished items</para>
     ///<para>更新完成后的物品</para>
     /// </param>
-    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem) { }
+    protected virtual void WhenUpdateCurrentItem(Node2D? currentItem)
+    {
+    }
 
     //Define a pickup range
     //定义一个拾起范围
@@ -203,8 +204,8 @@ public partial class CharacterTemplate : CharacterBody2D
         base._Ready();
         PickingRangeBodiesList = new List<Node>();
         CharacterName = GetMeta("Name", Name).AsString();
-        CampId = GetMeta("CampId",      Config.CampId.Default).AsString();
-        MaxHp = GetMeta("MaxHp",        Config.DefaultMaxHp).AsInt32();
+        CampId = GetMeta("CampId", Config.CampId.Default).AsString();
+        MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
         // var lootListId = GetMeta("LootListId", string.Empty).AsString();
 
         if (MaxHp <= 0)
@@ -275,8 +276,8 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Get the currently selected node
         //拿到当前选择的节点
-        var itemSlotNode = ItemContainer.GetSelectItemSlotNode();
-        if (itemSlotNode == null)
+        var selectItemSlotNode = ItemContainer.GetSelectItemSlotNode();
+        if (selectItemSlotNode == null)
         {
             return false;
         }
@@ -306,12 +307,14 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Owner = this;
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   false);
+            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
             pickAbleTemplate.EnableContactInjury = false;
             pickAbleTemplate.Sleeping = true;
         }
 
-        if (itemSlotNode.GetItem() != null && itemSlotNode.GetItem() == item && _currentItem == null)
+        var itemStack = selectItemSlotNode.GetItemStack();
+        var itemFromStack = itemStack?.GetItem();
+        if (itemFromStack != null && itemFromStack == item && _currentItem == null)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
@@ -466,8 +469,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="lootData"></param>
     /// <param name="position"></param>
     public void GenerateLootObjects(Node parentNode,
-                                    IEnumerable<LootDatum> lootData,
-                                    Vector2 position)
+        IEnumerable<LootDatum> lootData,
+        Vector2 position)
     {
         foreach (var lootDatum in lootData)
         {
@@ -486,7 +489,9 @@ public partial class CharacterTemplate : CharacterBody2D
         _additionalForce = force;
     }
 
-    protected virtual void OnHit(DamageTemplate damageTemplate) { }
+    protected virtual void OnHit(DamageTemplate damageTemplate)
+    {
+    }
 
     /// <summary>
     /// <para>Handle the event of character death</para>
@@ -669,7 +674,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     pickAbleTemplate.EnableContactInjury = true;
-                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground,   true);
+                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };

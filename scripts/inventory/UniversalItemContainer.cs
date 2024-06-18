@@ -234,6 +234,32 @@ public class UniversalItemContainer : IItemContainer
 
         itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
+        // itemSlotNode.ItemStackChangeEvent += @event =>
+        // {
+        //     if (_itemSlotNodes == null)
+        //     {
+        //         return;
+        //     }
+        //
+        //     var index = _itemSlotNodes.IndexOf(itemSlotNode);
+        //     // LogCat.Log("位于" + index + "的堆改变了。" + _selectIndex + "空的吗" + (@event.ItemStack == null));
+        //     if (index == -1)
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (index == _selectIndex)
+        //     {
+        //         if (@event.ItemStack == null)
+        //         {
+        //             HideItem(index);
+        //         }
+        //         else
+        //         {
+        //             DisplayItem(index);
+        //         }
+        //     }
+        // };
         return itemSlotNode;
     }
 
@@ -317,14 +343,48 @@ public class UniversalItemContainer : IItemContainer
 
         _itemSlotNodes[oldSelectIndex].IsSelect = false;
         _itemSlotNodes[newSelectIndex].IsSelect = true;
-        var oldItem = _itemSlotNodes[oldSelectIndex].GetItem();
+        HideItem(oldSelectIndex);
+        DisplayItem(newSelectIndex);
+        _selectIndex = newSelectIndex;
+    }
+
+    /// <summary>
+    /// <para>HideItem</para>
+    /// <para>隐藏某个物品</para>
+    /// </summary>
+    /// <param name="index"></param>
+    private void HideItem(int index)
+    {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
+        var oldItem = _itemSlotNodes[index].GetItemStack()?.GetItem();
         if (oldItem is Node2D oldNode2D)
         {
             oldNode2D.ProcessMode = Node.ProcessModeEnum.Disabled;
             oldNode2D.Hide();
         }
+    }
 
-        var item = _itemSlotNodes[newSelectIndex].GetItem();
+    /// <summary>
+    /// <para>Displays the items in an item slot</para>
+    /// <para>显示某个物品槽内的物品</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>This method can also be used to refresh items held by the character, for example when a new item is dragged to the current display location, then call this method to refresh items held by the character.</para>
+    ///<para>此方法也可用于刷新角色手上持有的物品，例如当新的物品被拖动到当前显示位置，那么请调用此方法刷新角色持有的物品。</para>
+    /// </remarks>
+    /// <param name="index"></param>
+    private void DisplayItem(int index)
+    {
+        if (_itemSlotNodes == null)
+        {
+            return;
+        }
+
+        var item = _itemSlotNodes[index].GetItemStack()?.GetItem();
         switch (item)
         {
             case null:
@@ -357,8 +417,6 @@ public class UniversalItemContainer : IItemContainer
                 break;
             }
         }
-
-        _selectIndex = newSelectIndex;
     }
 
 

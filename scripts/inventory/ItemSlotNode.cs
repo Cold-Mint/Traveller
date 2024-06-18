@@ -1,6 +1,7 @@
-using ColdMint.scripts.debug;
+using System;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -20,12 +21,27 @@ public partial class ItemSlotNode : MarginContainer
     private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
+    public Action<ItemStackChangeEvent>? ItemStackChangeEvent;
+
+    public override void _Ready()
+    {
+        _backgroundTexture = GD.Load<Texture2D>("res://sprites/ui/ItemBarEmpty.png");
+        _backgroundTextureWhenSelect = GD.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
+        _backgroundTextureRect =
+            GetNode<TextureRect>("BackgroundTexture");
+        _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/IconTextureRect");
+        _quantityLabel = GetNode<Label>("Control/QuantityLabel");
+        _control = GetNode<Control>("Control");
+        _quantityLabel.Hide();
+    }
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
-        if (_iconTextureRect == null)
+        if (_iconTextureRect == null || _itemStack == null)
         {
-            return base._GetDragData(atPosition);
+            //Drag is not allowed if there is no icon or no pile of items.
+            //如果没有图标或者没有物品堆，那么不允许拖动。
+            return new Variant();
         }
 
         var textureRect = new TextureRect();
@@ -33,20 +49,63 @@ public partial class ItemSlotNode : MarginContainer
         textureRect.Size = _iconTextureRect.Size;
         textureRect.Texture = _iconTextureRect.Texture;
         SetDragPreview(textureRect);
-        return Variant.From(this);
+        return Variant.CreateFrom(this);
     }
 
     public override bool _CanDropData(Vector2 atPosition, Variant data)
     {
+        //If the preplaced slot does not have an icon, the preplaced slot is not allowed.
+        //如果预放置的槽位没有图标，那么不允许放置。
         if (_iconTextureRect == null)
         {
             return false;
         }
 
-        //TODO:在这里判断是否可以放置物品。物品槽必须是空的。
-        // var itemSlotNode = data.As<ItemSlotNode>();
-        // itemSlotNode._itemStack
-        return true;
+        var type = data.VariantType;
+        if (type == Variant.Type.Nil)
+        {
+            //The preplaced data is null.
+            //预放置的数据为null。
+            return false;
+        }
+
+        var itemSlotNode = data.As<ItemSlotNode>();
+        var itemStack = itemSlotNode.GetItemStack();
+        if (itemStack == null)
+        {
+            //Return null when trying to get the source item heap.
+            //尝试获取源物品堆时返回null。
+            return false;
+        }
+        
+        //TODO：This is where we infer whether the two piles can merge.在这里推断两个物品堆是否可以融合。
+        return _itemStack == null;
+    }
+
+    public override void _DropData(Vector2 atPosition, Variant data)
+    {
+        if (_iconTextureRect == null)
+        {
+            return;
+        }
+
+        var type = data.VariantType;
+        if (type == Variant.Type.Nil)
+        {
+            //The passed variable is null.
+            //传入的变量为null。
+            return;
+        }
+
+        var itemSlotNode = data.As<ItemSlotNode>();
+        var itemStack = itemSlotNode.ReplaceItemStack(null);
+        if (itemStack == null)
+        {
+            //Return null when trying to get the source item heap.
+            //尝试获取源物品堆时返回null。
+            return;
+        }
+        ReplaceItemStack(itemStack);
     }
 
     public bool IsSelect
@@ -75,12 +134,6 @@ public partial class ItemSlotNode : MarginContainer
     public IItemStack? GetItemStack() => _itemStack;
 
     /// <summary>
-    /// <para>If present, get the item at the top of the item stack in this slot</para>
-    /// <para>如果存在，获取该槽位中物品堆顶部的物品</para>
-    /// </summary>
-    public IItem? GetItem() => _itemStack?.GetItem();
-
-    /// <summary>
     /// <para>If present, remove an item in this slot and return it.</para>
     /// <para>如果存在，移除该槽位中的一个物品并将其返回</para>
     /// </summary>
@@ -90,7 +143,11 @@ public partial class ItemSlotNode : MarginContainer
         if (_itemStack is null) return null;
 
         var result = _itemStack.PickItem();
-        if (_itemStack.Empty) _itemStack = null;
+        if (_itemStack.Empty)
+        {
+            SetItemStack(null);
+        }
+
         UpdateAllDisplay();
 
         return result;
@@ -110,7 +167,11 @@ public partial class ItemSlotNode : MarginContainer
         if (_itemStack is null) return null;
 
         var result = _itemStack.PickItems(value);
-        if (_itemStack.Empty) _itemStack = null;
+        if (_itemStack.Empty)
+        {
+            SetItemStack(null);
+        }
+
         UpdateAllDisplay();
 
         return result;
@@ -142,7 +203,11 @@ public partial class ItemSlotNode : MarginContainer
         var result = _itemStack.RemoveItem(number);
         //If the specified number of items is removed, the number of items is less than or equal to 0. Then we empty the inventory.
         //如果移除指定数量的物品后，物品数量小于或等于0。那么我们清空物品栏。
-        if (_itemStack.Empty) _itemStack = null;
+        if (_itemStack.Empty)
+        {
+            SetItemStack(null);
+        }
+
         UpdateAllDisplay();
 
         return result;
@@ -166,8 +231,7 @@ public partial class ItemSlotNode : MarginContainer
     public void ClearSlot()
     {
         _itemStack?.ClearStack();
-        _itemStack = null;
-
+        SetItemStack(null);
         UpdateAllDisplay();
     }
 
@@ -185,8 +249,7 @@ public partial class ItemSlotNode : MarginContainer
     public IItemStack? ReplaceItemStack(IItemStack? newItemStack)
     {
         var result = _itemStack;
-        _itemStack = newItemStack;
-
+        SetItemStack(newItemStack);
         UpdateAllDisplay();
 
         return result;
@@ -213,7 +276,7 @@ public partial class ItemSlotNode : MarginContainer
         bool result;
         if (_itemStack is null)
         {
-            _itemStack = IItemStack.FromItem(item);
+            SetItemStack(IItemStack.FromItem(item));
             result = true;
         }
         else
@@ -257,7 +320,7 @@ public partial class ItemSlotNode : MarginContainer
         bool result;
         if (_itemStack is null)
         {
-            _itemStack = itemStack;
+            SetItemStack(itemStack);
             result = false;
         }
         else
@@ -287,10 +350,9 @@ public partial class ItemSlotNode : MarginContainer
     /// </summary>
     private void UpdateTooltipText()
     {
-        if (_control == null) return;
         if (_itemStack == null)
         {
-            _control.TooltipText = null;
+            TooltipText = null;
             return;
         }
 
@@ -299,7 +361,7 @@ public partial class ItemSlotNode : MarginContainer
             var debugText = TranslationServerUtils.Translate("item_prompt_debug");
             if (debugText != null)
             {
-                _control.TooltipText = string.Format(debugText, _itemStack.GetItem()?.Id,
+                TooltipText = string.Format(debugText, _itemStack.GetItem()?.Id,
                     TranslationServerUtils.Translate(_itemStack.Name),
                     _itemStack.Quantity, _itemStack.MaxQuantity, _itemStack.GetType().Name,
                     TranslationServerUtils.Translate(_itemStack.Description));
@@ -307,8 +369,8 @@ public partial class ItemSlotNode : MarginContainer
         }
         else
         {
-            _control.TooltipText = TranslationServerUtils.Translate(_itemStack.Name) + "\n" +
-                                   TranslationServerUtils.Translate(_itemStack.Description);
+            TooltipText = TranslationServerUtils.Translate(_itemStack.Name) + "\n" +
+                          TranslationServerUtils.Translate(_itemStack.Description);
         }
     }
 
@@ -338,6 +400,25 @@ public partial class ItemSlotNode : MarginContainer
     }
 
     /// <summary>
+    /// <para>SetItemStack</para>
+    /// <para>设置物品堆</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>This method broadcasts changes to the stack to the outside world</para>
+    ///<para>此方法会对外广播物品堆的变更事件</para>
+    /// </remarks>
+    /// <param name="itemStack"></param>
+    private void SetItemStack(IItemStack? itemStack)
+    {
+        _itemStack = itemStack;
+        var stackChangeEvent = new ItemStackChangeEvent
+        {
+            ItemStack = itemStack
+        };
+        ItemStackChangeEvent?.Invoke(stackChangeEvent);
+    }
+
+    /// <summary>
     /// <para>Update texture of the icon rect</para>
     /// <para>更新显示的物品图标</para>
     /// </summary>
@@ -349,15 +430,5 @@ public partial class ItemSlotNode : MarginContainer
         }
     }
 
-    public override void _Ready()
-    {
-        _backgroundTexture = GD.Load<Texture2D>("res://sprites/ui/ItemBarEmpty.png");
-        _backgroundTextureWhenSelect = GD.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
-        _backgroundTextureRect =
-            GetNode<TextureRect>("BackgroundTexture");
-        _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/IconTextureRect");
-        _quantityLabel = GetNode<Label>("Control/QuantityLabel");
-        _control = GetNode<Control>("Control");
-        _quantityLabel.Hide();
-    }
+  
 }
