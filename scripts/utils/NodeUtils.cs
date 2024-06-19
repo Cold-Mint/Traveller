@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.item;
@@ -34,6 +35,39 @@ public static class NodeUtils
         }
 
         return deleteNumber;
+    }
+
+
+    /// <summary>
+    /// <para>Traverse the child nodes of type T under the parent node</para>
+    /// <para>遍历父节点下T类型的子节点</para>
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="func">
+    ///<para>A function that handles callbacks and returns true to terminate the traversal of the node</para>
+    ///<para>用于处理回调的函数，返回true终止遍历节点</para>
+    /// </param>
+    /// <typeparam name="T">
+    ///<para>When the type is specified as Node, all child nodes are returned.</para>
+    ///<para>当指定类型为Node时，将返回所有子节点。</para>
+    /// </typeparam>
+    public static void ForEachNode<T>(Node parent, Func<T,bool> func) where T : Node
+    {
+        var count = parent.GetChildCount();
+        if (count <= 0)
+        {
+            return;
+        }
+
+        for (var i = 0; i < count; i++)
+        {
+            var node = parent.GetChild(i);
+            if (node is not T t) continue;
+            if (func.Invoke(t))
+            {
+                break;
+            }
+        }
     }
 
     /// <summary>

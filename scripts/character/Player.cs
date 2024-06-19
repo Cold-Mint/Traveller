@@ -264,6 +264,7 @@ public partial class Player : CharacterTemplate
             }
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
+            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
             CurrentItem = null;
         }
     }

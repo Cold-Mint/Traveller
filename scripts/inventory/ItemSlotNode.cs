@@ -1,7 +1,5 @@
-using System;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
-using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -21,7 +19,6 @@ public partial class ItemSlotNode : MarginContainer
     private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
-    public Action<ItemStackChangeEvent>? ItemStackChangeEvent;
 
     public override void _Ready()
     {
@@ -37,7 +34,7 @@ public partial class ItemSlotNode : MarginContainer
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
-        if (_iconTextureRect == null || _itemStack == null)
+        if (_isSelect || _iconTextureRect == null || _itemStack == null)
         {
             //Drag is not allowed if there is no icon or no pile of items.
             //如果没有图标或者没有物品堆，那么不允许拖动。
@@ -77,8 +74,7 @@ public partial class ItemSlotNode : MarginContainer
             //尝试获取源物品堆时返回null。
             return false;
         }
-        
-        //TODO：This is where we infer whether the two piles can merge.在这里推断两个物品堆是否可以融合。
+
         return _itemStack == null;
     }
 
@@ -105,6 +101,7 @@ public partial class ItemSlotNode : MarginContainer
             //尝试获取源物品堆时返回null。
             return;
         }
+
         ReplaceItemStack(itemStack);
     }
 
@@ -411,11 +408,6 @@ public partial class ItemSlotNode : MarginContainer
     private void SetItemStack(IItemStack? itemStack)
     {
         _itemStack = itemStack;
-        var stackChangeEvent = new ItemStackChangeEvent
-        {
-            ItemStack = itemStack
-        };
-        ItemStackChangeEvent?.Invoke(stackChangeEvent);
     }
 
     /// <summary>
@@ -429,6 +421,4 @@ public partial class ItemSlotNode : MarginContainer
             _iconTextureRect.Texture = _itemStack?.Icon;
         }
     }
-
-  
 }

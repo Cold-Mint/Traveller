@@ -31,6 +31,12 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <param name="item"></param>
     /// <returns></returns>
     bool AddItem(IItem item);
+    
+    /// <summary>
+    /// <para>Whether this item container supports checking</para>
+    /// <para>此物品容器是否支持选中</para>
+    /// </summary>
+    public bool SupportSelect { get; set; } 
 
     /// <summary>
     /// <para>Determines the number of items that can be received from the specified pile</para>

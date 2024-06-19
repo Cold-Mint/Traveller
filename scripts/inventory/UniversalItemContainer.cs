@@ -36,6 +36,9 @@ public class UniversalItemContainer : IItemContainer
     //_selectIndex默认为0.
     private int _selectIndex;
 
+
+    public bool SupportSelect { get; set; } = true;
+
     public bool CanAddItem(IItem item)
     {
         return Match(item) != null;
@@ -78,12 +81,17 @@ public class UniversalItemContainer : IItemContainer
 
     public int GetSelectIndex()
     {
+        if (!SupportSelect)
+        {
+            return 0;
+        }
+
         return _selectIndex;
     }
 
     public ItemSlotNode? GetSelectItemSlotNode()
     {
-        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
+        if (!SupportSelect || _itemSlotNodes == null || _itemSlotNodes.Count == 0)
         {
             return null;
         }
@@ -98,11 +106,35 @@ public class UniversalItemContainer : IItemContainer
         return null;
     }
 
-    public IItem? PickItemFromItemSlotBySelectIndex() => PickItemFromItemSlot(_selectIndex);
+    public IItem? PickItemFromItemSlotBySelectIndex()
+    {
+        if (!SupportSelect)
+        {
+            return null;
+        }
 
-    public IItemStack? PickItemsFromItemSlotBySelectIndex(int value) => PickItemsFromItemSlot(_selectIndex, value);
+        return PickItemFromItemSlot(_selectIndex);
+    }
 
-    public int RemoveItemFromItemSlotBySelectIndex(int number) => RemoveItemFromItemSlot(_selectIndex, number);
+    public IItemStack? PickItemsFromItemSlotBySelectIndex(int value)
+    {
+        if (!SupportSelect)
+        {
+            return null;
+        }
+
+        return PickItemsFromItemSlot(_selectIndex, value);
+    }
+
+    public int RemoveItemFromItemSlotBySelectIndex(int number)
+    {
+        if (!SupportSelect)
+        {
+            return 0;
+        }
+
+        return RemoveItemFromItemSlot(_selectIndex, number);
+    }
 
     public int GetItemSlotCount()
     {
@@ -232,7 +264,15 @@ public class UniversalItemContainer : IItemContainer
             return null;
         }
 
-        itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
+        if (SupportSelect)
+        {
+            itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
+        }
+        else
+        {
+            itemSlotNode.IsSelect = false;
+        }
+
         _itemSlotNodes.Add(itemSlotNode);
         // itemSlotNode.ItemStackChangeEvent += @event =>
         // {
@@ -265,7 +305,7 @@ public class UniversalItemContainer : IItemContainer
 
     public void SelectTheNextItemSlot()
     {
-        if (_itemSlotNodes == null)
+        if (!SupportSelect || _itemSlotNodes == null)
         {
             return;
         }
@@ -288,7 +328,7 @@ public class UniversalItemContainer : IItemContainer
 
     public void SelectThePreviousItemSlot()
     {
-        if (_itemSlotNodes == null)
+        if (!SupportSelect || _itemSlotNodes == null)
         {
             return;
         }
@@ -311,7 +351,7 @@ public class UniversalItemContainer : IItemContainer
 
     public void SelectItemSlot(int newSelectIndex)
     {
-        if (newSelectIndex == _selectIndex)
+        if (!SupportSelect || newSelectIndex == _selectIndex)
         {
             return;
         }
@@ -331,6 +371,11 @@ public class UniversalItemContainer : IItemContainer
     /// </summary>
     private void PrivateSelectItemSlot(int oldSelectIndex, int newSelectIndex)
     {
+        if (!SupportSelect)
+        {
+            return;
+        }
+
         if (oldSelectIndex == newSelectIndex)
         {
             return;

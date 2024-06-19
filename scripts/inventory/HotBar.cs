@@ -45,6 +45,7 @@ public partial class HotBar : HBoxContainer
         {
             //Mouse wheel down
             //鼠标滚轮向下
+            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
             _itemContainer?.SelectTheNextItemSlot();
         }
 
@@ -52,6 +53,7 @@ public partial class HotBar : HBoxContainer
         {
             //Mouse wheel up
             //鼠标滚轮向上
+            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
             _itemContainer?.SelectThePreviousItemSlot();
         }
 
@@ -110,11 +112,11 @@ public partial class HotBar : HBoxContainer
     /// <param name="shortcutKeyIndex"></param>
     private void SelectItemSlotByHotBarShortcutKey(int shortcutKeyIndex)
     {
+        GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
         if (_itemContainer == null)
         {
             return;
         }
-
         _itemContainer.SelectItemSlot(shortcutKeyIndex);
     }
 

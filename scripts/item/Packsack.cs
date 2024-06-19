@@ -57,6 +57,7 @@ public partial class Packsack : PickAbleTemplate
     {
         base._Ready();
         ItemContainer = new UniversalItemContainer();
+        ItemContainer.SupportSelect = false;
         //When the backpack is created, the item slot is generated.
         //当背包被创建时，物品槽就被生成出来了。
         for (var i = 0; i < NumberSlots; i++)
