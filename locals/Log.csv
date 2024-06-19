@@ -37,3 +37,4 @@ log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types i
 log_register_item,注册物品类型{0}结果为{1},Registered item type {0}; results in {1},登録されたアイテム・タイプ {0} の結果は {1} です。
 log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误,Error when opening itemRegs dir,アイテム情報カタログを開こうとしてエラーが発生しました。
 log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched parameter: type {0} and value {1},パラメータの不一致：型{0}と値{1}。
+log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です

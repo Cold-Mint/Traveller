@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ColdMint.scripts.character;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
 using JetBrains.Annotations;
@@ -21,11 +21,6 @@ public class UniversalItemContainer : IItemContainer
 
     private readonly List<ItemSlotNode>? _itemSlotNodes = [];
 
-    /// <summary>
-    /// <para>Character</para>
-    /// <para>角色</para>
-    /// </summary>
-    public CharacterTemplate? CharacterTemplate { get; set; }
 
     /// <summary>
     /// <para>UnknownIndex</para>
@@ -38,6 +33,8 @@ public class UniversalItemContainer : IItemContainer
 
 
     public bool SupportSelect { get; set; } = true;
+
+    public Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
 
     public bool CanAddItem(IItem item)
     {
@@ -274,32 +271,6 @@ public class UniversalItemContainer : IItemContainer
         }
 
         _itemSlotNodes.Add(itemSlotNode);
-        // itemSlotNode.ItemStackChangeEvent += @event =>
-        // {
-        //     if (_itemSlotNodes == null)
-        //     {
-        //         return;
-        //     }
-        //
-        //     var index = _itemSlotNodes.IndexOf(itemSlotNode);
-        //     // LogCat.Log("位于" + index + "的堆改变了。" + _selectIndex + "空的吗" + (@event.ItemStack == null));
-        //     if (index == -1)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (index == _selectIndex)
-        //     {
-        //         if (@event.ItemStack == null)
-        //         {
-        //             HideItem(index);
-        //         }
-        //         else
-        //         {
-        //             DisplayItem(index);
-        //         }
-        //     }
-        // };
         return itemSlotNode;
     }
 
@@ -371,25 +342,22 @@ public class UniversalItemContainer : IItemContainer
     /// </summary>
     private void PrivateSelectItemSlot(int oldSelectIndex, int newSelectIndex)
     {
-        if (!SupportSelect)
+        if (!SupportSelect || _itemSlotNodes == null || oldSelectIndex == newSelectIndex)
         {
             return;
         }
 
-        if (oldSelectIndex == newSelectIndex)
-        {
-            return;
-        }
-
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        _itemSlotNodes[oldSelectIndex].IsSelect = false;
-        _itemSlotNodes[newSelectIndex].IsSelect = true;
+        var oldItemSlotNode = _itemSlotNodes[oldSelectIndex];
+        oldItemSlotNode.IsSelect = false;
+        var newItemSlotNode = _itemSlotNodes[newSelectIndex];
+        newItemSlotNode.IsSelect = true;
         HideItem(oldSelectIndex);
         DisplayItem(newSelectIndex);
+        SelectedItemSlotChangeEvent?.Invoke(new SelectedItemSlotChangeEvent
+        {
+            NewItemSlotNode = newItemSlotNode,
+            OldItemSlotNode = oldItemSlotNode
+        });
         _selectIndex = newSelectIndex;
     }
 
@@ -400,17 +368,10 @@ public class UniversalItemContainer : IItemContainer
     /// <param name="index"></param>
     private void HideItem(int index)
     {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        var oldItem = _itemSlotNodes[index].GetItemStack()?.GetItem();
-        if (oldItem is Node2D oldNode2D)
-        {
-            oldNode2D.ProcessMode = Node.ProcessModeEnum.Disabled;
-            oldNode2D.Hide();
-        }
+        var oldItem = _itemSlotNodes?[index].GetItemStack()?.GetItem();
+        if (oldItem is not Node2D oldNode2D) return;
+        oldNode2D.ProcessMode = Node.ProcessModeEnum.Disabled;
+        oldNode2D.Hide();
     }
 
     /// <summary>
@@ -424,44 +385,10 @@ public class UniversalItemContainer : IItemContainer
     /// <param name="index"></param>
     private void DisplayItem(int index)
     {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        var item = _itemSlotNodes[index].GetItemStack()?.GetItem();
-        switch (item)
-        {
-            case null:
-            {
-                if (CharacterTemplate != null)
-                {
-                    CharacterTemplate.CurrentItem = null;
-                }
-
-                break;
-            }
-            case Node2D node2D:
-            {
-                node2D.ProcessMode = Node.ProcessModeEnum.Inherit;
-                node2D.Show();
-                if (CharacterTemplate != null)
-                {
-                    CharacterTemplate.CurrentItem = node2D;
-                }
-
-                break;
-            }
-            default:
-            {
-                if (CharacterTemplate != null)
-                {
-                    CharacterTemplate.CurrentItem = null;
-                }
-
-                break;
-            }
-        }
+        var item = _itemSlotNodes?[index].GetItemStack()?.GetItem();
+        if (item is not Node2D newNode2D) return;
+        newNode2D.ProcessMode = Node.ProcessModeEnum.Inherit;
+        newNode2D.Show();
     }
 
 

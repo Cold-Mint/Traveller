@@ -1,4 +1,5 @@
-﻿using ColdMint.scripts.character;
+﻿using System;
+using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
@@ -58,7 +59,16 @@ public partial class PlayerSpawn : Marker2D
         {
             return;
         }
-        playerNode.ItemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
+
+        var itemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
+        if (itemContainer == null)
+        {
+            //Throws an exception when the item container is empty.
+            //当物品容器为空时，抛出异常。
+            throw new NullReferenceException(TranslationServerUtils.Translate("log_item_container_is_null"));
+        }
+
+        playerNode.ItemContainer = itemContainer;
         GameSceneNodeHolder.Player = playerNode;
         playerNode.Position = GlobalPosition;
         LogCat.LogWithFormat("player_spawn_debug", playerNode.ReadOnlyCharacterName, playerNode.Position);

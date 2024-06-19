@@ -1,3 +1,4 @@
+using System;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
@@ -11,12 +12,14 @@ namespace ColdMint.scripts.inventory;
 public partial class HotBar : HBoxContainer
 {
     private IItemContainer? _itemContainer;
+    
+    Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
         _itemContainer = new UniversalItemContainer();
-        EventManager.PlayerInstanceChangeEvent += PlayerInstanceChangeEvent;
+        _itemContainer.SelectedItemSlotChangeEvent += SelectedItemSlotChangeEvent;
         NodeUtils.DeleteAllChild(this);
         for (var i = 0; i < Config.HotBarSize; i++)
         {
@@ -25,19 +28,6 @@ public partial class HotBar : HBoxContainer
     }
 
 
-    /// <summary>
-    /// <para>When the player instance changes, we update the binding of the item container</para>
-    /// <para>当玩家实例改变时，我们更新物品容器的绑定</para>
-    /// </summary>
-    /// <param name="playerInstanceChangeEvent"></param>
-    private void PlayerInstanceChangeEvent(PlayerInstanceChangeEvent playerInstanceChangeEvent)
-    {
-        if (_itemContainer is UniversalItemContainer universalItemContainer)
-        {
-            universalItemContainer.CharacterTemplate = GameSceneNodeHolder.Player;
-        }
-    }
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -45,7 +35,6 @@ public partial class HotBar : HBoxContainer
         {
             //Mouse wheel down
             //鼠标滚轮向下
-            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
             _itemContainer?.SelectTheNextItemSlot();
         }
 
@@ -53,7 +42,6 @@ public partial class HotBar : HBoxContainer
         {
             //Mouse wheel up
             //鼠标滚轮向上
-            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
             _itemContainer?.SelectThePreviousItemSlot();
         }
 
@@ -112,11 +100,11 @@ public partial class HotBar : HBoxContainer
     /// <param name="shortcutKeyIndex"></param>
     private void SelectItemSlotByHotBarShortcutKey(int shortcutKeyIndex)
     {
-        GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
         if (_itemContainer == null)
         {
             return;
         }
+
         _itemContainer.SelectItemSlot(shortcutKeyIndex);
     }
 
@@ -128,6 +116,9 @@ public partial class HotBar : HBoxContainer
     public override void _ExitTree()
     {
         base._ExitTree();
-        EventManager.PlayerInstanceChangeEvent -= PlayerInstanceChangeEvent;
+        if (_itemContainer != null)
+        {
+            _itemContainer.SelectedItemSlotChangeEvent -= SelectedItemSlotChangeEvent;
+        }
     }
 }

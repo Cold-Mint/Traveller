@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ColdMint.scripts.item;
 using ColdMint.scripts.item.itemStacks;
+using ColdMint.scripts.map.events;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -17,6 +18,12 @@ namespace ColdMint.scripts.inventory;
 public interface IItemContainer : IEnumerable<ItemSlotNode>
 {
     /// <summary>
+    /// <para>This event is triggered when the selected item slot changes</para>
+    /// <para>当选中的物品槽改变时，触发此事件</para>
+    /// </summary>
+    Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
+
+    /// <summary>
     /// <para>Can the specified item be added to the container?</para>
     /// <para>指定的物品是否可添加到容器内？</para>
     /// </summary>
@@ -31,12 +38,12 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <param name="item"></param>
     /// <returns></returns>
     bool AddItem(IItem item);
-    
+
     /// <summary>
     /// <para>Whether this item container supports checking</para>
     /// <para>此物品容器是否支持选中</para>
     /// </summary>
-    public bool SupportSelect { get; set; } 
+    public bool SupportSelect { get; set; }
 
     /// <summary>
     /// <para>Determines the number of items that can be received from the specified pile</para>

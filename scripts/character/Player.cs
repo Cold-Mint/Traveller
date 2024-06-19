@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
@@ -62,6 +62,43 @@ public partial class Player : CharacterTemplate
         }
     }
 
+    protected override void WhenBindItemContainer(IItemContainer? itemContainer)
+    {
+        if (itemContainer == null)
+        {
+            return;
+        }
+
+        //Subscribe to events when the item container is bound to the player.
+        //在物品容器与玩家绑定时订阅事件。
+        itemContainer.SelectedItemSlotChangeEvent += SelectedItemSlotChangeEvent;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        if (ProtectedItemContainer != null)
+        {
+            //Unsubscribe to events when this object is destroyed.
+            //此节点被销毁时，取消订阅事件。
+            ProtectedItemContainer.SelectedItemSlotChangeEvent -= SelectedItemSlotChangeEvent;
+        }
+    }
+
+    private void SelectedItemSlotChangeEvent(SelectedItemSlotChangeEvent selectedItemSlotChangeEvent)
+    {
+        var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItemStack()?.GetItem();
+        GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
+        if (item is Node2D node2D)
+        {
+            CurrentItem = node2D;
+        }
+        else
+        {
+            CurrentItem = null;
+        }
+    }
+
     /// <summary>
     /// <para>Update operation prompt</para>
     /// <para>更新操作提示</para>
@@ -103,7 +140,7 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
             operationTipBuilder.Append(
-                                       TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
+                TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
             operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump_down"));
         }
@@ -117,7 +154,7 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(Config.OperationTipActionColor);
             operationTipBuilder.Append(']');
             operationTipBuilder.Append(
-                                       TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
+                TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
             operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServerUtils.Translate("action_pick_up"));
             operationTipLabel.Text = operationTipBuilder.ToString();
@@ -140,7 +177,7 @@ public partial class Player : CharacterTemplate
                 operationTipBuilder.Append(Config.OperationTipActionColor);
                 operationTipBuilder.Append(']');
                 operationTipBuilder.Append(
-                                           TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
+                    TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
                 operationTipBuilder.Append("[/color]");
                 operationTipBuilder.Append(TranslationServerUtils.Translate("action_use_item"));
                 operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
@@ -244,8 +281,8 @@ public partial class Player : CharacterTemplate
             }
 
             _parabola.Points = CurrentItem == null
-                                   ? _emptyVector2Array
-                                   : ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
+                ? _emptyVector2Array
+                : ParabolicUtils.ComputeParabolic(ItemMarker2D.Position, GetThrowVelocity(), Gravity, 0.1f);
         }
 
 
@@ -403,9 +440,9 @@ public partial class Player : CharacterTemplate
             {
                 var rotationDegreesNode2D = node2D.RotationDegrees;
                 var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
-                _floatLabel.Position = rotationDegreesNode2DAbs > 90 
-                                           ? new Vector2(0, PromptTextDistance)
-                                           : new Vector2(0, -PromptTextDistance);
+                _floatLabel.Position = rotationDegreesNode2DAbs > 90
+                    ? new Vector2(0, PromptTextDistance)
+                    : new Vector2(0, -PromptTextDistance);
                 _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
                 var label = _floatLabel.GetNode<Label>("Label");
                 if (node is PickAbleTemplate pickAbleTemplate)

@@ -7,7 +7,6 @@ using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.item;
-using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.item.weapon;
 using ColdMint.scripts.loot;
@@ -40,9 +39,20 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected string? CharacterName;
 
+    protected IItemContainer? ProtectedItemContainer;
+
     //Item containers are used to store items.
     //物品容器用于存储物品。
-    public IItemContainer? ItemContainer { get; set; }
+    public IItemContainer? ItemContainer
+    {
+        get => ProtectedItemContainer;
+        set
+        {
+            ProtectedItemContainer = value;
+            WhenBindItemContainer(ProtectedItemContainer);
+        }
+    }
+
 
     //Items currently held
     //当前持有的物品
@@ -57,6 +67,16 @@ public partial class CharacterTemplate : CharacterBody2D
             WhenUpdateCurrentItem(_currentItem);
         }
     }
+
+    /// <summary>
+    /// <para>When binding an item container to a character</para>
+    /// <para>当为角色绑定物品容器时</para>
+    /// </summary>
+    /// <param name="itemContainer"></param>
+    protected virtual void WhenBindItemContainer(IItemContainer? itemContainer)
+    {
+    }
+
 
     /// <summary>
     /// <para>When the items the character holds are updated</para>
@@ -618,7 +638,6 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         var itemSlotNode = ItemContainer?.GetItemSlotNode(index);
         if (itemSlotNode is null) return;
-
         if (number < 0)
         {
             while (!itemSlotNode.IsEmpty())
