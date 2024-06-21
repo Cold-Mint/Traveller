@@ -61,7 +61,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public Node2D? CurrentItem
     {
         get => _currentItem;
-        set
+        protected set
         {
             _currentItem = value;
             WhenUpdateCurrentItem(_currentItem);
@@ -332,7 +332,6 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Sleeping = true;
         }
 
-        var selectItem = selectItemSlotNode.GetItem();
         if (_currentItem == null)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
@@ -664,8 +663,8 @@ public partial class CharacterTemplate : CharacterBody2D
     ///  </param>
     private void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
     {
-        //Pick an item from the item container
-        //从物品容器内取出一个物品
+        //Remove the item from the item container
+        //从物品容器内取出物品
         var item = itemSlotNode.GetItem();
 
         if (item is not Node2D node2D)
@@ -717,6 +716,8 @@ public partial class CharacterTemplate : CharacterBody2D
                 rigidBody2D.LinearVelocity = velocity;
                 break;
         }
+
+        itemSlotNode.RemoveItem(1);
     }
 
     /// <summary>

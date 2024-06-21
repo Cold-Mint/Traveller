@@ -166,7 +166,15 @@ public class UniversalItemContainer : IItemContainer
             return null;
         }
 
-        itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
+        if (SupportSelect)
+        {
+            itemSlotNode.IsSelect = _itemSlotNodes.Count == _selectIndex;
+        }
+        else
+        {
+            itemSlotNode.IsSelect = false;
+        }
+
         _itemSlotNodes.Add(itemSlotNode);
         return itemSlotNode;
     }
@@ -216,7 +224,7 @@ public class UniversalItemContainer : IItemContainer
 
         PrivateSelectItemSlot(oldSelectIndex, newSelectIndex);
     }
-    
+
     /// <summary>
     /// <para>Select an item slot</para>
     /// <para>选中某个物品槽</para>
@@ -241,7 +249,7 @@ public class UniversalItemContainer : IItemContainer
         });
         _selectIndex = newSelectIndex;
     }
-    
+
     /// <summary>
     /// <para>HideItem</para>
     /// <para>隐藏某个物品</para>

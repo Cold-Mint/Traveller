@@ -37,7 +37,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     [Export] private int _maxContactInjury = 2;
 
     public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
-    public int Quantity { get; set; }
+    public int Quantity { get; set; } = 1;
 
     /// <summary>
     /// <para>The number of tile maps that come into contact with this item</para>

@@ -12,13 +12,14 @@ namespace ColdMint.scripts.inventory;
 public partial class HotBar : HBoxContainer
 {
     private IItemContainer? _itemContainer;
-    
+
     Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
         _itemContainer = new UniversalItemContainer();
+        _itemContainer.SupportSelect = true;
         _itemContainer.SelectedItemSlotChangeEvent += SelectedItemSlotChangeEvent;
         NodeUtils.DeleteAllChild(this);
         for (var i = 0; i < Config.HotBarSize; i++)

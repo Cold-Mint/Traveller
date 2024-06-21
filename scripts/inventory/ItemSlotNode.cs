@@ -19,7 +19,18 @@ public partial class ItemSlotNode : MarginContainer
     private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
-    private IItem? _item = null;
+    private IItem? _item;
+
+    public IItem? Item
+    {
+        set
+        {
+            //Set item
+            //设置物品
+            _item = value;
+            UpdateAllDisplay();
+        }
+    }
 
     public override void _Ready()
     {
@@ -79,6 +90,14 @@ public partial class ItemSlotNode : MarginContainer
         return _item == null;
     }
 
+    /// <summary>
+    /// <para>Get the items in the item container</para>
+    /// <para>获取物品容器内的物品</para>
+    /// </summary>
+    /// <returns>
+    ///<para>There may be multiple quantities</para>
+    ///<para>数量可能有多个</para>
+    /// </returns>
     public IItem? GetItem()
     {
         return _item;
@@ -100,15 +119,16 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var itemSlotNode = data.As<ItemSlotNode>();
-        var itemStack = itemSlotNode._item;
-        if (itemStack == null)
+        var item = itemSlotNode._item;
+        if (item == null)
         {
-            //Return null when trying to get the source item heap.
-            //尝试获取源物品堆时返回null。
+            //Return null when trying to get the source item.
+            //尝试获取源物品时返回null。
             return;
         }
 
-        // ReplaceItemStack(itemStack);
+        itemSlotNode.Item = null;
+        Item = item;
     }
 
     public bool IsSelect
@@ -275,6 +295,11 @@ public partial class ItemSlotNode : MarginContainer
         //实际移除的数量
         var removeNumber = number < 0 ? _item.Quantity : number;
         _item.Quantity -= removeNumber;
+        if (_item.Quantity <= 0)
+        {
+            Item = null;
+        }
+
         return removeNumber;
     }
 
@@ -282,7 +307,8 @@ public partial class ItemSlotNode : MarginContainer
     {
         if (_item == null)
         {
-            return false;
+            Item = item;
+            return true;
         }
 
         var newQuantity = item.Quantity + _item.Quantity;
