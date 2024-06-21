@@ -120,9 +120,7 @@ public static class ItemTypeRegister
         string ScenePath,
         string IconPath,
         int MaxStackValue,
-        IList<CustomArg>? CustomArgs)
-    {
-    }
+        IList<CustomArg>? CustomArgs);
 
     private readonly record struct CustomArg(string Name, CustomArgType Type, string Value)
     {

@@ -19,17 +19,7 @@ public partial class Packsack : PickAbleTemplate
     public int NumberSlots { get; set; }
 
     public override bool CanPutInPack => false;
-
-    public override void Destroy()
-    {
-        if (ItemContainer == null) return;
-        foreach (var itemSlot in ItemContainer)
-        {
-            itemSlot.ClearSlot();
-        }
-
-        QueueFree();
-    }
+    
 
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {

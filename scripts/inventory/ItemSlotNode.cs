@@ -1,5 +1,6 @@
+using System;
+using System.Text.RegularExpressions;
 using ColdMint.scripts.item;
-using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -11,7 +12,6 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ItemSlotNode : MarginContainer
 {
-    private IItemStack? _itemStack;
     private TextureRect? _backgroundTextureRect;
     private TextureRect? _iconTextureRect;
     private Label? _quantityLabel;
@@ -19,6 +19,7 @@ public partial class ItemSlotNode : MarginContainer
     private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
+    private IItem? _item = null;
 
     public override void _Ready()
     {
@@ -34,7 +35,7 @@ public partial class ItemSlotNode : MarginContainer
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
-        if (_isSelect || _iconTextureRect == null || _itemStack == null)
+        if (_isSelect || _iconTextureRect == null)
         {
             //Drag is not allowed if there is no icon or no pile of items.
             //如果没有图标或者没有物品堆，那么不允许拖动。
@@ -67,15 +68,20 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var itemSlotNode = data.As<ItemSlotNode>();
-        var itemStack = itemSlotNode.GetItemStack();
-        if (itemStack == null)
+        var item = itemSlotNode.GetItem();
+        if (item == null)
         {
-            //Return null when trying to get the source item heap.
-            //尝试获取源物品堆时返回null。
+            //Return null when trying to get the source item.
+            //尝试获取源物品时返回null。
             return false;
         }
 
-        return _itemStack == null;
+        return _item == null;
+    }
+
+    public IItem? GetItem()
+    {
+        return _item;
     }
 
     public override void _DropData(Vector2 atPosition, Variant data)
@@ -94,7 +100,7 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var itemSlotNode = data.As<ItemSlotNode>();
-        var itemStack = itemSlotNode.ReplaceItemStack(null);
+        var itemStack = itemSlotNode._item;
         if (itemStack == null)
         {
             //Return null when trying to get the source item heap.
@@ -102,7 +108,7 @@ public partial class ItemSlotNode : MarginContainer
             return;
         }
 
-        ReplaceItemStack(itemStack);
+        // ReplaceItemStack(itemStack);
     }
 
     public bool IsSelect
@@ -121,212 +127,22 @@ public partial class ItemSlotNode : MarginContainer
 
     public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
 
-    public bool IsEmpty() => _itemStack == null;
-
     /// <summary>
-    /// <para>Get the item stack in the item slot</para>
-    /// <para>获取物品槽内的物品堆</para>
-    /// </summary>
-    /// <returns></returns>
-    public IItemStack? GetItemStack() => _itemStack;
-
-    /// <summary>
-    /// <para>If present, remove an item in this slot and return it.</para>
-    /// <para>如果存在，移除该槽位中的一个物品并将其返回</para>
-    /// </summary>
-    /// <seealso cref="PickItems"/>
-    public IItem? PickItem()
-    {
-        if (_itemStack is null) return null;
-
-        var result = _itemStack.PickItem();
-        if (_itemStack.Empty)
-        {
-            SetItemStack(null);
-        }
-
-        UpdateAllDisplay();
-
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Remove the specified number of items and return them as a new item stack</para>
-    /// <para>取出当前物品槽中指定数量的物品，并作为新的物品堆返回</para>
-    /// </summary>
-    /// <param name="value">
-    /// <para>Quantity to be taken out, inputs below zero represent all items</para>
-    /// <para>要取出的数量，小于0的输入代表全部物品</para>
-    /// </param>
-    /// <seealso cref="PickItem"/>
-    public IItemStack? PickItems(int value)
-    {
-        if (_itemStack is null) return null;
-
-        var result = _itemStack.PickItems(value);
-        if (_itemStack.Empty)
-        {
-            SetItemStack(null);
-        }
-
-        UpdateAllDisplay();
-
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Removes the specified number of items from the item slot</para>
-    /// <para>在物品槽内移除指定数量的物品</para>
-    /// </summary>
-    /// <param name="number">
-    /// <para>Quantity to be removed, inputs below zero represent all items</para>
-    /// <para>要删除的数量，小于0的输入代表全部物品</para>
-    /// </param>
-    /// <returns>
-    /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
-    /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
-    /// </returns>
-    /// <remarks>
-    /// <para>Will remove the removed items from the game, if that is not the intent, consider using the <see cref="PickItems"/></para>
-    /// <para>会将移除的物品从游戏中删除，如果目的并非如此，请考虑使用<see cref="PickItems"/></para>
-    /// </remarks>
-    public int RemoveItem(int number)
-    {
-        if (_itemStack == null)
-        {
-            return number;
-        }
-
-        var result = _itemStack.RemoveItem(number);
-        //If the specified number of items is removed, the number of items is less than or equal to 0. Then we empty the inventory.
-        //如果移除指定数量的物品后，物品数量小于或等于0。那么我们清空物品栏。
-        if (_itemStack.Empty)
-        {
-            SetItemStack(null);
-        }
-
-        UpdateAllDisplay();
-
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Remove item stack from slot and return it, equivalent to ReplaceItemStack(null)</para>
-    /// <para>从当前槽位中移出并返回物品堆，等价于ReplaceItemStack(null)</para>
-    /// <seealso cref="ReplaceItemStack"/>
-    /// </summary>
-    public IItemStack? RemoveItemStack() => ReplaceItemStack(null);
-
-    /// <summary>
-    /// <para>Empty the item slot</para>
-    /// <para>清空当前物品槽</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>This method will remove all items stored in the item slots from the game, if this is not what you want to do, consider using the <see cref="RemoveItemStack"/> method.</para>
-    ///<para>此方法会从游戏中移除储存于物品槽中的所有物品，若这不是您希望的操作，请考虑使用<see cref="RemoveItemStack"/>方法。</para>
-    /// </remarks>
-    public void ClearSlot()
-    {
-        _itemStack?.ClearStack();
-        SetItemStack(null);
-        UpdateAllDisplay();
-    }
-
-    /// <summary>
-    /// <para>
-    /// Set item stack for this slot, this will completely replace current item stack.
-    /// If you want the item stack to be added to current stack, use the <see cref="AddItemStack"/>.
-    /// </para>
-    /// <para>为物品槽设置物品堆，将完全替换掉当前物品堆。如果想要物品堆叠加至该物品堆，请使用<see cref="AddItemStack"/></para>
+    /// <para>Whether the item in this node is empty</para>
+    /// <para>此节点内的物品是否为空的</para>
     /// </summary>
     /// <returns>
-    /// <para>The item stack that was previously in this slot</para>
-    /// <para>该槽位中原本的物品堆</para>
+    ///<para>Return true if the number of items is 0 or the item object does not exist</para>
+    ///<para>当物品数量为0或物品对象不存在时，返回true</para>
     /// </returns>
-    public IItemStack? ReplaceItemStack(IItemStack? newItemStack)
+    public bool IsEmpty()
     {
-        var result = _itemStack;
-        SetItemStack(newItemStack);
-        UpdateAllDisplay();
-
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Can the specified item be placed in the item slot?</para>
-    /// <para>指定的物品是否可设置在物品槽内？</para>
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    public bool CanAddItem(IItem item)
-    {
-        if (_itemStack == null) return true;
-        return _itemStack.CanAddItem(item);
-    }
-
-    /// <summary>
-    /// <para>Try to add an item to this slot, if it can't be added to this slot, return false</para>
-    /// <para>尝试向当前槽位中加入物品，如果该物品不能被放入该槽位，返回false</para>
-    /// </summary>
-    public bool AddItem(IItem item)
-    {
-        bool result;
-        if (_itemStack is null)
+        if (_item == null || _item.Quantity == 0)
         {
-            SetItemStack(IItemStack.FromItem(item));
-            result = true;
-        }
-        else
-        {
-            result = _itemStack.AddItem(item);
+            return true;
         }
 
-        if (result)
-        {
-            UpdateAllDisplay();
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Determines the number of items that can be received from the specified pile</para>
-    /// <para>判断能从指定物品堆中接收的物品数量</para>
-    /// </summary>
-    /// <param name="itemStack">
-    /// <para>Item stack to add to the current slot</para>
-    /// <para>向该物品槽中放入物品的物品堆</para>
-    /// </param>
-    /// <returns></returns>
-    public int CanAddItemStack(IItemStack itemStack)
-    {
-        if (_itemStack is null) return itemStack.Quantity;
-        return _itemStack.CanTakeFrom(itemStack);
-    }
-
-    /// <summary>
-    /// <para>Try to combine an item stack into this slot</para>
-    /// <para>尝试将一个物品堆合并至该槽位中</para>
-    /// </summary>
-    /// <returns>
-    /// <para>If the source item stack is empty after the operation is completed</para>
-    /// <para>操作完成后，源物品堆是否被取空</para>
-    /// </returns>
-    public bool AddItemStack(IItemStack itemStack)
-    {
-        bool result;
-        if (_itemStack is null)
-        {
-            SetItemStack(itemStack);
-            result = false;
-        }
-        else
-        {
-            result = _itemStack.TakeFrom(itemStack);
-        }
-
-        UpdateAllDisplay();
-        return result;
+        return false;
     }
 
 
@@ -347,7 +163,7 @@ public partial class ItemSlotNode : MarginContainer
     /// </summary>
     private void UpdateTooltipText()
     {
-        if (_itemStack == null)
+        if (_item == null)
         {
             TooltipText = null;
             return;
@@ -358,16 +174,16 @@ public partial class ItemSlotNode : MarginContainer
             var debugText = TranslationServerUtils.Translate("item_prompt_debug");
             if (debugText != null)
             {
-                TooltipText = string.Format(debugText, _itemStack.GetItem()?.Id,
-                    TranslationServerUtils.Translate(_itemStack.Name),
-                    _itemStack.Quantity, _itemStack.MaxQuantity, _itemStack.GetType().Name,
-                    TranslationServerUtils.Translate(_itemStack.Description));
+                TooltipText = string.Format(debugText, _item.Id,
+                    TranslationServerUtils.Translate(_item.Name),
+                    _item.Quantity, _item.MaxQuantity, _item.GetType().Name,
+                    TranslationServerUtils.Translate(_item.Description));
             }
         }
         else
         {
-            TooltipText = TranslationServerUtils.Translate(_itemStack.Name) + "\n" +
-                          TranslationServerUtils.Translate(_itemStack.Description);
+            TooltipText = TranslationServerUtils.Translate(_item.Name) + "\n" +
+                          TranslationServerUtils.Translate(_item.Description);
         }
     }
 
@@ -382,7 +198,7 @@ public partial class ItemSlotNode : MarginContainer
             return;
         }
 
-        switch (_itemStack?.Quantity)
+        switch (_item?.Quantity)
         {
             case null or 1:
                 _quantityLabel.Hide();
@@ -390,25 +206,12 @@ public partial class ItemSlotNode : MarginContainer
             default:
                 //When the quantity is not null or 1, we display the quantity.
                 //当数量不为null或1时，我们显示数量
-                _quantityLabel.Text = _itemStack?.Quantity.ToString();
+                _quantityLabel.Text = _item?.Quantity.ToString();
                 _quantityLabel.Show();
                 break;
         }
     }
 
-    /// <summary>
-    /// <para>SetItemStack</para>
-    /// <para>设置物品堆</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>This method broadcasts changes to the stack to the outside world</para>
-    ///<para>此方法会对外广播物品堆的变更事件</para>
-    /// </remarks>
-    /// <param name="itemStack"></param>
-    private void SetItemStack(IItemStack? itemStack)
-    {
-        _itemStack = itemStack;
-    }
 
     /// <summary>
     /// <para>Update texture of the icon rect</para>
@@ -418,7 +221,72 @@ public partial class ItemSlotNode : MarginContainer
     {
         if (_iconTextureRect != null)
         {
-            _iconTextureRect.Texture = _itemStack?.Icon;
+            _iconTextureRect.Texture = _item?.Icon;
         }
+    }
+
+    public bool CanAddItem(IItem item)
+    {
+        if (_item == null)
+        {
+            //If there is no item in the current item slot, it is allowed to add.
+            //如果当前物品槽内没物品，那么允许添加。
+            return true;
+        }
+
+        if (item.Id != _item.Id)
+        {
+            //If the item ID you want to add is different from the current item ID, disable.
+            //如果要添加的物品ID和当前的物品ID不一样，那么禁止。
+            return false;
+        }
+
+        var newQuantity = item.Quantity + _item.Quantity;
+        if (newQuantity > _item.MaxQuantity)
+        {
+            //The maximum number is exceeded and items cannot be added.
+            //超过了最大数量，无法添加物品。
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// <para>Remove items from the item slot</para>
+    /// <para>从物品槽内移除物品</para>
+    /// </summary>
+    /// <param name="number">
+    ///<para>number(Less than 0, remove all items)</para>
+    ///<para>物品数量(小于0，则移除全部物品)</para>
+    /// </param>
+    /// <returns>
+    ///<para>How many items were actually removed</para>
+    ///<para>实际移除了多少个物品</para>
+    /// </returns>
+    public int RemoveItem(int number)
+    {
+        if (_item == null)
+        {
+            return 0;
+        }
+
+        //The number of actual removals
+        //实际移除的数量
+        var removeNumber = number < 0 ? _item.Quantity : number;
+        _item.Quantity -= removeNumber;
+        return removeNumber;
+    }
+
+    public bool AddItem(IItem item)
+    {
+        if (_item == null)
+        {
+            return false;
+        }
+
+        var newQuantity = item.Quantity + _item.Quantity;
+        _item.Quantity = Math.Min(newQuantity, _item.MaxQuantity);
+        return true;
     }
 }

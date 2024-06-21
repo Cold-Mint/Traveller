@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColdMint.scripts.item;
-using ColdMint.scripts.item.itemStacks;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
@@ -17,10 +16,9 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public class UniversalItemContainer : IItemContainer
 {
-    private readonly PackedScene? _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
-
     private readonly List<ItemSlotNode>? _itemSlotNodes = [];
 
+    private readonly PackedScene? _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
 
     /// <summary>
     /// <para>UnknownIndex</para>
@@ -31,8 +29,17 @@ public class UniversalItemContainer : IItemContainer
     //_selectIndex默认为0.
     private int _selectIndex;
 
+    [MustDisposeResource]
+    public IEnumerator<ItemSlotNode> GetEnumerator()
+    {
+        return _itemSlotNodes?.GetEnumerator() ?? Enumerable.Empty<ItemSlotNode>().GetEnumerator();
+    }
 
-    public bool SupportSelect { get; set; } = true;
+    [MustDisposeResource]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
     public Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
 
@@ -52,43 +59,16 @@ public class UniversalItemContainer : IItemContainer
         return itemSlotNode.AddItem(item);
     }
 
-    public int CanAddItemStack(IItemStack itemStack)
-    {
-        var testItem = itemStack.GetItem();
-        if (testItem is null) return 0;
-        var slots = MatchAll(slot => slot.CanAddItem(testItem));
-        return
-            Math.Min(itemStack.Quantity,
-                slots.Select(slot => slot.CanAddItemStack(itemStack)).Sum());
-    }
-
-    public bool AddItemStack(IItemStack itemStack)
-    {
-        ItemSlotNode? itemSlotNode = Match(itemStack);
-        while (itemSlotNode is not null)
-        {
-            if (itemSlotNode.AddItemStack(itemStack))
-                return true;
-
-            itemSlotNode = Match(itemStack);
-        }
-
-        return false;
-    }
+    public bool SupportSelect { get; set; }
 
     public int GetSelectIndex()
     {
-        if (!SupportSelect)
-        {
-            return 0;
-        }
-
         return _selectIndex;
     }
 
     public ItemSlotNode? GetSelectItemSlotNode()
     {
-        if (!SupportSelect || _itemSlotNodes == null || _itemSlotNodes.Count == 0)
+        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
         {
             return null;
         }
@@ -103,35 +83,7 @@ public class UniversalItemContainer : IItemContainer
         return null;
     }
 
-    public IItem? PickItemFromItemSlotBySelectIndex()
-    {
-        if (!SupportSelect)
-        {
-            return null;
-        }
-
-        return PickItemFromItemSlot(_selectIndex);
-    }
-
-    public IItemStack? PickItemsFromItemSlotBySelectIndex(int value)
-    {
-        if (!SupportSelect)
-        {
-            return null;
-        }
-
-        return PickItemsFromItemSlot(_selectIndex, value);
-    }
-
-    public int RemoveItemFromItemSlotBySelectIndex(int number)
-    {
-        if (!SupportSelect)
-        {
-            return 0;
-        }
-
-        return RemoveItemFromItemSlot(_selectIndex, number);
-    }
+    public int RemoveItemFromItemSlotBySelectIndex(int number) => RemoveItemFromItemSlot(_selectIndex, number);
 
     public int GetItemSlotCount()
     {
@@ -154,32 +106,6 @@ public class UniversalItemContainer : IItemContainer
         return _itemSlotNodes[safeIndex];
     }
 
-    public IItem? PickItemFromItemSlot(int itemSlotIndex)
-    {
-        if (_itemSlotNodes == null) return null;
-        var safeIndex = GetSafeIndex(itemSlotIndex);
-        if (safeIndex == UnknownIndex)
-        {
-            return null;
-        }
-
-        var itemSlot = _itemSlotNodes[safeIndex];
-        return itemSlot.PickItem();
-    }
-
-    public IItemStack? PickItemsFromItemSlot(int itemSlotIndex, int value)
-    {
-        if (_itemSlotNodes == null) return null;
-        var safeIndex = GetSafeIndex(itemSlotIndex);
-        if (safeIndex == UnknownIndex)
-        {
-            return null;
-        }
-
-        var itemSlot = _itemSlotNodes[safeIndex];
-        return itemSlot.PickItems(value);
-    }
-
     public int RemoveItemFromItemSlot(int itemSlotIndex, int number)
     {
         if (_itemSlotNodes == null) return number;
@@ -192,30 +118,6 @@ public class UniversalItemContainer : IItemContainer
         var itemSlot = _itemSlotNodes[safeIndex];
         return itemSlot.RemoveItem(number);
     }
-
-    public ItemSlotNode? Match(IItem item)
-    {
-        //Find and return the first slot that can hold this item, if the list is null or not found, return null
-        //寻找并返回第一个遇到的可放置此物品的物品槽，若列表为空或不存在，将返回null
-        return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(item));
-    }
-
-    public ItemSlotNode? Match(IItemStack stack)
-    {
-        var item = stack.GetItem();
-        return item == null ? null : _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(item));
-    }
-
-    public ItemSlotNode? Match(Func<ItemSlotNode, bool> predicate)
-    {
-        return _itemSlotNodes?.FirstOrDefault(predicate);
-    }
-
-    public IEnumerable<ItemSlotNode> MatchAll(Func<ItemSlotNode, bool> predicate)
-    {
-        return from node in _itemSlotNodes where predicate(node) select node;
-    }
-
 
     /// <summary>
     /// <para>Gets a secure subscript index</para>
@@ -244,10 +146,13 @@ public class UniversalItemContainer : IItemContainer
         return itemSlotIndex % count;
     }
 
-    /// <summary>
-    /// <para>Add items tank</para>
-    /// <para>添加物品槽</para>
-    /// </summary>
+    public ItemSlotNode? Match(IItem item)
+    {
+        //Find and return the first slot that can hold this item, if the list is null or not found, return null
+        //寻找并返回第一个遇到的可放置此物品的物品槽，若列表为空或不存在，将返回null
+        return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(item));
+    }
+
     public ItemSlotNode? AddItemSlot(Node rootNode)
     {
         if (_itemSlotNodes == null || _itemSlotPackedScene == null)
@@ -261,22 +166,14 @@ public class UniversalItemContainer : IItemContainer
             return null;
         }
 
-        if (SupportSelect)
-        {
-            itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
-        }
-        else
-        {
-            itemSlotNode.IsSelect = false;
-        }
-
+        itemSlotNode.IsSelect = (_itemSlotNodes.Count) == _selectIndex;
         _itemSlotNodes.Add(itemSlotNode);
         return itemSlotNode;
     }
 
     public void SelectTheNextItemSlot()
     {
-        if (!SupportSelect || _itemSlotNodes == null)
+        if (_itemSlotNodes == null)
         {
             return;
         }
@@ -299,7 +196,7 @@ public class UniversalItemContainer : IItemContainer
 
     public void SelectThePreviousItemSlot()
     {
-        if (!SupportSelect || _itemSlotNodes == null)
+        if (_itemSlotNodes == null)
         {
             return;
         }
@@ -319,23 +216,7 @@ public class UniversalItemContainer : IItemContainer
 
         PrivateSelectItemSlot(oldSelectIndex, newSelectIndex);
     }
-
-    public void SelectItemSlot(int newSelectIndex)
-    {
-        if (!SupportSelect || newSelectIndex == _selectIndex)
-        {
-            return;
-        }
-
-        var safeIndex = GetSafeIndex(newSelectIndex);
-        if (safeIndex == UnknownIndex)
-        {
-            return;
-        }
-
-        PrivateSelectItemSlot(_selectIndex, newSelectIndex);
-    }
-
+    
     /// <summary>
     /// <para>Select an item slot</para>
     /// <para>选中某个物品槽</para>
@@ -360,7 +241,7 @@ public class UniversalItemContainer : IItemContainer
         });
         _selectIndex = newSelectIndex;
     }
-
+    
     /// <summary>
     /// <para>HideItem</para>
     /// <para>隐藏某个物品</para>
@@ -368,7 +249,7 @@ public class UniversalItemContainer : IItemContainer
     /// <param name="index"></param>
     private void HideItem(int index)
     {
-        var oldItem = _itemSlotNodes?[index].GetItemStack()?.GetItem();
+        var oldItem = _itemSlotNodes?[index].GetItem();
         if (oldItem is not Node2D oldNode2D) return;
         oldNode2D.ProcessMode = Node.ProcessModeEnum.Disabled;
         oldNode2D.Hide();
@@ -385,22 +266,25 @@ public class UniversalItemContainer : IItemContainer
     /// <param name="index"></param>
     private void DisplayItem(int index)
     {
-        var item = _itemSlotNodes?[index].GetItemStack()?.GetItem();
+        var item = _itemSlotNodes?[index].GetItem();
         if (item is not Node2D newNode2D) return;
         newNode2D.ProcessMode = Node.ProcessModeEnum.Inherit;
         newNode2D.Show();
     }
 
-
-    [MustDisposeResource]
-    public IEnumerator<ItemSlotNode> GetEnumerator()
+    public void SelectItemSlot(int newSelectIndex)
     {
-        return _itemSlotNodes?.GetEnumerator() ?? Enumerable.Empty<ItemSlotNode>().GetEnumerator();
-    }
+        if (newSelectIndex == _selectIndex)
+        {
+            return;
+        }
 
-    [MustDisposeResource]
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
+        var safeIndex = GetSafeIndex(newSelectIndex);
+        if (safeIndex == UnknownIndex)
+        {
+            return;
+        }
+
+        PrivateSelectItemSlot(_selectIndex, newSelectIndex);
     }
 }

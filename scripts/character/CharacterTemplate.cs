@@ -332,9 +332,8 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Sleeping = true;
         }
 
-        var itemStack = selectItemSlotNode.GetItemStack();
-        var itemFromStack = itemStack?.GetItem();
-        if (itemFromStack != null && itemFromStack == item && _currentItem == null)
+        var selectItem = selectItemSlotNode.GetItem();
+        if (_currentItem == null)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
@@ -667,7 +666,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Pick an item from the item container
         //从物品容器内取出一个物品
-        var item = itemSlotNode.PickItem();
+        var item = itemSlotNode.GetItem();
 
         if (item is not Node2D node2D)
         {

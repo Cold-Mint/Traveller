@@ -1,10 +1,8 @@
 ﻿using System;
-
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.item;
-
 using Godot;
 
 namespace ColdMint.scripts.pickable;
@@ -39,6 +37,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     [Export] private int _maxContactInjury = 2;
 
     public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
+    public int Quantity { get; set; }
 
     /// <summary>
     /// <para>The number of tile maps that come into contact with this item</para>
@@ -58,7 +57,11 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// </summary>
     public bool Picked { get; set; }
 
-    public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition) { }
+    public int MaxQuantity { get; set; }
+
+    public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    {
+    }
 
     public override void _Ready()
     {
@@ -125,7 +128,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             //Determine if your side can cause damage
             //判断所属的阵营是否可以造成伤害
             var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-                                                        CampManager.GetCamp(characterTemplate.CampId));
+                CampManager.GetCamp(characterTemplate.CampId));
             if (!canCauseHarm)
             {
                 return;
@@ -155,7 +158,9 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <para>翻转物品</para>
     /// </summary>
     /// <param name="facingLeft"></param>
-    public void Flip(bool facingLeft) { }
+    public void Flip(bool facingLeft)
+    {
+    }
 
     public virtual void Destroy()
     {

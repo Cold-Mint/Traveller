@@ -87,7 +87,7 @@ public partial class Player : CharacterTemplate
 
     private void SelectedItemSlotChangeEvent(SelectedItemSlotChangeEvent selectedItemSlotChangeEvent)
     {
-        var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItemStack()?.GetItem();
+        var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItem();
         GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
         if (item is Node2D node2D)
         {
