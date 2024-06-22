@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ColdMint.scripts.item;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;

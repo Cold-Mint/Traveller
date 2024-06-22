@@ -1,11 +1,9 @@
-﻿using ColdMint.scripts.inventory;
-using ColdMint.scripts.pickable;
+﻿using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
-
 using Godot;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.inventory;
 
 /// <summary>
 /// <para>packsack</para>

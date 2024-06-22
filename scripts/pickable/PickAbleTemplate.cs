@@ -2,7 +2,7 @@
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.item;
+using ColdMint.scripts.inventory;
 using Godot;
 
 namespace ColdMint.scripts.pickable;

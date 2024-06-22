@@ -6,9 +6,10 @@ using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.inventory;
 
 /// <summary>
+/// Responsible for registering items from documents
 /// 负责从文件注册物品
 /// </summary>
 public static class ItemTypeRegister

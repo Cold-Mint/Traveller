@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cn10fimoem04m"]
 
-[ext_resource type="Script" path="res://scripts/item/Packsack.cs" id="1_slakl"]
+[ext_resource type="Script" path="res://scripts/inventory/Packsack.cs" id="1_slakl"]
 [ext_resource type="Texture2D" uid="uid://dvx10dfjctn7t" path="res://sprites/packsack.png" id="2_40jca"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_brthl"]

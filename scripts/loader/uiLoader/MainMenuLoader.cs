@@ -6,7 +6,7 @@ using ColdMint.scripts.camp;
 using ColdMint.scripts.contribute;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.item;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;

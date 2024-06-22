@@ -1,8 +1,7 @@
 ﻿using System;
-
 using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.inventory;
 
 public readonly struct ItemType(string id, Func<IItem?> newItemFunc, Texture2D? icon, int maxStackQuantity)
 {

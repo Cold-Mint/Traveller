@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ColdMint.scripts.item;
 using ColdMint.scripts.map.events;
 using Godot;
 

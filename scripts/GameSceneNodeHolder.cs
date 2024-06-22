@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.item;
 using ColdMint.scripts.loader.uiLoader;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;

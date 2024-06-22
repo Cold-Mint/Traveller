@@ -6,12 +6,11 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.item.weapon;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.pickable;
 using Godot;
+using WeaponTemplate = ColdMint.scripts.weapon.WeaponTemplate;
 
 namespace ColdMint.scripts.character;
 

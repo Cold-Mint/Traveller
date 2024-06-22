@@ -1,10 +1,9 @@
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
 using ColdMint.scripts.utils;
-
 using Godot;
 
-namespace ColdMint.scripts.item.weapon;
+namespace ColdMint.scripts.weapon;
 
 /// <summary>
 /// <para>Projectile weapons</para>

@@ -1,6 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
-using ColdMint.scripts.item;
 using ColdMint.scripts.utils;
 using Godot;
 

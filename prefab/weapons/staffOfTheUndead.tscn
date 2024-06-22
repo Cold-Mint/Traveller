@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://e6670ykyq145" path="res://sprites/weapon/staffOfTheUndead.png" id="1_ms3us"]
-[ext_resource type="Script" path="res://scripts/item/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
+[ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="PackedScene" uid="uid://c01av43yk1q71" path="res://prefab/projectile/curseOfTheUndead.tscn" id="2_34250"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]

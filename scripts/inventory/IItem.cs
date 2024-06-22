@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.inventory;
 
 public interface IItem
 {

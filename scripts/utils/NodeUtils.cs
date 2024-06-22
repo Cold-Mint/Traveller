@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.item;
-using ColdMint.scripts.item.weapon;
 using Godot;
+using Packsack = ColdMint.scripts.inventory.Packsack;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
+using WeaponTemplate = ColdMint.scripts.weapon.WeaponTemplate;
 
 
 namespace ColdMint.scripts.utils;

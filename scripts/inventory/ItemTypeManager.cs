@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-
 using ColdMint.scripts.utils;
-
 using Godot;
 
-namespace ColdMint.scripts.item;
+namespace ColdMint.scripts.inventory;
 
 /// <summary>
 /// <para>Item manager</para>

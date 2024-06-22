@@ -1,10 +1,9 @@
 using System;
-
 using ColdMint.scripts.character;
 using ColdMint.scripts.pickable;
 using Godot;
 
-namespace ColdMint.scripts.item.weapon;
+namespace ColdMint.scripts.weapon;
 
 /// <summary>
 /// <para>WeaponTemplate</para>

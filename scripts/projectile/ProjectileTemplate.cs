@@ -3,8 +3,7 @@ using System;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.item;
-using ColdMint.scripts.item.weapon;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.pickable;
 using Godot;
 
