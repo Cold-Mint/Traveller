@@ -101,6 +101,43 @@ public partial class ItemSlotNode : MarginContainer
         return _item;
     }
 
+    /// <summary>
+    /// <para>CreateItemInstance</para>
+    /// <para>创建物品槽内的物品实例</para>
+    /// </summary>
+    /// <param name="number">
+    ///<para>number</para>
+    ///<para>数量</para>
+    /// </param>
+    /// <returns>
+    ///<para>Newly created item</para>
+    ///<para>新创建的物品</para>
+    /// </returns>
+    public IItem? CreateItemInstance(int number)
+    {
+        if (_item is not Node2D node2D)
+        {
+            return null;
+        }
+
+        var duplicate = node2D.Duplicate();
+        if (duplicate is not IItem newItem)
+        {
+            return null;
+        }
+        
+        if (number > _item.Quantity)
+        {
+            //The number of item instances created exceeds the current number of items
+            //创建的物品实例数量，超过了当前物品的数量
+            duplicate.QueueFree();
+            return null;
+        }
+
+        newItem.Quantity = number;
+        return newItem;
+    }
+
     public override void _DropData(Vector2 atPosition, Variant data)
     {
         if (_iconTextureRect == null)
@@ -311,6 +348,11 @@ public partial class ItemSlotNode : MarginContainer
 
         var newQuantity = item.Quantity + _item.Quantity;
         _item.Quantity = Math.Min(newQuantity, _item.MaxQuantity);
+        if (item is Node2D node2D)
+        {
+            node2D.QueueFree();
+        }
+        UpdateQuantityLabel();
         return true;
     }
 }

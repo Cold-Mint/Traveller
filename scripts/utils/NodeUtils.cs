@@ -250,8 +250,10 @@ public static class NodeUtils
         where T : class
     {
         var node = InstantiatePackedScene(packedScene, defaultParentNode, assignedByRootNodeType);
+        // Check the type conversion and return the result successfully
         // 检查类型转化，成功返回结果
         if (node is T result) return result;
+        // If the transformation fails, release the created node
         //如果转型失败，释放所创建的节点
         LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", node, nameof(T));
         node.QueueFree();

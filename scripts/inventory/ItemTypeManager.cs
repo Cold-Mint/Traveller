@@ -33,69 +33,62 @@ public static class ItemTypeManager
     /// <para>Returns null when the id is not registered.</para>
     /// <para>当物品id没有注册时返回null</para>
     /// </returns>
-    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
-    public static IItem? NewItem(string id) =>
-        Registry.TryGetValue(id, out var itemType) ? itemType.NewItemFunc() : null;
+    /// <param name="id">
+    ///<para>Item Id</para>
+    ///<para>物品Id</para>
+    /// </param>
+    /// <param name="defaultParentNode">
+    ///<para>Default parent</para>
+    ///<para>父节点</para>
+    /// </param>
+    /// <param name="assignedByRootNodeType">
+    ///<para>Enabled by default, whether to place a node into a container node that matches the type of the root node after it is instantiated. If the assignment fails by type, it is placed under the default parent node.</para>
+    ///<para>默认启用，实例化节点后，是否将其放置到与根节点类型相匹配的容器节点内。如果按照类型分配失败，则放置在默认父节点下。</para>
+    /// </param>
+    /// <seealso cref="CreateItems"/>
+    public static IItem? CreateItem(string id, Node? defaultParentNode = null, bool assignedByRootNodeType = true) =>
+        Registry.TryGetValue(id, out var itemType)
+            ? itemType.CreateItemFunc(defaultParentNode, assignedByRootNodeType)
+            : null;
+
 
     /// <summary>
-    /// <para>Creates new instances in given amount of the item registered to the given id.</para>
-    /// <para>创建给定数量的注册到给定 id 的物品的新实例。</para>
+    /// <para>Create multiple new item instances for the given item Id</para>
+    /// <para>创建多个给定物品Id的新物品实例</para>
     /// </summary>
+    /// <param name="id"></param>
+    /// <param name="number"></param>
+    /// <param name="defaultParentNode"></param>
+    /// <param name="assignedByRootNodeType"></param>
+    /// <param name="globalPosition"></param>
     /// <returns></returns>
-    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
-    public static IList<IItem> NewItems(string id, int amount)
+    /// <seealso cref="CreateItem"/>
+    public static IItem?[]? CreateItems(string id, int number, Vector2 globalPosition, Node? defaultParentNode = null,
+        bool assignedByRootNodeType = true)
     {
-        IList<IItem> result = [];
-        for (int i = 0; i < amount; i++)
+        if (number <= 0)
         {
-            if (NewItem(id) is { } item) result.Add(item);
+            return null;
         }
 
-        return result;
-    }
-
-    /// <summary>
-    /// <para>Creates new instance of the item registered to the given id, and put it into given position in both node tree and 2D space</para>
-    /// <para>创建以给定 id 注册的物品的新实例，并将其放到节点树和二维空间中的给定位置</para>
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="parent"></param>
-    /// <param name="position">
-    /// <para>Position in global coordinate</para>
-    /// <para>全局坐标中的位置</para>
-    /// </param>
-    /// <seealso cref="NewItem"/><seealso cref="CreateItems"/>
-    public static IItem? CreateItem(string id, Node? parent = null, Vector2? position = null)
-    {
-        var item = NewItem(id);
-        parent?.CallDeferred(GodotStringNameUtils.AddChild, (item as Node)!);
-        if (item is not Node2D node) return item;
-        if (position is { } pos) node.GlobalPosition = pos;
-        return item;
-    }
-
-    /// <summary>
-    /// <para>Creates new instances in given amount of the item registered to the given id, and put them into given position in both node tree and 2D space</para>
-    /// <para>创建以给定 id 注册的物品的给定数量的新实例，并将其放到节点树和二维空间中的给定位置</para>
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="amount"></param>
-    /// <param name="parent"></param>
-    /// <param name="position">
-    /// <para>Position in global coordinate</para>
-    /// <para>全局坐标中的位置</para>
-    /// </param>
-    /// <seealso cref="NewItems"/><seealso cref="CreateItem"/>
-    public static IList<IItem> CreateItems(string id, int amount, Node? parent = null, Vector2? position = null)
-    {
-        IList<IItem> result = [];
-        for (int i = 0; i < amount; i++)
+        var items = new List<IItem?>();
+        for (var i = 0; i < number; i++)
         {
-            if (CreateItem(id, parent, position) is { } item)
-                result.Add(item);
+            var singleItem = CreateItem(id, defaultParentNode, assignedByRootNodeType);
+            if (singleItem == null)
+            {
+                continue;
+            }
+
+            if (singleItem is Node2D node2D)
+            {
+                node2D.GlobalPosition = globalPosition;
+            }
+
+            items.Add(singleItem);
         }
 
-        return result;
+        return items.ToArray();
     }
 
     /// <summary>

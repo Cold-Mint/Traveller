@@ -492,7 +492,7 @@ public partial class CharacterTemplate : CharacterBody2D
         foreach (var lootDatum in lootData)
         {
             var (id, amount) = lootDatum.Value;
-            ItemTypeManager.CreateItems(id, amount, parentNode, position);
+            ItemTypeManager.CreateItems(id, amount, position, parentNode);
         }
     }
 
@@ -644,7 +644,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
         else
         {
-            for (int i = 0; i < number && !itemSlotNode.IsEmpty(); i++)
+            for (var i = 0; i < number && !itemSlotNode.IsEmpty(); i++)
             {
                 ThrowOneItem(itemSlotNode, velocity);
             }

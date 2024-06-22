@@ -50,7 +50,7 @@ public static class ItemTypeRegister
         //将文件解析为项目类型信息
         //parse files to item type infos
         IEnumerable<ItemTypeInfo> typeInfos =
-            files.SelectMany(file => ParseFile( $"{itemRegsDirPath}/{file}")).ToList();
+            files.SelectMany(file => ParseFile($"{itemRegsDirPath}/{file}")).ToList();
         LogCat.LogWithFormat("found_item_types", typeInfos.Count());
 
         //遍历类型信息并注册它们。
@@ -70,8 +70,9 @@ public static class ItemTypeRegister
     private static IList<ItemTypeInfo> ParseFile(string filePath)
     {
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-        //阅读和反序列化
+
         //Read & deserialize
+        //阅读和反序列化
         var yamlString = yamlFile.GetAsText();
         var typeInfos = YamlSerialization.Deserialize<IList<ItemTypeInfo>>(yamlString);
         yamlFile.Close();
@@ -81,35 +82,32 @@ public static class ItemTypeRegister
     private static void RegisterTypeInfo(ItemTypeInfo typeInfo)
     {
         //Load scene and icon
+        //加载场景和图标
         var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
         var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
 
+
         //Create init delegate
-        Func<IItem?> newItemFunc;
-        if (typeInfo.CustomArgs is null or [])
+        //创建初始化委托
+        Action<Node?>? setArgs = null;
+        if (typeInfo.CustomArgs != null && typeInfo.CustomArgs.Count > 0)
         {
-            newItemFunc = () => NodeUtils.InstantiatePackedScene<IItem>(scene);
-        }
-        else
-        {
-            Action<Node?>? setArgs = null;
             foreach (var arg in typeInfo.CustomArgs)
             {
                 setArgs +=
                     node => node?.SetDeferred(arg.Name, arg.ParseValue());
             }
-
-            newItemFunc = () =>
-            {
-                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
-                setArgs?.Invoke(newItem as Node);
-                return newItem;
-            };
         }
 
+        //构造项目类型，寄存器
         //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
-            newItemFunc,
+            (defaultParentNode, assignedByRootNodeType) =>
+            {
+                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene, defaultParentNode, assignedByRootNodeType);
+                setArgs?.Invoke(newItem as Node);
+                return newItem;
+            },
             icon, typeInfo.MaxStackValue);
         var succeed = ItemTypeManager.Register(itemType);
         LogCat.LogWithFormat("register_item", itemType.Id, succeed);

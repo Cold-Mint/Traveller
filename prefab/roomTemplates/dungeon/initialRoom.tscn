@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=7 format=3 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
-[ext_resource type="PackedScene" uid="uid://dnnn2xyayiehk" path="res://prefab/weapons/staffOfTheUndead.tscn" id="3_ud0w8"]
+[ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
+[ext_resource type="Texture2D" uid="uid://b2blj0yf4ohx3" path="res://icon.svg" id="4_psvpu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(450, 191)
@@ -40,8 +41,14 @@ shape = SubResource("RectangleShape2D_jxmys")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(216, 113)
+position = Vector2(221, 134)
 script = ExtResource("2_6p8mv")
 
-[node name="StaffOfTheUndead6" parent="." instance=ExtResource("3_ud0w8")]
-position = Vector2(290, 167)
+[node name="ItemMarker2D" type="Marker2D" parent="."]
+position = Vector2(142, 84)
+script = ExtResource("3_v1tlc")
+ItemId = "staff_of_the_undead"
+
+[node name="Icon" type="Sprite2D" parent="ItemMarker2D"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_psvpu")
