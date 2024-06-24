@@ -5,7 +5,7 @@ namespace ColdMint.scripts.inventory;
 
 public readonly struct ItemType(
     string id,
-    Func<Node?, bool, IItem?> createItemFunc,
+    Func<Node?,IItem?> createItemFunc,
     Texture2D? icon,
     int maxStackQuantity)
 {
@@ -19,7 +19,7 @@ public readonly struct ItemType(
     /// <para>A function returns a new item instance of this type</para>
     /// <para>用于创建该类型的物品实例的函数</para>
     /// </summary>
-    public Func<Node?, bool, IItem?> CreateItemFunc { get; init; } = createItemFunc;
+    public Func<Node?,IItem?> CreateItemFunc { get; init; } = createItemFunc;
 
     /// <summary>
     /// <para>Default icon of items of this type</para>

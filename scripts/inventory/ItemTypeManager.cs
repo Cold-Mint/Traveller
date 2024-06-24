@@ -41,14 +41,10 @@ public static class ItemTypeManager
     ///<para>Default parent</para>
     ///<para>父节点</para>
     /// </param>
-    /// <param name="assignedByRootNodeType">
-    ///<para>Enabled by default, whether to place a node into a container node that matches the type of the root node after it is instantiated. If the assignment fails by type, it is placed under the default parent node.</para>
-    ///<para>默认启用，实例化节点后，是否将其放置到与根节点类型相匹配的容器节点内。如果按照类型分配失败，则放置在默认父节点下。</para>
-    /// </param>
     /// <seealso cref="CreateItems"/>
-    public static IItem? CreateItem(string id, Node? defaultParentNode = null, bool assignedByRootNodeType = true) =>
+    public static IItem? CreateItem(string id, Node? defaultParentNode = null) =>
         Registry.TryGetValue(id, out var itemType)
-            ? itemType.CreateItemFunc(defaultParentNode, assignedByRootNodeType)
+            ? itemType.CreateItemFunc(defaultParentNode)
             : null;
 
 
@@ -59,12 +55,10 @@ public static class ItemTypeManager
     /// <param name="id"></param>
     /// <param name="number"></param>
     /// <param name="defaultParentNode"></param>
-    /// <param name="assignedByRootNodeType"></param>
     /// <param name="globalPosition"></param>
     /// <returns></returns>
     /// <seealso cref="CreateItem"/>
-    public static IItem?[]? CreateItems(string id, int number, Vector2 globalPosition, Node? defaultParentNode = null,
-        bool assignedByRootNodeType = true)
+    public static IItem?[]? CreateItems(string id, int number, Vector2 globalPosition, Node? defaultParentNode = null)
     {
         if (number <= 0)
         {
@@ -74,7 +68,7 @@ public static class ItemTypeManager
         var items = new List<IItem?>();
         for (var i = 0; i < number; i++)
         {
-            var singleItem = CreateItem(id, defaultParentNode, assignedByRootNodeType);
+            var singleItem = CreateItem(id, defaultParentNode);
             if (singleItem == null)
             {
                 continue;

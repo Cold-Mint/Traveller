@@ -1,5 +1,4 @@
-﻿using ColdMint.scripts.debug;
-using ColdMint.scripts.inventory;
+﻿using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.events;
 using Godot;
 
@@ -29,7 +28,7 @@ public partial class ItemSpawn : Marker2D
             return;
         }
 
-        var item = ItemTypeManager.CreateItem(ItemId,this);
+        var item = ItemTypeManager.CreateItem(ItemId, this);
         if (item is Node2D node2D)
         {
             node2D.GlobalPosition = GlobalPosition;

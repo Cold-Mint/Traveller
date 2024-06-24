@@ -434,9 +434,10 @@ public partial class Player : CharacterTemplate
             //If there is a scene of floating text, then we generate floating text.
             //如果有悬浮文本的场景，那么我们生成悬浮文本。
             _floatLabel?.QueueFree();
-            _floatLabel = NodeUtils.InstantiatePackedScene<Control>(_floatLabelPackedScene, node);
+            _floatLabel = NodeUtils.InstantiatePackedScene<Control>(_floatLabelPackedScene);
             if (_floatLabel != null)
             {
+                NodeUtils.CallDeferredAddChild(node, _floatLabel);
                 var rotationDegreesNode2D = node2D.RotationDegrees;
                 var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
                 _floatLabel.Position = rotationDegreesNode2DAbs > 90

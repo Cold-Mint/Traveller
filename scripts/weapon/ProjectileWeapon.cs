@@ -49,8 +49,9 @@ public partial class ProjectileWeapon : WeaponTemplate
         //获取第一个抛射体
         var projectileScene = ProjectileScenes[0];
         // var projectileScene = _projectileCache[_projectiles[0]];
-        var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene, _projectileContainer);
+        var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene);
         if (projectile == null) return;
+        NodeUtils.CallDeferredAddChild(_projectileContainer, projectile);
         projectile.Owner = owner;
         projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
         projectile.Position = _marker2D.GlobalPosition;

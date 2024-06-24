@@ -159,12 +159,12 @@ public class UniversalItemContainer : IItemContainer
             return null;
         }
 
-        var itemSlotNode = NodeUtils.InstantiatePackedScene<ItemSlotNode>(_itemSlotPackedScene, rootNode);
+        var itemSlotNode = NodeUtils.InstantiatePackedScene<ItemSlotNode>(_itemSlotPackedScene);
         if (itemSlotNode == null)
         {
             return null;
         }
-
+        NodeUtils.CallDeferredAddChild(rootNode, itemSlotNode);
         if (SupportSelect)
         {
             itemSlotNode.IsSelect = _itemSlotNodes.Count == _selectIndex;

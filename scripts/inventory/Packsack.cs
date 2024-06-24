@@ -13,11 +13,10 @@ public partial class Packsack : PickAbleTemplate
 {
     private PackedScene? _packedScene;
     private PacksackUi? _packsackUi;
-    [Export]
-    public int NumberSlots { get; set; }
+    [Export] public int NumberSlots { get; set; }
 
     public override bool CanPutInPack => false;
-    
+
 
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
@@ -28,13 +27,15 @@ public partial class Packsack : PickAbleTemplate
 
         if (_packsackUi == null)
         {
-            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene,this);
+            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene);
             if (_packsackUi != null)
             {
+                NodeUtils.CallDeferredReparent(this, _packsackUi);
                 _packsackUi.Title = Name;
                 _packsackUi.ItemContainer = ItemContainer;
             }
         }
+
         GameSceneNodeHolder.BackpackUiContainer?.Show();
         _packsackUi?.Show();
     }
@@ -52,6 +53,7 @@ public partial class Packsack : PickAbleTemplate
         {
             ItemContainer.AddItemSlot(this)?.Hide();
         }
+
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
     }
 }

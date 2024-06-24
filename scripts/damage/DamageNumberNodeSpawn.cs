@@ -78,15 +78,6 @@ public partial class DamageNumberNodeSpawn : Marker2D
         _defaultGradient.SetColor(1, new Color("#fa5252"));
     }
 
-    /// <summary>
-    /// <para>Added a damage digital node</para>
-    /// <para>添加伤害数字节点</para>
-    /// </summary>
-    /// <param name="damageNumber"></param>
-    private void AddDamageNumberNode(Node2D damageNumber)
-    {
-        _rootNode?.AddChild(damageNumber);
-    }
 
     /// <summary>
     /// <para>Show damage</para>
@@ -106,7 +97,12 @@ public partial class DamageNumberNodeSpawn : Marker2D
             return;
         }
 
-        CallDeferred(nameof(AddDamageNumberNode), damageNumber);
+        if (_rootNode == null)
+        {
+            damageNumber.QueueFree();
+            return;
+        }
+        NodeUtils.CallDeferredAddChild(_rootNode, damageNumber);
         damageNumber.Position = GlobalPosition;
         if (damageTemplate.MoveLeft)
         {

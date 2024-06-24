@@ -671,7 +671,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        CallDeferred(nameof(NodeReparent), node2D);
+        NodeUtils.CallDeferredReparent(NodeUtils.FindContainerNode(this, GetNode("/root")), this);
         switch (item)
         {
             case PickAbleTemplate pickAbleTemplate:
@@ -719,15 +719,6 @@ public partial class CharacterTemplate : CharacterBody2D
         itemSlotNode.RemoveItem(1);
     }
 
-    /// <summary>
-    /// <para>Replace the parent node of a node</para>
-    /// <para>替换节点的父节点</para>
-    /// </summary>
-    /// <param name="node"></param>
-    private void NodeReparent(Node node)
-    {
-        node.Reparent(NodeUtils.FindContainerNode(node, GetNode("/root")));
-    }
 
     public sealed override void _PhysicsProcess(double delta)
     {

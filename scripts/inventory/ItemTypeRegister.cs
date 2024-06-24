@@ -46,6 +46,7 @@ public static class ItemTypeRegister
             LogCat.LogWithFormat("found_files", 0);
             return;
         }
+
         LogCat.LogWithFormat("found_files", files.Length);
         //将文件解析为项目类型信息
         //parse files to item type infos
@@ -102,10 +103,18 @@ public static class ItemTypeRegister
         //构造项目类型，寄存器
         //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
-            (defaultParentNode, assignedByRootNodeType) =>
+            defaultParentNode =>
             {
-                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene, defaultParentNode, assignedByRootNodeType);
-                setArgs?.Invoke(newItem as Node);
+                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
+                if (newItem is not Node node) return newItem;
+                if (defaultParentNode == null)
+                {
+                    node.QueueFree();
+                    return null;
+                }
+                setArgs?.Invoke(node);
+                NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
+
                 return newItem;
             },
             icon, typeInfo.MaxStackValue);

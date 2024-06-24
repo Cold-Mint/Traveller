@@ -32,16 +32,23 @@ public partial class AiCharacterSpawn : Marker2D
     /// <param name="aiCharacterGenerateEvent"></param>
     public void OnAiCharacterGenerateEvent(AiCharacterGenerateEvent aiCharacterGenerateEvent)
     {
+        if (GameSceneNodeHolder.AiCharacterContainer == null)
+        {
+            return;
+        }
+
         if (_packedScene == null)
         {
             return;
         }
 
-        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(_packedScene,GameSceneNodeHolder.AiCharacterContainer);
+        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(_packedScene);
         if (aiCharacter == null)
         {
             return;
         }
+
+        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(aiCharacter, this), aiCharacter);
         aiCharacter.Position = GlobalPosition;
     }
 

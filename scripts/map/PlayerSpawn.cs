@@ -54,12 +54,13 @@ public partial class PlayerSpawn : Marker2D
         }
 
         var playerNode =
-            NodeUtils.InstantiatePackedScene<Player>(_playerPackedScene, GameSceneNodeHolder.PlayerContainer);
+            NodeUtils.InstantiatePackedScene<Player>(_playerPackedScene);
         if (playerNode == null)
         {
             return;
         }
 
+        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(playerNode, this), playerNode);
         var itemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
         if (itemContainer == null)
         {
