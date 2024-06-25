@@ -121,6 +121,12 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var duplicate = node2D.Duplicate();
+        if (duplicate is not Node2D newNode2D)
+        {
+            return null;
+        }
+
+        newNode2D.GlobalPosition = node2D.GlobalPosition;
         if (duplicate is not IItem newItem)
         {
             return null;
@@ -136,6 +142,26 @@ public partial class ItemSlotNode : MarginContainer
 
         newItem.Quantity = number;
         return newItem;
+    }
+
+    /// <summary>
+    /// <para>Empty the inventory</para>
+    /// <para>清空物品栏内的物品</para>
+    /// </summary>
+    public void ClearItem()
+    {
+        if (_item == null)
+        {
+            return;
+        }
+
+        if (_item is Node node)
+        {
+            node.QueueFree();
+        }
+
+        _item = null;
+        UpdateAllDisplay();
     }
 
     public override void _DropData(Vector2 atPosition, Variant data)
@@ -162,7 +188,7 @@ public partial class ItemSlotNode : MarginContainer
             return;
         }
 
-        itemSlotNode.Item = null;
+        itemSlotNode.ClearItem();
         AddItem(item);
     }
 
@@ -344,7 +370,7 @@ public partial class ItemSlotNode : MarginContainer
         _item.Quantity -= removeNumber;
         if (_item.Quantity <= 0)
         {
-            Item = null;
+            ClearItem();
         }
 
         return removeNumber;

@@ -664,14 +664,13 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Remove the item from the item container
         //从物品容器内取出物品
-        var item = itemSlotNode.GetItem();
-
+        var item = itemSlotNode.CreateItemInstance(1);
         if (item is not Node2D node2D)
         {
             return;
         }
-
-        NodeUtils.CallDeferredReparent(NodeUtils.FindContainerNode(this, GetNode("/root")), this);
+        
+        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
         switch (item)
         {
             case PickAbleTemplate pickAbleTemplate:
@@ -684,6 +683,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 var timer = new Timer();
                 pickAbleTemplate.AddChild(timer);
                 timer.WaitTime = _itemCollisionRecoveryTime;
+                timer.Autostart = true;
                 timer.OneShot = true;
                 timer.Timeout += () =>
                 {
@@ -694,7 +694,6 @@ public partial class CharacterTemplate : CharacterBody2D
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
-                timer.Start();
                 pickAbleTemplate.Sleeping = false;
                 //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
                 //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。

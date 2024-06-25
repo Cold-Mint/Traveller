@@ -46,7 +46,7 @@ public static class NodeUtils
     /// <param name="childNode"></param>
     public static void CallDeferredReparent(Node parentNode, Node childNode)
     {
-        parentNode.CallDeferred("reparent", childNode);
+        childNode.CallDeferred("reparent", parentNode);
     }
     
 
