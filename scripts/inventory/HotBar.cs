@@ -1,5 +1,3 @@
-using System;
-using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -13,18 +11,20 @@ public partial class HotBar : HBoxContainer
 {
     private IItemContainer? _itemContainer;
 
-    Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
         _itemContainer = new UniversalItemContainer();
         _itemContainer.SupportSelect = true;
-        _itemContainer.SelectedItemSlotChangeEvent += SelectedItemSlotChangeEvent;
         NodeUtils.DeleteAllChild(this);
         for (var i = 0; i < Config.HotBarSize; i++)
         {
-            _itemContainer.AddItemSlot(this);
+            var itemSlotNode = _itemContainer.AddItemSlot(this);
+            if (itemSlotNode != null)
+            {
+                itemSlotNode.BackpackAllowed = true;
+            }
         }
     }
 
@@ -112,14 +112,5 @@ public partial class HotBar : HBoxContainer
     public IItemContainer? GetItemContainer()
     {
         return _itemContainer;
-    }
-
-    public override void _ExitTree()
-    {
-        base._ExitTree();
-        if (_itemContainer != null)
-        {
-            _itemContainer.SelectedItemSlotChangeEvent -= SelectedItemSlotChangeEvent;
-        }
     }
 }

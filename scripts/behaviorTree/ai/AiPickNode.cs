@@ -1,5 +1,4 @@
 ﻿using ColdMint.scripts.character;
-
 using WeaponTemplate = ColdMint.scripts.weapon.WeaponTemplate;
 
 namespace ColdMint.scripts.behaviorTree.ai;
@@ -10,8 +9,6 @@ namespace ColdMint.scripts.behaviorTree.ai;
 /// </summary>
 public class AiPickNode : BehaviorTreeNodeTemplate
 {
-
-
     public AiCharacter? Character { get; set; }
 
     public override int Execute(bool isPhysicsProcess, double delta)
@@ -51,7 +48,7 @@ public class AiPickNode : BehaviorTreeNodeTemplate
             {
                 closestDistance = distanceLength;
                 closestWeapon = weaponTemplate;
-            }   
+            }
         }
 
         //绘制一条线，从AI到武器

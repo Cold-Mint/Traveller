@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
@@ -49,6 +50,7 @@ public partial class Player : CharacterTemplate
     {
         base._Ready();
         CharacterName = TranslationServerUtils.Translate("default_player_name");
+        LogCat.LogWithFormat("player_spawn_debug", ReadOnlyCharacterName, GlobalPosition);
         _floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");

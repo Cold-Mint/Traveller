@@ -28,7 +28,7 @@ public partial class PlayerSpawn : Marker2D
         if (GameSceneNodeHolder.Player != null)
         {
             GameSceneNodeHolder.Player.ProcessMode = ProcessModeEnum.Inherit;
-            GameSceneNodeHolder.Player.Position = GlobalPosition;
+            GameSceneNodeHolder.Player.GlobalPosition = GlobalPosition;
             GameSceneNodeHolder.Player.Revive(GameSceneNodeHolder.Player.MaxHp);
             return;
         }
@@ -60,7 +60,9 @@ public partial class PlayerSpawn : Marker2D
             return;
         }
 
-        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(playerNode, this), playerNode);
+        //The player's parent node must be GameSceneNodeHolder PlayerContainer.
+        //玩家的父节点必须是GameSceneNodeHolder.PlayerContainer。
+        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.PlayerContainer, playerNode);
         var itemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
         if (itemContainer == null)
         {
@@ -71,8 +73,7 @@ public partial class PlayerSpawn : Marker2D
 
         playerNode.ItemContainer = itemContainer;
         GameSceneNodeHolder.Player = playerNode;
-        playerNode.Position = GlobalPosition;
-        LogCat.LogWithFormat("player_spawn_debug", playerNode.ReadOnlyCharacterName, playerNode.Position);
+        playerNode.GlobalPosition = GlobalPosition;
     }
 
     private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)

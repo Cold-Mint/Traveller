@@ -85,7 +85,7 @@ public partial class ItemSlotNode : MarginContainer
             return false;
         }
 
-        return _item == null;
+        return CanAddItem(item);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public partial class ItemSlotNode : MarginContainer
         {
             return null;
         }
-        
+
         if (number > _item.Quantity)
         {
             //The number of item instances created exceeds the current number of items
@@ -163,8 +163,14 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         itemSlotNode.Item = null;
-        Item = item;
+        AddItem(item);
     }
+
+    /// <summary>
+    /// <para>Whether to place a backpack in the current slot</para>
+    /// <para>当前槽位是否允许放置背包</para>
+    /// </summary>
+    public bool BackpackAllowed { get; set; }
 
     public bool IsSelect
     {
@@ -282,6 +288,12 @@ public partial class ItemSlotNode : MarginContainer
 
     public bool CanAddItem(IItem item)
     {
+        if (!BackpackAllowed && item is Packsack)
+        {
+            //如果禁止放置背包，且新物品是背包
+            return false;
+        }
+
         if (_item == null)
         {
             //If there is no item in the current item slot, it is allowed to add.
@@ -352,6 +364,7 @@ public partial class ItemSlotNode : MarginContainer
         {
             node2D.QueueFree();
         }
+
         UpdateQuantityLabel();
         return true;
     }

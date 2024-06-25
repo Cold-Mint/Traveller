@@ -30,7 +30,7 @@ public partial class Packsack : PickAbleTemplate
             _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene);
             if (_packsackUi != null)
             {
-                NodeUtils.CallDeferredReparent(this, _packsackUi);
+                NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(_packsackUi, this), _packsackUi);
                 _packsackUi.Title = Name;
                 _packsackUi.ItemContainer = ItemContainer;
             }

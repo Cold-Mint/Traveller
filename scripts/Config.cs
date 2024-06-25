@@ -20,7 +20,7 @@ public static class Config
         /// </summary>
         public const string Patrol = "Patrol";
     }
-    
+
     /// <summary>
     /// <para>Loot table ID</para>
     /// <para>战利品表ID</para>
@@ -90,7 +90,7 @@ public static class Config
     /// <para>抛出的物品击中敌人后减少的速度百分比</para>
     /// </summary>
     public const float ThrownItemsHitEnemiesReduceSpeedByPercentage = 0.5f;
-    
+
     /// <summary>
     /// <para>How much blood does a heart represent</para>
     /// <para>一颗心代表多少血量</para>

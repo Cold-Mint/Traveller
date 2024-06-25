@@ -25,6 +25,7 @@ public partial class BehaviorNode : Node2D
         {
             return;
         }
+
         Root.Execute(isPhysicsProcess, delta);
     }
 }

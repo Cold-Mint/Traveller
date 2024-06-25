@@ -48,8 +48,8 @@ public partial class AiCharacterSpawn : Marker2D
             return;
         }
 
-        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(aiCharacter, this), aiCharacter);
-        aiCharacter.Position = GlobalPosition;
+        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.AiCharacterContainer, aiCharacter);
+        aiCharacter.GlobalPosition = GlobalPosition;
     }
 
     public override void _ExitTree()
