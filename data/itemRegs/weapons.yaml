@@ -2,6 +2,10 @@
   scene_path: res://prefab/weapons/staffOfTheUndead.tscn
   icon_path: res://sprites/weapon/staffOfTheUndead_icon.png
   max_stack_value: 1
+  custom_args:
+    - name: UniqueName
+      type: string
+      value: 爱你！
 
 - id: degraded_staff_of_the_undead
   scene_path: res://prefab/weapons/staffOfTheUndead.tscn

@@ -40,6 +40,7 @@ public partial class ItemSlotNode : MarginContainer
         _quantityLabel = GetNode<Label>("Control/QuantityLabel");
         _control = GetNode<Control>("Control");
         _quantityLabel.Hide();
+        UpdateBackground(_isSelect);
     }
 
     public override Variant _GetDragData(Vector2 atPosition)
@@ -106,8 +107,8 @@ public partial class ItemSlotNode : MarginContainer
     /// <para>创建物品槽内的物品实例</para>
     /// </summary>
     /// <param name="number">
-    ///<para>number</para>
-    ///<para>数量</para>
+    ///<para>Quantity (pass in a value less than 0 to create an instance using all the quantities of built-in items)</para>
+    ///<para>数量（传入小于0的值，使用内置物品的所有数量创建实例）</para>
     /// </param>
     /// <returns>
     ///<para>Newly created item</para>
@@ -115,6 +116,11 @@ public partial class ItemSlotNode : MarginContainer
     /// </returns>
     public IItem? CreateItemInstance(int number)
     {
+        if (number == 0)
+        {
+            return null;
+        }
+
         if (_item is not Node2D node2D)
         {
             return null;
@@ -132,30 +138,38 @@ public partial class ItemSlotNode : MarginContainer
             return null;
         }
 
-        if (number > _item.Quantity)
+        if (number < 0)
         {
-            //The number of item instances created exceeds the current number of items
-            //创建的物品实例数量，超过了当前物品的数量
-            duplicate.QueueFree();
-            return null;
+            newItem.Quantity = _item.Quantity;
+        }
+        else
+        {
+            newItem.Quantity = number >= _item.Quantity ? _item.Quantity : number;
         }
 
-        newItem.Quantity = number;
         return newItem;
     }
 
     /// <summary>
-    /// <para>Empty the inventory</para>
-    /// <para>清空物品栏内的物品</para>
+    /// <para>Clean out the items in the item slot</para>
+    /// <para>清理物品槽内的物品</para>
     /// </summary>
-    public void ClearItem()
+    /// <param name="queueFree">
+    ///<para>Whether to release a node</para>
+    ///<para>是否释放节点</para>
+    /// </param>
+    /// <remarks>
+    ///<para>Clean up item object references in item slots.</para>
+    ///<para>清理物品槽内的物品对象引用。</para>
+    /// </remarks>
+    public void ClearItem(bool queueFree = true)
     {
         if (_item == null)
         {
             return;
         }
 
-        if (_item is Node node)
+        if (queueFree && _item is Node node)
         {
             node.QueueFree();
         }
@@ -180,7 +194,7 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var itemSlotNode = data.As<ItemSlotNode>();
-        var item = itemSlotNode._item;
+        var item = itemSlotNode.GetItem();
         if (item == null)
         {
             //Return null when trying to get the source item.
@@ -188,7 +202,7 @@ public partial class ItemSlotNode : MarginContainer
             return;
         }
 
-        itemSlotNode.ClearItem();
+        itemSlotNode.ClearItem(false);
         AddItem(item);
     }
 
@@ -203,13 +217,19 @@ public partial class ItemSlotNode : MarginContainer
         get => _isSelect;
         set
         {
-            if (_backgroundTextureRect != null)
-            {
-                _backgroundTextureRect.Texture = value ? _backgroundTextureWhenSelect : _backgroundTexture;
-            }
-
+            UpdateBackground(value);
             _isSelect = value;
         }
+    }
+
+    private void UpdateBackground(bool isSelect)
+    {
+        if (_backgroundTextureRect == null)
+        {
+            return;
+        }
+
+        _backgroundTextureRect.Texture = isSelect ? _backgroundTextureWhenSelect : _backgroundTexture;
     }
 
     public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
