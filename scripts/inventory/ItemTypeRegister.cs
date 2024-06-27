@@ -112,9 +112,9 @@ public static class ItemTypeRegister
                     node.QueueFree();
                     return null;
                 }
+
                 setArgs?.Invoke(node);
                 NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
-
                 return newItem;
             },
             icon, typeInfo.MaxStackValue);
@@ -123,6 +123,7 @@ public static class ItemTypeRegister
     }
 
     //Use for yaml deserialization
+    //用于yaml反序列化
     private record struct ItemTypeInfo(
         string Id,
         string ScenePath,
@@ -139,6 +140,7 @@ public static class ItemTypeRegister
                 CustomArgType.Int => int.Parse(Value),
                 CustomArgType.Float => double.Parse(Value),
                 CustomArgType.Vector2 => ParseVector2FromString(Value),
+                CustomArgType.Bool => bool.Parse(Value),
                 CustomArgType.Texture => ResourceLoader.Load<Texture2D>("res://sprites/" + Value),
                 _ => throw new ArgumentOutOfRangeException($"Unknown Arg Type {Type}")
             };
@@ -163,5 +165,6 @@ public static class ItemTypeRegister
         Float,
         Vector2,
         Texture,
+        Bool,
     }
 }

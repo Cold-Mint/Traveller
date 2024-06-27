@@ -14,6 +14,16 @@ public partial class Packsack : PickAbleTemplate
     private PackedScene? _packedScene;
     private PacksackUi? _packsackUi;
     [Export] public int NumberSlots { get; set; }
+    
+    /// <summary>
+    /// <para>Whether to allow backpacks</para>
+    /// <para>是否允许放置背包</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Can a new backpack be placed in the slot of the backpack?</para>
+    ///<para>即此背包的槽位内是否可以再放置新的背包？</para>
+    /// </remarks>
+    [Export] public bool BackpackAllowed { get; set; }
 
     public override bool CanPutInPack => false;
 
@@ -51,7 +61,14 @@ public partial class Packsack : PickAbleTemplate
         //当背包被创建时，物品槽就被生成出来了。
         for (var i = 0; i < NumberSlots; i++)
         {
-            ItemContainer.AddItemSlot(this)?.Hide();
+            var itemSlotNode = ItemContainer.AddItemSlot(this);
+            if (itemSlotNode == null)
+            {
+                continue;
+            }
+
+            itemSlotNode.BackpackAllowed = BackpackAllowed;
+            itemSlotNode.Hide();
         }
 
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
