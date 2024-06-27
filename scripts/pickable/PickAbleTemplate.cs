@@ -2,6 +2,7 @@
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using Godot;
 
@@ -116,12 +117,20 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             if (!EnableContactInjury)
             {
+                LogCat.LogWarning("contact_damage_disabled_during_collision");
                 return;
             }
 
 
+            if (Owner == null)
+            {
+                LogCat.LogWarning("item_has_no_owner");
+                return;
+            }
+
             if (Owner is not CharacterTemplate ownerCharacterTemplate)
             {
+                LogCat.LogWarning("owner_of_the_item_is_not_character");
                 return;
             }
 
@@ -131,6 +140,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
                 CampManager.GetCamp(characterTemplate.CampId));
             if (!canCauseHarm)
             {
+                LogCat.Log("no_damage_between_camps");
                 return;
             }
 

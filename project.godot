@@ -147,7 +147,6 @@ hotbar_previous={
 [internationalization]
 
 locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "res://locals/DeathInfo.ja.translation", "res://locals/DeathInfo.zh.translation", "res://locals/InputMapping.en.translation", "res://locals/InputMapping.ja.translation", "res://locals/InputMapping.zh.translation", "res://locals/Log.en.translation", "res://locals/Log.ja.translation", "res://locals/Log.zh.translation", "res://locals/Slogan.en.translation", "res://locals/Slogan.ja.translation", "res://locals/Slogan.zh.translation", "res://locals/UI.en.translation", "res://locals/UI.ja.translation", "res://locals/UI.zh.translation", "res://locals/Item.en.translation", "res://locals/Item.ja.translation", "res://locals/Item.zh.translation", "res://locals/Action.en.translation", "res://locals/Action.ja.translation", "res://locals/Action.zh.translation", "res://locals/Misc.en.translation", "res://locals/Misc.ja.translation", "res://locals/Misc.zh.translation")
-locale/test="en"
 
 [layer_names]
 

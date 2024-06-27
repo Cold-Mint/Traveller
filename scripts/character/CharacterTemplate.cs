@@ -679,6 +679,8 @@ public partial class CharacterTemplate : CharacterBody2D
                     return;
                 }
 
+                pickAbleTemplate.Sleeping = false;
+                pickAbleTemplate.Owner = this;
                 pickAbleTemplate.Picked = false;
                 var timer = new Timer();
                 pickAbleTemplate.AddChild(timer);
@@ -694,7 +696,6 @@ public partial class CharacterTemplate : CharacterBody2D
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
-                pickAbleTemplate.Sleeping = false;
                 //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
                 //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
                 pickAbleTemplate.LinearVelocity = Vector2.Zero;

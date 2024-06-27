@@ -38,3 +38,7 @@ log_register_item,注册物品类型{0}结果为{1},Registered item type {0}; re
 log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误,Error when opening itemRegs dir,アイテム情報カタログを開こうとしてエラーが発生しました。
 log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched parameter: type {0} and value {1},パラメータの不一致：型{0}と値{1}。
 log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です
+log_item_has_no_owner,物品没有所有者,Item has no owner,アイテムに所有者がいません
+log_no_damage_between_camps,没有阵营之间的伤害,No damage between camps,陣営間のダメージはありません
+log_contact_damage_disabled_during_collision,在碰撞期间禁用接触伤害,Contact damage disabled during collision,衝突中に接触ダメージが無効になります
+log_owner_of_the_item_is_not_character,物品的所有者不是角色,The owner of the item is not a character,アイテムの所有者はキャラクターではありません

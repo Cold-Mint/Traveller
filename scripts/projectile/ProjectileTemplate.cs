@@ -1,5 +1,4 @@
 using System;
-
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
@@ -66,10 +65,10 @@ public partial class ProjectileTemplate : CharacterBody2D
         Area2D.Monitoring = true;
         Area2D.BodyEntered += OnBodyEnter;
         Area2D.BodyExited += OnBodyExited;
-        Durability = GetMeta("Durability",    "1").AsDouble();
-        MaxDamage = GetMeta("MaxDamage",      "7").AsInt32();
-        MinDamage = GetMeta("MinDamage",      "5").AsInt32();
-        DamageType = GetMeta("DamageType",    Config.DamageType.Physical).AsInt32();
+        Durability = GetMeta("Durability", "1").AsDouble();
+        MaxDamage = GetMeta("MaxDamage", "7").AsInt32();
+        MinDamage = GetMeta("MinDamage", "5").AsInt32();
+        DamageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
         KnockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
         //life(ms)
         //子弹的存在时间(毫秒)
@@ -130,7 +129,7 @@ public partial class ProjectileTemplate : CharacterBody2D
         //First get the owner's camp and compare it with the target camp
         //先获取主人的阵营与目标阵营进行比较
         var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-                                                    CampManager.GetCamp(characterTemplate.CampId));
+            CampManager.GetCamp(characterTemplate.CampId));
         return canCauseHarm;
     }
 
@@ -230,7 +229,9 @@ public partial class ProjectileTemplate : CharacterBody2D
     /// <para>当子弹离开节点时</para>
     /// </summary>
     /// <param name="node"></param>
-    protected virtual void OnBodyExited(Node2D node) { }
+    protected virtual void OnBodyExited(Node2D node)
+    {
+    }
 
 
     /// <summary>

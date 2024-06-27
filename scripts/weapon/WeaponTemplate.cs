@@ -48,8 +48,6 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// </remarks>
     [Export] private Vector2 _recoil;
 
-    public override void _Ready() { }
-
     /// <summary>
     /// <para>Discharge of the weapon</para>
     /// <para>武器开火</para>
