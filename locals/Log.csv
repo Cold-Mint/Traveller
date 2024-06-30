@@ -42,3 +42,9 @@ log_item_has_no_owner,物品没有所有者,Item has no owner,アイテムに所
 log_no_damage_between_camps,没有阵营之间的伤害,No damage between camps,陣営間のダメージはありません
 log_contact_damage_disabled_during_collision,在碰撞期间禁用接触伤害,Contact damage disabled during collision,衝突中に接触ダメージが無効になります
 log_owner_of_the_item_is_not_character,物品的所有者不是角色,The owner of the item is not a character,アイテムの所有者はキャラクターではありません
+log_try_to_open_state_machine_that_is_on,尝试打开处于运行状态的状态机。,Try to open a state machine that is on.,実行中のステートマシンを開こうとしています。
+log_state_machine_does_not_specify_context,状态机没有指定上下文。,The state machine does not specify a context.,ステートマシンはコンテキストを指定していません。
+log_state_processor_already_registered,状态处理器已经注册。,State processor already registered.,ステートプロセッサは既に登録されています。
+log_state_machine_does_not_specify_processor,状态机没有指定处理器。,The state machine does not specify a processor.,ステートマシンはプロセッサを指定していません。
+log_try_to_set_the_same_state,尝试设置相同的状态。,Try to set the same state.,同じ状態を設定しようとしています。
+log_state_machine_does_not_specify_active_processor,状态机没有指定活动处理器。,The state machine does not specify an active processor.,ステートマシンはアクティブプロセッサを指定していません。

@@ -27,7 +27,15 @@ public partial class CharacterTemplate : CharacterBody2D
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     // 从项目设置中获取与RigidBody节点同步的重力。
     protected float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-    protected const float Speed = 300.0f;
+    /// <summary>
+    /// <para>How fast the character moves</para>
+    /// <para>角色的移动速度</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>How many squares per second?</para>
+    ///<para>每秒移动几格？</para>
+    /// </remarks>
+    protected const float Speed = 5f;
 
     protected const float JumpVelocity = -240;
 
@@ -669,7 +677,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
-        
+
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
         switch (item)
         {
@@ -722,6 +730,10 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public sealed override void _PhysicsProcess(double delta)
     {
+        if (!Visible)
+        {
+            return;
+        }
         //We continuously set the position of the items to prevent them from changing as we zoom in and out of the window.
         //我们持续设置物品的位置，为了防止放大缩小窗口时物品位置的变化。
         if (_currentItem != null)
@@ -730,13 +742,13 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         var velocity = Velocity;
+        // The ref keyword passes its pointer to the following method so that it can be modified in the method.
+        // ref关键字将其指针传递给下面的方法，以便在方法中修改它。
+        HookPhysicsProcess(ref velocity, delta);
         // Add the gravity.
         //增加重力。
         if (!IsOnFloor())
             velocity.Y += Gravity * (float)delta;
-        // The ref keyword passes its pointer to the following method so that it can be modified in the method.
-        // ref关键字将其指针传递给下面的方法，以便在方法中修改它。
-        HookPhysicsProcess(ref velocity, delta);
         Velocity = velocity + _additionalForce;
         _additionalForce = Vector2.Zero;
         MoveAndSlide();

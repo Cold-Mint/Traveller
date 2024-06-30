@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dslr5tdbp4noq"]
+[gd_scene load_steps=8 format=3 uid="uid://dslr5tdbp4noq"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="2_7q101"]
@@ -14,6 +14,12 @@ size = Vector2(46, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_131jn"]
 size = Vector2(20, 54)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_db40i"]
+vertices = PackedVector2Array(499, 108, 501, 150, 246, 149, 471, 108, 12, 149, 11, 107, 41, 107, 203, 149, 245, 180, 203, 178, 43, 43, 470, 44)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(2, 8, 9, 7), PackedInt32Array(10, 11, 3, 2, 7, 6)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(34, 33, 31, 97, 1, 98, 2, 159, 193, 159, 193, 188, 255, 191, 256, 159, 512, 161, 509, 98, 481, 98, 480, 35)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="InitialRoom" type="Node2D"]
 
@@ -60,3 +66,6 @@ shape = SubResource("RectangleShape2D_131jn")
 position = Vector2(183, 72)
 script = ExtResource("2_7q101")
 metadata/ResPath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_db40i")

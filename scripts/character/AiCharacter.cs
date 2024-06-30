@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using ColdMint.scripts.behaviorTree;
+using ColdMint.scripts.stateMachine;
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -11,14 +11,6 @@ namespace ColdMint.scripts.character;
 /// </summary>
 public sealed partial class AiCharacter : CharacterTemplate
 {
-    /// <summary>
-    /// <para>How fast the character moves</para>
-    /// <para>角色的移动速度</para>
-    /// </summary>
-    private float _movementSpeed = 300.0f;
-
-    private BehaviorNode? _behaviorNode;
-
     //Used to detect rays on walls
     //用于检测墙壁的射线
     private RayCast2D? _wallDetection;
@@ -50,6 +42,17 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </remarks>
     private RayCast2D? _attackObstacleDetection;
 
+    private float _horizontalMoveVelocity;
+
+    /// <summary>
+    /// <para>Navigation agent</para>
+    /// <para>导航代理</para>
+    /// </summary>
+    public NavigationAgent2D? NavigationAgent2D { get; set; }
+
+
+    public IStateMachine? StateMachine { get; set; }
+
 
     public RayCast2D? AttackObstacleDetection => _attackObstacleDetection;
 
@@ -57,9 +60,9 @@ public sealed partial class AiCharacter : CharacterTemplate
     {
         base._Ready();
         _nodesInTheAttackRange = new List<Node>();
-        _behaviorNode = GetNode<BehaviorNode>("Behavior");
         _wallDetection = GetNode<RayCast2D>("WallDetection");
         _attackArea = GetNode<Area2D>("AttackArea2D");
+        NavigationAgent2D = GetNode<NavigationAgent2D>("NavigationAgent2D");
         if (ItemMarker2D != null)
         {
             _attackObstacleDetection = ItemMarker2D.GetNode<RayCast2D>("AttackObstacleDetection");
@@ -78,10 +81,22 @@ public sealed partial class AiCharacter : CharacterTemplate
         }
 
         _wallDetectionOrigin = _wallDetection.TargetPosition;
-        // var patrolBehaviorTree = new PatrolBehaviorTree();
-        // patrolBehaviorTree.Character = this;
-        // patrolBehaviorTree.Init();
-        // _behaviorNode.Root = patrolBehaviorTree.Root;
+        StateMachine = new PatrolStateMachine();
+        StateMachine.Context = new StateContext
+        {
+            CurrentState = State.Patrol,
+            Owner = this
+        };
+        if (StateMachine != null)
+        {
+            StateMachine.Start();
+        }
+    }
+
+    protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    {
+        StateMachine?.Execute();
+        velocity.X = _horizontalMoveVelocity;
     }
 
     private void EnterTheAttackArea(Node node)
@@ -100,9 +115,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     public void MoveLeft()
     {
-        var oldVelocity = Velocity;
-        oldVelocity.X = -_movementSpeed;
-        Velocity = oldVelocity;
+        if (!IsOnFloor())
+        {
+            return;
+        }
+
+        _horizontalMoveVelocity = -Speed * Config.CellSize;
     }
 
     /// <summary>
@@ -111,9 +129,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     public void MoveRight()
     {
-        var oldVelocity = Velocity;
-        oldVelocity.X = _movementSpeed;
-        Velocity = oldVelocity;
+        if (!IsOnFloor())
+        {
+            return;
+        }
+
+        _horizontalMoveVelocity = Speed;
     }
 
     /// <summary>
@@ -138,6 +159,21 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     public void StopMoving()
     {
-        Velocity = Vector2.Zero;
+        _horizontalMoveVelocity = 0;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        if (_attackArea != null)
+        {
+            _attackArea.BodyEntered -= EnterTheAttackArea;
+            _attackArea.BodyExited -= ExitTheAttackArea;
+        }
+
+        if (StateMachine != null)
+        {
+            StateMachine.Stop();
+        }
     }
 }

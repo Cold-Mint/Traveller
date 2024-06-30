@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=8 format=3 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
@@ -10,6 +10,12 @@ size = Vector2(450, 191)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(18, 57.75)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_064c7"]
+vertices = PackedVector2Array(468, 174, 500, 174, 499, 214, 41, 214, 45, 45, 468, 45)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(35, 35, 31, 224, 509, 225, 510, 164, 478, 164, 478, 35)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="InitialRoom" type="Node2D"]
 
@@ -52,3 +58,6 @@ ItemId = "staff_of_the_undead"
 [node name="Icon" type="Sprite2D" parent="ItemMarker2D"]
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_psvpu")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_064c7")

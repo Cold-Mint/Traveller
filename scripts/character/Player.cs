@@ -191,11 +191,6 @@ public partial class Player : CharacterTemplate
 
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
-        if (!Visible)
-        {
-            return;
-        }
-
         //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
         if (_platformDetectionRayCast2D != null && _platformDetectionRayCast2D.IsColliding() != _collidingWithPlatform)
@@ -214,7 +209,7 @@ public partial class Player : CharacterTemplate
         //Moving left and right
         //左右移动
         var axis = Input.GetAxis("ui_left", "ui_right");
-        velocity.X = axis * Speed;
+        velocity.X = axis * Speed * Config.CellSize;
 
         //Use items
         //使用物品
