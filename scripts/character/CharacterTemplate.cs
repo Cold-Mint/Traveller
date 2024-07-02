@@ -27,6 +27,7 @@ public partial class CharacterTemplate : CharacterBody2D
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     // 从项目设置中获取与RigidBody节点同步的重力。
     protected float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+
     /// <summary>
     /// <para>How fast the character moves</para>
     /// <para>角色的移动速度</para>
@@ -532,11 +533,13 @@ public partial class CharacterTemplate : CharacterBody2D
             if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
                 !string.IsNullOrEmpty(characterTemplate.CharacterName))
             {
-                LogCat.LogWithFormat("death_info", CharacterName, characterTemplate.CharacterName);
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
+                    characterTemplate.CharacterName);
             }
             else
             {
-                LogCat.LogWithFormat("death_info", CharacterName, damageTemplate.Attacker.Name);
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
+                    damageTemplate.Attacker.Name);
             }
         }
 
@@ -734,6 +737,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
+
         //We continuously set the position of the items to prevent them from changing as we zoom in and out of the window.
         //我们持续设置物品的位置，为了防止放大缩小窗口时物品位置的变化。
         if (_currentItem != null)

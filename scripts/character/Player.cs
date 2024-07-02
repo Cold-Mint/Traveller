@@ -50,7 +50,8 @@ public partial class Player : CharacterTemplate
     {
         base._Ready();
         CharacterName = TranslationServerUtils.Translate("default_player_name");
-        LogCat.LogWithFormat("player_spawn_debug", ReadOnlyCharacterName, GlobalPosition);
+        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, ReadOnlyCharacterName,
+            GlobalPosition);
         _floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");

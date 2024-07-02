@@ -79,3 +79,4 @@ collision_mask = 68
 shape = SubResource("CircleShape2D_c61vr")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true

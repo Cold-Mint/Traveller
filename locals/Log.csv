@@ -48,3 +48,8 @@ log_state_processor_already_registered,状态处理器已经注册。,State proc
 log_state_machine_does_not_specify_processor,状态机没有指定处理器。,The state machine does not specify a processor.,ステートマシンはプロセッサを指定していません。
 log_try_to_set_the_same_state,尝试设置相同的状态。,Try to set the same state.,同じ状態を設定しようとしています。
 log_state_machine_does_not_specify_active_processor,状态机没有指定活动处理器。,The state machine does not specify an active processor.,ステートマシンはアクティブプロセッサを指定していません。
+log_no_points,巡逻路径没有点。,The patrol path has no points.,巡回路にポイントがありません。
+log_patrol_to_next_point,下一个点{0}，当前位置{1}，偏移量{2}，距离为{3}。,"Next point {0}, current position {1}, offset {2}, distance {3}.",次のポイント{0}、現在の位置{1}、オフセット{2}、距離{3}。
+log_patrol_arrival_point,到达巡逻点{0}。,Arrival at patrol point {0}.,巡回ポイント{0}に到着します。
+log_patrol_origin_position,巡逻路径的起始位置是{0}。,The starting position of the patrol path is {0}.,巡回路の開始位置は{0}です。
+log_patrol_not_on_floor,不能将初始路径设置在空中。,The initial path cannot be set in the air.,初期パスを空中に設定できません。

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.stateMachine;
 using Godot;
 
@@ -42,7 +43,6 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </remarks>
     private RayCast2D? _attackObstacleDetection;
 
-    private float _horizontalMoveVelocity;
 
     /// <summary>
     /// <para>Navigation agent</para>
@@ -96,7 +96,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
         StateMachine?.Execute();
-        velocity.X = _horizontalMoveVelocity;
+        if (NavigationAgent2D != null && IsOnFloor())
+        {
+            var nextPathPosition = NavigationAgent2D.GetNextPathPosition();
+            var direction = (nextPathPosition - GlobalPosition).Normalized();
+            velocity = direction * Config.CellSize * Speed;
+        }
     }
 
     private void EnterTheAttackArea(Node node)
@@ -109,58 +114,22 @@ public sealed partial class AiCharacter : CharacterTemplate
         _nodesInTheAttackRange?.Remove(node);
     }
 
+
     /// <summary>
-    /// <para>Move left</para>
-    /// <para>向左移动</para>
+    /// <para>Set target location</para>
+    /// <para>设置目标位置</para>
     /// </summary>
-    public void MoveLeft()
+    /// <param name="targetPosition"></param>
+    public void SetTargetPosition(Vector2 targetPosition)
     {
-        if (!IsOnFloor())
+        if (NavigationAgent2D == null)
         {
             return;
         }
 
-        _horizontalMoveVelocity = -Speed * Config.CellSize;
+        NavigationAgent2D.TargetPosition = targetPosition;
     }
 
-    /// <summary>
-    /// <para>Move right</para>
-    /// <para>向右移动</para>
-    /// </summary>
-    public void MoveRight()
-    {
-        if (!IsOnFloor())
-        {
-            return;
-        }
-
-        _horizontalMoveVelocity = Speed;
-    }
-
-    /// <summary>
-    /// <para>Rotor</para>
-    /// <para>转头</para>
-    /// </summary>
-    public void Rotor()
-    {
-        FacingLeft = !FacingLeft;
-        Flip();
-        //Change the direction of the wall detection
-        //改变墙壁检测的方向
-        if (_wallDetection == null) return;
-        var newDirection = _wallDetectionOrigin;
-        newDirection.X = FacingLeft ? -_wallDetectionOrigin.X : _wallDetectionOrigin.X;
-        _wallDetection.TargetPosition = newDirection;
-    }
-
-    /// <summary>
-    /// <para>stop moving</para>
-    /// <para>停止移动</para>
-    /// </summary>
-    public void StopMoving()
-    {
-        _horizontalMoveVelocity = 0;
-    }
 
     public override void _ExitTree()
     {

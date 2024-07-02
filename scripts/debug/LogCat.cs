@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using ColdMint.scripts.utils;
 using Godot;
@@ -7,6 +8,22 @@ namespace ColdMint.scripts.debug;
 
 public static class LogCat
 {
+    public static class LogLabel
+    {
+        /// <summary>
+        /// <para>Default log label</para>
+        /// <para>默认的日志标签</para>
+        /// </summary>
+        public const string Default = "Default";
+
+        /// <summary>
+        /// <para>PatrolStateProcessor</para>
+        /// <para>巡逻状态处理器</para>
+        /// </summary>
+        public const string PatrolStateProcessor = "PatrolStateProcessor";
+    }
+    
+
     /// <summary>
     /// <para>Information log level</para>
     /// <para>信息日志等级</para>
@@ -49,8 +66,65 @@ public static class LogCat
 
     private static readonly StringBuilder StringBuilder = new StringBuilder();
 
+    /// <summary>
+    /// <para>Disabled log label</para>
+    /// <para>禁用的日志标签</para>
+    /// </summary>
+    private static HashSet<string> DisabledLogLabels { get; } = [];
+    
 
-    private static StringBuilder HandleMessage(int level, string message)
+    /// <summary>
+    /// <para>Disable log Label</para>
+    /// <para>禁用某个日志标签</para>
+    /// </summary>
+    /// <param name="label">
+    ///<para>label</para>
+    ///<para>标签名称</para>
+    /// </param>
+    /// <returns>
+    ///<para>Returns whether the function is disabled successfully</para>
+    ///<para>返回是否禁用成功</para>
+    /// </returns>
+    public static bool DisableLogLabel(string label)
+    {
+        return DisabledLogLabels.Add(label);
+    }
+
+    /// <summary>
+    /// <para>Whether a label is enabled</para>
+    /// <para>某个标签是否处于启用状态</para>
+    /// </summary>
+    /// <param name="label">
+    ///<para>label</para>
+    ///<para>标签名称</para>
+    /// </param>
+    /// <returns>
+    ///<para>Whether enabled</para>
+    ///<para>是否处于启用</para>
+    /// </returns>
+    public static bool IsEnabledLogLabel(string label)
+    {
+        return !DisabledLogLabels.Contains(label);
+    }
+
+    /// <summary>
+    /// <para>EnableLogLabel</para>
+    /// <para>启用某个日志标签</para>
+    /// </summary>
+    /// <param name="label">
+    ///<para>label</para>
+    /// <para>标签名称</para>
+    /// </param>
+    /// <returns>
+    ///<para>Returns whether the function is enabled successfully</para>
+    ///<para>返回是否启用成功</para>
+    /// </returns>
+    public static bool EnableLogLabel(string label)
+    {
+        return DisabledLogLabels.Remove(label);
+    }
+
+    private static StringBuilder HandleMessage(int level, string message, string label)
     {
         StringBuilder.Clear();
         switch (level)
@@ -69,7 +143,9 @@ public static class LogCat
                 break;
         }
 
-        StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss : "));
+        StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss "));
+        StringBuilder.Append(label);
+        StringBuilder.Append(" :");
         var key = $"log_{message}";
         var translationResult = TranslationServerUtils.Translate(key);
         StringBuilder.Append(translationResult == key ? message : translationResult);
@@ -86,14 +162,21 @@ public static class LogCat
     /// <para>This message supports localized output, assuming there is already a translation key, Hello = 你好, passing hello will output 你好.</para>
     /// <para>这个消息支持本地化输出，假设已存在翻译key，Hello = 你好，传入Hello则会输出你好。</para>
     /// </param>
-    public static void Log(string message)
+    /// <param name="label">
+    /// </param>
+    public static void Log(string message, string label = LogLabel.Default)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > InfoLogLevel)
         {
             return;
         }
 
-        GD.Print(HandleMessage(InfoLogLevel, message));
+        GD.Print(HandleMessage(InfoLogLevel, message, label));
     }
 
     /// <summary>
@@ -106,55 +189,81 @@ public static class LogCat
     /// <para>This message supports localized output, assuming there is already a translation key, Hello = 你好, passing hello will output 你好.</para>
     /// <para>这个消息支持本地化输出，假设已存在翻译key，Hello = 你好，传入Hello则会输出你好。</para>
     /// </param>
-    public static void LogError(string message)
+    /// <param name="label"></param>
+    public static void LogError(string message, string label = LogLabel.Default)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > ErrorLogLevel)
         {
             return;
         }
 
-        GD.PrintErr(HandleMessage(ErrorLogLevel, message));
+        GD.PrintErr(HandleMessage(ErrorLogLevel, message, label));
     }
 
-    public static void LogWarning(string message)
+    public static void LogWarning(string message, string label = LogLabel.Default)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > WarningLogLevel)
         {
             return;
         }
 
-        GD.Print(HandleMessage(WarningLogLevel, message));
+        GD.Print(HandleMessage(WarningLogLevel, message, label));
     }
 
-    public static void LogErrorWithFormat(string message, params object?[] args)
+    public static void LogErrorWithFormat(string message, string label, params object?[] args)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > ErrorLogLevel)
         {
             return;
         }
 
-        GD.PrintErr(string.Format(HandleMessage(ErrorLogLevel, message).ToString(), args));
+        GD.PrintErr(string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args));
     }
 
 
-    public static void LogWithFormat(string message, params object?[] args)
+    public static void LogWithFormat(string message, string label, params object?[] args)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > InfoLogLevel)
         {
             return;
         }
 
-        GD.Print(string.Format(HandleMessage(InfoLogLevel, message).ToString(), args));
+        GD.Print(string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args));
     }
 
-    public static void LogWarningWithFormat(string message, params object?[] args)
+    public static void LogWarningWithFormat(string message, string label, params object?[] args)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         if (_minLogLevel > InfoLogLevel)
         {
             return;
         }
 
-        GD.Print(string.Format(HandleMessage(WarningLogLevel, message).ToString(), args));
+        GD.Print(string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args));
     }
 
     /// <summary>
@@ -162,10 +271,16 @@ public static class LogCat
     /// <para>当捕获异常后调用此方法</para>
     /// </summary>
     /// <param name="e"></param>
-    public static void WhenCaughtException(Exception e)
+    /// <param name="label"></param>
+    public static void WhenCaughtException(Exception e, string label = LogLabel.Default)
     {
+        if (!IsEnabledLogLabel(label))
+        {
+            return;
+        }
+
         //Log an exception here or send it to the server.
         //请在这里记录异常或将异常发送至服务器。
-        GD.PrintErr(HandleMessage(ErrorLogLevel, e.Message).Append('\n').Append(e.StackTrace));
+        GD.PrintErr(HandleMessage(ErrorLogLevel, e.Message, label).Append('\n').Append(e.StackTrace));
     }
 }

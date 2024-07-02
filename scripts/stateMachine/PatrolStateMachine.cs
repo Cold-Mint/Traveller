@@ -10,6 +10,17 @@ public class PatrolStateMachine : StateMachineTemplate
 {
     protected override void OnStart(StateContext context)
     {
-        RegisterProcessor(new PatrolStateProcessor());
+        var patrolStateProcessor = new PatrolStateProcessor
+        {
+            Points =
+            [
+                new Godot.Vector2(100, 0),
+                new Godot.Vector2(-100, 0),
+                new Godot.Vector2(50, 0),
+                new Godot.Vector2(-50, 0),
+                new Godot.Vector2(0, 0)
+            ]
+        };
+        RegisterProcessor(patrolStateProcessor);
     }
 }

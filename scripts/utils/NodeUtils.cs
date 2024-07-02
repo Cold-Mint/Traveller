@@ -220,7 +220,7 @@ public static class NodeUtils
         if (node is T result) return result;
         // If the transformation fails, release the created node
         //如果转型失败，释放所创建的节点
-        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", node, nameof(T));
+        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", LogCat.LogLabel.Default, node, nameof(T));
         node.QueueFree();
         return null;
     }

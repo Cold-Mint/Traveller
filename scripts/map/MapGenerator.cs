@@ -241,7 +241,7 @@ public static class MapGenerator
                             //If the room injection processor cannot be found, a print error occurs.
                             //如果找不到房间注入处理器，那么打印错误。
                             LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist",
-                                injectionProcessorData.Id);
+                                LogCat.LogLabel.Default, injectionProcessorData.Id);
                             continue;
                         }
 
@@ -277,7 +277,8 @@ public static class MapGenerator
                     roomNodeData);
             if (roomPlacementData == null)
             {
-                LogCat.LogWithFormat("failed_to_calculate_the_room_location", roomNodeData.Id);
+                LogCat.LogWithFormat("failed_to_calculate_the_room_location", LogCat.LogLabel.Default,
+                    roomNodeData.Id);
                 continue;
             }
 
@@ -323,18 +324,19 @@ public static class MapGenerator
 
         if (dictionary.ContainsKey(roomNodeDataId))
         {
-            LogCat.LogWithFormat("place_existing_rooms", roomNodeDataId);
+            LogCat.LogWithFormat("place_existing_rooms", LogCat.LogLabel.Default, roomNodeDataId);
             return false;
         }
 
         if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
         {
-            LogCat.LogWarningWithFormat("room_placement_failed", roomNodeDataId);
+            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.LogLabel.Default, roomNodeDataId);
             return false;
         }
 
         dictionary.Add(roomNodeDataId, roomPlacementData.Room);
-        LogCat.LogWithFormat("room_placement_information", roomNodeDataId, roomPlacementData.Position.ToString());
+        LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, roomNodeDataId,
+            roomPlacementData.Position.ToString());
         return true;
     }
 }

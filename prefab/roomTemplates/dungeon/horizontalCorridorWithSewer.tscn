@@ -63,7 +63,7 @@ position = Vector2(0, 17)
 shape = SubResource("RectangleShape2D_131jn")
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(183, 72)
+position = Vector2(237, 69)
 script = ExtResource("2_7q101")
 metadata/ResPath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
 

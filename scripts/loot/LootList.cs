@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 
@@ -26,7 +25,7 @@ public readonly struct LootList(string id, IList<LootGroup> groups)
     {
         if (Groups is [])
         {
-            LogCat.LogWithFormat("loot_list_has_no_entries", Id);
+            LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default, Id);
             return [];
         }
 
@@ -42,10 +41,10 @@ public readonly struct LootList(string id, IList<LootGroup> groups)
             //我们为每个战利品条目生成一个战利品数据。
             var datum = group.GenerateLootData();
             lootDataList.Add(datum);
-            LogCat.LogWithFormat("loot_data_add", datum);
+            LogCat.LogWithFormat("loot_data_add", LogCat.LogLabel.Default, datum);
         }
 
-        LogCat.LogWithFormat("loot_data_quantity", lootDataList.Count);
+        LogCat.LogWithFormat("loot_data_quantity", LogCat.LogLabel.Default, lootDataList.Count);
         return lootDataList.ToArray();
     }
 }

@@ -36,7 +36,7 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("enter_the_room_debug", node.Name, _rootNode.Name);
+            LogCat.LogWithFormat("enter_the_room_debug", LogCat.LogLabel.Default, node.Name, _rootNode.Name);
         }
 
         if (string.IsNullOrEmpty(EnterRoomEventHandlerId))
@@ -57,7 +57,7 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("exit_the_room_debug", node.Name, _rootNode.Name);
+            LogCat.LogWithFormat("exit_the_room_debug",  LogCat.LogLabel.Default, node.Name, _rootNode.Name);
         }
 
         if (string.IsNullOrEmpty(ExitRoomEventHandlerId))
@@ -108,6 +108,7 @@ public class Room
         {
             return;
         }
+
         var node2D = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
         if (node2D == null)
         {

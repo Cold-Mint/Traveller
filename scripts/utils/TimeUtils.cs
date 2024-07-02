@@ -33,7 +33,8 @@ public static class TimeUtils
         var compNum1 = DateTime.Compare(dateTime, dtStartTime);
         var compNum2 = DateTime.Compare(dateTime, dtEndTime);
         var result = compNum1 >= 0 && compNum2 <= 0;
-        LogCat.LogWithFormat("time_range_debug", dateTime, dtStartTime, dtEndTime, result);
+        LogCat.LogWithFormat("time_range_debug", LogCat.LogLabel.Default, dateTime, dtStartTime, dtEndTime,
+            result);
         return result;
     }
 }
