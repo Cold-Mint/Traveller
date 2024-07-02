@@ -35,7 +35,7 @@ log_start_item_register_from_file,开始从文件注册物品信息,Start regist
 log_found_files,找到{0}个文件,Found {0} files,{0}ファイルが見つかりました
 log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types in files,ファイルから{0}個のアイテム・タイプが見つかった
 log_register_item,注册物品类型{0}结果为{1},Registered item type {0}; results in {1},登録されたアイテム・タイプ {0} の結果は {1} です。
-log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误,Error when opening itemRegs dir,アイテム情報カタログを開こうとしてエラーが発生しました。
+log_error_when_open_item_regs_dir,尝试打开物品信息目录时发生错误，错误代码：{1},"An error occurred when trying to open the item information directory, error code: {1}",アイテム情報ディレクトリを開こうとしてエラーが発生しました、エラーコード：{1}
 log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched parameter: type {0} and value {1},パラメータの不一致：型{0}と値{1}。
 log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です
 log_item_has_no_owner,物品没有所有者,Item has no owner,アイテムに所有者がいません

@@ -14,8 +14,8 @@ A pixel cross-platform roguelite game.
 | ----------------------------------------------------------- | ------------------ |
 | Randomly generated map                         | complete |
 | loot                                                 | complete |
-| Support still out of the knapsack system | In progress                |
-| Add AI agents to creatures | await |
+| Support still out of the knapsack system | complete       |
+| Add AI agents to creatures | In progress |
 
 ## Screenshot
 
@@ -42,6 +42,14 @@ Enter the following command in your working directory:
 
 ```
 git clone https://github.com/Cold-Mint/Traveller.git
+```
+
+#### Export
+
+You need to fill in the Export Presets > Resources > Filter to export non-resource files or folders edit box:
+
+```
+data/*
 ```
 
 ## Participate in translation

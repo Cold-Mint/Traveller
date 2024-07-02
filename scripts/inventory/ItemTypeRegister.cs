@@ -33,9 +33,10 @@ public static class ItemTypeRegister
         //initialize file dir
         var itemRegsDirPath = "res://data/itemRegs/";
         var itemRegsDir = DirAccess.Open(itemRegsDirPath);
-        if (DirAccess.GetOpenError() is not Error.Ok)
+        var error = DirAccess.GetOpenError();
+        if (error is not Error.Ok)
         {
-            LogCat.LogError("error_when_open_item_regs_dir");
+            LogCat.LogError("error_when_open_item_regs_dir",error.ToString());
         }
 
         //找到文件
