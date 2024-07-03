@@ -53,3 +53,10 @@ log_patrol_to_next_point,下一个点{0}，当前位置{1}，偏移量{2}，距�
 log_patrol_arrival_point,到达巡逻点{0}。,Arrival at patrol point {0}.,巡回ポイント{0}に到着します。
 log_patrol_origin_position,巡逻路径的起始位置是{0}。,The starting position of the patrol path is {0}.,巡回路の開始位置は{0}です。
 log_patrol_not_on_floor,不能将初始路径设置在空中。,The initial path cannot be set in the air.,初期パスを空中に設定できません。
+log_item_container_is_null,物品容器为空。,Item container is null.,アイテム・コンテナが空です。
+log_can_add_item,可以添加物品{0}。,Can add item {0}.,アイテム{0}を追加できます。
+log_backpack_not_allowed,不允许添加到背包。,Not allowed to add to backpack.,バックパックに追加することは許可されていません。
+log_item_is_null,物品为空。,Item is null.,アイテムが空です。
+log_item_id_not_same,物品ID不同。,Item ID is different.,アイテムIDが異なります。
+log_max_quantity_exceeded,超过最大数量。,Exceeded maximum quantity.,最大数量を超えました。
+log_item_slot_is_selected_and_not_allowed,已选择物品槽，不允许添加。,"Item slot is selected, not allowed to add.",アイテムスロットが選択されており、追加は許可されていません。

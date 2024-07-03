@@ -1,4 +1,5 @@
 using System;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -62,6 +63,14 @@ public partial class ItemSlotNode : MarginContainer
 
     public override bool _CanDropData(Vector2 atPosition, Variant data)
     {
+        if (_isSelect)
+        {
+            //Do not place items in the selected item slot, even if the item slot is empty.
+            //禁止在已选中的物品槽内放置物品，即使物品槽是空的。
+            LogCat.Log("item_slot_is_selected_and_not_allowed");
+            return false;
+        }
+
         //If the preplaced slot does not have an icon, the preplaced slot is not allowed.
         //如果预放置的槽位没有图标，那么不允许放置。
         if (_iconTextureRect == null)
@@ -84,6 +93,35 @@ public partial class ItemSlotNode : MarginContainer
             //Return null when trying to get the source item.
             //尝试获取源物品时返回null。
             return false;
+        }
+
+        if (item is Packsack packsack)
+        {
+            if (_item == null)
+            {
+                //If the dragged item is a backpack and there are no items in the current slot, return whether the backpack is allowed.
+                //如果拖拽的物品是背包，且当前槽位没有物品，那么返回是否允许放置背包。
+                return BackpackAllowed;
+            }
+
+            if (packsack.ItemContainer == null)
+            {
+                LogCat.Log("item_container_is_null");
+                return false;
+            }
+            
+            return packsack.ItemContainer.CanAddItem(_item);
+        }
+
+        if (_item is Packsack currentPacksack)
+        {
+            if (currentPacksack.ItemContainer == null)
+            {
+                LogCat.Log("item_container_is_null");
+                return false;
+            }
+
+            return currentPacksack.ItemContainer.CanAddItem(item);
         }
 
         return CanAddItem(item);
@@ -194,16 +232,40 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var itemSlotNode = data.As<ItemSlotNode>();
-        var item = itemSlotNode.GetItem();
-        if (item == null)
+        var sourceItem = itemSlotNode.GetItem();
+        if (sourceItem == null)
         {
             //Return null when trying to get the source item.
             //尝试获取源物品时返回null。
             return;
         }
 
+        if (sourceItem is Packsack packsack)
+        {
+            //If the source item is a backpack.
+            //如果源物品是背包。
+            if (packsack.ItemContainer != null && _item != null)
+            {
+                packsack.ItemContainer.AddItem(_item);
+                ClearItem(false);
+                return;
+            }
+        }
+
+        if (_item is Packsack customPacksack)
+        {
+            if (customPacksack.ItemContainer == null)
+            {
+                return;
+            }
+
+            customPacksack.ItemContainer.AddItem(sourceItem);
+            itemSlotNode.ClearItem(false);
+            return;
+        }
+
+        AddItem(sourceItem);
         itemSlotNode.ClearItem(false);
-        AddItem(item);
     }
 
     /// <summary>
@@ -337,6 +399,7 @@ public partial class ItemSlotNode : MarginContainer
         if (!BackpackAllowed && item is Packsack)
         {
             //如果禁止放置背包，且新物品是背包
+            LogCat.Log("backpack_not_allowed");
             return false;
         }
 
@@ -344,6 +407,7 @@ public partial class ItemSlotNode : MarginContainer
         {
             //If there is no item in the current item slot, it is allowed to add.
             //如果当前物品槽内没物品，那么允许添加。
+            LogCat.Log("item_is_null");
             return true;
         }
 
@@ -351,6 +415,7 @@ public partial class ItemSlotNode : MarginContainer
         {
             //If the item ID you want to add is different from the current item ID, disable.
             //如果要添加的物品ID和当前的物品ID不一样，那么禁止。
+            LogCat.Log("item_id_not_same");
             return false;
         }
 
@@ -359,6 +424,7 @@ public partial class ItemSlotNode : MarginContainer
         {
             //The maximum number is exceeded and items cannot be added.
             //超过了最大数量，无法添加物品。
+            LogCat.Log("max_quantity_exceeded");
             return false;
         }
 
