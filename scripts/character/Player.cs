@@ -294,7 +294,7 @@ public partial class Player : CharacterTemplate
 
             if (_parabola != null)
             {
-                _parabola.Points = new[] { Vector2.Zero };
+                _parabola.Points = [Vector2.Zero];
             }
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());

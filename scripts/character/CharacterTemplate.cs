@@ -340,7 +340,8 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Sleeping = true;
         }
 
-        if (_currentItem == null)
+
+        if (_currentItem == null && selectItemSlotNode.GetItem() == item)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
