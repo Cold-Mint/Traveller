@@ -22,5 +22,7 @@ public class PatrolStateMachine : StateMachineTemplate
             ]
         };
         RegisterProcessor(patrolStateProcessor);
+        var chaseStateProcessor = new ChaseStateProcessor();
+        RegisterProcessor(chaseStateProcessor);
     }
 }

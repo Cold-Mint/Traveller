@@ -46,7 +46,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
             LogCat.MinLogLevel = LogCat.DisableAllLogLevel;
         }
 
-        LogCat.DisableLogLabel(LogCat.LogLabel.PatrolStateProcessor);
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());

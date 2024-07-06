@@ -8,9 +8,8 @@ namespace ColdMint.scripts.stateMachine;
 /// </summary>
 public abstract class StateProcessorTemplate : IStateProcessor
 {
-    public void Enter(StateContext context)
+    public virtual void Enter(StateContext context)
     {
-        throw new System.NotImplementedException();
     }
 
     public void Execute(StateContext context)
@@ -19,6 +18,7 @@ public abstract class StateProcessorTemplate : IStateProcessor
         {
             return;
         }
+
         OnExecute(context, context.Owner);
     }
 
@@ -30,9 +30,8 @@ public abstract class StateProcessorTemplate : IStateProcessor
     /// <param name="owner"></param>
     protected abstract void OnExecute(StateContext context, Node owner);
 
-    public void Exit(StateContext context)
+    public virtual void Exit(StateContext context)
     {
-        
     }
 
     public abstract State State { get; }

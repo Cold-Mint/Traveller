@@ -46,13 +46,13 @@ public abstract class StateMachineTemplate : IStateMachine
     {
         if (_context == null)
         {
-            LogCat.LogError("state_machine_does_not_specify_context");
+            LogCat.LogError("state_machine_does_not_specify_context", label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
 
         if (_processors == null)
         {
-            LogCat.LogError("state_machine_does_not_specify_processor");
+            LogCat.LogError("state_machine_does_not_specify_processor", label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
 
@@ -66,6 +66,11 @@ public abstract class StateMachineTemplate : IStateMachine
             processor.Enter(_context);
             _activeStatusrocessor = processor;
         }
+        else
+        {
+            LogCat.LogErrorWithFormat("state_processor_not_found", label: LogCat.LogLabel.StateMachineTemplate,
+                newState);
+        }
     }
 
     /// <summary>
@@ -78,7 +83,7 @@ public abstract class StateMachineTemplate : IStateMachine
         _processors ??= new Dictionary<State, IStateProcessor>();
         if (!_processors.TryAdd(processor.State, processor))
         {
-            LogCat.LogError("state_processor_already_registered");
+            LogCat.LogError("state_processor_already_registered", label: LogCat.LogLabel.StateMachineTemplate);
         }
     }
 
@@ -86,13 +91,13 @@ public abstract class StateMachineTemplate : IStateMachine
     {
         if (_isRunning)
         {
-            LogCat.LogError("try_to_open_state_machine_that_is_on");
+            LogCat.LogError("try_to_open_state_machine_that_is_on", label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
 
         if (Context == null)
         {
-            LogCat.LogError("state_machine_does_not_specify_context");
+            LogCat.LogError("state_machine_does_not_specify_context", label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
 
@@ -139,15 +144,17 @@ public abstract class StateMachineTemplate : IStateMachine
 
         if (Context == null)
         {
-            LogCat.LogError("state_machine_does_not_specify_context");
+            LogCat.LogError("state_machine_does_not_specify_context", label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
 
         if (_activeStatusrocessor == null)
         {
-            LogCat.LogError("state_machine_does_not_specify_active_processor");
+            LogCat.LogError("state_machine_does_not_specify_active_processor",
+                label: LogCat.LogLabel.StateMachineTemplate);
             return;
         }
+
         _activeStatusrocessor.Execute(Context);
     }
 }

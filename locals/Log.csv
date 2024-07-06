@@ -60,3 +60,13 @@ log_item_is_null,物品为空。,Item is null.,アイテムが空です。
 log_item_id_not_same,物品ID不同。,Item ID is different.,アイテムIDが異なります。
 log_max_quantity_exceeded,超过最大数量。,Exceeded maximum quantity.,最大数量を超えました。
 log_item_slot_is_selected_and_not_allowed,已选择物品槽，不允许添加。,"Item slot is selected, not allowed to add.",アイテムスロットが選択されており、追加は許可されていません。
+log_patrol_enemy_detected,检测到敌人。,Enemy detected.,敵を検出しました。
+log_attacker_or_target_is_null,攻击者或目标为空。,Attacker or target is null.,攻撃者またはターゲットが空です。
+log_in_the_same_camp,在同一阵营。,In the same camp.,同じ陣営です。
+log_friendly_target,友好目标。,Friendly target.,友好的なターゲットです。
+log_can_cause_harm,可以造成伤害。,Can cause harm.,ダメージを与えることができます。
+log_camp_is_null,阵营为空。,Camp is null.,陣営が空です。
+log_set_default_camp,设置默认阵营{0}。,Set default camp {0}.,デフォルトの陣営{0}を設定します。
+log_state_change,状态变更从{0}到{1}。,State change from {0} to {1}.,状態が{0}から{1}に変更されます。
+log_state_processor_not_found,找不到状态处理器{0}。,State processor {0} not found.,ステートプロセッサ{0}が見つかりません。
+log_chase_no_enemy,追逐没有敌人。,Chase no enemy.,敵がいない追跡です。

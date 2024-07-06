@@ -21,8 +21,32 @@ public static class LogCat
         /// <para>巡逻状态处理器</para>
         /// </summary>
         public const string PatrolStateProcessor = "PatrolStateProcessor";
+
+        /// <summary>
+        /// <para>CampManager</para>
+        /// <para>阵营管理器</para>
+        /// </summary>
+        public const string CampManager = "CampManager";
+        
+        /// <summary>
+        /// <para>State context</para>
+        /// <para>状态上下文</para>
+        /// </summary>
+        public const string StateContext = "StateContext";
+        
+        /// <summary>
+        /// <para>StateMachineTemplate</para>
+        /// <para>状态机模板</para>
+        /// </summary>
+        public const string StateMachineTemplate = "StateMachineTemplate";
+        
+        /// <summary>
+        /// <para>Pursuit enemy processor</para>
+        /// <para>追击敌人处理器</para>
+        /// </summary>
+        public const string ChaseStateProcessor = "ChaseStateProcessor";
     }
-    
+
 
     /// <summary>
     /// <para>Information log level</para>
@@ -71,7 +95,7 @@ public static class LogCat
     /// <para>禁用的日志标签</para>
     /// </summary>
     private static HashSet<string> DisabledLogLabels { get; } = [];
-    
+
 
     /// <summary>
     /// <para>Disable log Label</para>

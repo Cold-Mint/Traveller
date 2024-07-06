@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using ColdMint.scripts.debug;
+using ColdMint.scripts.camp;
 using ColdMint.scripts.stateMachine;
 using Godot;
 
@@ -21,16 +20,10 @@ public sealed partial class AiCharacter : CharacterTemplate
     private Area2D? _attackArea;
 
     /// <summary>
-    /// <para>Nodes in the attack range</para>
-    /// <para>在攻击范围内的节点</para>
+    /// <para>All enemies within striking distance</para>
+    /// <para>在攻击范围内的所有敌人</para>
     /// </summary>
-    private List<Node>? _nodesInTheAttackRange;
-
-    /// <summary>
-    /// <para>All nodes in the attack range</para>
-    /// <para>在攻击范围内的全部节点</para>
-    /// </summary>
-    public Node[] NodesInTheAttackRange => _nodesInTheAttackRange?.ToArray() ?? Array.Empty<Node>();
+    private List<CharacterTemplate>? _enemyInTheAttackRange;
 
 
     /// <summary>
@@ -59,7 +52,7 @@ public sealed partial class AiCharacter : CharacterTemplate
     public override void _Ready()
     {
         base._Ready();
-        _nodesInTheAttackRange = new List<Node>();
+        _enemyInTheAttackRange = new List<CharacterTemplate>();
         _wallDetection = GetNode<RayCast2D>("WallDetection");
         _attackArea = GetNode<Area2D>("AttackArea2D");
         NavigationAgent2D = GetNode<NavigationAgent2D>("NavigationAgent2D");
@@ -93,6 +86,38 @@ public sealed partial class AiCharacter : CharacterTemplate
         }
     }
 
+    /// <summary>
+    /// <para>EnemyDetected</para>
+    /// <para>是否发现敌人</para>
+    /// </summary>
+    /// <returns>
+    ///<para>Have you spotted the enemy?</para>
+    ///<para>是否发现敌人</para>
+    /// </returns>
+    public bool EnemyDetected()
+    {
+        if (_enemyInTheAttackRange == null)
+        {
+            return false;
+        }
+
+        return _enemyInTheAttackRange.Count > 0;
+    }
+
+    /// <summary>
+    /// <para>Get the first enemy to enter range</para>
+    /// <para>获取第一个进入范围的敌人</para>
+    /// </summary>
+    /// <returns></returns>
+    public CharacterTemplate? GetFirstEnemy()
+    {
+        if (_enemyInTheAttackRange == null || _enemyInTheAttackRange.Count == 0)
+        {
+            return null;
+        }
+        return _enemyInTheAttackRange[0];
+    }
+
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
         StateMachine?.Execute();
@@ -106,12 +131,41 @@ public sealed partial class AiCharacter : CharacterTemplate
 
     private void EnterTheAttackArea(Node node)
     {
-        _nodesInTheAttackRange?.Add(node);
+        if (node == this)
+        {
+            //The target can't be yourself.
+            //攻击目标不能是自己。
+            return;
+        }
+
+        if (node is CharacterTemplate characterTemplate)
+        {
+            //Determine if damage can be done between factions
+            //判断阵营间是否可造成伤害
+            var camp = CampManager.GetCamp(CampId);
+            var enemyCamp = CampManager.GetCamp(characterTemplate.CampId);
+            if (enemyCamp != null && camp != null)
+            {
+                var canCause = CampManager.CanCauseHarm(camp, enemyCamp);
+                if (canCause)
+                {
+                    _enemyInTheAttackRange?.Add(characterTemplate);
+                }
+            }
+        }
     }
 
     private void ExitTheAttackArea(Node node)
     {
-        _nodesInTheAttackRange?.Remove(node);
+        if (node == this)
+        {
+            return;
+        }
+
+        if (node is CharacterTemplate characterTemplate)
+        {
+            _enemyInTheAttackRange?.Remove(characterTemplate);
+        }
     }
 
 

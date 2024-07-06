@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ColdMint.scripts.debug;
 
 namespace ColdMint.scripts.camp;
 
@@ -32,12 +33,14 @@ public static class CampManager
     {
         if (camp == null)
         {
+            LogCat.Log("camp_is_null", label: LogCat.LogLabel.CampManager);
             return false;
         }
 
         if (camp.Id != Config.CampId.Default) return false;
         _defaultCamp = camp;
         AddCamp(camp);
+        LogCat.LogWithFormat("set_default_camp", label: LogCat.LogLabel.CampManager, camp.Id);
         return true;
     }
 
@@ -52,6 +55,7 @@ public static class CampManager
     {
         if (attacker == null || target == null)
         {
+            LogCat.Log("attacker_or_target_is_null", label: LogCat.LogLabel.CampManager);
             return false;
         }
 
@@ -59,6 +63,7 @@ public static class CampManager
         {
             //In the same camp, return whether friendly fire is allowed
             //在同一阵营内，返回是否允许友伤
+            LogCat.Log("in_the_same_camp", label: LogCat.LogLabel.CampManager);
             return attacker.FriendInjury;
         }
 
@@ -74,11 +79,13 @@ public static class CampManager
                 {
                     //The attacker thinks the target is friendly, and we can't hurt a friendly target
                     //攻击者认为目标友好，我们不能伤害友好的目标
+                    LogCat.Log("friendly_target", label: LogCat.LogLabel.CampManager);
                     return false;
                 }
             }
         }
 
+        LogCat.Log("can_cause_harm", label: LogCat.LogLabel.CampManager);
         return true;
     }
 
