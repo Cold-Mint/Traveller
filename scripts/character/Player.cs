@@ -210,7 +210,7 @@ public partial class Player : CharacterTemplate
         //Moving left and right
         //左右移动
         var axis = Input.GetAxis("ui_left", "ui_right");
-        velocity.X = axis * Speed * Config.CellSize;
+        velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
 
         //Use items
         //使用物品

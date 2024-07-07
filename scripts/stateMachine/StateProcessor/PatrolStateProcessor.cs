@@ -41,8 +41,10 @@ public class PatrolStateProcessor : StateProcessorTemplate
             return;
         }
 
-        if (aiCharacter.EnemyDetected())
+        if (aiCharacter.ScoutEnemyDetected())
         {
+            //Seeing that the enemy had entered the reconnaissance area, we gave chase immediately.
+            //发现敌人进入侦察范围，我们立即追击。
             context.CurrentState = State.Chase;
             LogCat.Log("patrol_enemy_detected", label: LogCat.LogLabel.PatrolStateProcessor);
             return;
@@ -50,12 +52,16 @@ public class PatrolStateProcessor : StateProcessorTemplate
 
         if (Points == null || Points.Length == 0)
         {
+            //There are no patrol points.
+            //没有巡逻点。
             LogCat.LogError("no_points", label: LogCat.LogLabel.PatrolStateProcessor);
             return;
         }
 
         if (_originPosition == null)
         {
+            //If there is no origin, then wait for the character to collide with the ground to set it as the origin.
+            //如果没有原点，那么等待角色与地面碰撞时将其设置为原点。
             if (!aiCharacter.IsOnFloor())
             {
                 LogCat.LogWarning("patrol_not_on_floor", LogCat.LogLabel.PatrolStateProcessor);
@@ -69,8 +75,10 @@ public class PatrolStateProcessor : StateProcessorTemplate
 
         var point = _originPosition + Points[_index];
         var distance = aiCharacter.GlobalPosition.DistanceTo(point.Value);
-        if (distance < 10)
+        if (distance < 5)
         {
+            //No need to actually come to the patrol point, we just need a distance to get close.
+            //无需真正的来到巡逻点，我们只需要一个距离接近了就可以了。
             LogCat.LogWithFormat("patrol_arrival_point", LogCat.LogLabel.PatrolStateProcessor, point);
             _index++;
             if (_index >= Points.Length)

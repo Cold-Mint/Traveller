@@ -38,6 +38,36 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </remarks>
     protected const float Speed = 5f;
 
+    /// <summary>
+    /// <para>Speed multiplier</para>
+    /// <para>速度乘数</para>
+    /// </summary>
+    protected float ProtectedSpeedScale = 1f;
+
+    /// <summary>
+    /// <para>Speed multiplier</para>
+    /// <para>速度乘数</para>
+    /// <remarks>
+    ///<para>Set to 0.5 to move at 50% of the normal speed.</para>
+    ///<para>设置为0.5则以正常速度的50%移动。</para>
+    /// </remarks>
+    /// </summary>
+    public float SpeedScale
+    {
+        get => ProtectedSpeedScale;
+        set
+        {
+            if (value > 1)
+            {
+                ProtectedSpeedScale = 1;
+            }
+            else
+            {
+                ProtectedSpeedScale = value;
+            }
+        }
+    }
+
     protected const float JumpVelocity = -240;
 
     //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
