@@ -3,3 +3,6 @@ id,zh,en,ja
 #自杀
 death_info_self_1,{0}误伤了自己。,{0} accidentally shot themself.,{0}誤って自分を傷つけました。
 death_info_self_2,{0}忘记了瞄准。,{0} forgot to aim.,{0}照準を忘れました。
+#Default death message
+#默认死亡信息
+death_info_default,{0}被{1}杀死了。,{0} is killed by {1}.,{0}は{1}に殺されました。

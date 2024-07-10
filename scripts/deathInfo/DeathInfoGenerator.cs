@@ -76,6 +76,6 @@ public static class DeathInfoGenerator
     /// <returns></returns>
     private static string? GenerateDefaultDeathInfo(string victimName, string killerName)
     {
-        return TranslationServerUtils.TranslateWithFormat("death_info", victimName, killerName);
+        return TranslationServerUtils.TranslateWithFormat("death_info_default", victimName, killerName);
     }
 }

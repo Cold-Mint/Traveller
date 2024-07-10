@@ -70,3 +70,6 @@ log_set_default_camp,设置默认阵营{0}。,Set default camp {0}.,デフォル
 log_state_change,状态变更从{0}到{1}。,State change from {0} to {1}.,状態が{0}から{1}に変更されます。
 log_state_processor_not_found,找不到状态处理器{0}。,State processor {0} not found.,ステートプロセッサ{0}が見つかりません。
 log_chase_no_enemy,追逐没有敌人。,Chase no enemy.,敵がいない追跡です。
+log_bubble_not_found,找不到气泡{0}。,Bubble {0} not found.,バブル{0}が見つかりません。
+log_owner_is_not_AiCharacter,所有者不是AiCharacter。,Owner is not AiCharacter.,所有者はAiCharacterではありません。
+log_weaponContainer_is_null,武器容器为空。,Weapon container is null.,武器コンテナが空です。

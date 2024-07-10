@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using ColdMint.scripts.bubble;
 using ColdMint.scripts.camp;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.stateMachine;
 using ColdMint.scripts.utils;
+using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.character;
@@ -93,6 +95,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </remarks>
     private BubbleMarker? _bubbleMarker;
 
+    /// <summary>
+    /// <para>The initial weapons scene</para>
+    /// <para>初始的武器场景</para>
+    /// </summary>
+    [Export] public string? InitWeaponRes;
+
     public override void _Ready()
     {
         base._Ready();
@@ -116,14 +124,14 @@ public sealed partial class AiCharacter : CharacterTemplate
         if (_bubbleMarker != null)
         {
             using var plaintScene = GD.Load<PackedScene>("res://prefab/ui/plaint.tscn");
-            var plaint = NodeUtils.InstantiatePackedScene<Node2D>(plaintScene);
+            var plaint = NodeUtils.InstantiatePackedScene<Control>(plaintScene);
             if (plaint != null)
             {
                 _bubbleMarker.AddBubble(plaintBubbleId, plaint);
             }
 
             using var queryScene = GD.Load<PackedScene>("res://prefab/ui/query.tscn");
-            var query = NodeUtils.InstantiatePackedScene<Node2D>(queryScene);
+            var query = NodeUtils.InstantiatePackedScene<Control>(queryScene);
             if (query != null)
             {
                 _bubbleMarker.AddBubble(queryBubbleId, query);
@@ -170,7 +178,41 @@ public sealed partial class AiCharacter : CharacterTemplate
         {
             StateMachine.Start();
         }
+
+        //You must create an item container for the character before you can pick up the item.
+        //必须为角色创建物品容器后才能拾起物品。
+        var universalItemContainer = new UniversalItemContainer();
+        var itemSlotNode =  universalItemContainer.AddItemSlot(this);
+        itemSlotNode?.Hide();
+        ProtectedItemContainer = universalItemContainer;
+        //Add initial weapon
+        //添加初始武器
+        AddInitialWeapon(InitWeaponRes);
     }
+
+    /// <summary>
+    /// <para>Adds an initial weapon to the character</para>
+    /// <para>为角色添加初始的武器</para>
+    /// </summary>
+    private void AddInitialWeapon(string? initWeaponRes)
+    {
+        if (initWeaponRes == null)
+        {
+            return;
+        }
+
+        //Set the resource path of the initial weapon and try to create the object of the initial weapon.
+        //设置了初始武器的资源路径，尝试创建初始武器的对象。
+        var packedScene = GD.Load<PackedScene>(initWeaponRes);
+        var weaponTemplate = NodeUtils.InstantiatePackedScene<WeaponTemplate>(packedScene);
+        if (weaponTemplate == null)
+        {
+            return;
+        }
+        NodeUtils.CallDeferredAddChild(this, weaponTemplate);
+        PickItem(weaponTemplate);
+    }
+
 
     /// <summary>
     /// <para>Display exclamation marks</para>
@@ -194,8 +236,8 @@ public sealed partial class AiCharacter : CharacterTemplate
     {
         _bubbleMarker?.ShowBubble(queryBubbleId);
     }
-    
-    public void HiddenQuery()
+
+    public void HideQuery()
     {
         _bubbleMarker?.HideBubble(queryBubbleId);
     }

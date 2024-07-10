@@ -45,6 +45,12 @@ public static class LogCat
         /// <para>追击敌人处理器</para>
         /// </summary>
         public const string ChaseStateProcessor = "ChaseStateProcessor";
+
+        /// <summary>
+        /// <para>BubbleMarker</para>
+        /// <para>气泡标记</para>
+        /// </summary>
+        public static string BubbleMarker = "BubbleMarker";
     }
 
 

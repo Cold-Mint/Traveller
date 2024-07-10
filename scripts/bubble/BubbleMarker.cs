@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -11,7 +11,7 @@ namespace ColdMint.scripts.bubble;
 /// </summary>
 public partial class BubbleMarker : Marker2D
 {
-    private readonly Dictionary<int, Node2D> _bubbleDictionary = [];
+    private readonly Dictionary<int, Node> _bubbleDictionary = [];
 
     /// <summary>
     /// <para>Add bubbles</para>
@@ -20,14 +20,14 @@ public partial class BubbleMarker : Marker2D
     /// <param name="id"></param>
     /// <param name="node"></param>
     /// <returns></returns>
-    public bool AddBubble(int id, Node2D node)
+    public bool AddBubble(int id, Node node)
     {
         if (!_bubbleDictionary.TryAdd(id, node))
         {
             return false;
         }
 
-        node.Hide();
+        NodeUtils.HideNode(node);
         NodeUtils.CallDeferredAddChild(this, node);
         return true;
     }
@@ -45,9 +45,11 @@ public partial class BubbleMarker : Marker2D
     {
         if (!_bubbleDictionary.TryGetValue(id, out var value))
         {
+            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, id);
             return;
         }
-        value.Show();
+
+        NodeUtils.ShowNode(value);
     }
 
     /// <summary>
@@ -58,8 +60,10 @@ public partial class BubbleMarker : Marker2D
     {
         if (!_bubbleDictionary.TryGetValue(id, out var value))
         {
+            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, id);
             return;
         }
-        value.Hide();
+
+        NodeUtils.HideNode(value);
     }
 }

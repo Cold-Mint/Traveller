@@ -28,7 +28,7 @@ collision_mask = 34
 script = ExtResource("1_1dlls")
 LootListId = null
 metadata/CampId = "Default"
-metadata/MaxHp = 12
+metadata/MaxHp = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_bb8wt")

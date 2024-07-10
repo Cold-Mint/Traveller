@@ -43,9 +43,17 @@ public class PatrolStateProcessor : StateProcessorTemplate
 
         if (aiCharacter.ScoutEnemyDetected())
         {
-            //Seeing that the enemy had entered the reconnaissance area, we gave chase immediately.
-            //发现敌人进入侦察范围，我们立即追击。
+            //Once the enemy enters the reconnaissance range, we first see if the character has a weapon, if so, then pursue the enemy, otherwise, the patrol state changes to looking for weapons.
+            //发现敌人进入侦察范围后，我们先看角色是否持有武器，如果有，那么追击敌人，否则，巡逻状态转换为寻找武器。
+            // if (aiCharacter.CurrentItem is WeaponTemplate weaponTemplate)
+            // {
             context.CurrentState = State.Chase;
+            // }
+            // else
+            // {
+            //     context.CurrentState = State.LookForWeapon;
+            // }
+
             LogCat.Log("patrol_enemy_detected", label: LogCat.LogLabel.PatrolStateProcessor);
             return;
         }

@@ -264,7 +264,6 @@ public partial class CharacterTemplate : CharacterBody2D
         CharacterName = GetMeta("Name", Name).AsString();
         CampId = GetMeta("CampId", Config.CampId.Default).AsString();
         MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
-        // var lootListId = GetMeta("LootListId", string.Empty).AsString();
 
         if (MaxHp <= 0)
         {

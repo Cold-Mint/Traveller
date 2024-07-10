@@ -25,7 +25,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c61vr"]
-radius = 82.2192
+radius = 185.132
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fowd5"]
 radius = 233.808
@@ -34,6 +34,7 @@ radius = 233.808
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
+InitWeaponRes = "res://prefab/weapons/staffOfTheUndead.tscn"
 LootListId = "test"
 metadata/CampId = "Mazoku"
 metadata/MaxHp = 50
@@ -83,7 +84,6 @@ collision_mask = 68
 shape = SubResource("CircleShape2D_c61vr")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="BubbleMarker" type="Marker2D" parent="."]
 position = Vector2(0, -79)

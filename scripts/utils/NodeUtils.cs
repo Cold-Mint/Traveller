@@ -48,7 +48,66 @@ public static class NodeUtils
     {
         childNode.CallDeferred("reparent", parentNode);
     }
-    
+
+
+    /// <summary>
+    /// <para>ShowNode</para>
+    /// <para>显示节点</para>
+    /// </summary>
+    /// <param name="node">
+    ///<para>node</para>
+    ///<para>节点</para>
+    /// </param>
+    /// <returns>
+    ///<para>Is it displayed successfully?</para>
+    ///<para>是否显示成功</para>
+    /// </returns>
+    public static bool ShowNode(Node node)
+    {
+        if (node is Node2D node2D)
+        {
+            node2D.Show();
+            return true;
+        }
+
+        if (node is CanvasItem canvasItem)
+        {
+            canvasItem.Show();
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// <para>hidden node</para>
+    /// <para>隐藏节点</para>
+    /// </summary>
+    /// <param name="node">
+    ///<para>Node to hide</para>
+    ///<para>要隐藏的节点</para>
+    /// </param>
+    /// <returns>
+    ///<para>Hide success or not</para>
+    ///<para>是否隐藏成功</para>
+    /// </returns>
+    public static bool HideNode(Node node)
+    {
+        if (node is Node2D node2D)
+        {
+            node2D.Hide();
+            return true;
+        }
+
+        if (node is CanvasItem canvasItem)
+        {
+            canvasItem.Hide();
+            return true;
+        }
+
+        return false;
+    }
+
 
     /// <summary>
     /// <para>Sets child nodes for a node</para>
