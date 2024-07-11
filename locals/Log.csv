@@ -73,3 +73,6 @@ log_chase_no_enemy,追逐没有敌人。,Chase no enemy.,敵がいない追跡�
 log_bubble_not_found,找不到气泡{0}。,Bubble {0} not found.,バブル{0}が見つかりません。
 log_owner_is_not_AiCharacter,所有者不是AiCharacter。,Owner is not AiCharacter.,所有者はAiCharacterではありません。
 log_weaponContainer_is_null,武器容器为空。,Weapon container is null.,武器コンテナが空です。
+log_find_nearest_item,查找最近的物品。,Find the nearest item.,最も近いアイテムを見つけます。
+log_float_label_instantiate_failed,浮动标签实例化失败。,Float label instantiation failed.,フロートラベルのインスタンス化に失敗しました。
+log_pickable_picked_up,可拾捡物被捡起了，那么不显示标签。,"If the pickable item is picked up, the label is not displayed.",でも、拾得物が拾い上げられたら、ラベルは表示されません。

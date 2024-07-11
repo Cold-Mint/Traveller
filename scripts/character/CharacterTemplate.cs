@@ -218,20 +218,14 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <returns></returns>
     public Node2D? FindTheNearestItem()
     {
+        LogCat.Log("find_nearest_item");
         if (PickingRangeBodiesList == null || PickingRangeBodiesList.Count == 0)
         {
             return null;
         }
 
-        HashSet<Node>? exclude = null;
-        if (_currentItem != null)
-        {
-            //Prevent picking up objects in your hands again.
-            //防止再次捡起自己手上的物品。
-            exclude = new HashSet<Node> { _currentItem };
-        }
-
-        return NodeUtils.GetTheNearestNode(this, PickingRangeBodiesList.ToArray(), exclude);
+        return NodeUtils.GetTheNearestNode(this, PickingRangeBodiesList.ToArray(), true,
+            node => !CanPickItem(node));
     }
 
 
@@ -309,24 +303,52 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
+    /// <para>Whether you can pick up specified items</para>
+    /// <para>是否能捡起指定物品</para>
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
+    private bool CanPickItem(Node node)
+    {
+        if (_currentItem != null && node == _currentItem)
+        {
+            //Do not include your own belongings.
+            //不包含自己手上的物品。
+            return false;
+        }
+
+        if (node is PickAbleTemplate pickAbleTemplate)
+        {
+            //Does not contain items that have been picked up.
+            //不包含已被捡起的物品。
+            return !pickAbleTemplate.Picked;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// <para>Pick up the specified items</para>
     /// <para>将指定物品拾起来</para>
     /// </summary>
-    /// <param name="pickAbleItem"></param>
+    /// <param name="pickAbleItemNode2D"></param>
     /// <returns>
     ///<para>Whether successfully picked up</para>
     ///<para>是否成功拾起</para>
     /// </returns>
-    public bool PickItem(Node2D? pickAbleItem)
+    protected bool PickItem(Node2D? pickAbleItemNode2D)
     {
         //Empty reference checking is implicitly performed here.
         //此处隐式的执行了空引用检查。
-        if (pickAbleItem is not IItem item)
+        if (pickAbleItemNode2D is not IItem item)
         {
             return false;
         }
 
-        if (ItemContainer == null)
+
+        //The item store is marked null, or the item container is null.
+        //物品存放的标记为null，或者物品容器为null。
+        if (ItemMarker2D == null || ItemContainer == null)
         {
             return false;
         }
@@ -339,10 +361,10 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        //First check if we can pick up the item.
-        //先检查我们能否拾起此物品。
-        var canPick = ItemContainer.CanAddItem(item);
-        if (!canPick)
+        //Check to see if you can fit the item into the container first.
+        //先检查是否能将物品放入容器。
+        var canAddItem = ItemContainer.CanAddItem(item);
+        if (!canAddItem)
         {
             return false;
         }
@@ -359,7 +381,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //设置捡起物品的常规处理。
         //You can supplement picking up state handling for more types of objects here.
         //您可以在这里补充更多类型对象的捡起状态处理。
-        if (pickAbleItem is PickAbleTemplate pickAbleTemplate)
+        if (pickAbleItemNode2D is PickAbleTemplate pickAbleTemplate)
         {
             pickAbleTemplate.Owner = this;
             pickAbleTemplate.Picked = true;
@@ -374,16 +396,16 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
-            CurrentItem = pickAbleItem;
+            CurrentItem = pickAbleItemNode2D;
         }
         else
         {
-            pickAbleItem.Hide();
-            pickAbleItem.ProcessMode = ProcessModeEnum.Disabled;
+            pickAbleItemNode2D.Hide();
+            pickAbleItemNode2D.ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        pickAbleItem.Reparent(ItemMarker2D);
-        pickAbleItem.Position = Vector2.Zero;
+        NodeUtils.CallDeferredReparent(ItemMarker2D, pickAbleItemNode2D);
+        pickAbleItemNode2D.Position = Vector2.Zero;
         return true;
     }
 

@@ -175,17 +175,17 @@ public static class NodeUtils
     ///<para>Node array</para>
     ///<para>节点数组</para>
     /// </param>
-    /// <param name="exclude">
-    ///<para>Which nodes are excluded</para>
-    ///<para>排除哪些节点</para>
-    /// </param>
     /// <param name="excludeInvisibleNodes">
     ///<para>Whether or not unseen nodes should be excluded</para>
     ///<para>是否排除不可见的节点</para>
     /// </param>
+    /// <param name="filter">
+    ///<para>Filter, which returns true within the function to filter the specified node.</para>
+    ///<para>过滤器，在函数内返回true，则过滤指定节点。</para>
+    /// </param>
     /// <returns></returns>
-    public static Node2D? GetTheNearestNode(Node2D origin, Node[] array, HashSet<Node>? exclude = null,
-        bool excludeInvisibleNodes = true)
+    public static Node2D? GetTheNearestNode(Node2D origin, Node[] array,
+        bool excludeInvisibleNodes = true, Func<Node2D, bool>? filter = null)
     {
         var closestDistance = float.MaxValue;
         Node2D? closestNode = null;
@@ -199,10 +199,10 @@ public static class NodeUtils
                 continue;
             }
 
-            if (exclude != null && exclude.Contains(node))
+            if (filter != null && filter.Invoke(node2D))
             {
-                //If the current node, is within our exclusion project. So the next one.
-                //如果当前节点，在我们的排除项目内。那么下一个。
+                //If there is a filter, and the filter returns true, then the next.
+                //如果有过滤器，且过滤器返回true，那么下一个。
                 continue;
             }
 

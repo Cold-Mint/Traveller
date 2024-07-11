@@ -17,8 +17,6 @@ namespace ColdMint.scripts.character;
 /// </summary>
 public partial class Player : CharacterTemplate
 {
-    private PackedScene? _floatLabelPackedScene;
-
     private Control? _floatLabel;
 
     //Empty object projectile
@@ -52,7 +50,17 @@ public partial class Player : CharacterTemplate
         CharacterName = TranslationServerUtils.Translate("default_player_name");
         LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, ReadOnlyCharacterName,
             GlobalPosition);
-        _floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
+        var floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
+        //Initializes the float label.
+        //初始化悬浮标签。
+        _floatLabel = NodeUtils.InstantiatePackedScene<Control>(floatLabelPackedScene);
+        if (_floatLabel == null)
+        {
+            throw new NullReferenceException(TranslationServer.Translate("float_label_instantiate_failed"));
+        }
+
+        _floatLabel.Hide();
+        NodeUtils.CallDeferredAddChild(this, _floatLabel);
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         UpdateOperationTip();
@@ -147,9 +155,8 @@ public partial class Player : CharacterTemplate
             operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump_down"));
         }
 
-        //If the PickingRangeBodiesList is not null and the length is greater than 0
-        //如果PickingRangeBodiesList不是null，且长度大于0
-        if (PickingRangeBodiesList is { Count: > 0 })
+        var nearestItem = FindTheNearestItem();
+        if (nearestItem != null)
         {
             operationTipBuilder.Append(' ');
             operationTipBuilder.Append("[color=");
@@ -159,6 +166,11 @@ public partial class Player : CharacterTemplate
                 TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
             operationTipBuilder.Append("[/color]");
             operationTipBuilder.Append(TranslationServerUtils.Translate("action_pick_up"));
+            if (nearestItem is IItem item)
+            {
+                operationTipBuilder.Append(item.Name);
+            }
+
             operationTipLabel.Text = operationTipBuilder.ToString();
         }
 
@@ -232,11 +244,7 @@ public partial class Player : CharacterTemplate
                     PickingRangeBodiesList?.Remove(pickAbleItem);
                 }
 
-                if (_floatLabel != null)
-                {
-                    _floatLabel.QueueFree();
-                    _floatLabel = null;
-                }
+                RecycleFloatLabel();
             }
         }
 
@@ -427,35 +435,41 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        if (_floatLabelPackedScene != null)
+        if (_floatLabel != null)
         {
-            //If there is a scene of floating text, then we generate floating text.
-            //如果有悬浮文本的场景，那么我们生成悬浮文本。
-            _floatLabel?.QueueFree();
-            _floatLabel = NodeUtils.InstantiatePackedScene<Control>(_floatLabelPackedScene);
-            if (_floatLabel != null)
+            if (node is not PickAbleTemplate pickAbleTemplate)
             {
-                NodeUtils.CallDeferredAddChild(node, _floatLabel);
-                var rotationDegreesNode2D = node2D.RotationDegrees;
-                var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
-                _floatLabel.Position = rotationDegreesNode2DAbs > 90
-                    ? new Vector2(0, PromptTextDistance)
-                    : new Vector2(0, -PromptTextDistance);
-                _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
-                var label = _floatLabel.GetNode<Label>("Label");
-                if (node is PickAbleTemplate pickAbleTemplate)
-                {
-                    var stringBuilder = new StringBuilder();
-                    if (pickAbleTemplate.Owner is CharacterTemplate characterTemplate)
-                    {
-                        stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
-                        stringBuilder.Append(TranslationServerUtils.Translate("de"));
-                    }
-
-                    stringBuilder.Append(TranslationServerUtils.Translate(pickAbleTemplate.Name));
-                    label.Text = stringBuilder.ToString();
-                }
+                return;
             }
+
+            if (pickAbleTemplate.Picked)
+            {
+                //If the pickables are picked up, the label is not displayed.
+                //如果可拾捡物被捡起了，那么不显示标签。
+                LogCat.LogWarning("pickable_picked_up");
+                return;
+            }
+
+            NodeUtils.CallDeferredReparent(node, _floatLabel);
+            var rotationDegreesNode2D = node2D.RotationDegrees;
+            var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
+            _floatLabel.GlobalPosition = node2D.GlobalPosition;
+            _floatLabel.Position = rotationDegreesNode2DAbs > 90
+                ? new Vector2(0, PromptTextDistance)
+                : new Vector2(0, -PromptTextDistance);
+            _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
+            var label = _floatLabel.GetNode<Label>("Label");
+
+            var stringBuilder = new StringBuilder();
+            if (pickAbleTemplate.Owner is CharacterTemplate characterTemplate)
+            {
+                stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
+                stringBuilder.Append(TranslationServerUtils.Translate("de"));
+            }
+
+            stringBuilder.Append(TranslationServerUtils.Translate(pickAbleTemplate.Name));
+            label.Text = stringBuilder.ToString();
+            _floatLabel.Show();
         }
 
         UpdateOperationTip();
@@ -469,13 +483,23 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        if (_floatLabel != null)
+        RecycleFloatLabel();
+        UpdateOperationTip();
+    }
+
+    /// <summary>
+    /// <para>Recycle Float Label</para>
+    /// <para>回收悬浮标签</para>
+    /// </summary>
+    private void RecycleFloatLabel()
+    {
+        if (_floatLabel == null)
         {
-            _floatLabel.QueueFree();
-            _floatLabel = null;
+            return;
         }
 
-        UpdateOperationTip();
+        _floatLabel.Hide();
+        NodeUtils.CallDeferredReparent(this, _floatLabel);
     }
 
     protected override void OnHit(DamageTemplate damageTemplate)
