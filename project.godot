@@ -12,9 +12,9 @@ config_version=5
 
 config/name="Traveler"
 config/version="0.0.1"
-run/main_scene="res://scenes/mainMenu.tscn"
+run/main_scene="res://scenes/splashScreen.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
-boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [dotnet]
