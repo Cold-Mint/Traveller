@@ -23,7 +23,7 @@ log_player_packed_scene_not_exist,玩家预制场景不存在。,Player packed s
 log_exit_the_room_debug,节点{0}退出房间{1}。,"Node {0} exits room {1}.",ノード{0}が部屋{1}を退出します。
 log_enter_the_room_debug,节点{0}进入房间{1}。,"Node {0} enters room {1}.",ノード{0}が部屋{1}に入ります。
 log_death_info,生物{0}被{1}击败。,"Creature {0} was defeated by {1}.",生物{0}が{1}によって打ち負かされました。
-
+log_appConfig_not_exist,您可以在项目根目录创建名为AppConfig.yaml的文件，并在其中配置OpenObserve的数据，以便在游戏发布后持续收集日志和运行数据。,You can create a file named AppConfig.yaml in the project root directory and configure OpenObserve data in it to collect log and run data continuously after the game has been released.,プロジェクトのルートディレクトリにappconfig.yamlというファイルを作成し、そこにOpenObserveのデータを配置して、リリース後も継続的にログや実行データを収集することができます。
 log_loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Loot list with ID {0}, no entry specified.",ID{0}の戦利品テーブルは、エントリ指定されていません。
 log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
 log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
@@ -76,3 +76,7 @@ log_weaponContainer_is_null,武器容器为空。,Weapon container is null.,武�
 log_find_nearest_item,查找最近的物品。,Find the nearest item.,最も近いアイテムを見つけます。
 log_float_label_instantiate_failed,浮动标签实例化失败。,Float label instantiation failed.,フロートラベルのインスタンス化に失敗しました。
 log_pickable_picked_up,可拾捡物被捡起了，那么不显示标签。,"If the pickable item is picked up, the label is not displayed.",でも、拾得物が拾い上げられたら、ラベルは表示されません。
+log_start_uploading,开始上传{0}条日志。,Start uploading {0} logs.,{0}個のログをアップロードを開始します。
+log_upload_successful,上传成功，已上传{0}条日志，剩余{1}条日志待上传。,"Upload successful, {0} logs uploaded, {1} logs remaining.",アップロードが成功しました、{0}個のログがアップロードされ、{1}個のログが残っています。
+log_upload_failed,上传失败，错误代码：{0}，剩余{1}条日志待上传。,"Upload failed, error code: {0}, {1} logs remaining.",アップロードに失敗しました、エラーコード：{0}、{1}個のログが残っています。
+log_upload_status,已记录{0}条日志，上传阈值为{1}。,"{0} logs recorded, upload threshold is {1}.",{0}個のログが記録され、アップロード閾値は{1}です。

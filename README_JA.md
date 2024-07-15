@@ -50,6 +50,34 @@ git clone https://github.com/Cold-Mint/Traveller.git
 data/*
 ```
 
+## はいちOpenobserve
+
+> これはオプションなので、Openobserveを設定しなくてもゲームは正常に動作します。
+
+openobserveは、リリース後にログやアラームを継続的に収集するために使用されます。
+
+#### 搭建openobserve衣服务器
+
+読み過ごす：[openobserve](https://github.com/openobserve/openobserve)
+
+#### 構成を書きます
+
+openobserveのサーバーを構築したら、次のようにファイルを設定します。
+
+1. プロジェクトのルートディレクトリに**AppConfig.yaml **というプロファイルを作成します。
+
+2. リモートサーバーの情報を入力します。
+
+   ```yaml
+   open_observe:
+     address: [address]
+     access_token: [token]
+     org_id: [org_id]
+     stream_name: [stream_name]
+   ```
+   
+   address  サーバーのアドレス、フォーマットはこうなります http(s)://www.example.com。（支持http和https）
+
 ## 翻訳に携わります
 
 このプロジェクトは、当初からローカライズの準備ができていました。localsディレクトリのcsvファイルを編集することができます。新しい翻訳を加えたり修正したりしています

@@ -36,7 +36,7 @@ public static class ItemTypeRegister
         var error = DirAccess.GetOpenError();
         if (error is not Error.Ok)
         {
-            LogCat.LogError("error_when_open_item_regs_dir",error.ToString());
+            LogCat.LogError("error_when_open_item_regs_dir", error.ToString());
         }
 
         //找到文件
@@ -44,16 +44,16 @@ public static class ItemTypeRegister
         var files = itemRegsDir.GetFiles();
         if (files == null)
         {
-            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, 0);
+            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, LogCat.UploadFormat, 0);
             return;
         }
 
-        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, files.Length);
+        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, LogCat.UploadFormat, files.Length);
         //将文件解析为项目类型信息
         //parse files to item type infos
         IEnumerable<ItemTypeInfo> typeInfos =
             files.SelectMany(file => ParseFile($"{itemRegsDirPath}/{file}")).ToList();
-        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, typeInfos.Count());
+        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, LogCat.UploadFormat, typeInfos.Count());
 
         //遍历类型信息并注册它们。
         //traverse type infos and register them.
@@ -120,7 +120,8 @@ public static class ItemTypeRegister
             },
             icon, typeInfo.MaxStackValue);
         var succeed = ItemTypeManager.Register(itemType);
-        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, itemType.Id, succeed);
+        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, LogCat.UploadFormat, itemType.Id,
+            succeed);
     }
 
     //Use for yaml deserialization
@@ -151,7 +152,8 @@ public static class ItemTypeRegister
             var ss = s.Split(',');
             if (ss.Length != 2)
             {
-                LogCat.LogErrorWithFormat("wrong_custom_arg", LogCat.LogLabel.Default, "Vector2", s);
+                LogCat.LogErrorWithFormat("wrong_custom_arg", LogCat.LogLabel.Default, LogCat.UploadFormat, "Vector2",
+                    s);
                 return Vector2.Zero;
             }
 

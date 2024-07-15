@@ -33,6 +33,12 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
+        AppConfigData? appConfigData = AppConfig.LoadFromFile();
+        if (appConfigData != null)
+        {
+            AppConfig.ApplyAppConfig(appConfigData);
+        }
+
         if (Config.IsDebug())
         {
             //Set the minimum log level to Info in debug mode.(Print all logs)

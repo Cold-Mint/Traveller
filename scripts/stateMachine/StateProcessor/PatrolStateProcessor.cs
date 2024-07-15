@@ -78,7 +78,7 @@ public class PatrolStateProcessor : StateProcessorTemplate
 
             _originPosition = aiCharacter.GlobalPosition;
             LogCat.LogWithFormat("patrol_origin_position", LogCat.LogLabel.PatrolStateProcessor,
-                _originPosition);
+                LogCat.UploadFormat,_originPosition);
         }
 
         var point = _originPosition + Points[_index];
@@ -87,7 +87,7 @@ public class PatrolStateProcessor : StateProcessorTemplate
         {
             //No need to actually come to the patrol point, we just need a distance to get close.
             //无需真正的来到巡逻点，我们只需要一个距离接近了就可以了。
-            LogCat.LogWithFormat("patrol_arrival_point", LogCat.LogLabel.PatrolStateProcessor, point);
+            LogCat.LogWithFormat("patrol_arrival_point", LogCat.LogLabel.PatrolStateProcessor, LogCat.UploadFormat,point);
             _index++;
             if (_index >= Points.Length)
             {
@@ -96,7 +96,7 @@ public class PatrolStateProcessor : StateProcessorTemplate
         }
         else
         {
-            LogCat.LogWithFormat("patrol_to_next_point", label: LogCat.LogLabel.PatrolStateProcessor, point,
+            LogCat.LogWithFormat("patrol_to_next_point", label: LogCat.LogLabel.PatrolStateProcessor, LogCat.UploadFormat,point,
                 aiCharacter.GlobalPosition, Points[_index],
                 distance);
             aiCharacter.SetTargetPosition(point.Value);

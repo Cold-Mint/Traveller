@@ -5,3 +5,4 @@ export_presets.cfg
 .vs/
 *.translation
 *.user
+AppConfig.yaml

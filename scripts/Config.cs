@@ -86,6 +86,12 @@ public static class Config
     }
 
     /// <summary>
+    /// <para>Path of the App configuration file</para>
+    /// <para>App配置文件路径</para>
+    /// </summary>
+    public const string AppConfigPath = "res://AppConfig.yaml";
+    
+    /// <summary>
     /// <para>The percentage of speed reduced after a thrown item hits an enemy</para>
     /// <para>抛出的物品击中敌人后减少的速度百分比</para>
     /// </summary>

@@ -33,7 +33,7 @@ public class StateContext
                 return;
             }
 
-            LogCat.LogWithFormat("state_change", label: LogCat.LogLabel.StateContext, _currentState, value);
+            LogCat.LogWithFormat("state_change", label: LogCat.LogLabel.StateContext, LogCat.UploadFormat,_currentState, value);
             OnStateChange?.Invoke(_currentState, value);
             _previousState = _currentState;
             _currentState = value;

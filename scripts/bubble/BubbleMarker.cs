@@ -45,7 +45,7 @@ public partial class BubbleMarker : Marker2D
     {
         if (!_bubbleDictionary.TryGetValue(id, out var value))
         {
-            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, id);
+            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, LogCat.UploadFormat,id);
             return;
         }
 
@@ -60,7 +60,7 @@ public partial class BubbleMarker : Marker2D
     {
         if (!_bubbleDictionary.TryGetValue(id, out var value))
         {
-            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, id);
+            LogCat.LogErrorWithFormat("bubble_not_found", LogCat.LogLabel.BubbleMarker, LogCat.UploadFormat,id);
             return;
         }
 

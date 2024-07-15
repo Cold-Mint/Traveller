@@ -585,12 +585,12 @@ public partial class CharacterTemplate : CharacterBody2D
             if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
                 !string.IsNullOrEmpty(characterTemplate.CharacterName))
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat,CharacterName,
                     characterTemplate.CharacterName);
             }
             else
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat,CharacterName,
                     damageTemplate.Attacker.Name);
             }
         }

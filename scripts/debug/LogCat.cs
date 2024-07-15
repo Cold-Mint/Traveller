@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ColdMint.scripts.openObserve;
 using ColdMint.scripts.utils;
 using Godot;
+using Microsoft.Extensions.Logging;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
 
 namespace ColdMint.scripts.debug;
 
@@ -27,19 +31,19 @@ public static class LogCat
         /// <para>阵营管理器</para>
         /// </summary>
         public const string CampManager = "CampManager";
-        
+
         /// <summary>
         /// <para>State context</para>
         /// <para>状态上下文</para>
         /// </summary>
         public const string StateContext = "StateContext";
-        
+
         /// <summary>
         /// <para>StateMachineTemplate</para>
         /// <para>状态机模板</para>
         /// </summary>
         public const string StateMachineTemplate = "StateMachineTemplate";
-        
+
         /// <summary>
         /// <para>Pursuit enemy processor</para>
         /// <para>追击敌人处理器</para>
@@ -50,7 +54,13 @@ public static class LogCat
         /// <para>BubbleMarker</para>
         /// <para>气泡标记</para>
         /// </summary>
-        public static string BubbleMarker = "BubbleMarker";
+        public const string BubbleMarker = "BubbleMarker";
+
+        /// <summary>
+        /// <para>LogCollector</para>
+        /// <para>日志收集器</para>
+        /// </summary>
+        public const string LogCollector = "LogCollector";
     }
 
 
@@ -94,6 +104,12 @@ public static class LogCat
         set => _minLogLevel = value;
     }
 
+    /// <summary>
+    /// <para>Whether to upload logs that need to be formatted by default</para>
+    /// <para>是否默认上传需要格式化的日志</para>
+    /// </summary>
+    public static bool UploadFormat { get; set; } = true;
+
     private static readonly StringBuilder StringBuilder = new StringBuilder();
 
     /// <summary>
@@ -101,6 +117,25 @@ public static class LogCat
     /// <para>禁用的日志标签</para>
     /// </summary>
     private static HashSet<string> DisabledLogLabels { get; } = [];
+
+
+    public static void Init()
+    {
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddOpenTelemetry(options => { options.AddOtlpExporter(OtlpExporterOptions); });
+        });
+        var logger = loggerFactory.CreateLogger("323");
+        logger.Log(LogLevel.Debug, "你好");
+    }
+
+    public static void OtlpExporterOptions(OtlpExporterOptions options)
+    {
+        options.Protocol = OtlpExportProtocol.HttpProtobuf;
+        options.Endpoint = new Uri("http://test.coldmint.top/api/default/traces");
+        options.Headers =
+            "Authorization=Basic cm9vdEBleGFtcGxlLmNvbTp5V0kwVzZYcWhteTBzQml3,organization=default,stream-name=default";
+    }
 
 
     /// <summary>
@@ -194,7 +229,14 @@ public static class LogCat
     /// </param>
     /// <param name="label">
     /// </param>
-    public static void Log(string message, string label = LogLabel.Default)
+    /// <param name="upload">
+    /// </param>
+    public static void Log(string message, string label = LogLabel.Default, bool upload = true)
+    {
+        PrintLog(InfoLogLevel, HandleMessage(InfoLogLevel, message, label).ToString(), label, upload);
+    }
+
+    private static void PrintLog(int level, string concreteLog, string label, bool upload)
     {
         if (!IsEnabledLogLabel(label))
         {
@@ -206,7 +248,18 @@ public static class LogCat
             return;
         }
 
-        GD.Print(HandleMessage(InfoLogLevel, message, label));
+        if (LogCollector.CanUploadLog && upload)
+        {
+            var logData = new LogData
+            {
+                Level = level,
+                Message = concreteLog,
+                AppId = "none"
+            };
+            LogCollector.Push(logData);
+        }
+
+        GD.Print(concreteLog);
     }
 
     /// <summary>
@@ -220,80 +273,34 @@ public static class LogCat
     /// <para>这个消息支持本地化输出，假设已存在翻译key，Hello = 你好，传入Hello则会输出你好。</para>
     /// </param>
     /// <param name="label"></param>
-    public static void LogError(string message, string label = LogLabel.Default)
+    /// <param name="upload"></param>
+    public static void LogError(string message, string label = LogLabel.Default, bool upload = true)
     {
-        if (!IsEnabledLogLabel(label))
-        {
-            return;
-        }
-
-        if (_minLogLevel > ErrorLogLevel)
-        {
-            return;
-        }
-
-        GD.PrintErr(HandleMessage(ErrorLogLevel, message, label));
+        PrintLog(ErrorLogLevel, HandleMessage(ErrorLogLevel, message, label).ToString(), label, upload);
     }
 
-    public static void LogWarning(string message, string label = LogLabel.Default)
+    public static void LogWarning(string message, string label = LogLabel.Default, bool upload = true)
     {
-        if (!IsEnabledLogLabel(label))
-        {
-            return;
-        }
-
-        if (_minLogLevel > WarningLogLevel)
-        {
-            return;
-        }
-
-        GD.Print(HandleMessage(WarningLogLevel, message, label));
+        PrintLog(WarningLogLevel, HandleMessage(WarningLogLevel, message, label).ToString(), label, upload);
     }
 
-    public static void LogErrorWithFormat(string message, string label, params object?[] args)
+    public static void LogErrorWithFormat(string message, string label, bool upload, params object?[] args)
     {
-        if (!IsEnabledLogLabel(label))
-        {
-            return;
-        }
-
-        if (_minLogLevel > ErrorLogLevel)
-        {
-            return;
-        }
-
-        GD.PrintErr(string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args));
+        PrintLog(WarningLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label,
+            upload);
     }
 
 
-    public static void LogWithFormat(string message, string label, params object?[] args)
+    public static void LogWithFormat(string message, string label, bool upload, params object?[] args)
     {
-        if (!IsEnabledLogLabel(label))
-        {
-            return;
-        }
-
-        if (_minLogLevel > InfoLogLevel)
-        {
-            return;
-        }
-
-        GD.Print(string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args));
+        PrintLog(InfoLogLevel, string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args), label,
+            upload);
     }
 
-    public static void LogWarningWithFormat(string message, string label, params object?[] args)
+    public static void LogWarningWithFormat(string message, bool upload, string label, params object?[] args)
     {
-        if (!IsEnabledLogLabel(label))
-        {
-            return;
-        }
-
-        if (_minLogLevel > InfoLogLevel)
-        {
-            return;
-        }
-
-        GD.Print(string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args));
+        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args), label,
+            upload);
     }
 
     /// <summary>
@@ -311,6 +318,7 @@ public static class LogCat
 
         //Log an exception here or send it to the server.
         //请在这里记录异常或将异常发送至服务器。
-        GD.PrintErr(HandleMessage(ErrorLogLevel, e.Message, label).Append('\n').Append(e.StackTrace));
+        PrintLog(ErrorLogLevel,
+            HandleMessage(ErrorLogLevel, e.Message, label).Append('\n').Append(e.StackTrace).ToString(), label, true);
     }
 }
