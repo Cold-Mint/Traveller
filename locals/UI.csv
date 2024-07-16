@@ -33,3 +33,4 @@ ui_musician,音乐,musician,音楽
 ui_character_voice,角色配音,character_voice,キャラクターボイスです
 ui_translator,翻译,translator,翻訳
 ui_unordered_list_tip,排名不分先后,Ranking is not in order,順位は関係ありません
+ui_loading,正在加载...,Loading...,読み込み中...
