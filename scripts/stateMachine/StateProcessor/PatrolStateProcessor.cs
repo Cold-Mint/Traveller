@@ -1,5 +1,6 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.stateMachine.StateProcessor;
@@ -11,6 +12,7 @@ namespace ColdMint.scripts.stateMachine.StateProcessor;
 public class PatrolStateProcessor : StateProcessorTemplate
 {
     public Vector2[]? Points { get; set; }
+
     /// <summary>
     /// <para>Whether to guard the origin</para>
     /// <para>是否需要守护原点</para>
@@ -45,14 +47,14 @@ public class PatrolStateProcessor : StateProcessorTemplate
         {
             //Once the enemy enters the reconnaissance range, we first see if the character has a weapon, if so, then pursue the enemy, otherwise, the patrol state changes to looking for weapons.
             //发现敌人进入侦察范围后，我们先看角色是否持有武器，如果有，那么追击敌人，否则，巡逻状态转换为寻找武器。
-            // if (aiCharacter.CurrentItem is WeaponTemplate weaponTemplate)
-            // {
-            context.CurrentState = State.Chase;
-            // }
-            // else
-            // {
-            //     context.CurrentState = State.LookForWeapon;
-            // }
+            if (aiCharacter.CurrentItem is WeaponTemplate weaponTemplate)
+            {
+                context.CurrentState = State.Chase;
+            }
+            else
+            {
+                context.CurrentState = State.LookForWeapon;
+            }
 
             LogCat.Log("patrol_enemy_detected", label: LogCat.LogLabel.PatrolStateProcessor);
             return;
@@ -78,7 +80,7 @@ public class PatrolStateProcessor : StateProcessorTemplate
 
             _originPosition = aiCharacter.GlobalPosition;
             LogCat.LogWithFormat("patrol_origin_position", LogCat.LogLabel.PatrolStateProcessor,
-                LogCat.UploadFormat,_originPosition);
+                LogCat.UploadFormat, _originPosition);
         }
 
         var point = _originPosition + Points[_index];
@@ -87,7 +89,8 @@ public class PatrolStateProcessor : StateProcessorTemplate
         {
             //No need to actually come to the patrol point, we just need a distance to get close.
             //无需真正的来到巡逻点，我们只需要一个距离接近了就可以了。
-            LogCat.LogWithFormat("patrol_arrival_point", LogCat.LogLabel.PatrolStateProcessor, LogCat.UploadFormat,point);
+            LogCat.LogWithFormat("patrol_arrival_point", LogCat.LogLabel.PatrolStateProcessor, LogCat.UploadFormat,
+                point);
             _index++;
             if (_index >= Points.Length)
             {
@@ -96,7 +99,8 @@ public class PatrolStateProcessor : StateProcessorTemplate
         }
         else
         {
-            LogCat.LogWithFormat("patrol_to_next_point", label: LogCat.LogLabel.PatrolStateProcessor, LogCat.UploadFormat,point,
+            LogCat.LogWithFormat("patrol_to_next_point", label: LogCat.LogLabel.PatrolStateProcessor,
+                LogCat.UploadFormat, point,
                 aiCharacter.GlobalPosition, Points[_index],
                 distance);
             aiCharacter.SetTargetPosition(point.Value);

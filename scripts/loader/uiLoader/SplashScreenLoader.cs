@@ -23,6 +23,8 @@ public partial class SplashScreenLoader : UiLoaderTemplate
     private Label? _loadingLabel;
     private PackedScene? _mainMenuScene;
     private AnimationPlayer? _animationPlayer;
+    private string _startup = "startup";
+    private Label? _nameLabel;
 
     public override void InitializeData()
     {
@@ -31,9 +33,22 @@ public partial class SplashScreenLoader : UiLoaderTemplate
 
     public override void InitializeUi()
     {
+        _nameLabel = GetNode<Label>("NameLabel");
         _loadingLabel = GetNode<Label>("loadingStateLabel");
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        _animationPlayer.AnimationFinished += AnimationFinished;
+        //Disable animation in Debug mode.
+        //在Debug模式禁用动画。
+        if (Config.IsDebug())
+        {
+            _loadingLabel.Modulate = Colors.White;
+            _nameLabel.Modulate = Colors.White;
+            AnimationFinished(_startup);
+        }
+        else
+        {
+            _animationPlayer.Play(_startup);
+            _animationPlayer.AnimationFinished += AnimationFinished;
+        }
     }
 
     private async void AnimationFinished(StringName name)

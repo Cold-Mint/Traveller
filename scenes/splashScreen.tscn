@@ -265,7 +265,6 @@ vertical_alignment = 1
 libraries = {
 "": SubResource("AnimationLibrary_mraly")
 }
-autoplay = "startup"
 
 [node name="NameLabel" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)

@@ -4,9 +4,6 @@ using System.Text;
 using ColdMint.scripts.openObserve;
 using ColdMint.scripts.utils;
 using Godot;
-using Microsoft.Extensions.Logging;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Logs;
 
 namespace ColdMint.scripts.debug;
 
@@ -19,6 +16,12 @@ public static class LogCat
         /// <para>默认的日志标签</para>
         /// </summary>
         public const string Default = "Default";
+
+        /// <summary>
+        /// <para>LookForWeaponProcessor</para>
+        /// <para>查找武器处理器</para>
+        /// </summary>
+        public const string LookForWeaponProcessor = "LookForWeaponProcessor";
 
         /// <summary>
         /// <para>PatrolStateProcessor</para>
@@ -117,25 +120,6 @@ public static class LogCat
     /// <para>禁用的日志标签</para>
     /// </summary>
     private static HashSet<string> DisabledLogLabels { get; } = [];
-
-
-    public static void Init()
-    {
-        var loggerFactory = LoggerFactory.Create(builder =>
-        {
-            builder.AddOpenTelemetry(options => { options.AddOtlpExporter(OtlpExporterOptions); });
-        });
-        var logger = loggerFactory.CreateLogger("323");
-        logger.Log(LogLevel.Debug, "你好");
-    }
-
-    public static void OtlpExporterOptions(OtlpExporterOptions options)
-    {
-        options.Protocol = OtlpExportProtocol.HttpProtobuf;
-        options.Endpoint = new Uri("http://test.coldmint.top/api/default/traces");
-        options.Headers =
-            "Authorization=Basic cm9vdEBleGFtcGxlLmNvbTp5V0kwVzZYcWhteTBzQml3,organization=default,stream-name=default";
-    }
 
 
     /// <summary>

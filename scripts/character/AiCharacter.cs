@@ -46,6 +46,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     private List<CharacterTemplate>? _enemyInTheScoutRange;
 
+    /// <summary>
+    /// <para>Every weapon in the recon area</para>
+    /// <para>在侦察范围内所有的武器</para>
+    /// </summary>
+    private List<WeaponTemplate>? _weaponInTheScoutRange;
+
 
     /// <summary>
     /// <para>Obstacle detection ray during attack</para>
@@ -107,6 +113,7 @@ public sealed partial class AiCharacter : CharacterTemplate
 
         _enemyInTheAttackRange = new List<CharacterTemplate>();
         _enemyInTheScoutRange = new List<CharacterTemplate>();
+        _weaponInTheScoutRange = new List<WeaponTemplate>();
         _screenEnabler2D = GetNode<VisibleOnScreenEnabler2D>("VisibleOnScreenEnabler2D");
         _screenEnabler2D.ScreenEntered += () =>
         {
@@ -182,7 +189,7 @@ public sealed partial class AiCharacter : CharacterTemplate
         //You must create an item container for the character before you can pick up the item.
         //必须为角色创建物品容器后才能拾起物品。
         var universalItemContainer = new UniversalItemContainer();
-        var itemSlotNode =  universalItemContainer.AddItemSlot(this);
+        var itemSlotNode = universalItemContainer.AddItemSlot(this);
         itemSlotNode?.Hide();
         ProtectedItemContainer = universalItemContainer;
         //Add initial weapon
@@ -209,6 +216,7 @@ public sealed partial class AiCharacter : CharacterTemplate
         {
             return;
         }
+
         NodeUtils.CallDeferredAddChild(this, weaponTemplate);
         PickItem(weaponTemplate);
     }
@@ -261,6 +269,36 @@ public sealed partial class AiCharacter : CharacterTemplate
     }
 
     /// <summary>
+    /// <para>Any weapons found in the recon area</para>
+    /// <para>侦察范围内是否发现武器</para>
+    /// </summary>
+    /// <returns></returns>
+    public bool ScoutWeaponDetected()
+    {
+        if (_weaponInTheScoutRange == null)
+        {
+            return false;
+        }
+
+        return _weaponInTheScoutRange.Count > 0;
+    }
+
+    /// <summary>
+    /// <para>Get weapons in the recon area</para>
+    /// <para>获取侦察范围内的武器</para>
+    /// </summary>
+    /// <returns></returns>
+    public WeaponTemplate[]? GetWeaponInScoutArea()
+    {
+        if (_weaponInTheScoutRange == null)
+        {
+            return null;
+        }
+
+        return _weaponInTheScoutRange.ToArray();
+    }
+
+    /// <summary>
     /// <para>Get the first enemy in range</para>
     /// <para>获取第一个进入侦察范围的敌人</para>
     /// </summary>
@@ -308,6 +346,11 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// <param name="node"></param>
     private void EnterTheScoutArea(Node node)
     {
+        if (node is WeaponTemplate weaponTemplate)
+        {
+            _weaponInTheScoutRange?.Add(weaponTemplate);
+        }
+
         CanCauseHarmNode(node, (canCause, characterTemplate) =>
         {
             if (canCause && characterTemplate != null)
@@ -327,6 +370,11 @@ public sealed partial class AiCharacter : CharacterTemplate
         if (node == this)
         {
             return;
+        }
+
+        if (node is WeaponTemplate weaponTemplate)
+        {
+            _weaponInTheScoutRange?.Remove(weaponTemplate);
         }
 
         if (node is CharacterTemplate characterTemplate)

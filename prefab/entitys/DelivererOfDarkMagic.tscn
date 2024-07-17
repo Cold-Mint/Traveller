@@ -34,7 +34,6 @@ radius = 233.808
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
-InitWeaponRes = "res://prefab/weapons/staffOfTheUndead.tscn"
 LootListId = "test"
 metadata/CampId = "Mazoku"
 metadata/MaxHp = 50
@@ -95,7 +94,7 @@ scale = Vector2(2.04, 3.05)
 
 [node name="ScoutArea2D" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 68
+collision_mask = 76
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScoutArea2D"]
 shape = SubResource("CircleShape2D_fowd5")
