@@ -26,5 +26,7 @@ public class PatrolStateMachine : StateMachineTemplate
         RegisterProcessor(chaseStateProcessor);
         var lookForWeaponProcessor = new LookForWeaponProcessor();
         RegisterProcessor(lookForWeaponProcessor);
+        var fleeProcessor = new FleeProcessor();
+        RegisterProcessor(fleeProcessor);
     }
 }

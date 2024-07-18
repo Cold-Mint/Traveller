@@ -240,14 +240,12 @@ public partial class CharacterTemplate : CharacterBody2D
         foreach (var pickingRangeBody in PickingRangeBodies)
         {
             if (pickingRangeBody is not WeaponTemplate weaponTemplate) continue;
-            if (weaponTemplate.Owner != null)
+            if (weaponTemplate.Picked)
             {
                 continue;
             }
-
             weaponTemplates.Add(weaponTemplate);
         }
-
         return weaponTemplates.ToArray();
     }
 
@@ -308,7 +306,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
-    private bool CanPickItem(Node node)
+    protected bool CanPickItem(Node node)
     {
         if (_currentItem != null && node == _currentItem)
         {
@@ -336,7 +334,7 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Whether successfully picked up</para>
     ///<para>是否成功拾起</para>
     /// </returns>
-    protected bool PickItem(Node2D? pickAbleItemNode2D)
+    public bool PickItem(Node2D? pickAbleItemNode2D)
     {
         //Empty reference checking is implicitly performed here.
         //此处隐式的执行了空引用检查。
@@ -585,12 +583,12 @@ public partial class CharacterTemplate : CharacterBody2D
             if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
                 !string.IsNullOrEmpty(characterTemplate.CharacterName))
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat,CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat, CharacterName,
                     characterTemplate.CharacterName);
             }
             else
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat,CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, LogCat.UploadFormat, CharacterName,
                     damageTemplate.Attacker.Name);
             }
         }
@@ -612,6 +610,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
+        LogCat.Log("enter_the_picking_range_body");
         PickingRangeBodiesList?.Add(node);
     }
 

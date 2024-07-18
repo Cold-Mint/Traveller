@@ -28,9 +28,7 @@ log_loot_list_has_no_entries,ID为{0}的战利品表，没有指定条目。,"Lo
 log_not_within_the_loot_spawn_range,给定的数值{0}没有在战利品{1}的生成范围{2}内。,The given value {0} is not within the spawn range {2} of loot {1}.,与えられた数値{0}は戦利品{1}の生成範囲{2}内にありません。
 log_loot_data_quantity,有{0}个战利品数据被返回。,{0} loot data was returned.,{0}個の戦利品データが返されます。
 log_loot_data_add,生成战利品{0},Add loot {0},戦利品{0}を生成する
-
 log_warning_node_cannot_cast_to,创建的物品{0}无法被转型为类型{1},Created items {0} cannot be cast into type {1},作成されたアイテム {0} をタイプ {1} にキャストすることはできません。
-
 log_start_item_register_from_file,开始从文件注册物品信息,Start registering item information from files,アイテム情報をファイルから登録開始
 log_found_files,找到{0}个文件,Found {0} files,{0}ファイルが見つかりました
 log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types in files,ファイルから{0}個のアイテム・タイプが見つかった
@@ -84,3 +82,8 @@ log_no_weapon_detected,没有检测到武器。,No weapon detected.,武器が検
 log_weapon_lost,武器丢失。,Weapon lost.,武器が失われました。
 log_nearest_node_is_null,最近的节点为空。,The nearest node is null.,最も近いノードが空です。
 log_node_is_not_WeaponTemplate,节点不是WeaponTemplate。,The node is not a WeaponTemplate.,ノードはWeaponTemplateではありません。
+log_weapon_not_in_pickup_range,武器不在拾取范围内。,The weapon is not within the pickup range.,武器は拾い取り範囲内にありません。
+log_weapon_picked_up,武器被拾取。,Weapon picked up.,武器が拾い取られました。
+log_weapon_pickup_failed,武器拾取失败。,Weapon pickup failed.,武器の拾い取りに失敗しました。
+log_enter_the_picking_range_body,进入拾取范围。,Enter the picking range.,拾い取り範囲に入ります。
+log_search_for_weapon_timeout,搜索武器超时。,Search for weapon timeout.,武器の検索がタイムアウトしました。

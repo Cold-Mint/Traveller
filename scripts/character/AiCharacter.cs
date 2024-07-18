@@ -348,7 +348,10 @@ public sealed partial class AiCharacter : CharacterTemplate
     {
         if (node is WeaponTemplate weaponTemplate)
         {
-            _weaponInTheScoutRange?.Add(weaponTemplate);
+            if (CanPickItem(weaponTemplate))
+            {
+                _weaponInTheScoutRange?.Add(weaponTemplate);
+            }
         }
 
         CanCauseHarmNode(node, (canCause, characterTemplate) =>

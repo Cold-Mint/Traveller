@@ -9,19 +9,6 @@ namespace ColdMint.scripts;
 public static class Config
 {
     /// <summary>
-    /// <para>ID of the behavior tree</para>
-    /// <para>行为树的ID</para>
-    /// </summary>
-    public static class BehaviorTreeId
-    {
-        /// <summary>
-        /// <para>巡逻</para>
-        /// <para>Patrol</para>
-        /// </summary>
-        public const string Patrol = "Patrol";
-    }
-
-    /// <summary>
     /// <para>Loot table ID</para>
     /// <para>战利品表ID</para>
     /// </summary>
@@ -32,31 +19,6 @@ public static class Config
         /// <para>测试用的战利品表</para>
         /// </summary>
         public const string Test = "test";
-    }
-
-    /// <summary>
-    /// <para>BehaviorTreeResult</para>
-    /// <para>行为树的结果</para>
-    /// </summary>
-    public static class BehaviorTreeResult
-    {
-        /// <summary>
-        /// <para>Running</para>
-        /// <para>运行中</para>
-        /// </summary>
-        public const int Running = 0;
-
-        /// <summary>
-        /// <para>Success</para>
-        /// <para>成功</para>
-        /// </summary>
-        public const int Success = 1;
-
-        /// <summary>
-        /// <para>Failure</para>
-        /// <para>失败</para>
-        /// </summary>
-        public const int Failure = 2;
     }
 
 

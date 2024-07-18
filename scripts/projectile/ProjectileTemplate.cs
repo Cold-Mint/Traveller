@@ -14,17 +14,17 @@ namespace ColdMint.scripts.projectile;
 /// </summary>
 public partial class ProjectileTemplate : CharacterBody2D
 {
-    protected long Life;
+    private long _life;
 
     //The durability of the projectile
     //抛射体的耐久度
     //When the projectile hits the object, the durability will be reduced, and when the durability is less than or equal to 0, the projectile will be destroyed
     //当抛射体撞击到物体时，会减少耐久度，当耐久度小于等于0时，销毁抛射体
-    protected double Durability;
+    private double _durability;
 
-    protected int MaxDamage;
-    protected int MinDamage;
-    protected int DamageType;
+    private int _maxDamage;
+    private int _minDamage;
+    private int _damageType;
 
     /// <summary>
     /// <para>After this time destroy the projectile</para>
@@ -37,7 +37,7 @@ public partial class ProjectileTemplate : CharacterBody2D
     /// <para>The impact area of the bullet</para>
     /// <para>子弹的碰撞区域</para>
     /// </summary>
-    protected Area2D? Area2D;
+    private Area2D? _area2D;
 
     /// <summary>
     /// <para>knockback</para>
@@ -47,7 +47,7 @@ public partial class ProjectileTemplate : CharacterBody2D
     ///<para>How much force does it have when hitting the character? Unit: Number of cells，The X direction of the force is inferred automatically.</para>
     ///<para>当击中角色时带有多大的力？单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    protected Vector2 KnockbackForce;
+    private Vector2 _knockbackForce;
 
     public float Speed => GetMeta("Speed", "15").AsSingle();
 
@@ -61,26 +61,26 @@ public partial class ProjectileTemplate : CharacterBody2D
     {
         //The bullet's impact detection area
         //子弹的碰撞检测区域
-        Area2D = GetNode<Area2D>("CollisionDetectionArea");
-        Area2D.Monitoring = true;
-        Area2D.BodyEntered += OnBodyEnter;
-        Area2D.BodyExited += OnBodyExited;
-        Durability = GetMeta("Durability", "1").AsDouble();
-        MaxDamage = GetMeta("MaxDamage", "7").AsInt32();
-        MinDamage = GetMeta("MinDamage", "5").AsInt32();
-        DamageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
-        KnockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
+        _area2D = GetNode<Area2D>("CollisionDetectionArea");
+        _area2D.Monitoring = true;
+        _area2D.BodyEntered += OnBodyEnter;
+        _area2D.BodyExited += OnBodyExited;
+        _durability = GetMeta("Durability", "1").AsDouble();
+        _maxDamage = GetMeta("MaxDamage", "7").AsInt32();
+        _minDamage = GetMeta("MinDamage", "5").AsInt32();
+        _damageType = GetMeta("DamageType", Config.DamageType.Physical).AsInt32();
+        _knockbackForce = GetMeta("Knockback", Vector2.Zero).AsVector2();
         //life(ms)
         //子弹的存在时间(毫秒)
-        Life = GetMeta("Life", "10000").AsInt64();
+        _life = GetMeta("Life", "10000").AsInt64();
         //If the existence time is less than or equal to 0, then it is set to exist for 10 seconds, and projectiles that exist indefinitely are prohibited
         //如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
-        if (Life <= 0)
+        if (_life <= 0)
         {
-            Life = 10000;
+            _life = 10000;
         }
 
-        _destructionTime = DateTime.Now.AddMilliseconds(Life);
+        _destructionTime = DateTime.Now.AddMilliseconds(_life);
     }
 
 
@@ -148,19 +148,19 @@ public partial class ProjectileTemplate : CharacterBody2D
             var damage = new Damage
             {
                 Attacker = owner,
-                MaxDamage = MaxDamage,
-                MinDamage = MinDamage
+                MaxDamage = _maxDamage,
+                MinDamage = _minDamage
             };
             damage.CreateDamage();
             damage.MoveLeft = Velocity.X < 0;
-            damage.Type = DamageType;
+            damage.Type = _damageType;
             characterTemplate.Damage(damage);
-            if (KnockbackForce != Vector2.Zero)
+            if (_knockbackForce != Vector2.Zero)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
                 var force = new Vector2();
-                var forceX = Math.Abs(KnockbackForce.X);
+                var forceX = Math.Abs(_knockbackForce.X);
                 if (Velocity.X < 0)
                 {
                     //Beat back to port
@@ -169,18 +169,18 @@ public partial class ProjectileTemplate : CharacterBody2D
                 }
 
                 force.X = forceX * Config.CellSize;
-                force.Y = KnockbackForce.Y * Config.CellSize;
+                force.Y = _knockbackForce.Y * Config.CellSize;
                 characterTemplate.AddForce(force);
             }
         }
         else if (target is PickAbleTemplate pickAbleTemplate)
         {
-            if (KnockbackForce != Vector2.Zero)
+            if (_knockbackForce != Vector2.Zero)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
                 var force = new Vector2();
-                var forceX = Math.Abs(KnockbackForce.X);
+                var forceX = Math.Abs(_knockbackForce.X);
                 if (Velocity.X < 0)
                 {
                     //Beat back to port
@@ -189,7 +189,7 @@ public partial class ProjectileTemplate : CharacterBody2D
                 }
 
                 force.X = forceX * Config.CellSize;
-                force.Y = KnockbackForce.Y * Config.CellSize;
+                force.Y = _knockbackForce.Y * Config.CellSize;
                 pickAbleTemplate.ApplyImpulse(force);
             }
         }
@@ -215,8 +215,8 @@ public partial class ProjectileTemplate : CharacterBody2D
         //请在Mask内配置子弹会和谁碰撞
         //When a bullet hits an object, its durability decreases
         //子弹撞击到物体时，耐久度减少
-        Durability--;
-        if (Durability <= 0)
+        _durability--;
+        if (_durability <= 0)
         {
             //When the durability is less than or equal to 0, destroy the bullet
             //当耐久度小于等于0时，销毁子弹

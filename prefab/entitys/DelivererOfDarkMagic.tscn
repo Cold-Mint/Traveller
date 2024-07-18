@@ -10,8 +10,8 @@
 radius = 20.0
 height = 52.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vmqbt"]
-radius = 34.5398
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3myh"]
+size = Vector2(46, 65)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qumby"]
 animations = [{
@@ -25,10 +25,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c61vr"]
-radius = 185.132
+radius = 153.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fowd5"]
-radius = 233.808
+radius = 172.29
 
 [node name="DelivererOfDarkMagic" type="CharacterBody2D"]
 collision_layer = 64
@@ -48,7 +48,8 @@ collision_layer = 0
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DPickingArea"]
-shape = SubResource("CircleShape2D_vmqbt")
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_a3myh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_qumby")

@@ -48,7 +48,7 @@ public partial class Player : CharacterTemplate
     {
         base._Ready();
         CharacterName = TranslationServerUtils.Translate("default_player_name");
-        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, LogCat.UploadFormat,ReadOnlyCharacterName,
+        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, ReadOnlyCharacterName,
             GlobalPosition);
         var floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
         //Initializes the float label.
