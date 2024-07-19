@@ -194,10 +194,12 @@ public class Room
             //转为瓦片地图的坐标(中点)
             var tileMapStartPosition = tileMap.LocalToMap(startPosition);
             var tileMapEndPosition = tileMap.LocalToMap(endPosition);
+            var midpointPosition = tileMap.LocalToMap(midpointOfRoomSlots);
             var roomSlot = new RoomSlot
             {
                 EndPosition = tileMapEndPosition,
                 StartPosition = tileMapStartPosition,
+                MidpointPosition = midpointPosition,
                 //Calculate the orientation of the slot (the midpoint of the room is the origin, the vector pointing to the midpoint of the slot)
                 //计算槽位的方向(房间中点为原点，指向槽位中点的向量)
                 DistanceToMidpointOfRoom = CoordinateUtils.VectorToOrientationArray(midpoint, midpointOfRoomSlots)

@@ -98,19 +98,53 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
     public Task<bool> PlaceRoom(Node mapRoot, RoomPlacementData roomPlacementData)
     {
-        if (roomPlacementData.Room == null || roomPlacementData.Position == null)
+        if (roomPlacementData.NewRoom == null || roomPlacementData.Position == null)
         {
             return Task.FromResult(false);
         }
 
-        if (roomPlacementData.Room.RootNode == null)
+        if (roomPlacementData.NewRoom.RootNode == null)
         {
             return Task.FromResult(false);
         }
 
-        var rootNode = roomPlacementData.Room.RootNode;
-        mapRoot.AddChild(rootNode);
-        rootNode.Position = roomPlacementData.Position.Value;
+        var newRootRootNode = roomPlacementData.NewRoom.RootNode;
+        mapRoot.AddChild(newRootRootNode);
+        newRootRootNode.Position = roomPlacementData.Position.Value;
+        //Place navigation Link
+        //放置导航Link
+        Vector2? navigationLink2DStartPosition = null;
+        if (roomPlacementData is { ParentRoom: not null, ParentRoomSlot: not null })
+        {
+            var parentRoomTileMap = roomPlacementData.ParentRoom.TileMap;
+            var parentRoomRootNode = roomPlacementData.ParentRoom.RootNode;
+            if (parentRoomTileMap != null && parentRoomRootNode != null)
+            {
+                navigationLink2DStartPosition = parentRoomRootNode.Position +
+                                                parentRoomTileMap.MapToLocal(roomPlacementData.ParentRoomSlot
+                                                    .EndPosition);
+            }
+        }
+
+        Vector2? navigationLink2DEndPosition = null;
+        if (roomPlacementData.NewRoomSlot != null)
+        {
+            var newRoomTileMap = roomPlacementData.NewRoom.TileMap;
+            if (newRoomTileMap != null)
+            {
+                navigationLink2DEndPosition = newRootRootNode.Position +
+                                              newRoomTileMap.MapToLocal(roomPlacementData.NewRoomSlot.EndPosition);
+            }
+        }
+
+        if (navigationLink2DStartPosition != null && navigationLink2DEndPosition != null)
+        {
+            var navigationLink2D = new NavigationLink2D();
+            navigationLink2D.StartPosition = navigationLink2DStartPosition.Value;
+            navigationLink2D.EndPosition = navigationLink2DEndPosition.Value;
+            mapRoot.AddChild(navigationLink2D);
+        }
+
         return Task.FromResult(true);
     }
 
@@ -142,7 +176,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
         //Saves all data in the room template that matches the parent room.
         //保存房间模板内所有与父房间匹配的数据。
-        var useableRoomPlacementData = new List<RoomPlacementData>();
+        var usableRoomPlacementData = new List<RoomPlacementData>();
         foreach (var roomRes in roomResArray)
         {
             var newRoom = RoomFactory.CreateRoom(roomRes, newRoomNodeData.EnterRoomEventHandlerId,
@@ -168,22 +202,23 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             if (position == null) continue;
             var roomPlacementData = new RoomPlacementData
             {
-                Room = newRoom,
+                NewRoom = newRoom,
+                ParentRoom = parentRoomNode,
                 Position = position,
                 ParentRoomSlot = mainRoomSlot,
                 NewRoomSlot = newRoomSlot
             };
-            useableRoomPlacementData.Add(roomPlacementData);
+            usableRoomPlacementData.Add(roomPlacementData);
         }
 
-        if (useableRoomPlacementData.Count == 0)
+        if (usableRoomPlacementData.Count == 0)
         {
             return null;
         }
         else
         {
-            var index = randomNumberGenerator.Randi() % useableRoomPlacementData.Count;
-            var roomPlacementData = useableRoomPlacementData[(int)index];
+            var index = randomNumberGenerator.Randi() % usableRoomPlacementData.Count;
+            var roomPlacementData = usableRoomPlacementData[(int)index];
             //Be sure to mark its slot as a match when you use it.
             //一定要在使用时，将其插槽标记为匹配。
             if (roomPlacementData.ParentRoomSlot != null)
@@ -217,7 +252,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         var index = randomNumberGenerator.Randi() % roomResArray.Length;
         var roomPlacementData = new RoomPlacementData
         {
-            Room = RoomFactory.CreateRoom(roomResArray[index], startRoomNodeData.EnterRoomEventHandlerId,
+            NewRoom = RoomFactory.CreateRoom(roomResArray[index], startRoomNodeData.EnterRoomEventHandlerId,
                 startRoomNodeData.ExitRoomEventHandlerId),
             Position = Vector2.Zero
         };

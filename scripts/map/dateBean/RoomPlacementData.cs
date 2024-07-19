@@ -14,18 +14,25 @@ public class RoomPlacementData
     /// <para>放置的位置</para>
     /// </summary>
     public Vector2? Position { get; set; }
+
     /// <summary>
     /// <para>Place the room template</para>
     /// <para>放置的房间模板</para>
     /// </summary>
-    public Room? Room { get; set; }
+    public Room? NewRoom { get; set; }
     
+    /// <summary>
+    /// <para>Parent room</para>
+    /// <para>父级房间</para>
+    /// </summary>
+    public Room? ParentRoom { get; set; }
+
     /// <summary>
     /// <para>Parent room slot</para>
     /// <para>父级房间的插槽</para>
     /// </summary>
     public RoomSlot? ParentRoomSlot { get; set; }
-    
+
     /// <summary>
     /// <para>A slot for the new room</para>
     /// <para>新房间的插槽</para>

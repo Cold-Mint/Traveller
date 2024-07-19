@@ -241,7 +241,7 @@ public static class MapGenerator
                             //If the room injection processor cannot be found, a print error occurs.
                             //如果找不到房间注入处理器，那么打印错误。
                             LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist",
-                                LogCat.LogLabel.Default, LogCat.UploadFormat,injectionProcessorData.Id);
+                                LogCat.LogLabel.Default, LogCat.UploadFormat, injectionProcessorData.Id);
                             continue;
                         }
 
@@ -278,7 +278,7 @@ public static class MapGenerator
             if (roomPlacementData == null)
             {
                 LogCat.LogWithFormat("failed_to_calculate_the_room_location", LogCat.LogLabel.Default,
-                    LogCat.UploadFormat,roomNodeData.Id);
+                    LogCat.UploadFormat, roomNodeData.Id);
                 continue;
             }
 
@@ -317,25 +317,26 @@ public static class MapGenerator
         //The input parameters are incomplete.
         //输入参数不全。
         if (_roomPlacementStrategy == null || _mapRoot == null || string.IsNullOrEmpty(roomNodeDataId) ||
-            roomPlacementData.Room == null)
+            roomPlacementData.NewRoom == null)
         {
             return false;
         }
 
         if (dictionary.ContainsKey(roomNodeDataId))
         {
-            LogCat.LogWithFormat("place_existing_rooms", LogCat.LogLabel.Default, LogCat.UploadFormat,roomNodeDataId);
+            LogCat.LogWithFormat("place_existing_rooms", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId);
             return false;
         }
 
         if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
         {
-            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.UploadFormat,LogCat.LogLabel.Default, roomNodeDataId);
+            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.UploadFormat, LogCat.LogLabel.Default,
+                roomNodeDataId);
             return false;
         }
 
-        dictionary.Add(roomNodeDataId, roomPlacementData.Room);
-        LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat,roomNodeDataId,
+        dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
+        LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId,
             roomPlacementData.Position.ToString());
         return true;
     }
