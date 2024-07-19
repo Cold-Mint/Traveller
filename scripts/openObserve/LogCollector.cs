@@ -26,7 +26,7 @@ public static class LogCollector
     /// </remarks>
     public static int UploadThreshold { get; set; } = 300;
 
-    private static bool _lockList = false;
+    private static bool _lockList;
 
     /// <summary>
     /// <para>httpClient</para>
@@ -36,7 +36,7 @@ public static class LogCollector
 
     private static string? _orgId;
     private static string? _streamName;
-    
+
     /// <summary>
     /// <para>CanUploadLog</para>
     /// <para>是否能上传日志</para>
@@ -95,7 +95,7 @@ public static class LogCollector
             {
                 //After the upload succeeds, if the threshold is still met, continue uploading.
                 //上传成功后，如果依然满足阈值，那么继续上传。
-                PostLog(LogDataList.GetRange(0, UploadThreshold));
+                await PostLog(LogDataList.GetRange(0, UploadThreshold));
             }
         }
         else
@@ -105,14 +105,26 @@ public static class LogCollector
         }
     }
 
-    public static void Push(LogData logData)
+    /// <summary>
+    /// <para>Push log information to the cache</para>
+    /// <para>推送日志信息到缓存</para>
+    /// </summary>
+    /// <param name="logData">
+    ///<para>Log data</para>
+    ///<para>日志信息</para>
+    /// </param>
+    /// <remarks>
+    ///<para>When logs reach the upload threshold, logs are automatically uploaded.</para>
+    ///<para>当日志信息到达上传阈值后会自动上传。</para>
+    /// </remarks>
+    public static async Task Push(LogData logData)
     {
         LogDataList.Add(logData);
         LogCat.LogWithFormat("upload_status", LogCat.LogLabel.LogCollector, false, LogDataList.Count, UploadThreshold);
         if (!_lockList && LogDataList.Count > UploadThreshold)
         {
             //执行上传
-            PostLog(LogDataList.GetRange(0, UploadThreshold));
+            await PostLog(LogDataList.GetRange(0, UploadThreshold));
         }
     }
 }

@@ -80,16 +80,16 @@ public sealed partial class AiCharacter : CharacterTemplate
 
 
     /// <summary>
-    /// <para>Exclamation bubble Id</para>
+    /// <para>Exclamation bubble id</para>
     /// <para>感叹气泡Id</para>
     /// </summary>
-    private const int plaintBubbleId = 0;
+    private const int PlaintBubbleId = 0;
 
     /// <summary>
-    /// <para>Query bubble Id</para>
+    /// <para>Query bubble id</para>
     /// <para>疑问气泡Id</para>
     /// </summary>
-    private const int queryBubbleId = 1;
+    private const int QueryBubbleId = 1;
 
     /// <summary>
     /// <para>BubbleMarker</para>
@@ -134,14 +134,14 @@ public sealed partial class AiCharacter : CharacterTemplate
             var plaint = NodeUtils.InstantiatePackedScene<Control>(plaintScene);
             if (plaint != null)
             {
-                _bubbleMarker.AddBubble(plaintBubbleId, plaint);
+                _bubbleMarker.AddBubble(PlaintBubbleId, plaint);
             }
 
             using var queryScene = GD.Load<PackedScene>("res://prefab/ui/query.tscn");
             var query = NodeUtils.InstantiatePackedScene<Control>(queryScene);
             if (query != null)
             {
-                _bubbleMarker.AddBubble(queryBubbleId, query);
+                _bubbleMarker.AddBubble(QueryBubbleId, query);
             }
         }
 
@@ -228,12 +228,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     public void DispladyPlaint()
     {
-        _bubbleMarker?.ShowBubble(plaintBubbleId);
+        _bubbleMarker?.ShowBubble(PlaintBubbleId);
     }
 
     public void HidePlaint()
     {
-        _bubbleMarker?.HideBubble(plaintBubbleId);
+        _bubbleMarker?.HideBubble(PlaintBubbleId);
     }
 
     /// <summary>
@@ -242,12 +242,12 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </summary>
     public void DispladyQuery()
     {
-        _bubbleMarker?.ShowBubble(queryBubbleId);
+        _bubbleMarker?.ShowBubble(QueryBubbleId);
     }
 
     public void HideQuery()
     {
-        _bubbleMarker?.HideBubble(queryBubbleId);
+        _bubbleMarker?.HideBubble(QueryBubbleId);
     }
 
     /// <summary>

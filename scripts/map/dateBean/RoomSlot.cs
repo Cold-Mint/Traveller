@@ -26,15 +26,6 @@ public class RoomSlot
     /// </remarks>
     public Vector2I StartPosition { get; set; }
     
-    /// <summary>
-    /// <para>The midpoint of the slot</para>
-    /// <para>插槽的中点位置</para>
-    /// </summary>
-    ///<remarks>
-    ///<para>As opposed to a tile map. Convert to local location please call <see cref="TileMap.MapToLocal"/></para>
-    ///<para>相对于瓦片地图而言的。转换为本地位置请调用<see cref="TileMap.MapToLocal"/></para>
-    /// </remarks>
-    public Vector2I MidpointPosition { get; set; }
 
     /// <summary>
     /// <para>The end position of the room slot</para>

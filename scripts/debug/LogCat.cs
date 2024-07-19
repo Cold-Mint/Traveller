@@ -237,8 +237,7 @@ public static class LogCat
             var logData = new LogData
             {
                 Level = level,
-                Message = concreteLog,
-                AppId = "none"
+                Message = concreteLog
             };
             LogCollector.Push(logData);
         }

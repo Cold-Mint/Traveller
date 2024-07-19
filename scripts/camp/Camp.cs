@@ -17,6 +17,16 @@ public class Camp
     }
 
     /// <summary>
+    /// <para>Add friendly camp ID</para>
+    /// <para>添加友善的阵营ID</para>
+    /// </summary>
+    /// <param name="friendlyCampId"></param>
+    public void AddFriendlyCampId(string friendlyCampId)
+    {
+        _friendlyCampIdList.Add(friendlyCampId);
+    }
+
+    /// <summary>
     /// <para>Get camp ID</para>
     /// <para>获取阵营ID</para>
     /// </summary>
