@@ -64,6 +64,11 @@ public static class LogCat
         /// <para>日志收集器</para>
         /// </summary>
         public const string LogCollector = "LogCollector";
+        /// <summary>
+        /// <para>Mod Loader</para>
+        /// <para>模组加载器</para>
+        /// </summary>
+        public const string ModLoader = "ModLoader";
     }
 
 
@@ -192,7 +197,7 @@ public static class LogCat
                 break;
         }
 
-        StringBuilder.Append(DateTime.Now.ToString(" yyyy-M-d HH:mm:ss "));
+        StringBuilder.Append(DateTime.Now.ToString(" (K)yyyy-MM-d hh:mm:ss.fff "));
         StringBuilder.Append(label);
         StringBuilder.Append(" :");
         var key = $"log_{message}";

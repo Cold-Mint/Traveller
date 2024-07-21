@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ColdMint.scripts.utils;
 
@@ -13,6 +14,31 @@ public static class ResUtils
     /// <para>游戏运行时，游戏引擎为资源文件添加的后缀</para>
     /// </summary>
     private const string Suffix = ".remap";
+
+    /// <summary>
+    /// <para>Gets the location of its own dll</para>
+    /// <para>获取自身dll的存放位置</para>
+    /// </summary>
+    /// <returns></returns>
+    public static string? GetSelfDllFolder()
+    {
+        var currentDirectory = Environment.CurrentDirectory;
+        if (Config.GetOs() == Config.OsEnum.Editor)
+        {
+            return Path.Join(currentDirectory, ".godot", "mono", "temp", "bin", "Debug");
+        }
+
+        if (Config.GetOs() == Config.OsEnum.Windows)
+        {
+            return Path.Join(currentDirectory, "data_" + Config.SolutionName + "_windows_x86_64");
+        }
+
+        if (Config.GetOs() == Config.OsEnum.Linux)
+        {
+            return Path.Join(currentDirectory, "data_" + Config.SolutionName + "_linuxbsd_x86_64");
+        }
+        return null;
+    }
 
     /// <summary>
     /// <para>The game returns the res directory with a.remap suffix at runtime, causing an error while loading the resource</para>

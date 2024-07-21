@@ -10,6 +10,7 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.roomInjectionProcessor;
+using ColdMint.scripts.mod;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -81,6 +82,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Disable all logs in the release version.
         //在发行版禁用所有日志。
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
+        ModLoader.Init();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());

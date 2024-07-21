@@ -52,7 +52,7 @@ public static class Config
     /// <para>App配置文件路径</para>
     /// </summary>
     public const string AppConfigPath = "res://AppConfig.yaml";
-    
+
     /// <summary>
     /// <para>The percentage of speed reduced after a thrown item hits an enemy</para>
     /// <para>抛出的物品击中敌人后减少的速度百分比</para>
@@ -89,6 +89,12 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
+    
+    /// <summary>
+    /// <para>Solution Name</para>
+    /// <para>解决方案名称</para>
+    /// </summary>
+    public static string SolutionName = "ColdMint.Traveler";
 
     /// <summary>
     /// <para>How many item slots are there on the shortcut bar</para>
@@ -187,7 +193,11 @@ public static class Config
 
         //The host operating system is a web browser
         //宿主操作系统是网页浏览器
-        Web
+        Web,
+
+        //Running on editor
+        //在编辑器内运行
+        Editor
     }
 
     /// <summary>
@@ -197,6 +207,11 @@ public static class Config
     /// <returns></returns>
     public static OsEnum GetOs()
     {
+        if (OS.HasFeature("editor"))
+        {
+            return OsEnum.Editor;
+        }
+
         if (OS.HasFeature("windows"))
         {
             return OsEnum.Windows;

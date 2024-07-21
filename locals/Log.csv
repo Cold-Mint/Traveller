@@ -87,3 +87,13 @@ log_weapon_picked_up,武器被拾取。,Weapon picked up.,武器が拾い取ら�
 log_weapon_pickup_failed,武器拾取失败。,Weapon pickup failed.,武器の拾い取りに失敗しました。
 log_enter_the_picking_range_body,进入拾取范围。,Enter the picking range.,拾い取り範囲に入ります。
 log_search_for_weapon_timeout,搜索武器超时。,Search for weapon timeout.,武器の検索がタイムアウトしました。
+log_initialize_the_context,初始化上下文环境。,Initialize the context environment.,コンテキスト環境を初期化します。
+log_initialize_the_context_failed,初始化上下文环境失败。,Initialize the context environment failed.,コンテキスト環境の初期化に失敗しました。
+log_get_dll_folder_failed,获取DLL文件夹失败。,Failed to get the DLL folder.,DLLフォルダの取得に失敗しました。
+log_dll_not_exist,位于{0}的Dll文件不存在。,The Dll file located at {0} does not exist.,{0}にあるDLLファイルが存在しません。
+log_load_dll,开始加载位于{0}的DLL文件。,Start loading the DLL file located at {0}.,{0}にあるDLLファイルのロードを開始します。
+log_load_dll_argument_exception,{0}不是绝对路径。,{0} is not an absolute path.,{0}は絶対パスではありません。
+log_load_dll_argument_null_exception,{0}参数为空。,The {0} parameter is empty.,{0}パラメータが空です。
+log_load_dll_file_load_exception,加载DLL文件{0}失败。,Failed to load the DLL file {0}.,DLLファイル{0}のロードに失敗しました。
+log_load_dll_bad_image_format_exception,{0}不是有效的程序集。,{0} is not a valid assembly.,{0}は有効なアセンブリではありません。
+log_load_dll_success,成功加载位于{0}的dll文件。,Successfully loaded the dll file located at {0}.,{0}にあるDLLファイルを正常にロードしました。
