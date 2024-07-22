@@ -247,7 +247,15 @@ public static class LogCat
             LogCollector.Push(logData);
         }
 
-        GD.Print(concreteLog);
+        switch (level)
+        {
+            case ErrorLogLevel:
+                GD.PrintErr(concreteLog);
+                break;
+            default:
+                GD.Print(concreteLog);
+                break;
+        }
     }
 
     /// <summary>
@@ -274,7 +282,7 @@ public static class LogCat
 
     public static void LogErrorWithFormat(string message, string label, bool upload, params object?[] args)
     {
-        PrintLog(WarningLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label,
+        PrintLog(ErrorLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label,
             upload);
     }
 

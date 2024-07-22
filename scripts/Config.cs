@@ -66,6 +66,12 @@ public static class Config
     public const int HeartRepresentsHealthValue = 4;
 
     /// <summary>
+    /// <para>The name of the mod manifest file</para>
+    /// <para>模组清单文件的名字</para>
+    /// </summary>
+    public const string ModManifestFileName = "ModManifest.yaml";
+
+    /// <summary>
     /// <para>The maximum number of stacked items in a single inventory</para>
     /// <para>单个物品栏最大堆叠的物品数量</para>
     /// </summary>

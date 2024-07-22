@@ -99,7 +99,35 @@ public class ModLoader
         }
     }
 
-    public static void LoadMod()
+    /// <summary>
+    /// <para>Load a module for a directory</para>
+    /// <para>加载某个目录的模组</para>
+    /// </summary>
+    /// <param name="modFolderPath">
+    ///<para>Mod path</para>
+    ///<para>模组路径</para>
+    /// </param>
+    public static void LoadMod(string modFolderPath)
     {
+        if (!Directory.Exists(modFolderPath))
+        {
+            //The module folder does not exist.
+            //模组文件夹不存在。
+            LogCat.LogErrorWithFormat("mod_folder_does_not_exist", LogCat.LogLabel.ModLoader, true, modFolderPath);
+            return;
+        }
+
+        try
+        {
+            var modManifest =
+                ModManifest.CreateModManifestFromPath(Path.Join(modFolderPath, Config.ModManifestFileName));
+        }
+        catch (FileNotFoundException fileNotFoundException)
+        {
+            //Do not continue to load the file when it does not exist.
+            //当文件不存在时就不要继续加载了。
+            LogCat.WhenCaughtException(fileNotFoundException, LogCat.LogLabel.ModLoader);
+            return;
+        }
     }
 }

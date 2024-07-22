@@ -97,3 +97,4 @@ log_load_dll_argument_null_exception,{0}参数为空。,The {0} parameter is emp
 log_load_dll_file_load_exception,加载DLL文件{0}失败。,Failed to load the DLL file {0}.,DLLファイル{0}のロードに失敗しました。
 log_load_dll_bad_image_format_exception,{0}不是有效的程序集。,{0} is not a valid assembly.,{0}は有効なアセンブリではありません。
 log_load_dll_success,成功加载位于{0}的dll文件。,Successfully loaded the dll file located at {0}.,{0}にあるDLLファイルを正常にロードしました。
+log_mod_folder_does_not_exist,位于{0}的模组文件夹不存在。,The module folder at {0} does not exist.,{0}に位置するモジュールフォルダは存在しません。
