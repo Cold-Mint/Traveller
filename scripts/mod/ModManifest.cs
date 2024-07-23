@@ -25,12 +25,20 @@ public class ModManifest
     /// <para>Dll path list of the mod</para>
     /// <para>模组的Dll路径列表</para>
     /// </summary>
+    /// <remarks>
+    ///<para>Allow relative paths, such as:... / Points to the parent directory.</para>
+    ///<para>允许使用相对路径，例如: ../指向上级目录。</para>
+    /// </remarks>
     public string[]? DllList { get; set; }
 
     /// <summary>
     /// <para>Pck path list of mod</para>
     /// <para>模组的Pck路径列表</para>
     /// </summary>
+    /// <remarks>
+    ///<para>Allow relative paths, such as:... / Points to the parent directory.</para>
+    ///<para>允许使用相对路径，例如: ../指向上级目录。</para>
+    /// </remarks>
     public string[]? PckList { get; set; }
 
     /// <summary>
@@ -50,7 +58,7 @@ public class ModManifest
     ///<para>当给定的路径不存在时，抛出此异常。</para>
     /// </exception>
     /// <returns></returns>
-    public static ModManifest CreateModManifestFromPath(string filePath)
+    public static ModManifest? CreateModManifestFromPath(string filePath)
     {
         if (!filePath.EndsWith(Config.ModManifestFileName))
         {

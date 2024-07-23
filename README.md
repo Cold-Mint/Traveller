@@ -52,6 +52,10 @@ You need to fill in the Export Presets > Resources > Filter to export non-resour
 data/*
 ```
 
+#### Custom feature
+
+- **disableVersionIsolation** Disable version isolation.
+
 ## Configuring Openobserve
 
 > This is optional, and the game will work even if you do not configure Openobserve.

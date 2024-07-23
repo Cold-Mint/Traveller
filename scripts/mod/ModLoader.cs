@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Runtime.Loader;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
+using Godot;
 
 namespace ColdMint.scripts.mod;
 
@@ -18,8 +20,16 @@ public class ModLoader
     /// </summary>
     private static AssemblyLoadContext? _assemblyLoadContext;
 
-    private static string[] _requiredDllList = new[] { Config.SolutionName };
+    private static readonly string[] RequiredDllList = [Config.SolutionName];
 
+    /// <summary>
+    /// <para>Initializes the mod loader</para>
+    /// <para>初始化模组加载器</para>
+    /// </summary>
+    /// <exception cref="FileNotFoundException">
+    ///<para>This exception is thrown if the built-in dll file cannot be found when it is loaded.</para>
+    ///<para>如果加载内置dll文件时，找不到文件，则抛出此异常。</para>
+    /// </exception>
     public static void Init()
     {
         //Initialize the context.
@@ -39,7 +49,7 @@ public class ModLoader
             return;
         }
 
-        foreach (var requiredDll in _requiredDllList)
+        foreach (var requiredDll in RequiredDllList)
         {
             var dllPath = Path.Join(dllFolder, requiredDll + ".dll");
             //Load the necessary dll files.
@@ -49,85 +59,214 @@ public class ModLoader
                 //When the dll that must be loaded does not exist, an error is reported immediately.
                 //当必须加载的dll不存在时，立即报错。
                 LogCat.LogErrorWithFormat("dll_not_exist", LogCat.LogLabel.ModLoader, true, dllPath);
-                throw new NullReferenceException("dll not exist:" + dllPath);
+                throw new FileNotFoundException("dll not exist:" + dllPath);
             }
 
-            //Load the dll.
-            //加载dll。
-            LogCat.LogWithFormat("load_dll", LogCat.LogLabel.ModLoader, true, dllPath);
-            try
-            {
-                _assemblyLoadContext.LoadFromAssemblyPath(dllPath);
-            }
-            catch (ArgumentNullException argumentNullException)
-            {
-                //The assemblyPath parameter is null.
-                //assemblyPath参数为空。
-                LogCat.LogErrorWithFormat("load_dll_argument_null_exception", LogCat.LogLabel.ModLoader, true, dllPath);
-                LogCat.WhenCaughtException(argumentNullException, LogCat.LogLabel.ModLoader);
-                return;
-            }
-            catch (ArgumentException argumentException)
-            {
-                //Not an absolute path.
-                //不是绝对路径
-                LogCat.LogErrorWithFormat("load_dll_argument_exception", LogCat.LogLabel.ModLoader, true, dllPath);
-                LogCat.WhenCaughtException(argumentException, LogCat.LogLabel.ModLoader);
-                return;
-            }
-            catch (FileLoadException fileLoadException)
-            {
-                //A file that was found could not be loaded.
-                //无法加载找到的文件。
-                LogCat.LogErrorWithFormat("load_dll_file_load_exception", LogCat.LogLabel.ModLoader, true, dllPath);
-                LogCat.WhenCaughtException(fileLoadException, LogCat.LogLabel.ModLoader);
-                return;
-            }
-            catch (BadImageFormatException badImageFormatException)
-            {
-                //assemblyPath is not a valid assembly.
-                //assemblyPath不是有效的程序集。
-                LogCat.LogErrorWithFormat("load_dll_bad_image_format_exception", LogCat.LogLabel.ModLoader, true,
-                    dllPath);
-                LogCat.WhenCaughtException(badImageFormatException, LogCat.LogLabel.ModLoader);
-                return;
-            }
-
-            //Loading the dll succeeded.
-            //加载dll成功。
-            LogCat.LogWithFormat("load_dll_success", LogCat.LogLabel.ModLoader, true, dllPath);
+            LoadDllFile(dllPath);
         }
     }
 
     /// <summary>
-    /// <para>Load a module for a directory</para>
-    /// <para>加载某个目录的模组</para>
+    /// <para>Load Dll file</para>
+    /// <para>加载Dll文件</para>
+    /// </summary>
+    /// <param name="dllPath">
+    ///<para>dll file path</para>
+    ///<para>dll的文件路径</para>
+    /// </param>
+    /// <exception cref="NullReferenceException">
+    ///<para>Throw this error if the assemblyLoadContext has not been initialized.</para>
+    ///<para>如果assemblyLoadContext尚未初始化，那么抛出此错误。</para>
+    /// </exception>
+    private static void LoadDllFile(string dllPath)
+    {
+        if (_assemblyLoadContext == null)
+        {
+            throw new NullReferenceException("assemblyLoadContext is null.");
+        }
+
+        //Load the dll.
+        //加载dll。
+        LogCat.LogWithFormat("load_dll", LogCat.LogLabel.ModLoader, true, dllPath);
+        try
+        {
+            _assemblyLoadContext.LoadFromAssemblyPath(dllPath);
+        }
+        catch (ArgumentNullException argumentNullException)
+        {
+            //The assemblyPath parameter is null.
+            //assemblyPath参数为空。
+            LogCat.LogErrorWithFormat("load_dll_argument_null_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.WhenCaughtException(argumentNullException, LogCat.LogLabel.ModLoader);
+            return;
+        }
+        catch (ArgumentException argumentException)
+        {
+            //Not an absolute path.
+            //不是绝对路径
+            LogCat.LogErrorWithFormat("load_dll_argument_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.WhenCaughtException(argumentException, LogCat.LogLabel.ModLoader);
+            return;
+        }
+        catch (FileLoadException fileLoadException)
+        {
+            //A file that was found could not be loaded.
+            //无法加载找到的文件。
+            LogCat.LogErrorWithFormat("load_dll_file_load_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.WhenCaughtException(fileLoadException, LogCat.LogLabel.ModLoader);
+            return;
+        }
+        catch (BadImageFormatException badImageFormatException)
+        {
+            //assemblyPath is not a valid assembly.
+            //assemblyPath不是有效的程序集。
+            LogCat.LogErrorWithFormat("load_dll_bad_image_format_exception", LogCat.LogLabel.ModLoader, true,
+                dllPath);
+            LogCat.WhenCaughtException(badImageFormatException, LogCat.LogLabel.ModLoader);
+            return;
+        }
+
+        //Loading the dll succeeded.
+        //加载dll成功。
+        LogCat.LogWithFormat("load_dll_success", LogCat.LogLabel.ModLoader, true, dllPath);
+    }
+
+    /// <summary>
+    /// <para>Load all mods</para>
+    /// <para>加载全部模组</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>This method scans the incoming subfolders and loads them as module folders.</para>
+    ///<para>此方法会将扫描传入的子文件夹，并将其子文件夹看作模组文件夹加载。</para>
+    /// </remarks>
+    /// <param name="modFolder">
+    ///<para>Mod folder</para>
+    ///<para>模组文件夹</para>
+    /// </param>
+    /// <exception cref="DirectoryNotFoundException">
+    ///<para>If the given folder does not exist, throw this exception.</para>
+    ///<para>如果给定的文件夹不存在，则抛出此异常。</para>
+    /// </exception>
+    public static void LoadAllMods(string modFolder)
+    {
+        if (!Directory.Exists(modFolder))
+        {
+            //The mod directory does not exist.
+            //模组目录不存在。
+            throw new DirectoryNotFoundException("mod folder not exist:" + modFolder);
+        }
+
+        var directoryInfo = new DirectoryInfo(modFolder);
+        foreach (var directory in directoryInfo.GetDirectories())
+        {
+            LoadSingleMod(directory.FullName);
+        }
+    }
+
+    /// <summary>
+    /// <para>Load a single mod</para>
+    /// <para>加载单个模组</para>
     /// </summary>
     /// <param name="modFolderPath">
     ///<para>Mod path</para>
     ///<para>模组路径</para>
     /// </param>
-    public static void LoadMod(string modFolderPath)
+    /// <exception cref="DirectoryNotFoundException">
+    /// <para>If the given directory does not exist, throw this exception.</para>
+    ///<para>如果给定的目录不存在，那么抛出此异常。</para>
+    /// </exception>
+    /// <exception cref="NullReferenceException">
+    ///<para>Throw this exception if the manifest file creation deserialization fails.</para>
+    ///<para>如果清单文件创建反序列化失败，则抛出此异常。</para>
+    /// </exception>
+    private static void LoadSingleMod(string modFolderPath)
     {
         if (!Directory.Exists(modFolderPath))
         {
             //The module folder does not exist.
             //模组文件夹不存在。
-            LogCat.LogErrorWithFormat("mod_folder_does_not_exist", LogCat.LogLabel.ModLoader, true, modFolderPath);
-            return;
+            throw new DirectoryNotFoundException("Mod folder does not exist:" + modFolderPath);
         }
 
-        try
+        var modManifestPath = Path.Join(modFolderPath, Config.ModManifestFileName);
+        var modManifest =
+            ModManifest.CreateModManifestFromPath(modManifestPath);
+        if (modManifest == null)
         {
-            var modManifest =
-                ModManifest.CreateModManifestFromPath(Path.Join(modFolderPath, Config.ModManifestFileName));
+            throw new NullReferenceException("mod manifest is null:" + modManifestPath);
         }
-        catch (FileNotFoundException fileNotFoundException)
+
+        var dllList = modManifest.DllList;
+        if (dllList == null || dllList.Length == 0)
         {
-            //Do not continue to load the file when it does not exist.
-            //当文件不存在时就不要继续加载了。
-            LogCat.WhenCaughtException(fileNotFoundException, LogCat.LogLabel.ModLoader);
-            return;
+            //The module does not contain a dll file.
+            //模组不包含dll文件。
+            LogCat.LogWarningWithFormat("mod_not_contain_dll", true, LogCat.LogLabel.ModLoader, modFolderPath);
+        }
+        else
+        {
+            //The module contains dll files, load the dll files.
+            //包含dll文件，加载dll文件。
+            foreach (var dll in dllList)
+            {
+                var dllPath = Path.GetFullPath(dll, modFolderPath);
+                LoadDllFile(dllPath);
+            }
+        }
+
+        var pakList = modManifest.PckList;
+        if (pakList == null || pakList.Length == 0)
+        {
+            //The module does not contain a pck file.
+            //模组不包含pck文件。
+            LogCat.LogWarningWithFormat("mod_not_contain_pck", true, LogCat.LogLabel.ModLoader, modFolderPath);
+        }
+        else
+        {
+            //The module contains pck files, load the pck files.
+            //包含pck文件，加载pck文件。
+            foreach (var pak in pakList)
+            {
+                var pakPath = Path.GetFullPath(pak, modFolderPath);
+                LoadPckFile(pakPath);
+            }
+        }
+    }
+
+    /// <summary>
+    /// <para>Load the Pck file</para>
+    /// <para>加载Pck文件</para>
+    /// </summary>
+    /// <param name="pckPath">
+    ///<para>Pck path</para>
+    ///<para>Pck路径</para>
+    /// </param>
+    /// <exception cref="FileNotFoundException">
+    ///<para>If the given path does not exist, throw this exception.</para>
+    ///<para>如果给定的路径不存在，那么抛出此异常。</para>
+    /// </exception>
+    /// <exception cref="Exception">
+    ///<para>Throw this exception if the pck package fails to load.</para>
+    ///<para>如果pck包加载失败了，抛出此异常。</para>
+    /// </exception>
+    private static void LoadPckFile(string pckPath)
+    {
+        if (!File.Exists(pckPath))
+        {
+            throw new FileNotFoundException("pck file not exist:" + pckPath);
+        }
+
+        var success = ProjectSettings.LoadResourcePack(pckPath);
+        if (success)
+        {
+            LogCat.LogWithFormat("load_pck_success", LogCat.LogLabel.ModLoader, true, pckPath);
+        }
+        else
+        {
+            LogCat.LogErrorWithFormat("load_pck_failed", LogCat.LogLabel.ModLoader, true, pckPath);
+            //Throw a suitable exception here for handling at the caller.
+            //为这里抛出合适的异常，以便在调用方处理。
+            throw new DataException("load pck failed:" + pckPath);
         }
     }
 }

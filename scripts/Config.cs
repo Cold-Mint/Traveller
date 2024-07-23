@@ -95,7 +95,7 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
-    
+
     /// <summary>
     /// <para>Solution Name</para>
     /// <para>解决方案名称</para>
@@ -119,7 +119,12 @@ public static class Config
     /// <para>Whether version isolation is enabled</para>
     /// <para>是否启用版本隔离</para>
     /// </summary>
-    public const bool EnableVersionIsolation = true;
+    public static bool EnableVersionIsolation()
+    {
+        //By default, we enable version isolation, but special feature identifiers can be set to disable version isolation.
+        //默认情况，我们启用版本隔离，但是可以设置特殊的功能标识来禁用版本隔离。
+        return !OS.HasFeature("disableVersionIsolation");
+    }
 
     /// <summary>
     /// <para>Default version name</para>
@@ -210,10 +215,14 @@ public static class Config
     /// <para>Get what platform is currently running on</para>
     /// <para>获取当前在什么平台上运行</para>
     /// </summary>
+    /// <param name="containEditor">
+    ///<para>Whether to include an editor environment</para>
+    ///<para>是否包含编辑器环境</para>
+    /// </param>
     /// <returns></returns>
-    public static OsEnum GetOs()
+    public static OsEnum GetOs(bool containEditor = false)
     {
-        if (OS.HasFeature("editor"))
+        if (containEditor && OS.HasFeature("editor"))
         {
             return OsEnum.Editor;
         }
@@ -271,7 +280,7 @@ public static class Config
     /// <returns></returns>
     public static string GetGameDataDirectory()
     {
-        if (EnableVersionIsolation)
+        if (EnableVersionIsolation())
         {
             return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
                 ProjectSettings.GetSetting("application/config/name").AsString(), UserId,
@@ -285,6 +294,15 @@ public static class Config
         }
     }
 
+    /// <summary>
+    /// <para>GetModDataDirectory</para>
+    /// <para>获取模组文件夹</para>
+    /// </summary>
+    /// <returns></returns>
+    public static string GetModDataDirectory()
+    {
+        return Path.Join(GetGameDataDirectory(), "Mods");
+    }
 
     /// <summary>
     /// <para>Get the export directory for the level graph</para>

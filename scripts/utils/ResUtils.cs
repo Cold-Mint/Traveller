@@ -23,20 +23,22 @@ public static class ResUtils
     public static string? GetSelfDllFolder()
     {
         var currentDirectory = Environment.CurrentDirectory;
-        if (Config.GetOs() == Config.OsEnum.Editor)
+        var osEnum = Config.GetOs(true);
+        if (osEnum == Config.OsEnum.Editor)
         {
             return Path.Join(currentDirectory, ".godot", "mono", "temp", "bin", "Debug");
         }
 
-        if (Config.GetOs() == Config.OsEnum.Windows)
+        if (osEnum == Config.OsEnum.Windows)
         {
             return Path.Join(currentDirectory, "data_" + Config.SolutionName + "_windows_x86_64");
         }
 
-        if (Config.GetOs() == Config.OsEnum.Linux)
+        if (osEnum == Config.OsEnum.Linux)
         {
             return Path.Join(currentDirectory, "data_" + Config.SolutionName + "_linuxbsd_x86_64");
         }
+
         return null;
     }
 

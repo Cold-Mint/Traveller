@@ -52,6 +52,10 @@ git clone https://github.com/Cold-Mint/Traveller.git
 data/*
 ```
 
+#### 自定义特性
+
+- **disableVersionIsolation** 禁用版本隔离。
+
 ## 配置Openobserve
 
 > 这是可选的操作，即使您不配置Openobserve，游戏也能正常运行。

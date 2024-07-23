@@ -50,6 +50,10 @@ git clone https://github.com/Cold-Mint/Traveller.git
 data/*
 ```
 
+#### 風習特徴
+
+- **disableVersionIsolation** 版孤立を無効化する。
+
 ## はいちOpenobserve
 
 > これはオプションなので、Openobserveを設定しなくてもゲームは正常に動作します。

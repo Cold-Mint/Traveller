@@ -82,7 +82,6 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Disable all logs in the release version.
         //在发行版禁用所有日志。
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
-        ModLoader.Init();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
@@ -97,6 +96,14 @@ public partial class SplashScreenLoader : UiLoaderTemplate
             Directory.CreateDirectory(dataPath);
         }
 
+        ModLoader.Init();
+        var modPath = Config.GetModDataDirectory();
+        if (!Directory.Exists(modPath))
+        {
+            Directory.CreateDirectory(modPath);
+        }
+
+        ModLoader.LoadAllMods(modPath);
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)

@@ -51,8 +51,10 @@ public static class YamlSerialization
     /// <param name="yaml"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Deserialize<T>(string yaml)
+    // ReSharper disable ReturnTypeCanBeNotNullable
+    public static T? Deserialize<T>(string yaml)
     {
         return YamlDeserializer.Deserialize<T>(yaml);
     }
+    // ReSharper restore ReturnTypeCanBeNotNullable
 }

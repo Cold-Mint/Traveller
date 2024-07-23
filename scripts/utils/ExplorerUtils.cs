@@ -58,6 +58,7 @@ public static class ExplorerUtils
             case Config.OsEnum.Macos:
             case Config.OsEnum.Ios:
             case Config.OsEnum.Web:
+            case Config.OsEnum.Editor:
             default:
                 throw new ArgumentOutOfRangeException();
         }

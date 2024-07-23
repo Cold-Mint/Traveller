@@ -69,7 +69,7 @@ public static class ItemTypeRegister
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns></returns>
-    private static IList<ItemTypeInfo> ParseFile(string filePath)
+    private static IList<ItemTypeInfo>? ParseFile(string filePath)
     {
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
 
