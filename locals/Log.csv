@@ -105,3 +105,7 @@ log_load_pck_failed,加载PCK文件{0}失败。,Failed to load the PCK file {0}.
 log_projectile_container_is_null,抛射体容器为空。,Projectile container is null.,射出体コンテナが空です。
 log_marker2d_is_null,Marker2D为空。,Marker2D is null.,Marker2Dが空です。
 log_owner_is_null,所有者为空。,Owner is null.,所有者が空です。
+log_dll_name,已加载{0}。,Loaded {0}.,{0}をロードしました。
+log_dll_does_not_register_lifecycle_processor,位于{0}的dll文件，未注册生命周期处理器{1}。,"The DLL file located at {0} does not register the lifecycle processor {1}.",{0}にあるDLLファイルは、ライフサイクルプロセッサ{1}を登録していません。
+log_mod_lifecycle_handler_not_implement_interface,位于{0}的dll文件，生命周期处理器未实现IModLifecycleHandler接口。,"The DLL file located at {0}, the lifecycle processor does not implement the IModLifecycleHandler interface.",{0}にあるDLLファイル、ライフサイクルプロセッサはIModLifecycleHandlerインターフェースを実装していません。
+log_dll_no_parameterless_constructor,位于{0}的dll文件，没有无参构造函数。,"The DLL file located at {0} does not have a parameterless constructor.",{0}にあるDLLファイルにはパラメータのないコンストラクタがありません。

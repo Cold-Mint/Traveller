@@ -89,21 +89,14 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Register the corresponding encoding provider to solve the problem of garbled Chinese path of the compressed package
         //注册对应的编码提供程序，解决压缩包中文路径乱码问题
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        //Create a game data folder
         //创建游戏数据文件夹
         var dataPath = Config.GetGameDataDirectory();
         if (!Directory.Exists(dataPath))
         {
             Directory.CreateDirectory(dataPath);
         }
-
-        ModLoader.Init();
-        var modPath = Config.GetModDataDirectory();
-        if (!Directory.Exists(modPath))
-        {
-            Directory.CreateDirectory(modPath);
-        }
-
-        ModLoader.LoadAllMods(modPath);
+        
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)
@@ -123,6 +116,15 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         ItemTypeRegister.StaticRegister();
         //静态注册掉落表
         LootRegister.StaticRegister();
+        //Load mod
+        //加载模组
+        var modPath = Config.GetModDataDirectory();
+        if (!Directory.Exists(modPath))
+        {
+            Directory.CreateDirectory(modPath);
+        }
+        ModLoader.Init();
+        ModLoader.LoadAllMods(modPath);
         await Task.Delay(TimeSpan.FromMilliseconds(500));
     }
 }

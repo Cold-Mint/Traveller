@@ -95,12 +95,18 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
+    
+    /// <summary>
+    /// <para>Module life handler name</para>
+    /// <para>模组生命周期处理器名称</para>
+    /// </summary>
+    public const string ModLifecycleHandlerName = "ModLifecycleHandler";
 
     /// <summary>
     /// <para>Solution Name</para>
     /// <para>解决方案名称</para>
     /// </summary>
-    public static string SolutionName = "ColdMint.Traveler";
+    public const string SolutionName = "ColdMint.Traveler";
 
     /// <summary>
     /// <para>How many item slots are there on the shortcut bar</para>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Loader;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
@@ -90,7 +91,60 @@ public class ModLoader
         LogCat.LogWithFormat("load_dll", LogCat.LogLabel.ModLoader, true, dllPath);
         try
         {
-            _assemblyLoadContext.LoadFromAssemblyPath(dllPath);
+            var assembly = _assemblyLoadContext.LoadFromAssemblyPath(dllPath);
+            var assemblyName = assembly.GetName().Name;
+            if (assemblyName == null)
+            {
+                return;
+            }
+
+            LogCat.LogWithFormat("dll_name", LogCat.LogLabel.ModLoader, true, assemblyName);
+            // if (assemblyName != Config.SolutionName)
+            // {
+            //     //If the load is not its own Dll file.
+            //     //如果加载的不是自身的Dll文件.
+            // }
+
+            //Call the method of the entry class.
+            //调用入口类的方法
+            var modLifecycleHandlerFullName = assemblyName + "." + Config.ModLifecycleHandlerName;
+            var modLifecycleHandlerType = assembly.GetType(modLifecycleHandlerFullName);
+            if (modLifecycleHandlerType == null)
+            {
+                //The module does not register a lifecycle processor.
+                //模组没有注册生命周期处理器。
+                LogCat.LogWarningWithFormat("dll_does_not_register_lifecycle_processor", LogCat.LogLabel.ModLoader,
+                    LogCat.UploadFormat,
+                    dllPath, modLifecycleHandlerFullName);
+            }
+            else
+            {
+                var constructor = modLifecycleHandlerType.GetConstructor(Type.EmptyTypes);
+                if (constructor == null)
+                {
+                    //No parameterless constructor found.
+                    //未找到无参构造方法。
+                    LogCat.LogWarningWithFormat("dll_no_parameterless_constructor", LogCat.LogLabel.ModLoader,
+                        LogCat.UploadFormat,
+                        dllPath);
+                }
+                else
+                {
+                    var modLifecycleHandler = constructor.Invoke(null) as IModLifecycleHandler;
+                    if (modLifecycleHandler == null)
+                    {
+                        //The ModLifecycleHandler class in the dll does not yet implement the IModLifecycleHandler interface.
+                        //dll内的ModLifecycleHandler类尚未实现IModLifecycleHandler接口。
+                        LogCat.LogWarningWithFormat("mod_lifecycle_handler_not_implement_interface",
+                            LogCat.LogLabel.ModLoader,
+                            LogCat.UploadFormat, dllPath);
+                    }
+                    else
+                    {
+                        modLifecycleHandler.OnModLoaded();
+                    }
+                }
+            }
         }
         catch (ArgumentNullException argumentNullException)
         {
@@ -201,7 +255,8 @@ public class ModLoader
         {
             //The module does not contain a dll file.
             //模组不包含dll文件。
-            LogCat.LogWarningWithFormat("mod_not_contain_dll", true, LogCat.LogLabel.ModLoader, modFolderPath);
+            LogCat.LogWarningWithFormat("mod_not_contain_dll", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
+                modFolderPath);
         }
         else
         {
@@ -219,7 +274,8 @@ public class ModLoader
         {
             //The module does not contain a pck file.
             //模组不包含pck文件。
-            LogCat.LogWarningWithFormat("mod_not_contain_pck", true, LogCat.LogLabel.ModLoader, modFolderPath);
+            LogCat.LogWarningWithFormat("mod_not_contain_pck", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
+                modFolderPath);
         }
         else
         {

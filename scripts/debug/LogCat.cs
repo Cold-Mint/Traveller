@@ -249,11 +249,14 @@ public static class LogCat
 
         switch (level)
         {
+            case WarningLogLevel:
+                GD.PrintRich("[color=#FFDE66]"+concreteLog+"[/color]");
+                break;
             case ErrorLogLevel:
-                GD.PrintErr(concreteLog);
+                GD.PrintRich("[color=#FF4E39]"+concreteLog+"[/color]");
                 break;
             default:
-                GD.Print(concreteLog);
+                GD.PrintRich("[color=#CCCED1]"+concreteLog+"[/color]");
                 break;
         }
     }
@@ -293,7 +296,7 @@ public static class LogCat
             upload);
     }
 
-    public static void LogWarningWithFormat(string message, bool upload, string label, params object?[] args)
+    public static void LogWarningWithFormat(string message, string label, bool upload, params object?[] args)
     {
         PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args), label,
             upload);

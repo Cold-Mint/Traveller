@@ -284,7 +284,7 @@ public static class NodeUtils
         if (node is T result) return result;
         // If the transformation fails, release the created node
         //如果转型失败，释放所创建的节点
-        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", LogCat.UploadFormat, LogCat.LogLabel.Default, node,
+        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", LogCat.LogLabel.Default,LogCat.UploadFormat, node,
             nameof(T));
         node.QueueFree();
         return null;

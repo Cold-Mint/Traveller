@@ -330,7 +330,7 @@ public static class MapGenerator
 
         if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
         {
-            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.UploadFormat, LogCat.LogLabel.Default,
+            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.LogLabel.Default, LogCat.UploadFormat,
                 roomNodeDataId);
             return false;
         }
