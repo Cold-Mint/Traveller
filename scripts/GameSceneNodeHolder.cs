@@ -36,6 +36,12 @@ public static class GameSceneNodeHolder
     }
 
     /// <summary>
+    /// <para>ProjectileContainer</para>
+    /// <para>抛射体容器</para>
+    /// </summary>
+    public static Node2D? ProjectileContainer { get; set; }
+    
+    /// <summary>
     /// <para>WeaponContainer</para>
     /// <para>武器容器</para>
     /// </summary>

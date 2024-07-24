@@ -23,21 +23,33 @@ public partial class ProjectileWeapon : WeaponTemplate
 
     [Export] protected PackedScene[] ProjectileScenes { get; set; } = [];
 
-    private Node2D? _projectileContainer;
-
     public override void _Ready()
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
-
-        _projectileContainer = GetNode("/root/Game/ProjectileContainer") as Node2D;
     }
 
 
     protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
-        if (owner == null || _projectileContainer == null || _marker2D == null) return;
+        if (owner == null)
+        {
+            LogCat.LogError("owner_is_null");
+            return;
+        }
 
+        if (_marker2D == null)
+        {
+            LogCat.LogError("marker2d_is_null");
+            return;
+        }
+
+        if (GameSceneNodeHolder.ProjectileContainer == null)
+        {
+            LogCat.LogError("projectile_container_is_null");
+            return;
+        }
+        //Empty list check
         //空列表检查
         if (ProjectileScenes is [])
         {
@@ -51,7 +63,7 @@ public partial class ProjectileWeapon : WeaponTemplate
         // var projectileScene = _projectileCache[_projectiles[0]];
         var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene);
         if (projectile == null) return;
-        NodeUtils.CallDeferredAddChild(_projectileContainer, projectile);
+        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
         projectile.Owner = owner;
         projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
         projectile.Position = _marker2D.GlobalPosition;

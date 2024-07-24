@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.projectile;
 using Godot;
 using Packsack = ColdMint.scripts.inventory.Packsack;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
@@ -235,6 +236,11 @@ public static class NodeUtils
     /// <returns></returns>
     public static Node FindContainerNode(Node childNode, Node defaultParentNode)
     {
+        if (GameSceneNodeHolder.ProjectileContainer != null && childNode is Projectile)
+        {
+            return GameSceneNodeHolder.ProjectileContainer;
+        }
+
         if (GameSceneNodeHolder.WeaponContainer != null && childNode is WeaponTemplate)
         {
             return GameSceneNodeHolder.WeaponContainer;

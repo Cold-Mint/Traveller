@@ -31,12 +31,14 @@ public static class ItemTypeRegister
         LogCat.Log("start_item_register_from_file");
         //初始化文件目录
         //initialize file dir
-        var itemRegsDirPath = "res://data/itemRegs/";
+        var itemRegsDirPath = "res://data/itemRegs";
         var itemRegsDir = DirAccess.Open(itemRegsDirPath);
         var error = DirAccess.GetOpenError();
         if (error is not Error.Ok)
         {
-            LogCat.LogError("error_when_open_item_regs_dir", error.ToString());
+            LogCat.LogErrorWithFormat("error_when_open_item_regs_dir", LogCat.LogLabel.Default, true, itemRegsDirPath,
+                error.ToString());
+            return;
         }
 
         //找到文件
