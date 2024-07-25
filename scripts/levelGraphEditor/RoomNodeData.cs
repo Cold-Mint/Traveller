@@ -18,9 +18,13 @@ public class RoomNodeData
     /// </summary>
     public string? RoomInjectionProcessorData { get; set; }
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? EnterRoomEventHandlerId { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? ExitRoomEventHandlerId { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Whether a tag is held</para>

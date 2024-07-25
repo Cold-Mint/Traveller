@@ -11,7 +11,7 @@ namespace ColdMint.scripts.stateMachine.StateProcessor;
 /// </summary>
 public class PatrolStateProcessor : StateProcessorTemplate
 {
-    public Vector2[]? Points { get; set; }
+    public Vector2[]? Points { get; init; }
 
     /// <summary>
     /// <para>Whether to guard the origin</para>
@@ -21,7 +21,9 @@ public class PatrolStateProcessor : StateProcessorTemplate
     ///<para>When empty by default, PatrolStateProcessor will take the first point where the character touches the ground as the origin. This property handles whether or not the origin is "guarded" when the character is attracted to another character, such as chasing an enemy, and switches back to patrol mode. If set to true, the role tries to return to the origin, otherwise, a new origin is assigned.</para>
     ///<para>默认清空下，PatrolStateProcessor会将角色与地面接触的第一个位置当作原点。这个属性用来处理当角色被其他角色所吸引，（例如追击敌人）转换回巡逻模式，是否“守护”原点。如果设置为true，则角色会尝试返回原点，否则，将分配新的原点。</para>
     /// </remarks>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public bool Guard { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     private int _index;
     private Vector2? _originPosition;
@@ -47,15 +49,7 @@ public class PatrolStateProcessor : StateProcessorTemplate
         {
             //Once the enemy enters the reconnaissance range, we first see if the character has a weapon, if so, then pursue the enemy, otherwise, the patrol state changes to looking for weapons.
             //发现敌人进入侦察范围后，我们先看角色是否持有武器，如果有，那么追击敌人，否则，巡逻状态转换为寻找武器。
-            if (aiCharacter.CurrentItem is WeaponTemplate)
-            {
-                context.CurrentState = State.Chase;
-            }
-            else
-            {
-                context.CurrentState = State.LookForWeapon;
-            }
-
+            context.CurrentState = aiCharacter.CurrentItem is WeaponTemplate ? State.Chase : State.LookForWeapon;
             LogCat.Log("patrol_enemy_detected", label: LogCat.LogLabel.PatrolStateProcessor);
             return;
         }

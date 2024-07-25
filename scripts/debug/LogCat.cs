@@ -244,7 +244,9 @@ public static class LogCat
                 Level = level,
                 Message = concreteLog
             };
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             LogCollector.Push(logData);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         switch (level)

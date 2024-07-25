@@ -20,7 +20,6 @@ public sealed partial class AiCharacter : CharacterTemplate
     //用于检测墙壁的射线
     private RayCast2D? _wallDetection;
 
-    public RayCast2D? WallDetection => _wallDetection;
     private Vector2 _wallDetectionOrigin;
     private Area2D? _attackArea;
 
@@ -70,13 +69,21 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// <para>Navigation agent</para>
     /// <para>导航代理</para>
     /// </summary>
-    public NavigationAgent2D? NavigationAgent2D { get; set; }
+    private NavigationAgent2D? NavigationAgent2D { get; set; }
 
 
-    public IStateMachine? StateMachine { get; set; }
+    /// <summary>
+    /// <para>State machine</para>
+    /// <para>状态机</para>
+    /// </summary>
+    private IStateMachine? StateMachine { get; set; }
 
 
-    public RayCast2D? AttackObstacleDetection => _attackObstacleDetection;
+    /// <summary>
+    /// <para>Attack obstacle detection</para>
+    /// <para>攻击障碍物检测</para>
+    /// </summary>
+    private RayCast2D? AttackObstacleDetection => _attackObstacleDetection;
 
 
     /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
 using Godot;
@@ -46,7 +45,7 @@ public static class NodeUtils
     /// <param name="childNode"></param>
     public static void CallDeferredReparent(Node parentNode, Node childNode)
     {
-        childNode.CallDeferred("reparent", parentNode);
+        childNode.CallDeferred(Node.MethodName.Reparent, parentNode);
     }
 
 
@@ -150,17 +149,6 @@ public static class NodeUtils
                 break;
             }
         }
-    }
-
-    /// <summary>
-    /// <para>All child nodes are removed asynchronously</para>
-    /// <para>异步删除所有子节点</para>
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static async Task<int> DeleteAllChildAsync(Node parent)
-    {
-        return await Task.Run(() => DeleteAllChild(parent));
     }
 
     /// <summary>
@@ -284,7 +272,7 @@ public static class NodeUtils
         if (node is T result) return result;
         // If the transformation fails, release the created node
         //如果转型失败，释放所创建的节点
-        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", LogCat.LogLabel.Default,LogCat.UploadFormat, node,
+        LogCat.LogWarningWithFormat("warning_node_cannot_cast_to", LogCat.LogLabel.Default, LogCat.UploadFormat, node,
             nameof(T));
         node.QueueFree();
         return null;

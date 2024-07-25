@@ -18,5 +18,7 @@ public class SelectedItemSlotChangeEvent
     /// <para>Lost the selected item slot</para>
     /// <para>失去选中的物品槽</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public ItemSlotNode? OldItemSlotNode { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

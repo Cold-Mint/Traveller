@@ -47,7 +47,9 @@ public class AppConfigData
     /// <para>OpenObserve configuration information</para>
     /// <para>OpenObserve的配置信息</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public OpenObserve? OpenObserve { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }
 
 /// <summary>
@@ -60,23 +62,31 @@ public class OpenObserve
     /// <para>server address</para>
     /// <para>服务器地址</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Address { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Access Token</para>
     /// <para>访问密匙</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? AccessToken { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Organization ID</para>
     /// <para>组织ID</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? OrgId { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
     
     /// <summary>
     /// <para>Stream Name</para>
     /// <para>流名称</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? StreamName { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

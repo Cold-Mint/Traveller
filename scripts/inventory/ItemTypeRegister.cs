@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
@@ -53,16 +52,24 @@ public static class ItemTypeRegister
         LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, LogCat.UploadFormat, files.Length);
         //将文件解析为项目类型信息
         //parse files to item type infos
-        IEnumerable<ItemTypeInfo> typeInfos =
-            files.SelectMany(file => ParseFile($"{itemRegsDirPath}/{file}")).ToList();
-        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, LogCat.UploadFormat, typeInfos.Count());
-
-        //遍历类型信息并注册它们。
-        //traverse type infos and register them.
-        foreach (var typeInfo in typeInfos)
+        var count = 0;
+        foreach (var file in files)
         {
-            RegisterTypeInfo(typeInfo);
+            var list = ParseFile($"{itemRegsDirPath}/{file}");
+            if (list == null)
+            {
+                continue;
+            }
+
+            foreach (var itemTypeInfo in list)
+            {
+                RegisterTypeInfo(itemTypeInfo);
+            }
+
+            count++;
         }
+
+        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, LogCat.UploadFormat, count);
     }
 
     /// <summary>
@@ -74,7 +81,6 @@ public static class ItemTypeRegister
     private static IList<ItemTypeInfo>? ParseFile(string filePath)
     {
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-
         //Read & deserialize
         //阅读和反序列化
         var yamlString = yamlFile.GetAsText();
@@ -83,6 +89,14 @@ public static class ItemTypeRegister
         return typeInfos;
     }
 
+    /// <summary>
+    /// <para>Registration type info</para>
+    /// <para>注册类型信息</para>
+    /// </summary>
+    /// <param name="typeInfo">
+    ///<para>typeInfo</para>
+    ///<para>类型信息</para>
+    /// </param>
     private static void RegisterTypeInfo(ItemTypeInfo typeInfo)
     {
         //Load scene and icon

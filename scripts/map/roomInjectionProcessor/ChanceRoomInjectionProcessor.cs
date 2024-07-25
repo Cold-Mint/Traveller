@@ -48,6 +48,8 @@ public class ChanceRoomInjectionProcessor : RoomInjectionProcessorTemplate<Chanc
         ///<para>The value ranges from 1 to 100. For example, if it is set to 1.5, it means that there is a 1.5% probability of generating this room.</para>
         ///<para>支持小数，范围为1-100。例如，如果设置为1.5，则表示1.5%的概率生成此房间。</para>
         /// </para>
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         public float? Chance { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
     }
 }

@@ -8,5 +8,11 @@ namespace ColdMint.scripts.map.events;
 /// </summary>
 public class PlayerInstanceChangeEvent
 {
+    /// <summary>
+    /// <para>New player instance</para>
+    /// <para>新的玩家实例</para>
+    /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public Player? PlayerInstance { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

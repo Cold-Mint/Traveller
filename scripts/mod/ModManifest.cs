@@ -29,7 +29,9 @@ public class ModManifest
     ///<para>Allow relative paths, such as:... / Points to the parent directory.</para>
     ///<para>允许使用相对路径，例如: ../指向上级目录。</para>
     /// </remarks>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string[]? DllList { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Pck path list of mod</para>
@@ -39,7 +41,9 @@ public class ModManifest
     ///<para>Allow relative paths, such as:... / Points to the parent directory.</para>
     ///<para>允许使用相对路径，例如: ../指向上级目录。</para>
     /// </remarks>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string[]? PckList { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Creates module list information from a path</para>

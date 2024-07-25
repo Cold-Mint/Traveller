@@ -141,11 +141,15 @@ public class LogData
     /// <para>message</para>
     /// <para>消息</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Message { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>level</para>
     /// <para>错误等级</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public int Level { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

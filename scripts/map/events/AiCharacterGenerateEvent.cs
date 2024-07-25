@@ -17,5 +17,7 @@ public class AiCharacterGenerateEvent
     /// <para>The Tag used to generate the role</para>
     /// <para>生成角色时使用的Tag</para>
     /// </summary>
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Tag { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

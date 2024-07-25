@@ -223,7 +223,7 @@ public static class MapGenerator
             {
                 var roomInjectionProcessorDataArray =
                     YamlSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
-                if (roomInjectionProcessorDataArray.Length > 0)
+                if (roomInjectionProcessorDataArray is { Length: > 0 })
                 {
                     foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
                     {
