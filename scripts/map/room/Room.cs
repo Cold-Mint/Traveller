@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.utils;
@@ -19,13 +20,31 @@ public class Room
 {
     private Node2D? _rootNode;
     private RoomSlot?[]? _roomSlots;
-    private TileMap? _tileMap;
+    private List<TileMapLayer>? _tileMapLayers;
+
     private Area2D? _area2D;
     private CollisionShape2D? _collisionShape2D;
 
     public string? EnterRoomEventHandlerId { get; set; }
 
     public string? ExitRoomEventHandlerId { get; set; }
+
+    /// <summary>
+    /// <para>Get the corresponding tile layer node based on the tile name</para>
+    /// <para>根据瓦片名称获取对应的瓦片图层节点</para>
+    /// </summary>
+    /// <param name="layerName">
+    ///<para>We recommend using the constants defined in <see cref="Config.TileMapLayerName"/>.</para>
+    ///<para>建议使用<see cref="Config.TileMapLayerName"/>内定义的常量。</para>
+    /// </param>
+    /// <returns>
+    /// <para>Return a Layer node with the same name if it is found, otherwise null.</para>
+    ///<para>如果找到了与其名称相同的Layer节点则返回它，否则返回null。</para>
+    /// </returns>
+    public TileMapLayer? GetTileMapLayer(string layerName)
+    {
+        return _tileMapLayers?.FirstOrDefault(tileMapLayer => tileMapLayer.Name == layerName);
+    }
 
     /// <summary>
     /// <para>When a node enters the room</para>
@@ -36,7 +55,8 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("enter_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat,node.Name, _rootNode.Name);
+            LogCat.LogWithFormat("enter_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, node.Name,
+                _rootNode.Name);
         }
 
         if (string.IsNullOrEmpty(EnterRoomEventHandlerId))
@@ -57,7 +77,8 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("exit_the_room_debug",  LogCat.LogLabel.Default, LogCat.UploadFormat,node.Name, _rootNode.Name);
+            LogCat.LogWithFormat("exit_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, node.Name,
+                _rootNode.Name);
         }
 
         if (string.IsNullOrEmpty(ExitRoomEventHandlerId))
@@ -91,11 +112,6 @@ public class Room
         set => AnalyzeRoomData(value);
     }
 
-    public TileMap? TileMap
-    {
-        get => _tileMap;
-        set => _tileMap = value;
-    }
 
     /// <summary>
     /// <para>Analyze the data of the room</para>
@@ -119,7 +135,13 @@ public class Room
         }
 
         _rootNode = node2D;
-        _tileMap = node2D.GetNode<TileMap>("TileMap");
+        var tileMapNode = node2D.GetNode<Node2D>("TileMap");
+        NodeUtils.ForEachNode<TileMapLayer>(tileMapNode, node =>
+        {
+            _tileMapLayers ??= [];
+            _tileMapLayers.Add(node);
+            return false;
+        });
         _area2D = node2D.GetNode<Area2D>("RoomArea");
         _area2D.Monitoring = true;
         _area2D.SetCollisionLayerValue(Config.LayerNumber.RoomArea, true);
@@ -129,7 +151,7 @@ public class Room
         _area2D.BodyExited += OnExitRoom;
         _area2D.BodyEntered += OnEnterRoom;
         _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
-        _roomSlots = GetRoomSlots(_tileMap, _area2D,
+        _roomSlots = GetRoomSlots(GetTileMapLayer(Config.TileMapLayerName.Ground), _area2D,
             node2D.GetNode<Node2D>("RoomSlotList"));
     }
 
@@ -141,13 +163,13 @@ public class Room
     /// <para>GetRoomSlots</para>
     /// <para>在房间内获取所有插槽</para>
     /// </summary>
-    /// <param name="tileMap"></param>
+    /// <param name="tileMapLayer"></param>
     /// <param name="roomArea2D"></param>
     /// <param name="slotList"></param>
     /// <returns></returns>
-    private RoomSlot?[]? GetRoomSlots(TileMap? tileMap, Area2D roomArea2D, Node2D slotList)
+    private RoomSlot?[]? GetRoomSlots(TileMapLayer? tileMapLayer, Area2D roomArea2D, Node2D slotList)
     {
-        if (tileMap == null)
+        if (tileMapLayer == null)
         {
             return null;
         }
@@ -192,8 +214,8 @@ public class Room
             var midpointOfRoomSlots = area2D.Position + collisionShape2D.Position + rect2.Position + rect2.Size / 2;
             //Convert to tile map coordinates (midpoint)
             //转为瓦片地图的坐标(中点)
-            var tileMapStartPosition = tileMap.LocalToMap(startPosition);
-            var tileMapEndPosition = tileMap.LocalToMap(endPosition);
+            var tileMapStartPosition = tileMapLayer.LocalToMap(startPosition);
+            var tileMapEndPosition = tileMapLayer.LocalToMap(endPosition);
             var roomSlot = new RoomSlot
             {
                 EndPosition = tileMapEndPosition,

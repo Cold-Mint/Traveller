@@ -252,13 +252,13 @@ public static class LogCat
         switch (level)
         {
             case WarningLogLevel:
-                GD.PrintRich("[color=#FFDE66]"+concreteLog+"[/color]");
+                GD.Print(concreteLog);
                 break;
             case ErrorLogLevel:
-                GD.PrintRich("[color=#FF4E39]"+concreteLog+"[/color]");
+                GD.PrintErr(concreteLog);
                 break;
             default:
-                GD.PrintRich("[color=#CCCED1]"+concreteLog+"[/color]");
+                GD.Print(concreteLog);
                 break;
         }
     }

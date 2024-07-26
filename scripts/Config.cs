@@ -95,7 +95,7 @@ public static class Config
     /// <para>公司/创作者名字</para>
     /// </summary>
     public const string CompanyName = "ColdMint";
-    
+
     /// <summary>
     /// <para>Module life handler name</para>
     /// <para>模组生命周期处理器名称</para>
@@ -394,6 +394,35 @@ public static class Config
         public const int Projectile = 5;
         public const int Platform = 6;
         public const int Mob = 7;
+    }
+
+    /// <summary>
+    /// <para>TileMapLayerName</para>
+    /// <para>瓦片节点名称</para>
+    /// </summary>
+    public static class TileMapLayerName
+    {
+        /// <summary>
+        /// <para>Ground Layer</para>
+        /// <para>地面层</para>
+        /// </summary>
+        /// <remarks>
+        ///<para>There are collision nodes on which players and creatures can stand.</para>
+        ///<para>拥有碰撞节点，玩家和生物可以站在上面。</para>
+        /// </remarks>
+        public const string Ground = "Ground";
+
+        /// <summary>
+        /// <para>Background decorative layer</para>
+        /// <para>背景装饰层</para>
+        /// </summary>
+        public const string BackgroundDecoration = "BackgroundDecoration";
+
+        /// <summary>
+        /// <para>Background wall layer</para>
+        /// <para>背景墙</para>
+        /// </summary>
+        public const string BackgroundWall = "BackgroundWall";
     }
 
     public static class RoomDataTag

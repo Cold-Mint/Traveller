@@ -1,4 +1,4 @@
-﻿using ColdMint.scripts.map.events;
+using ColdMint.scripts.map.events;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;

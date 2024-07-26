@@ -116,7 +116,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         Vector2? navigationLink2DStartPosition = null;
         if (roomPlacementData is { ParentRoom: not null, ParentRoomSlot: not null })
         {
-            var parentRoomTileMap = roomPlacementData.ParentRoom.TileMap;
+            var parentRoomTileMap = roomPlacementData.ParentRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
             var parentRoomRootNode = roomPlacementData.ParentRoom.RootNode;
             if (parentRoomTileMap != null && parentRoomRootNode != null)
             {
@@ -129,7 +129,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         Vector2? navigationLink2DEndPosition = null;
         if (roomPlacementData.NewRoomSlot != null)
         {
-            var newRoomTileMap = roomPlacementData.NewRoom.TileMap;
+            var newRoomTileMap = roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
             if (newRoomTileMap != null)
             {
                 navigationLink2DEndPosition = newRootRootNode.Position +
@@ -379,9 +379,11 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
     private async Task<Vector2?> CalculatedPosition(Room mainRoom, Room newRoom, RoomSlot? mainRoomSlot,
         RoomSlot? newRoomSlot, bool roomSlotOverlap)
     {
-        if (mainRoom.RootNode == null || newRoom.RootNode == null || newRoom.TileMap == null ||
-            mainRoom.TileMap == null ||
-            newRoom.TileMap == null || mainRoomSlot == null ||
+        var mainRoomTileMapLayer = mainRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
+        var newRoomTileMapLayer = newRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
+        if (mainRoom.RootNode == null || newRoom.RootNode == null ||
+            mainRoomTileMapLayer == null ||
+            newRoomTileMapLayer == null || mainRoomSlot == null ||
             newRoomSlot == null)
         {
             return null;
@@ -400,8 +402,10 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             return null;
         }
 
-        var mainRoomSlotPosition = mainRoom.TileMap.MapToLocal(mainRoomSlot.StartPosition);
-        var newRoomSlotPosition = newRoom.TileMap.MapToLocal(newRoomSlot.StartPosition);
+        var mainRoomSlotPosition = mainRoomTileMapLayer
+            .MapToLocal(mainRoomSlot.StartPosition);
+        var newRoomSlotPosition = newRoomTileMapLayer
+            .MapToLocal(newRoomSlot.StartPosition);
         //Get the vector from the new room slot to the main room slot
         //得到从新房间槽位到主房间槽位的向量
         var newToMain = mainRoomSlotPosition - newRoomSlotPosition;

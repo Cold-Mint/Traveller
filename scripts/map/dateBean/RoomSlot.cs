@@ -25,7 +25,7 @@ public class RoomSlot
     ///<para>相对于瓦片地图而言的。转换为本地位置请调用<see cref="TileMap.MapToLocal"/></para>
     /// </remarks>
     public Vector2I StartPosition { get; set; }
-    
+
 
     /// <summary>
     /// <para>The end position of the room slot</para>
@@ -54,5 +54,6 @@ public class RoomSlot
     /// </remarks>
     public CoordinateUtils.OrientationDescribe[]? DistanceToMidpointOfRoom { get; set; }
 
-    public int Length => Math.Max(Math.Abs(EndPosition.X - StartPosition.X), Math.Abs(EndPosition.Y - StartPosition.Y)) + 1;
+    public int Length =>
+        Math.Max(Math.Abs(EndPosition.X - StartPosition.X), Math.Abs(EndPosition.Y - StartPosition.Y)) + 1;
 }
