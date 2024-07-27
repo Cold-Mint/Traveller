@@ -34,6 +34,7 @@ radius = 172.29
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
+InitWeaponRes = null
 LootListId = "test"
 metadata/CampId = "Mazoku"
 metadata/MaxHp = 50
