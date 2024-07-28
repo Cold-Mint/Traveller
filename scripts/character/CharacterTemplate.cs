@@ -403,7 +403,6 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         NodeUtils.CallDeferredReparent(ItemMarker2D, pickAbleItemNode2D);
-        pickAbleItemNode2D.Position = Vector2.Zero;
         return true;
     }
 

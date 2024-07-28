@@ -130,6 +130,6 @@ public partial class SplashScreenLoader : UiLoaderTemplate
             ModLoader.LoadAllMods(modPath);
         }
 
-        await Task.CompletedTask;
+        await Task.Yield();
     }
 }

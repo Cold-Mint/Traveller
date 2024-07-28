@@ -105,7 +105,7 @@ public partial class ProjectileTemplate : CharacterBody2D
             return false;
         }
 
-        if (target is TileMap)
+        if (target is TileMapLayer)
         {
             //When we hit the tile, we return true to prevent the bullet from penetrating the tile.
             //撞击到瓦片时，我们返回true，是为了防止子弹穿透瓦片。

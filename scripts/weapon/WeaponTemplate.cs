@@ -82,7 +82,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
                 var forceX = Math.Abs(_recoil.X);
                 if (Math.Abs(RotationDegrees) < 90)
                 {
-                    //The weapon goes to the right and we apply a recoil to the left
+                    //The weapon goes to the right, and we apply a recoil to the left
                     //武器朝向右边我们向左施加后坐力
                     forceX = -forceX;
                 }
