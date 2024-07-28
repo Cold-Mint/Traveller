@@ -53,6 +53,7 @@ data/*
 #### 風習特徴
 
 - **disableVersionIsolation** 版孤立を無効化する。
+- **enableMod**実験的な機能、modが有効になっている場合、ゲームはmodディレクトリにdllファイルとpckファイルをロードします。assemblyloadcontextが分離されているため、当面の間、mod内からメインゲームのコンテンツにアクセスすることはできません。
 
 ## はいちOpenobserve
 

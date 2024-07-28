@@ -133,6 +133,16 @@ public static class Config
     }
 
     /// <summary>
+    /// <para>Whether to enable Mod</para>
+    /// <para>是否启用Mod</para>
+    /// </summary>
+    /// <returns></returns>
+    public static bool EnableMod()
+    {
+        return OS.HasFeature("enableMod");
+    }
+
+    /// <summary>
     /// <para>Default version name</para>
     /// <para>默认的版本名称</para>
     /// </summary>

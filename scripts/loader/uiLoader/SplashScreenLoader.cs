@@ -96,7 +96,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         {
             Directory.CreateDirectory(dataPath);
         }
-        
+
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)
@@ -118,13 +118,18 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         LootRegister.StaticRegister();
         //Load mod
         //加载模组
-        var modPath = Config.GetModDataDirectory();
-        if (!Directory.Exists(modPath))
+        if (Config.EnableMod())
         {
-            Directory.CreateDirectory(modPath);
+            var modPath = Config.GetModDataDirectory();
+            if (!Directory.Exists(modPath))
+            {
+                Directory.CreateDirectory(modPath);
+            }
+
+            ModLoader.Init();
+            ModLoader.LoadAllMods(modPath);
         }
-        ModLoader.Init();
-        ModLoader.LoadAllMods(modPath);
-        await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+        await Task.CompletedTask;
     }
 }

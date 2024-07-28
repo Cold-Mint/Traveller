@@ -7,8 +7,8 @@
 public interface IModLifecycleHandler
 {
     /// <summary>
-    /// <para>When loading the Mod</para>
-    /// <para>当加载Mod时</para>
+    /// <para>When the game loads the Mod</para>
+    /// <para>当游戏加载Mod时</para>
     /// </summary>
     void OnModLoaded();
 }

@@ -55,6 +55,7 @@ data/*
 #### Custom feature
 
 - **disableVersionIsolation** Disable version isolation.
+- **enableMod** Experimental feature, the game loads dll files and pck files in the mod directory when the mod is enabled. Due to the isolation of AssemblyLoadContext, the main game content cannot be accessed from within the Mod for the time being.
 
 ## Configuring Openobserve
 

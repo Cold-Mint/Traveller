@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Text;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
@@ -124,6 +123,7 @@ public class ModLoader
                     dllPath, Config.ModLifecycleHandlerName);
                 return;
             }
+
             var constructor = modLifecycleHandlerType.GetConstructor(Type.EmptyTypes);
             if (constructor == null)
             {
@@ -134,6 +134,7 @@ public class ModLoader
                     dllPath);
                 return;
             }
+
             var modLifecycleHandler = constructor.Invoke(null);
             var methodInfo =
                 modLifecycleHandlerType.GetMethod(nameof(IModLifecycleHandler.OnModLoaded));
@@ -144,6 +145,7 @@ public class ModLoader
                     LogCat.UploadFormat, dllPath);
                 return;
             }
+
             methodInfo.Invoke(modLifecycleHandler, null);
         }
         catch (ArgumentNullException argumentNullException)
@@ -269,6 +271,25 @@ public class ModLoader
             throw new NullReferenceException("mod manifest is null:" + modManifestPath);
         }
 
+        var pckList = modManifest.PckList;
+        if (pckList == null || pckList.Length == 0)
+        {
+            //The module does not contain a pck file.
+            //模组不包含pck文件。
+            LogCat.LogWarningWithFormat("mod_not_contain_pck", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
+                modFolderPath);
+        }
+        else
+        {
+            //The module contains pck files, load the pck files.
+            //包含pck文件，加载pck文件。
+            foreach (var pck in pckList)
+            {
+                var pckPath = Path.GetFullPath(pck, modFolderPath);
+                LoadPckFile(pckPath);
+            }
+        }
+
         var dllList = modManifest.DllList;
         if (dllList == null || dllList.Length == 0)
         {
@@ -285,25 +306,6 @@ public class ModLoader
             {
                 var dllPath = Path.GetFullPath(dll, modFolderPath);
                 LoadDllFile(dllPath);
-            }
-        }
-
-        var pakList = modManifest.PckList;
-        if (pakList == null || pakList.Length == 0)
-        {
-            //The module does not contain a pck file.
-            //模组不包含pck文件。
-            LogCat.LogWarningWithFormat("mod_not_contain_pck", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
-                modFolderPath);
-        }
-        else
-        {
-            //The module contains pck files, load the pck files.
-            //包含pck文件，加载pck文件。
-            foreach (var pak in pakList)
-            {
-                var pakPath = Path.GetFullPath(pak, modFolderPath);
-                LoadPckFile(pakPath);
             }
         }
     }

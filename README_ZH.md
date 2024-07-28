@@ -55,6 +55,7 @@ data/*
 #### 自定义特性
 
 - **disableVersionIsolation** 禁用版本隔离。
+- **enableMod** 实验性功能，当启用模组时游戏会在mod目录加载dll文件和pck文件。由于AssemblyLoadContext的隔离性，暂时不能从Mod内访问主游戏内容。
 
 ## 配置Openobserve
 
