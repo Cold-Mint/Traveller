@@ -80,7 +80,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
         //If it leaves the ground or walls.
         //如果离开了地面或墙壁。
-        if (node is TileMap)
+        if (node is TileMapLayer)
         {
             _tileMapNumber--;
             if (_tileMapNumber == 0)
@@ -105,7 +105,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return;
         }
 
-        if (node is TileMap)
+        if (node is TileMapLayer)
         {
             _tileMapNumber++;
             EnableContactInjury = false;

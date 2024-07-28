@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnnn2xyayiehk"]
+[gd_scene load_steps=7 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://e6670ykyq145" path="res://sprites/weapon/staffOfTheUndead.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="PackedScene" uid="uid://c01av43yk1q71" path="res://prefab/projectile/curseOfTheUndead.tscn" id="2_34250"]
+[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
 size = Vector2(49, 5)
@@ -36,3 +37,7 @@ shape = SubResource("RectangleShape2D_14m1g")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(65, 0)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Marker2D"]
+stream = ExtResource("4_ffr2k")
+bus = &"SoundEffect"

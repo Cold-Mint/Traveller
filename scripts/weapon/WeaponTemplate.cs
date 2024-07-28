@@ -13,6 +13,18 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
 {
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
+    /// <summary>
+    /// <para>Fire audio playback component</para>
+    /// <para>开火音效播放组件</para>
+    /// </summary>
+    private AudioStreamPlayer2D? _audioStreamPlayer2D;
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
+    }
+
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
         Fire(owner, targetGlobalPosition);
@@ -93,6 +105,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
             }
         }
 
+        _audioStreamPlayer2D?.Play();
         DoFire(owner, enemyGlobalPosition);
         _lastFiringTime = nowTime;
     }
