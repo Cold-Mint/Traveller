@@ -1,8 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
-export_presets.cfg
 .idea/
 .vs/
+.vscode/
+export_presets.cfg
 *.translation
 *.user
 AppConfig.yaml
