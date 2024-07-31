@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://e6670ykyq145"
-path="res://.godot/imported/staffOfTheUndead.png-9bf2297abccc48c9610807d69d632153.ctex"
+uid="uid://di0sw4rgd26y0"
+path="res://.godot/imported/PortableBackpacks.png-a6ce21006145ee0b58e687b1801240a6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/weapon/staffOfTheUndead.png"
-dest_files=["res://.godot/imported/staffOfTheUndead.png-9bf2297abccc48c9610807d69d632153.ctex"]
+source_file="res://sprites/PortableBackpacks.png"
+dest_files=["res://.godot/imported/PortableBackpacks.png-a6ce21006145ee0b58e687b1801240a6.ctex"]
 
 [params]
 

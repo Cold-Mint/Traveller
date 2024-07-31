@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvx10dfjctn7t"
-path="res://.godot/imported/packsack.png-ba078a68a3754f332c41ffcad073a395.ctex"
+uid="uid://wt50kx6bup51"
+path="res://.godot/imported/StaffNecromancy.png-82a6bb745d120d5cf5445c4e669e3c6d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/packsack.png"
-dest_files=["res://.godot/imported/packsack.png-ba078a68a3754f332c41ffcad073a395.ctex"]
+source_file="res://sprites/weapon/StaffNecromancy.png"
+dest_files=["res://.godot/imported/StaffNecromancy.png-82a6bb745d120d5cf5445c4e669e3c6d.ctex"]
 
 [params]
 

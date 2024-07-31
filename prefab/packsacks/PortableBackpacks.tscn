@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn10fimoem04m"]
+[gd_scene load_steps=5 format=3 uid="uid://bq5d2w22wnxrf"]
 
 [ext_resource type="Script" path="res://scripts/inventory/Packsack.cs" id="1_slakl"]
-[ext_resource type="Texture2D" uid="uid://dvx10dfjctn7t" path="res://sprites/packsack.png" id="2_40jca"]
+[ext_resource type="Texture2D" uid="uid://di0sw4rgd26y0" path="res://sprites/PortableBackpacks.png" id="2_l0fbh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_brthl"]
 size = Vector2(21, 29)
@@ -30,4 +30,4 @@ shape = SubResource("RectangleShape2D_xqyue")
 
 [node name="Packsack" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_40jca")
+texture = ExtResource("2_l0fbh")

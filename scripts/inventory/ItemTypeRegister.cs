@@ -108,15 +108,6 @@ public static class ItemTypeRegister
         //Create init delegate
         //创建初始化委托
         Action<Node?>? setArgs = null;
-        if (typeInfo.CustomArgs != null && typeInfo.CustomArgs.Count > 0)
-        {
-            foreach (var arg in typeInfo.CustomArgs)
-            {
-                setArgs +=
-                    node => node?.SetDeferred(arg.Name, arg.ParseValue());
-            }
-        }
-
         //构造项目类型，寄存器
         //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
@@ -146,44 +137,6 @@ public static class ItemTypeRegister
         string Id,
         string ScenePath,
         string IconPath,
-        int MaxStackValue,
-        IList<CustomArg>? CustomArgs);
-
-    private readonly record struct CustomArg(string Name, CustomArgType Type, string Value)
-    {
-        public Variant ParseValue() =>
-            Type switch
-            {
-                CustomArgType.String => Value,
-                CustomArgType.Int => int.Parse(Value),
-                CustomArgType.Float => double.Parse(Value),
-                CustomArgType.Vector2 => ParseVector2FromString(Value),
-                CustomArgType.Bool => bool.Parse(Value),
-                CustomArgType.Texture => ResourceLoader.Load<Texture2D>("res://sprites/" + Value),
-                _ => throw new ArgumentOutOfRangeException($"Unknown Arg Type {Type}")
-            };
-
-        private Vector2 ParseVector2FromString(string s)
-        {
-            var ss = s.Split(',');
-            if (ss.Length != 2)
-            {
-                LogCat.LogErrorWithFormat("wrong_custom_arg", LogCat.LogLabel.Default, LogCat.UploadFormat, "Vector2",
-                    s);
-                return Vector2.Zero;
-            }
-
-            return new Vector2(float.Parse(ss[0]), float.Parse(ss[1]));
-        }
-    }
-
-    private enum CustomArgType
-    {
-        String,
-        Int,
-        Float,
-        Vector2,
-        Texture,
-        Bool,
-    }
+        int MaxStackValue);
+    
 }

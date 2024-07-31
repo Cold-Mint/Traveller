@@ -1,4 +1,9 @@
-- id: packsack
-  scene_path: res://prefab/packsacks/packsack.tscn
-  icon_path: res://sprites/packsack.png
+#Register an item container here.
+#在这里注册物品容器。
+
+#portable_backpacks
+#便携式背包
+- id: portable_backpacks
+  scene_path: res://prefab/packsacks/PortableBackpacks.tscn
+  icon_path: res://sprites/PortableBackpacks.png
   max_stack_value: 1

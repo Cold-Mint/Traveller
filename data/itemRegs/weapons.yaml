@@ -1,20 +1,9 @@
-- id: staff_of_the_undead
-  scene_path: res://prefab/weapons/staffOfTheUndead.tscn
-  icon_path: res://sprites/weapon/staffOfTheUndead_icon.png
-  max_stack_value: 1
-  custom_args:
-    - name: UniqueName
-      type: string
-      value: 爱你！
+#Register your weapon here.
+#在这里注册你的武器。
 
-- id: degraded_staff_of_the_undead
-  scene_path: res://prefab/weapons/staffOfTheUndead.tscn
-  icon_path: res://sprites/weapon/staffOfTheUndead_icon.png
+#staff_necromancy
+#死灵法杖
+- id: staff_necromancy
+  scene_path: res://prefab/weapons/StaffNecromancy.tscn
+  icon_path: res://sprites/weapon/StaffNecromancy_Icon.png
   max_stack_value: 1
-  custom_args:
-    - name: FiringIntervalAsMillisecond
-      type: int
-      value: 1000
-    - name: UniqueName
-      type: string
-      value: item_staff_of_the_undead_desc

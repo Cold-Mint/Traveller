@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using ColdMint.scripts.bubble;
 using ColdMint.scripts.camp;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.stateMachine;
 using ColdMint.scripts.utils;
