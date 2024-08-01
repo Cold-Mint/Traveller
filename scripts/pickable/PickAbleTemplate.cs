@@ -4,6 +4,7 @@ using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.pickable;
@@ -14,12 +15,21 @@ namespace ColdMint.scripts.pickable;
 /// </summary>
 public partial class PickAbleTemplate : RigidBody2D, IItem
 {
-    [Export] public virtual string Id { get; set; } = "ID";
+    //Do not export this field because the ID is specified within yaml.
+    //不要导出此字段，因为ID是在yaml内指定的。
+    public virtual string Id { get; set; } = "ID";
     [Export] protected Texture2D? UniqueIcon { get; set; }
     public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
-    [Export] protected string? UniqueName { get; set; }
-    public new string Name => UniqueName ?? ItemTypeManager.DefaultNameOf(Id);
-    [Export] protected string? UniqueDescription { get; set; }
+
+    public new string Name
+    {
+        get
+        {
+            var key = $"item_{Id}";
+            return TranslationServerUtils.Translate(key) ?? key;
+        }
+    }
+
     public virtual bool CanPutInPack => true;
 
     /// <summary>
@@ -37,7 +47,15 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     [Export] private int _minContactInjury = 1;
     [Export] private int _maxContactInjury = 2;
 
-    public string? Description => UniqueDescription ?? ItemTypeManager.DefaultDescriptionOf(Id);
+    public string Description
+    {
+        get
+        {
+            var key = $"item_{Id}_desc";
+            return TranslationServerUtils.Translate(key) ?? key;
+        }
+    }
+
     public int Quantity { get; set; } = 1;
 
     /// <summary>

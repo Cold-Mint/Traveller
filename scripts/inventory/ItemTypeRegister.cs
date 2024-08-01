@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
@@ -30,7 +29,7 @@ public static class ItemTypeRegister
         LogCat.Log("start_item_register_from_file");
         //初始化文件目录
         //initialize file dir
-        var itemRegsDirPath = "res://data/itemRegs";
+        const string itemRegsDirPath = "res://data/itemRegs";
         var itemRegsDir = DirAccess.Open(itemRegsDirPath);
         var error = DirAccess.GetOpenError();
         if (error is not Error.Ok)
@@ -103,15 +102,10 @@ public static class ItemTypeRegister
         //加载场景和图标
         var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
         var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
-
-
-        //Create init delegate
-        //创建初始化委托
-        Action<Node?>? setArgs = null;
         //构造项目类型，寄存器
         //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
-            defaultParentNode =>
+            icon, typeInfo.MaxStackValue, defaultParentNode =>
             {
                 var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
                 if (newItem is not Node node) return newItem;
@@ -121,11 +115,10 @@ public static class ItemTypeRegister
                     return null;
                 }
 
-                setArgs?.Invoke(node);
+                newItem.Id = typeInfo.Id;
                 NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
                 return newItem;
-            },
-            icon, typeInfo.MaxStackValue);
+            });
         var succeed = ItemTypeManager.Register(itemType);
         LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, LogCat.UploadFormat, itemType.Id,
             succeed);
@@ -138,5 +131,4 @@ public static class ItemTypeRegister
         string ScenePath,
         string IconPath,
         int MaxStackValue);
-    
 }

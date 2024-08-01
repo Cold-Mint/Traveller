@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnnn2xyayiehk"]
+[gd_scene load_steps=8 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://wt50kx6bup51" path="res://sprites/weapon/StaffNecromancy.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="PackedScene" uid="uid://c01av43yk1q71" path="res://prefab/projectile/curseOfTheUndead.tscn" id="2_34250"]
+[ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="3_31iau"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
@@ -17,7 +18,7 @@ collision_mask = 34
 script = ExtResource("1_w8hhv")
 ProjectileScenes = [ExtResource("2_34250")]
 FiringIntervalAsMillisecond = 300
-Id = "staff_of_the_undead"
+UniqueIcon = ExtResource("3_31iau")
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

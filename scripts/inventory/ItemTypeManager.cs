@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -49,7 +48,7 @@ public static class ItemTypeManager
 
 
     /// <summary>
-    /// <para>Create multiple new item instances for the given item Id</para>
+    /// <para>Create multiple new item instances for the given item ID</para>
     /// <para>创建多个给定物品Id的新物品实例</para>
     /// </summary>
     /// <param name="id"></param>
@@ -84,24 +83,7 @@ public static class ItemTypeManager
 
         return items.ToArray();
     }
-
-    /// <summary>
-    /// <para>Get the translated default name of the item type for the given id</para>
-    /// <para>获取指定物品id翻译后的物品名</para>
-    /// </summary>
-    /// <returns>
-    /// Translated default name of the item id if it exists. Else, return the id itself
-    /// </returns>
-    public static string DefaultNameOf(string id) => TranslationServerUtils.Translate($"item_{id}") ?? id;
-
-    /// <summary>
-    /// <para>Get the translated default description of the item type for the given id</para>
-    /// <para>获取指定物品id翻译后的描述</para>
-    /// </summary>
-    /// <returns>
-    /// Translated default description of the item id if it exists. Else, return null
-    /// </returns>
-    public static string? DefaultDescriptionOf(string id) => TranslationServerUtils.Translate($"item_{id}_desc");
+    
 
     /// <summary>
     /// <para>Get the default icon of the item type for the given id</para>

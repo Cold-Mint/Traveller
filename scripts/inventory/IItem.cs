@@ -6,9 +6,9 @@ public interface IItem
 {
     /// <summary>
     /// <para>ID of current item</para>
-    /// <para>当前项目的ID</para>
+    /// <para>当前物品的ID</para>
     /// </summary>
-    string Id { get; }
+    string Id { get; set; }
 
     /// <summary>
     /// <para>Icon of current item</para>

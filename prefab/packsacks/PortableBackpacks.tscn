@@ -14,7 +14,6 @@ collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
 NumberSlots = 30
-Id = "packsack"
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

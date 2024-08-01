@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=7 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
-[ext_resource type="Texture2D" uid="uid://b2blj0yf4ohx3" path="res://icon.svg" id="4_psvpu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(450, 191)
@@ -42,11 +41,7 @@ script = ExtResource("2_6p8mv")
 [node name="ItemMarker2D" type="Marker2D" parent="."]
 position = Vector2(142, 84)
 script = ExtResource("3_v1tlc")
-ItemId = "staff_of_the_undead"
-
-[node name="Icon" type="Sprite2D" parent="ItemMarker2D"]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("4_psvpu")
+ItemId = "staff_necromancy"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_064c7")
