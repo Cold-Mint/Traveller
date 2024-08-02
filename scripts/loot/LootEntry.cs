@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.loot;
@@ -9,7 +8,7 @@ namespace ColdMint.scripts.loot;
 /// <para>Loot entry</para>
 /// <para>战利品条目</para>
 /// </summary>
-public readonly struct LootEntry(string itemId,int minQuantity=1,int maxQuantity = 1,int weight = 1)
+public readonly struct LootEntry(string itemId, int minQuantity = 1, int maxQuantity = 1, int weight = 1)
 {
     /// <summary>
     /// <para>ID of item</para>
@@ -40,8 +39,14 @@ public readonly struct LootEntry(string itemId,int minQuantity=1,int maxQuantity
 /// <para>Loot Group</para>
 /// <para>战利品分组</para>
 /// </summary>
-/// <param name="Chance"></param>
-/// <param name="Entries"></param>
+/// <param name="Chance">
+///<para>Chance</para>
+///<para>概率</para>
+/// </param>
+/// <param name="Entries">
+///<para>Entries</para>
+///<para>条目列表</para>
+/// </param>
 public readonly record struct LootGroup(double Chance, IEnumerable<LootEntry> Entries)
 {
     private int WeightSum { get; } = Entries.Sum(entry => entry.Weight);
@@ -61,6 +66,6 @@ public readonly record struct LootGroup(double Chance, IEnumerable<LootEntry> En
 
         var quantity = random.Next(entry.MinQuantity, entry.MaxQuantity + 1);
 
-        return new(entry.ItemId, quantity);
+        return new LootDatum(entry.ItemId, quantity);
     }
 }

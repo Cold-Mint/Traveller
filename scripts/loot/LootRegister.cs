@@ -10,19 +10,17 @@ public static class LootRegister
     /// </summary>
     public static void StaticRegister()
     {
+        //Register the test using the loot table
         //注册测试使用的战利品表
         if (Config.IsDebug())
         {
-            IList<LootGroup> lootGroups = [];
-            lootGroups.Add(new LootGroup(0.8,
+            List<LootGroup> lootGroups =
             [
-                new LootEntry("degraded_staff_of_the_undead", weight: 2), new LootEntry("staff_of_the_undead")
-            ]));
-            lootGroups.Add(new LootGroup(1,
-            [
-                new LootEntry("packsack", minQuantity: 2, maxQuantity: 4)
-            ]));
-
+                new LootGroup(0.8,
+                [
+                    new LootEntry("staff_necromancy"),
+                ])
+            ];
             var testLootList = new LootList(Config.LootListId.Test, lootGroups);
             LootListManager.RegisterLootList(testLootList);
         }

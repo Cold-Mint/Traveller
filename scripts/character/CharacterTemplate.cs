@@ -502,8 +502,8 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>伤害模板</para>
     /// </param>
     /// <returns>
-    ///<para>Return whether the damage was done successfully</para>
-    ///<para>返回是否成功造成了伤害</para>
+    ///<para>Return whether the character is dead</para>
+    ///<para>返回本次伤害是否导致角色死亡。</para>
     /// </returns>
     public bool Damage(DamageTemplate damageTemplate)
     {
@@ -517,12 +517,10 @@ public partial class CharacterTemplate : CharacterBody2D
             //角色死亡
             OnDie(damageTemplate);
             ThrowAllItemOnDie();
-
             return true;
         }
-
         UpDataHealthBar();
-        return true;
+        return false;
     }
 
     /// <summary>

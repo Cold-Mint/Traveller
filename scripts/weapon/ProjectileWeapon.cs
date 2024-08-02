@@ -61,7 +61,7 @@ public partial class ProjectileWeapon : WeaponTemplate
         //获取第一个抛射体
         var projectileScene = ProjectileScenes[0];
         // var projectileScene = _projectileCache[_projectiles[0]];
-        var projectile = NodeUtils.InstantiatePackedScene<ProjectileTemplate>(projectileScene);
+        var projectile = NodeUtils.InstantiatePackedScene<Projectile>(projectileScene);
         if (projectile == null) return;
         NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
         projectile.Owner = owner;
