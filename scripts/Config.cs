@@ -20,6 +20,29 @@ public static class Config
         /// </summary>
         public const string Test = "test";
     }
+    
+    /// <summary>
+    /// <para>Difficulty</para>
+    /// <para>游戏难度</para>
+    /// </summary>
+    public static class Difficulty
+    {
+        /// <summary>
+        /// <para>Simple mode</para>
+        /// <para>简单模式</para>
+        /// </summary>
+        public const int Easy = 0;
+        /// <summary>
+        /// <para>Normal mode</para>
+        /// <para>正常模式</para>
+        /// </summary>
+        public const int Normal = 1;
+        /// <summary>
+        /// <para>Hard mode</para>
+        /// <para>困难模式</para>
+        /// </summary>
+        public const int Hard = 2;
+    }
 
 
     /// <summary>

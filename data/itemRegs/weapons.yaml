@@ -7,6 +7,10 @@
 
 #staff_necromancy
 #死灵法杖
+# The Necromancy Staff will act differently on different difficulties.
+#死灵法杖在不同的难度下会有不同的行为。
+#The probability of generating monsters is as follows:Hard mode 100%, Normal mode 75%, easy mode 5%
+#以下是在击杀敌人后生成怪物的概率：困难模式100%，普通模式75%，简单模式5%
 - id: staff_necromancy
   scene_path: res://prefab/weapons/StaffNecromancy.tscn
   icon_path: res://sprites/weapon/StaffNecromancy_Icon.png

@@ -191,7 +191,7 @@ public partial class Projectile : CharacterBody2D
             {
                 //If the character is dead, then call OnKillCharacter
                 //如果角色死亡了，那么调用OnKillCharacter
-                InvokeDecorators(decorator => { decorator.OnKillCharacter(); });
+                InvokeDecorators(decorator => { decorator.OnKillCharacter(owner, characterTemplate); });
             }
 
             if (_knockbackForce != Vector2.Zero)

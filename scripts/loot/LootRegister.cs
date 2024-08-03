@@ -16,7 +16,7 @@ public static class LootRegister
         {
             List<LootGroup> lootGroups =
             [
-                new LootGroup(0.8,
+                new LootGroup(0.8f,
                 [
                     new LootEntry("staff_necromancy"),
                 ])

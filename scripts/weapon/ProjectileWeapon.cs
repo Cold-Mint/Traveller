@@ -1,5 +1,6 @@
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
+using ColdMint.scripts.projectile.decorator;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -63,6 +64,15 @@ public partial class ProjectileWeapon : WeaponTemplate
         // var projectileScene = _projectileCache[_projectiles[0]];
         var projectile = NodeUtils.InstantiatePackedScene<Projectile>(projectileScene);
         if (projectile == null) return;
+        if (Config.IsDebug())
+        {
+            var nodeSpawnOnKillCharacterDecorator = new NodeSpawnOnKillCharacterDecorator
+            {
+                DefaultParentNode = this,
+                PackedScenePath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
+            };
+            projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
+        }
         NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
         projectile.Owner = owner;
         projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;

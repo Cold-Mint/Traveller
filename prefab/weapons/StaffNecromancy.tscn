@@ -18,7 +18,10 @@ collision_mask = 34
 script = ExtResource("1_w8hhv")
 ProjectileScenes = [ExtResource("2_34250")]
 FiringIntervalAsMillisecond = 300
+_recoil = null
 UniqueIcon = ExtResource("3_31iau")
+_minContactInjury = null
+_maxContactInjury = null
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

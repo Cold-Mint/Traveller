@@ -1,4 +1,5 @@
 ﻿using System;
+using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
 using Godot;
@@ -224,6 +225,11 @@ public static class NodeUtils
     /// <returns></returns>
     public static Node FindContainerNode(Node childNode, Node defaultParentNode)
     {
+        if (GameSceneNodeHolder.AiCharacterContainer!= null && childNode is AiCharacter)
+        {
+            return GameSceneNodeHolder.AiCharacterContainer;
+        }
+        
         if (GameSceneNodeHolder.ProjectileContainer != null && childNode is Projectile)
         {
             return GameSceneNodeHolder.ProjectileContainer;

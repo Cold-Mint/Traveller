@@ -47,7 +47,7 @@ public readonly struct LootEntry(string itemId, int minQuantity = 1, int maxQuan
 ///<para>Entries</para>
 ///<para>条目列表</para>
 /// </param>
-public readonly record struct LootGroup(double Chance, IEnumerable<LootEntry> Entries)
+public readonly record struct LootGroup(float Chance, IEnumerable<LootEntry> Entries)
 {
     private int WeightSum { get; } = Entries.Sum(entry => entry.Weight);
 

@@ -1,3 +1,6 @@
+using ColdMint.scripts.character;
+using Godot;
+
 namespace ColdMint.scripts.projectile.decorator;
 
 /// <summary>
@@ -14,5 +17,13 @@ public interface IProjectileDecorator
     /// <para>When the character is killed by this projectile</para>
     /// <para>当角色被此抛射体击杀时</para>
     /// </summary>
-    void OnKillCharacter();
+    /// <param name="owner">
+    /// <para>owner</para>
+    /// <para>主人</para>
+    /// </param>
+    /// <param name="target">
+    ///<para>target</para>
+    ///<para>目标</para>
+    /// </param>
+    void OnKillCharacter(Node2D? owner, CharacterTemplate target);
 }
