@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.contribute;
+using ColdMint.scripts.database;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
@@ -96,6 +97,13 @@ public partial class SplashScreenLoader : UiLoaderTemplate
             Directory.CreateDirectory(dataPath);
         }
 
+        var databasePath = Config.GetDataBaseDirectory();
+        if (!Directory.Exists(databasePath))
+        {
+            Directory.CreateDirectory(databasePath);
+        }
+
+        DataBaseManager.InitDataBases(databasePath);
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)

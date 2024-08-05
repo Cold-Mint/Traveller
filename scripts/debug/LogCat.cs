@@ -64,6 +64,7 @@ public static class LogCat
         /// <para>日志收集器</para>
         /// </summary>
         public const string LogCollector = "LogCollector";
+
         /// <summary>
         /// <para>Mod Loader</para>
         /// <para>模组加载器</para>
@@ -237,6 +238,8 @@ public static class LogCat
             return;
         }
 
+        //If you need to upload logs, you can upload logs.
+        //如果需要上传日志，并且能够上传日志。
         if (LogCollector.CanUploadLog && upload)
         {
             var logData = new LogData

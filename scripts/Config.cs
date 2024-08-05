@@ -136,13 +136,7 @@ public static class Config
     /// <para>快捷栏上有多少个物品槽</para>
     /// </summary>
     public const int HotBarSize = 9;
-
-
-    /// <summary>
-    /// <para>UserID</para>
-    /// <para>用户ID</para>
-    /// </summary>
-    public const string UserId = "DefaultUser";
+    
 
     /// <summary>
     /// <para>Whether version isolation is enabled</para>
@@ -322,15 +316,25 @@ public static class Config
         if (EnableVersionIsolation())
         {
             return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                ProjectSettings.GetSetting("application/config/name").AsString(), UserId,
+                ProjectSettings.GetSetting("application/config/name").AsString(),
                 ProjectSettings.GetSetting("application/config/version").AsString());
         }
         else
         {
             return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                ProjectSettings.GetSetting("application/config/name").AsString(), UserId,
+                ProjectSettings.GetSetting("application/config/name").AsString(),
                 DefaultVersionName);
         }
+    }
+
+    /// <summary>
+    /// <para>GetDataBaseDirectory</para>
+    /// <para>获取数据库文件夹</para>
+    /// </summary>
+    /// <returns></returns>
+    public static string GetDataBaseDirectory()
+    {
+        return Path.Join(GetGameDataDirectory(), "Databases");
     }
 
     /// <summary>
