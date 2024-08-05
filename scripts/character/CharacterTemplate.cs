@@ -75,7 +75,8 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public string? ReadOnlyCharacterName => CharacterName;
 
-    protected string? CharacterName;
+    [Export]
+    public string? CharacterName;
 
     protected IItemContainer? ProtectedItemContainer;
 
@@ -156,15 +157,18 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //The initial health of the character after creation
     //角色创建后的初始血量
-    private int _initialHp;
+    [Export]
+    public int InitialHp;
 
+    [Export]
     public int MaxHp;
 
     /// <summary>
     /// <para>The camp ID of the role</para>
     /// <para>角色的阵营ID</para>
     /// </summary>
-    public string CampId = null!;
+    [Export]
+    public string? CampId;
 
     private DamageNumberNodeSpawn? _damageNumber;
 
@@ -253,9 +257,6 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         base._Ready();
         PickingRangeBodiesList = new List<Node>();
-        CharacterName = GetMeta("Name", Name).AsString();
-        CampId = GetMeta("CampId", Config.CampId.Default).AsString();
-        MaxHp = GetMeta("MaxHp", Config.DefaultMaxHp).AsInt32();
 
         if (MaxHp <= 0)
         {
@@ -264,15 +265,14 @@ public partial class CharacterTemplate : CharacterBody2D
             MaxHp = Config.DefaultMaxHp;
         }
 
-        _initialHp = GetMeta("InitialHp", "0").AsInt32();
-        if (_initialHp <= 0 || _initialHp > MaxHp)
+        if (InitialHp <= 0 || InitialHp > MaxHp)
         {
             //If the initial health is less than or equal to 0 or greater than the maximum health, then set it to the maximum health
             //如果初始血量小于等于0或者大于最大血量，那么将其设置为最大血量
-            _initialHp = MaxHp;
+            InitialHp = MaxHp;
         }
 
-        CurrentHp = _initialHp;
+        CurrentHp = InitialHp;
         //The health bar of a creature may be null.
         //生物的健康条，可能为null。
         _healthBar = GetNodeOrNull<HealthBar>("HealthBar");

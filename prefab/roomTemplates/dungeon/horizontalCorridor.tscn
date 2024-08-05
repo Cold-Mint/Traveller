@@ -53,7 +53,7 @@ shape = SubResource("RectangleShape2D_7tsse")
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(260, 87)
 script = ExtResource("2_wamhd")
-metadata/ResPath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
+ResPath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_rh1gx")

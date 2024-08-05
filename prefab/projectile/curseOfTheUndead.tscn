@@ -12,11 +12,13 @@ radius = 11.0
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_ib3qh")
-metadata/Speed = 500.0
-metadata/Durability = 1.0
-metadata/DamageType = 2
-metadata/Knockback = Vector2(2, -3)
-metadata/Life = 5000
+Life = 5000
+Durability = 1.0
+MaxDamage = 3
+MinDamage = 10
+DamageType = 2
+KnockbackForce = Vector2(2, -3)
+Speed = 500.0
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]
 texture = ExtResource("1_k8el6")

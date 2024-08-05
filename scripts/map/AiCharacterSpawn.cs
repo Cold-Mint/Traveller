@@ -12,14 +12,15 @@ namespace ColdMint.scripts.map;
 public partial class AiCharacterSpawn : Marker2D
 {
     private PackedScene? _packedScene;
+    [Export]
+    public string? ResPath;
 
     public override void _Ready()
     {
         base._Ready();
-        var resPath = GetMeta("ResPath", Name).AsString();
-        if (!string.IsNullOrEmpty(resPath))
+        if (!string.IsNullOrEmpty(ResPath))
         {
-            _packedScene = GD.Load<PackedScene>(resPath);
+            _packedScene = GD.Load<PackedScene>(ResPath);
         }
 
         EventManager.AiCharacterGenerateEvent += OnAiCharacterGenerateEvent;

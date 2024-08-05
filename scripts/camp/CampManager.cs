@@ -9,7 +9,7 @@ namespace ColdMint.scripts.camp;
 /// </summary>
 public static class CampManager
 {
-    private static readonly Dictionary<string, Camp?> Camps = new Dictionary<string, Camp?>();
+    private static readonly Dictionary<string, Camp?> Camps = new();
 
     /// <summary>
     /// <para>The default camp is returned if no corresponding camp is obtained</para>
