@@ -69,7 +69,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             var nodeSpawnOnKillCharacterDecorator = new NodeSpawnOnKillCharacterDecorator
             {
                 DefaultParentNode = this,
-                PackedScenePath = "res://prefab/entitys/DelivererOfDarkMagic.tscn"
+                PackedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
             };
             projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
         }

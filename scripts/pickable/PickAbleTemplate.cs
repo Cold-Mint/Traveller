@@ -106,6 +106,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
                 //No longer in contact with any shingles can cause injury
                 //不再与任何瓦片接触后，可以造成伤害
                 EnableContactInjury = true;
+                LogCat.Log("after_no_longer_in_contact_with_any_tiles", LogCat.LogLabel.ContactInjury);
                 SetCollisionMaskValue(Config.LayerNumber.Player, false);
             }
         }
@@ -127,6 +128,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             _tileMapNumber++;
             EnableContactInjury = false;
+            LogCat.Log("contact_with_tiles_disables_damage", LogCat.LogLabel.ContactInjury);
             //Items can be pushed by the player when they are on the ground
             //当物品在地面上时，可被玩家推动
             SetCollisionMaskValue(Config.LayerNumber.Player, true);
@@ -135,20 +137,20 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             if (!EnableContactInjury)
             {
-                LogCat.LogWarning("contact_damage_disabled_during_collision");
+                LogCat.LogWarning("contact_damage_disabled_during_collision", LogCat.LogLabel.ContactInjury);
                 return;
             }
 
 
             if (Owner == null)
             {
-                LogCat.LogWarning("item_has_no_owner");
+                LogCat.LogWarning("item_has_no_owner", LogCat.LogLabel.PickAbleTemplate);
                 return;
             }
 
             if (Owner is not CharacterTemplate ownerCharacterTemplate)
             {
-                LogCat.LogWarning("owner_of_the_item_is_not_character");
+                LogCat.LogWarning("owner_of_the_item_is_not_character", LogCat.LogLabel.PickAbleTemplate);
                 return;
             }
 
@@ -158,7 +160,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
                 CampManager.GetCamp(characterTemplate.CampId));
             if (!canCauseHarm)
             {
-                LogCat.Log("no_damage_between_camps");
+                LogCat.Log("no_damage_between_camps", LogCat.LogLabel.PickAbleTemplate);
                 return;
             }
 

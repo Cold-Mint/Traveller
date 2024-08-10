@@ -70,6 +70,18 @@ public static class LogCat
         /// <para>模组加载器</para>
         /// </summary>
         public const string ModLoader = "ModLoader";
+        
+        /// <summary>
+        /// <para>PickAble Template</para>
+        /// <para>可拾取物模板</para>
+        /// </summary>
+        public const string PickAbleTemplate = "PickAbleTemplate";
+        
+        /// <summary>
+        /// <para>ContactInjury</para>
+        /// <para>物品碰撞伤害</para>
+        /// </summary>
+        public const string ContactInjury = "ContactInjury";
     }
 
 

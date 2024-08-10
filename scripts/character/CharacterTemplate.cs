@@ -73,10 +73,9 @@ public partial class CharacterTemplate : CharacterBody2D
     //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
     private readonly double _itemCollisionRecoveryTime = 0.045f;
 
-    public string? ReadOnlyCharacterName => CharacterName;
+    public string? ReadOnlyCharacterName => TranslationServerUtils.Translate(CharacterName);
 
-    [Export]
-    public string? CharacterName;
+    [Export] public string? CharacterName;
 
     protected IItemContainer? ProtectedItemContainer;
 
@@ -157,18 +156,15 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //The initial health of the character after creation
     //角色创建后的初始血量
-    [Export]
-    public int InitialHp;
+    [Export] public int InitialHp;
 
-    [Export]
-    public int MaxHp;
+    [Export] public int MaxHp;
 
     /// <summary>
     /// <para>The camp ID of the role</para>
     /// <para>角色的阵营ID</para>
     /// </summary>
-    [Export]
-    public string? CampId;
+    [Export] public string? CampId;
 
     private DamageNumberNodeSpawn? _damageNumber;
 
@@ -248,8 +244,10 @@ public partial class CharacterTemplate : CharacterBody2D
             {
                 continue;
             }
+
             weaponTemplates.Add(weaponTemplate);
         }
+
         return weaponTemplates.ToArray();
     }
 
@@ -385,6 +383,7 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
             pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
+            LogCat.Log("item_pickup_disables_collision_damage", LogCat.LogLabel.ContactInjury);
             pickAbleTemplate.EnableContactInjury = false;
             pickAbleTemplate.Sleeping = true;
         }
@@ -519,6 +518,7 @@ public partial class CharacterTemplate : CharacterBody2D
             ThrowAllItemOnDie();
             return true;
         }
+
         UpDataHealthBar();
         return false;
     }
@@ -751,6 +751,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     pickAbleTemplate.EnableContactInjury = true;
+                    LogCat.Log("item_thrown_restore_collision_damage", LogCat.LogLabel.ContactInjury);
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();

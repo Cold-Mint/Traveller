@@ -1,14 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://cj65pso40syj5"]
+[gd_scene load_steps=11 format=3 uid="uid://dxx1vqpecig7i"]
 
 [ext_resource type="Script" path="res://scripts/character/AiCharacter.cs" id="1_ubaid"]
-[ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_eha68"]
+[ext_resource type="Texture2D" uid="uid://c1yxhtiqrfvvp" path="res://sprites/character/BlackenedAboriginalWarrior.png" id="2_pcmq1"]
 [ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_kiam3"]
 [ext_resource type="PackedScene" uid="uid://sqqfrmikmk5v" path="res://prefab/ui/HealthBar.tscn" id="4_gt388"]
 [ext_resource type="Script" path="res://scripts/bubble/BubbleMarker.cs" id="5_y2fh5"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
-radius = 20.0
-height = 52.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f8frw"]
+size = Vector2(40, 46)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a3myh"]
 size = Vector2(46, 65)
@@ -17,7 +16,7 @@ size = Vector2(46, 65)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_eha68")
+"texture": ExtResource("2_pcmq1")
 }],
 "loop": true,
 "name": &"default",
@@ -30,18 +29,17 @@ radius = 153.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_fowd5"]
 radius = 172.29
 
-[node name="DelivererOfDarkMagic" type="CharacterBody2D"]
+[node name="BlackenedAboriginalWarrior" type="CharacterBody2D"]
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
-CharacterName = "character_necromancer"
+CharacterName = "character_evil_crow"
 MaxHp = 50
 CampId = "Mazoku"
-LootListId = "test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
-shape = SubResource("CapsuleShape2D_bb8wt")
+position = Vector2(2, 10)
+shape = SubResource("RectangleShape2D_f8frw")
 
 [node name="Area2DPickingArea" type="Area2D" parent="."]
 collision_layer = 0
