@@ -10,12 +10,12 @@ A pixel cross-platform roguelite game.
 
 ## Recent Development progress
 
-| Task                                                   | status        |
-| ----------------------------------------------------------- | ------------------ |
-| Randomly generated map                         | complete |
-| loot                                                 | complete |
-| Support still out of the knapsack system | complete       |
-| Add AI agents to creatures | In progress |
+| Task                                     | status      |
+|------------------------------------------|-------------|
+| Randomly generated map                   | complete    |
+| loot                                     | complete    |
+| Support still out of the knapsack system | complete    |
+| Add AI agents to creatures               | In progress |
 
 ## Screenshot
 
@@ -30,11 +30,19 @@ Level graph editor
 ## Run the project locally
 
 #### Download engine
+
 1. Download [Godot Engine .Net](https://godotengine.org/).
 
-   After downloading the engine, you will need to download an additional export template to export as an executable program.
+   After downloading the engine, you will need to download an additional export template to export as an executable
+   program.
 
 2. Download [.NetSDK](https://dotnet.microsoft.com/download).
+
+   Ubuntu or Linux Mint install the .net 8.0 Sdk.
+
+```
+apt install dotnet-sdk-8.0
+```
 
 #### Clone project
 
@@ -55,7 +63,17 @@ data/*
 #### Custom feature
 
 - **disableVersionIsolation** Disable version isolation.
-- **enableMod** Experimental feature, the game loads dll files and pck files in the mod directory when the mod is enabled. Due to the isolation of AssemblyLoadContext, the main game content cannot be accessed from within the Mod for the time being.
+- **enableMod** Experimental feature, the game loads dll files and pck files in the mod directory when the mod is
+  enabled. Due to the isolation of AssemblyLoadContext, the main game content cannot be accessed from within the Mod for
+  the time being.
+
+#### Run the console on Linux
+
+Enter the following command in the directory where the game is located:
+
+```
+./Traveler.sh
+```
 
 ## Configuring Openobserve
 
@@ -82,18 +100,20 @@ After you have set up an openobserve server, follow the following steps to confi
      org_id: [org_id]
      stream_name: [stream_name]
    ```
-   
+
    address Indicates the address of the server in the format of http(s)://www.example.com. (Support http and https)
 
 ## Participate in translation
 
-The project is prepared for localization at the beginning of writing. You can edit the csv file in the locals directory. To modify and add new translations.
+The project is prepared for localization at the beginning of writing. You can edit the csv file in the locals directory.
+To modify and add new translations.
 
 ## License
 
 [GPL-3.0 license](LICENSE)
 
-Support commercial, anyone can modify, build, and sell or distribute for free. For all derivative versions of this project, under the GPL, you shall  **retain the author copyright** and **publish the modified source code**.
+Support commercial, anyone can modify, build, and sell or distribute for free. For all derivative versions of this
+project, under the GPL, you shall  **retain the author copyright** and **publish the modified source code**.
 
 > Note: You have the right to sell the modified version, but not the original.
 >

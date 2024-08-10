@@ -34,6 +34,13 @@
 
 2. ダウンロード [.NetSDK](https://dotnet.microsoft.com/download).
 
+   UbuntuやLinux Mintに。net8.0Sdkをインストールします。
+
+```
+apt install dotnet-sdk-8.0
+```
+
+
 #### クローンプロジェクトです
 
 作業リストに次の指示を入力します。
@@ -54,6 +61,14 @@ data/*
 
 - **disableVersionIsolation** 版孤立を無効化する。
 - **enableMod**実験的な機能、modが有効になっている場合、ゲームはmodディレクトリにdllファイルとpckファイルをロードします。assemblyloadcontextが分離されているため、当面の間、mod内からメインゲームのコンテンツにアクセスすることはできません。
+
+#### Linux上でコンソールを動かします
+
+ゲームの存在するディレクトリに以下のコマンドを入力します:
+
+```
+./Traveler.sh
+```
 
 ## はいちOpenobserve
 
