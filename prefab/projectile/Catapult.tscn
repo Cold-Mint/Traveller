@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdxgx5vcof8em"]
+
+[ext_resource type="Script" path="res://scripts/projectile/Projectile.cs" id="1_ib3qh"]
+[ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_dxg46"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dgro2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8117d"]
+radius = 11.0
+
+[node name="curseOfTheUndead" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_ib3qh")
+Life = 5000
+Durability = 1.0
+MaxDamage = 3
+MinDamage = 10
+DamageType = 2
+KnockbackForce = Vector2(2, -3)
+Speed = 500.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dgro2")
+
+[node name="CollisionDetectionArea" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 78
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionDetectionArea"]
+shape = SubResource("CircleShape2D_8117d")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+bus = &"SoundEffect"
+area_mask = 16
+
+[node name="Player" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_dxg46")

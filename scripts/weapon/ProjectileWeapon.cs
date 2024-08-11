@@ -24,10 +24,37 @@ public partial class ProjectileWeapon : WeaponTemplate
 
     [Export] protected PackedScene[] ProjectileScenes { get; set; } = [];
 
+    /// <summary>
+    /// <para>Whether to launch in the order of the projectile list</para>
+    /// <para>是否按照抛射体列表的循序发射</para>
+    /// </summary>
+    [Export]
+    protected bool Sequentially { get; set; }
+
+    private int _projectileIndex;
+
     public override void _Ready()
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
+    }
+
+    /// <summary>
+    /// <para>GetNextProjectileScene</para>
+    /// <para>获取下一个抛射体</para>
+    /// </summary>
+    /// <returns></returns>
+    private PackedScene GetNextProjectileScene()
+    {
+        if (Sequentially)
+        {
+            _projectileIndex = (_projectileIndex + 1) % ProjectileScenes.Length;
+            return ProjectileScenes[_projectileIndex];
+        }
+        else
+        {
+            return ProjectileScenes[RandomUtils.Instance.Next(ProjectileScenes.Length)];
+        }
     }
 
 
@@ -50,6 +77,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogError("projectile_container_is_null");
             return;
         }
+
         //Empty list check
         //空列表检查
         if (ProjectileScenes is [])
@@ -60,8 +88,7 @@ public partial class ProjectileWeapon : WeaponTemplate
 
         //Get the first projectile
         //获取第一个抛射体
-        var projectileScene = ProjectileScenes[0];
-        // var projectileScene = _projectileCache[_projectiles[0]];
+        var projectileScene = GetNextProjectileScene();
         var projectile = NodeUtils.InstantiatePackedScene<Projectile>(projectileScene);
         if (projectile == null) return;
         if (Config.IsDebug())
@@ -73,6 +100,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             };
             projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
         }
+
         NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
         projectile.Owner = owner;
         projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;

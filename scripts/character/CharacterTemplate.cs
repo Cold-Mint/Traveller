@@ -77,6 +77,13 @@ public partial class CharacterTemplate : CharacterBody2D
 
     [Export] public string? CharacterName;
 
+    /// <summary>
+    /// <para>Can mutate after death</para>
+    /// <para>是否允许死后变异</para>
+    /// </summary>
+    [Export]
+    public bool CanMutateAfterDeath { get; set; } = true;
+
     protected IItemContainer? ProtectedItemContainer;
 
     //Item containers are used to store items.

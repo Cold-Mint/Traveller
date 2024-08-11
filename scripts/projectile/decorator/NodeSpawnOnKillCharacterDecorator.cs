@@ -37,7 +37,7 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
             return;
         }
 
-        if (PackedScenePath == null || DefaultParentNode == null)
+        if (PackedScenePath == null || DefaultParentNode == null || !target.CanMutateAfterDeath)
         {
             return;
         }

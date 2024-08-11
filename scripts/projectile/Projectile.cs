@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.inventory;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile.decorator;
 using Godot;
@@ -141,14 +140,12 @@ public partial class Projectile : CharacterBody2D
             //撞击到瓦片时，我们返回true，是为了防止子弹穿透瓦片。
             return true;
         }
-
-        //Match any item now
-        //现在使它识别任何物品
-        if (target is IItem)
+        
+        if (target is PickAbleTemplate pickAbleTemplate)
         {
-            //Bullets are allowed to strike objects.
-            //允许子弹撞击物品。
-            return true;
+            //The picked-up item cannot resist the bullet.
+            //被拾起的物品无法抵挡子弹。
+            return !pickAbleTemplate.Picked;
         }
 
         if (target is not CharacterTemplate characterTemplate)

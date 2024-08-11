@@ -19,7 +19,8 @@ public static class LootRegister
                 new LootGroup(0.8f,
                 [
                     new LootEntry("staff_necromancy"),
-                ])
+                ]),
+                new LootGroup(1, [new LootEntry("portable_backpacks")])
             ];
             var testLootList = new LootList(Config.LootListId.Test, lootGroups);
             LootListManager.RegisterLootList(testLootList);
