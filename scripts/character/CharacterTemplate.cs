@@ -286,7 +286,6 @@ public partial class CharacterTemplate : CharacterBody2D
             _healthBar.MaxValue = MaxHp;
         }
 
-
         ItemMarker2D = GetNode<Marker2D>("ItemMarker2D");
         _itemMarkerOriginalX = ItemMarker2D.Position.X;
         _animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -303,6 +302,11 @@ public partial class CharacterTemplate : CharacterBody2D
             _pickingArea.BodyEntered += EnterThePickingRangeBody;
             _pickingArea.BodyExited += ExitThePickingRangeBody;
         }
+
+        //The character cannot pass through the wall and floor
+        //角色不能穿过墙壁和地板
+        SetCollisionMaskValue(Config.LayerNumber.Wall, true);
+        SetCollisionMaskValue(Config.LayerNumber.Floor, true);
     }
 
     /// <summary>
@@ -389,7 +393,8 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Owner = this;
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, false);
+            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Floor, false);
+            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Wall, false);
             LogCat.Log("item_pickup_disables_collision_damage", LogCat.LogLabel.ContactInjury);
             pickAbleTemplate.EnableContactInjury = false;
             pickAbleTemplate.Sleeping = true;
@@ -759,7 +764,8 @@ public partial class CharacterTemplate : CharacterBody2D
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     pickAbleTemplate.EnableContactInjury = true;
                     LogCat.Log("item_thrown_restore_collision_damage", LogCat.LogLabel.ContactInjury);
-                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Ground, true);
+                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Floor, true);
+                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Wall, true);
                     pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };

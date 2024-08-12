@@ -19,8 +19,7 @@ public partial class Projectile : CharacterBody2D
     /// <para>life(ms)</para>
     /// <para>子弹的存在时间(毫秒)</para>
     /// </summary>
-    [Export]
-    public long Life;
+    [Export] public long Life;
 
     //The durability of the projectile
     //抛射体的耐久度
@@ -38,13 +37,6 @@ public partial class Projectile : CharacterBody2D
     /// </summary>
     private DateTime? _destructionTime;
 
-
-    /// <summary>
-    /// <para>The impact area of the bullet</para>
-    /// <para>子弹的碰撞区域</para>
-    /// </summary>
-    private Area2D? _area2D;
-
     /// <summary>
     /// <para>knockback</para>
     /// <para>击退</para>
@@ -53,10 +45,21 @@ public partial class Projectile : CharacterBody2D
     ///<para>How much force does it have when hitting the character? Unit: Number of cells，The X direction of the force is inferred automatically.</para>
     ///<para>当击中角色时带有多大的力？单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    [Export]
-    public Vector2 KnockbackForce;
+    [Export] public Vector2 KnockbackForce;
 
     [Export] public float Speed;
+
+    /// <summary>
+    /// <para>Whether it bounces back after hitting an enemy or a wall</para>
+    /// <para>是否撞到敌人或墙壁后反弹</para>
+    /// </summary>
+    [Export] public bool EnableBounce;
+
+    /// <summary>
+    /// <para>Can it penetrate the wall</para>
+    /// <para>是否可以穿透墙壁</para>
+    /// </summary>
+    [Export] public bool IgnoreWall;
 
     private List<IProjectileDecorator>? _projectileDecorators;
 
@@ -69,12 +72,6 @@ public partial class Projectile : CharacterBody2D
 
     public override void _Ready()
     {
-        //The bullet's impact detection area
-        //子弹的碰撞检测区域
-        _area2D = GetNode<Area2D>("CollisionDetectionArea");
-        _area2D.Monitoring = true;
-        _area2D.BodyEntered += OnBodyEnter;
-        _area2D.BodyExited += OnBodyExited;
         //If the existence time is less than or equal to 0, then it is set to exist for 10 seconds, and projectiles that exist indefinitely are prohibited
         //如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
         if (Life <= 0)
@@ -83,6 +80,11 @@ public partial class Projectile : CharacterBody2D
         }
 
         _destructionTime = DateTime.Now.AddMilliseconds(Life);
+        SetCollisionMaskValue(Config.LayerNumber.Wall, !IgnoreWall);
+        SetCollisionMaskValue(Config.LayerNumber.Floor, !IgnoreWall);
+        //Platform collision layer is not allowed to collide
+        //平台碰撞层不可碰撞
+        SetCollisionMaskValue(Config.LayerNumber.Platform, false);
     }
 
     /// <summary>
@@ -140,7 +142,7 @@ public partial class Projectile : CharacterBody2D
             //撞击到瓦片时，我们返回true，是为了防止子弹穿透瓦片。
             return true;
         }
-        
+
         if (target is PickAbleTemplate pickAbleTemplate)
         {
             //The picked-up item cannot resist the bullet.
@@ -248,45 +250,6 @@ public partial class Projectile : CharacterBody2D
     }
 
     /// <summary>
-    /// <para>When the bullet is in contact with the node</para>
-    /// <para>当子弹与节点接触时</para>
-    /// </summary>
-    /// <param name="node"></param>
-    protected virtual void OnBodyEnter(Node2D node)
-    {
-        //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
-        //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
-        var canCauseHarm = CanCauseHarm(Owner, node);
-        if (!canCauseHarm)
-        {
-            return;
-        }
-
-        DoDamage(Owner, node);
-        //Please specify in the Mask who the bullet will collide with
-        //请在Mask内配置子弹会和谁碰撞
-        //When a bullet hits an object, its durability decreases
-        //子弹撞击到物体时，耐久度减少
-        Durability--;
-        if (Durability <= 0)
-        {
-            //When the durability is less than or equal to 0, destroy the bullet
-            //当耐久度小于等于0时，销毁子弹
-            QueueFree();
-        }
-    }
-
-    /// <summary>
-    /// <para>When the bullet leaves the node</para>
-    /// <para>当子弹离开节点时</para>
-    /// </summary>
-    /// <param name="node"></param>
-    protected virtual void OnBodyExited(Node2D node)
-    {
-    }
-
-
-    /// <summary>
     /// <para>When beyond the time of existence</para>
     /// <para>当超过存在时间</para>
     /// </summary>
@@ -307,6 +270,38 @@ public partial class Projectile : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        MoveAndSlide();
+        var collisionInfo = MoveAndCollide(Velocity * (float)delta);
+        if (collisionInfo != null)
+        {
+            //Bump into other objects.
+            //撞到其他对象。
+            if (EnableBounce)
+            {
+                Velocity = Velocity.Bounce(collisionInfo.GetNormal());
+            }
+
+            //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
+            //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
+            var godotObject = collisionInfo.GetCollider();
+            var node = (Node2D)godotObject;
+            var canCauseHarm = CanCauseHarm(Owner, node);
+            if (!canCauseHarm)
+            {
+                return;
+            }
+
+            DoDamage(Owner, node);
+            //Please specify in the Mask who the bullet will collide with
+            //请在Mask内配置子弹会和谁碰撞
+            //When a bullet hits an object, its durability decreases
+            //子弹撞击到物体时，耐久度减少
+            Durability--;
+            if (Durability <= 0)
+            {
+                //When the durability is less than or equal to 0, destroy the bullet
+                //当耐久度小于等于0时，销毁子弹
+                QueueFree();
+            }
+        }
     }
 }

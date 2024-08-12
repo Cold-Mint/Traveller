@@ -151,12 +151,13 @@ locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "
 [layer_names]
 
 2d_physics/layer_1="RoomArea"
-2d_physics/layer_2="Ground"
+2d_physics/layer_2="Floor"
 2d_physics/layer_3="Player"
 2d_physics/layer_4="PickAbleItem"
 2d_physics/layer_5="Projectile"
 2d_physics/layer_6="Platform"
 2d_physics/layer_7="Mob"
+2d_physics/layer_8="Wall"
 
 [physics]
 

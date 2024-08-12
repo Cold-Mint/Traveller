@@ -425,12 +425,13 @@ public static class Config
     public static class LayerNumber
     {
         public const int RoomArea = 1;
-        public const int Ground = 2;
+        public const int Floor = 2;
         public const int Player = 3;
         public const int PickAbleItem = 4;
         public const int Projectile = 5;
         public const int Platform = 6;
         public const int Mob = 7;
+        public const int Wall = 8;
     }
 
     /// <summary>

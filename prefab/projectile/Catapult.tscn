@@ -9,16 +9,20 @@
 radius = 11.0
 
 [node name="curseOfTheUndead" type="CharacterBody2D"]
-collision_layer = 0
-collision_mask = 0
+collision_layer = 16
+collision_mask = 102
+slide_on_ceiling = false
+platform_floor_layers = 4294967042
+platform_wall_layers = 32
 script = ExtResource("1_ib3qh")
 Life = 5000
-Durability = 1.0
+Durability = 3.0
 MaxDamage = 3
 MinDamage = 10
 DamageType = 2
 KnockbackForce = Vector2(2, -3)
-Speed = 500.0
+Speed = 300.0
+EnableBounce = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dgro2")

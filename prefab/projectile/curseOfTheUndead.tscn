@@ -28,7 +28,7 @@ shape = SubResource("CircleShape2D_dgro2")
 
 [node name="CollisionDetectionArea" type="Area2D" parent="."]
 collision_layer = 16
-collision_mask = 78
+collision_mask = 206
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionDetectionArea"]
 shape = SubResource("CircleShape2D_8117d")
