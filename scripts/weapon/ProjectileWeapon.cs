@@ -22,6 +22,18 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// </summary>
     private Marker2D? _marker2D;
 
+    /// <summary>
+    /// <para>Scattering radians</para>
+    /// <para>散射弧度</para>
+    /// </summary>
+    [Export] protected float OffsetAngle;
+    
+    /// <summary>
+    /// <para>The number of projectiles fired at once</para>
+    /// <para>一次可以发射多少个子弹</para>
+    /// </summary>
+    [Export] protected float NumberOfProjectiles = 1;
+
     [Export] protected PackedScene[] ProjectileScenes { get; set; } = [];
 
     /// <summary>
@@ -57,6 +69,24 @@ public partial class ProjectileWeapon : WeaponTemplate
         }
     }
 
+    /// <summary>
+    /// <para>GetRandomAngle</para>
+    /// <para>获取随机的偏移弧度</para>
+    /// </summary>
+    /// <returns></returns>
+    private float GetRandomAngle()
+    {
+        if (OffsetAngle == 0)
+        {
+            //If the offset angle is 0, then return 0
+            //弧度为0,不用偏移。
+            return 0;
+        }
+
+        var min = -OffsetAngle / 2;
+        return min + RandomUtils.Instance.NextSingle() * OffsetAngle;
+    }
+
 
     protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
@@ -89,21 +119,25 @@ public partial class ProjectileWeapon : WeaponTemplate
         //Get the first projectile
         //获取第一个抛射体
         var projectileScene = GetNextProjectileScene();
-        var projectile = NodeUtils.InstantiatePackedScene<Projectile>(projectileScene);
-        if (projectile == null) return;
-        if (Config.IsDebug())
+        for (int i = 0; i < NumberOfProjectiles; i++)
         {
-            var nodeSpawnOnKillCharacterDecorator = new NodeSpawnOnKillCharacterDecorator
+            var projectile = NodeUtils.InstantiatePackedScene<Projectile>(projectileScene);
+            if (projectile == null) return;
+            if (Config.IsDebug())
             {
-                DefaultParentNode = this,
-                PackedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
-            };
-            projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
-        }
+                var nodeSpawnOnKillCharacterDecorator = new NodeSpawnOnKillCharacterDecorator
+                {
+                    DefaultParentNode = this,
+                    PackedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
+                };
+                projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
+            }
 
-        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
-        projectile.Owner = owner;
-        projectile.Velocity = (enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed;
-        projectile.Position = _marker2D.GlobalPosition;
+            NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
+            projectile.Owner = owner;
+            projectile.Velocity =
+                ((enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed).Rotated(GetRandomAngle());
+            projectile.Position = _marker2D.GlobalPosition;
+        }
     }
 }

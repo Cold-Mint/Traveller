@@ -16,7 +16,10 @@ size = Vector2(49, 5.25)
 [node name="StaffOfTheUndead" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 34
+angular_damp = -1.0
 script = ExtResource("1_w8hhv")
+OffsetAngle = 0.523
+NumberOfProjectiles = 15.0
 ProjectileScenes = [ExtResource("2_34250"), ExtResource("3_hk5nr")]
 Sequentially = true
 FiringIntervalAsMillisecond = 300
