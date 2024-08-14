@@ -27,7 +27,19 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>散射弧度</para>
     /// </summary>
     [Export] protected float OffsetAngle;
-    
+
+    /// <summary>
+    /// <para>Offset angle mode</para>
+    /// <para>偏移角度模式</para>
+    /// </summary>
+    [Export] protected int OffsetAngleMode = Config.OffsetAngleMode.Random;
+
+    /// <summary>
+    /// <para>Whether the last offset angle is positive</para>
+    /// <para>上次的偏移角度是否为正向的</para>
+    /// </summary>
+    private bool _positiveOffsetAngle = true;
+
     /// <summary>
     /// <para>The number of projectiles fired at once</para>
     /// <para>一次可以发射多少个子弹</para>
@@ -69,6 +81,7 @@ public partial class ProjectileWeapon : WeaponTemplate
         }
     }
 
+
     /// <summary>
     /// <para>GetRandomAngle</para>
     /// <para>获取随机的偏移弧度</para>
@@ -81,6 +94,27 @@ public partial class ProjectileWeapon : WeaponTemplate
             //If the offset angle is 0, then return 0
             //弧度为0,不用偏移。
             return 0;
+        }
+
+        if (OffsetAngleMode == Config.OffsetAngleMode.Cross)
+        {
+            float result;
+            if (_positiveOffsetAngle)
+            {
+                result = -OffsetAngle / 2;
+            }
+            else
+            {
+                result = OffsetAngle / 2;
+            }
+
+            _positiveOffsetAngle = !_positiveOffsetAngle;
+            return result;
+        }
+
+        if (OffsetAngleMode == Config.OffsetAngleMode.AlwaysSame)
+        {
+            return OffsetAngle;
         }
 
         var min = -OffsetAngle / 2;
@@ -136,7 +170,8 @@ public partial class ProjectileWeapon : WeaponTemplate
             NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
             projectile.Owner = owner;
             projectile.Velocity =
-                ((enemyGlobalPosition - _marker2D.GlobalPosition).Normalized() * projectile.Speed).Rotated(GetRandomAngle());
+                (_marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed)
+                .Rotated(GetRandomAngle());
             projectile.Position = _marker2D.GlobalPosition;
         }
     }

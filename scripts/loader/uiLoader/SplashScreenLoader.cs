@@ -111,7 +111,10 @@ public partial class SplashScreenLoader : UiLoaderTemplate
             FriendInjury = true
         };
         CampManager.SetDefaultCamp(defaultCamp);
-        var mazoku = new Camp(Config.CampId.Mazoku);
+        var mazoku = new Camp(Config.CampId.Mazoku)
+        {
+            FriendInjury = true
+        };
         CampManager.AddCamp(mazoku);
         var aborigines = new Camp(Config.CampId.Aborigines);
         CampManager.AddCamp(aborigines);

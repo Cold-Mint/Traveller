@@ -341,7 +341,7 @@ public sealed partial class AiCharacter : CharacterTemplate
         if (NavigationAgent2D != null && IsOnFloor())
         {
             var nextPathPosition = NavigationAgent2D.GetNextPathPosition();
-            var direction = (nextPathPosition - GlobalPosition).Normalized();
+            var direction = GlobalPosition.DirectionTo(nextPathPosition);
             velocity = direction * Config.CellSize * Speed * ProtectedSpeedScale;
         }
     }

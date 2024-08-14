@@ -418,6 +418,30 @@ public static class Config
     public const int VerticalVelocityOfDamageNumbers = 5;
 
 
+    public static class OffsetAngleMode
+    {
+
+        /// <summary>
+        /// <para>Random(Default)</para>
+        /// <para>随机的（默认）</para>
+        /// </summary>
+        public const int Random = 0;
+        
+        /// <summary>
+        /// <para>AlwaysSame</para>
+        /// <para>永远不变的偏移角度</para>
+        /// </summary>
+        public const int AlwaysSame = 1;
+        
+        /// <summary>
+        /// <para>Cross</para>
+        /// <para>交叉变换</para>
+        /// </summary>
+        public const int Cross = 2;
+        
+      
+    }
+    
     /// <summary>
     /// <para>Physical collision layer number</para>
     /// <para>物理碰撞层 序号</para>

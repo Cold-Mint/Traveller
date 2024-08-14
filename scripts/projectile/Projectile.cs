@@ -61,6 +61,18 @@ public partial class Projectile : CharacterBody2D
     /// </summary>
     [Export] public bool IgnoreWall;
 
+    /// <summary>
+    /// <para>Enable the tracking of the enemy</para>
+    /// <para>启用追踪敌人的功能</para>
+    /// </summary>
+    [Export] public bool EnableTracking;
+
+    /// <summary>
+    /// <para>The target</para>
+    /// <para>设置目标</para>
+    /// </summary>
+    public Node2D? Target { get; set; }
+
     private List<IProjectileDecorator>? _projectileDecorators;
 
 
@@ -271,7 +283,23 @@ public partial class Projectile : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         var collisionInfo = MoveAndCollide(Velocity * (float)delta);
-        if (collisionInfo != null)
+        if (collisionInfo == null)
+        {
+            //No collision.
+            //没有撞到任何东西。
+            if (EnableTracking && Target != null)
+            {
+                //Track the target
+                //追踪目标
+                //Gets a vector of the projectile pointing at the enemy's position.
+                //得到抛射体指向敌人位置的向量。
+                var desiredVelocity = GlobalPosition.DirectionTo(Target.GlobalPosition) * Speed;
+                //The weight is smaller, the circle is larger.
+                //weight越小，子弹绕的圈越大。
+                Velocity = Velocity.Lerp(desiredVelocity, 0.1f);
+            }
+        }
+        else
         {
             //Bump into other objects.
             //撞到其他对象。
