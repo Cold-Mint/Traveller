@@ -9,7 +9,9 @@ namespace ColdMint.scripts.database;
 /// </summary>
 public class GameDbContext(DbContextOptions<GameDbContext> options) : DbContext(options)
 {
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public DbSet<ErrorRecord> ErrorRecords { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Async add error record</para>

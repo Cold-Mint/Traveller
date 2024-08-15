@@ -27,7 +27,7 @@ public partial class DamageNumber : CharacterBody2D
 
 	private bool _enableGravity;
 
-	public void SetVelocity(Vector2 velocity)
+	public new void SetVelocity(Vector2 velocity)
 	{
 		Velocity = velocity;
 		_enableGravity = true;

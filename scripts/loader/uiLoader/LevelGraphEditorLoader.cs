@@ -291,14 +291,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
 
                 if (_nodeBinding.TagLineEdit != null)
                 {
-                    if (_hasStartNode)
-                    {
-                        _nodeBinding.TagLineEdit.Text = string.Empty;
-                    }
-                    else
-                    {
-                        _nodeBinding.TagLineEdit.Text = Config.RoomDataTag.StartingRoom;
-                    }
+                    _nodeBinding.TagLineEdit.Text = _hasStartNode ? string.Empty : Config.RoomDataTag.StartingRoom;
                 }
 
                 if (_nodeBinding.HBoxContainer != null)
@@ -316,6 +309,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 {
                     return;
                 }
+
                 GetTree().ChangeSceneToPacked(_mainMenu);
             };
         }
@@ -534,11 +528,6 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         {
             foreach (var dictionary in connectionList)
             {
-                if (dictionary == null)
-                {
-                    continue;
-                }
-
                 var keys = dictionary.Keys;
                 if (keys.Count == 0)
                 {

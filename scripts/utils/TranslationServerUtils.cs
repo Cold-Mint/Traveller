@@ -29,6 +29,6 @@ public static class TranslationServerUtils
     /// <returns></returns>
     public static string? Translate(string? key)
     {
-        return TranslationServer.Translate(key);
+        return key == null ? null : TranslationServer.Translate(key);
     }
 }

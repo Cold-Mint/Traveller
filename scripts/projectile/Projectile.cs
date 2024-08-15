@@ -19,17 +19,17 @@ public partial class Projectile : CharacterBody2D
     /// <para>life(ms)</para>
     /// <para>子弹的存在时间(毫秒)</para>
     /// </summary>
-    [Export] public long Life;
+    [Export] private long _life;
 
     //The durability of the projectile
     //抛射体的耐久度
     //When the projectile hits the object, the durability will be reduced, and when the durability is less than or equal to 0, the projectile will be destroyed
     //当抛射体撞击到物体时，会减少耐久度，当耐久度小于等于0时，销毁抛射体
-    [Export] public double Durability;
+    [Export] private double _durability;
 
-    [Export] public int MaxDamage;
-    [Export] public int MinDamage;
-    [Export] public int DamageType;
+    [Export] private int _maxDamage;
+    [Export] private int _minDamage;
+    [Export] private int _damageType;
 
     /// <summary>
     /// <para>After this time destroy the projectile</para>
@@ -38,14 +38,14 @@ public partial class Projectile : CharacterBody2D
     private DateTime? _destructionTime;
 
     /// <summary>
-    /// <para>knockback</para>
+    /// <para>knockBack</para>
     /// <para>击退</para>
     /// </summary>
     /// <remarks>
     ///<para>How much force does it have when hitting the character? Unit: Number of cells，The X direction of the force is inferred automatically.</para>
     ///<para>当击中角色时带有多大的力？单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    [Export] public Vector2 KnockbackForce;
+    [Export] private Vector2 _knockBackForce;
 
     [Export] public float Speed;
 
@@ -53,25 +53,25 @@ public partial class Projectile : CharacterBody2D
     /// <para>Whether it bounces back after hitting an enemy or a wall</para>
     /// <para>是否撞到敌人或墙壁后反弹</para>
     /// </summary>
-    [Export] public bool EnableBounce;
+    [Export] private bool _enableBounce;
 
     /// <summary>
     /// <para>Can it penetrate the wall</para>
     /// <para>是否可以穿透墙壁</para>
     /// </summary>
-    [Export] public bool IgnoreWall;
+    [Export] private bool _ignoreWall;
 
     /// <summary>
     /// <para>Enable the tracking of the enemy</para>
     /// <para>启用追踪敌人的功能</para>
     /// </summary>
-    [Export] public bool EnableTracking;
+    [Export] private bool _enableTracking;
 
     /// <summary>
     /// <para>The target</para>
     /// <para>设置目标</para>
     /// </summary>
-    public Node2D? Target { get; set; }
+    private Node2D? Target { get; set; }
 
     private List<IProjectileDecorator>? _projectileDecorators;
 
@@ -86,14 +86,17 @@ public partial class Projectile : CharacterBody2D
     {
         //If the existence time is less than or equal to 0, then it is set to exist for 10 seconds, and projectiles that exist indefinitely are prohibited
         //如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
-        if (Life <= 0)
+        if (_life <= 0)
         {
-            Life = 10000;
+            _life = 10000;
         }
 
-        _destructionTime = DateTime.Now.AddMilliseconds(Life);
-        SetCollisionMaskValue(Config.LayerNumber.Wall, !IgnoreWall);
-        SetCollisionMaskValue(Config.LayerNumber.Floor, !IgnoreWall);
+        _destructionTime = DateTime.Now.AddMilliseconds(_life);
+        SetCollisionLayerValue(Config.LayerNumber.Projectile, true);
+        SetCollisionMaskValue(Config.LayerNumber.Wall, !_ignoreWall);
+        SetCollisionMaskValue(Config.LayerNumber.Floor, !_ignoreWall);
+        SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
@@ -189,12 +192,12 @@ public partial class Projectile : CharacterBody2D
             var damage = new Damage
             {
                 Attacker = owner,
-                MaxDamage = MaxDamage,
-                MinDamage = MinDamage
+                MaxDamage = _maxDamage,
+                MinDamage = _minDamage
             };
             damage.CreateDamage();
             damage.MoveLeft = Velocity.X < 0;
-            damage.Type = DamageType;
+            damage.Type = _damageType;
             var dead = characterTemplate.Damage(damage);
             if (dead)
             {
@@ -203,12 +206,12 @@ public partial class Projectile : CharacterBody2D
                 InvokeDecorators(decorator => { decorator.OnKillCharacter(owner, characterTemplate); });
             }
 
-            if (KnockbackForce != Vector2.Zero)
+            if (_knockBackForce != Vector2.Zero)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
                 var force = new Vector2();
-                var forceX = Math.Abs(KnockbackForce.X);
+                var forceX = Math.Abs(_knockBackForce.X);
                 if (Velocity.X < 0)
                 {
                     //Beat back to port
@@ -217,18 +220,18 @@ public partial class Projectile : CharacterBody2D
                 }
 
                 force.X = forceX * Config.CellSize;
-                force.Y = KnockbackForce.Y * Config.CellSize;
+                force.Y = _knockBackForce.Y * Config.CellSize;
                 characterTemplate.AddForce(force);
             }
         }
         else if (target is PickAbleTemplate pickAbleTemplate)
         {
-            if (KnockbackForce != Vector2.Zero)
+            if (_knockBackForce != Vector2.Zero)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
                 var force = new Vector2();
-                var forceX = Math.Abs(KnockbackForce.X);
+                var forceX = Math.Abs(_knockBackForce.X);
                 if (Velocity.X < 0)
                 {
                     //Beat back to port
@@ -237,7 +240,7 @@ public partial class Projectile : CharacterBody2D
                 }
 
                 force.X = forceX * Config.CellSize;
-                force.Y = KnockbackForce.Y * Config.CellSize;
+                force.Y = _knockBackForce.Y * Config.CellSize;
                 pickAbleTemplate.ApplyImpulse(force);
             }
         }
@@ -287,7 +290,7 @@ public partial class Projectile : CharacterBody2D
         {
             //No collision.
             //没有撞到任何东西。
-            if (EnableTracking && Target != null)
+            if (_enableTracking && Target != null)
             {
                 //Track the target
                 //追踪目标
@@ -303,7 +306,7 @@ public partial class Projectile : CharacterBody2D
         {
             //Bump into other objects.
             //撞到其他对象。
-            if (EnableBounce)
+            if (_enableBounce)
             {
                 Velocity = Velocity.Bounce(collisionInfo.GetNormal());
             }
@@ -323,8 +326,8 @@ public partial class Projectile : CharacterBody2D
             //请在Mask内配置子弹会和谁碰撞
             //When a bullet hits an object, its durability decreases
             //子弹撞击到物体时，耐久度减少
-            Durability--;
-            if (Durability <= 0)
+            _durability--;
+            if (_durability <= 0)
             {
                 //When the durability is less than or equal to 0, destroy the bullet
                 //当耐久度小于等于0时，销毁子弹
