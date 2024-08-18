@@ -36,11 +36,17 @@ public static class GameSceneNodeHolder
     }
 
     /// <summary>
+    /// <para>When the mouse enters the scope of a character, it is considered a target</para>
+    /// <para>鼠标进入到某个角色的范围内时，会将其视作目标</para>
+    /// </summary>
+    public static Node2D? TemporaryTargetNode { get; set; }
+
+    /// <summary>
     /// <para>ProjectileContainer</para>
     /// <para>抛射体容器</para>
     /// </summary>
     public static Node2D? ProjectileContainer { get; set; }
-    
+
     /// <summary>
     /// <para>WeaponContainer</para>
     /// <para>武器容器</para>
@@ -113,16 +119,14 @@ public static class GameSceneNodeHolder
 
         NodeUtils.ForEachNode<PacksackUi>(BackpackUiContainer, node =>
         {
-            
             //If the child node is not visible, the traversal continues.
             //如果子节点不可见，则继续遍历。
-            if (!node.Visible) 
+            if (!node.Visible)
                 return false;
             //Until you find a visible node, hide it, and return true, ending the loop.
             //直到找到可见的节点，隐藏该节点，然后返回true，结束遍历。
             node.Hide();
             return true;
-
         });
     }
 }

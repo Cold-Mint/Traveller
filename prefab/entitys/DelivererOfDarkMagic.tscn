@@ -99,3 +99,14 @@ collision_mask = 76
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScoutArea2D"]
 shape = SubResource("CircleShape2D_fowd5")
+
+[node name="TipLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -57.0
+offset_top = 57.0
+offset_right = 61.0
+offset_bottom = 82.0
+grow_horizontal = 2
+horizontal_alignment = 1

@@ -12,8 +12,3 @@ texture_under = ExtResource("1_sc0v3")
 texture_over = ExtResource("2_ay5vh")
 texture_progress = ExtResource("2_s0gle")
 script = ExtResource("4_84gre")
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0

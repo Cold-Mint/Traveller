@@ -169,6 +169,7 @@ public partial class ProjectileWeapon : WeaponTemplate
 
             NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
             projectile.Owner = owner;
+            projectile.TargetNode = GameSceneNodeHolder.TemporaryTargetNode;
             projectile.Velocity =
                 (_marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed)
                 .Rotated(GetRandomAngle());

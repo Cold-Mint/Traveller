@@ -68,10 +68,16 @@ public partial class Projectile : CharacterBody2D
     [Export] private bool _enableTracking;
 
     /// <summary>
+    /// <para>The target dies and destroys the projectile at the same time</para>
+    /// <para>在目标死亡后销毁抛射体</para>
+    /// </summary>
+    [Export]private bool _targetDiesDestroyProjectile;
+
+    /// <summary>
     /// <para>The target</para>
     /// <para>设置目标</para>
     /// </summary>
-    private Node2D? Target { get; set; }
+    public Node2D? TargetNode { get; set; }
 
     private List<IProjectileDecorator>? _projectileDecorators;
 
@@ -100,6 +106,19 @@ public partial class Projectile : CharacterBody2D
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
+        if (TargetNode != null)
+        {
+            TargetNode.TreeExiting += () =>
+            {
+                //Clear the trace when the target is destroyed.
+                //在目标被销毁的时候清空跟踪。
+                TargetNode = null;
+                if (_targetDiesDestroyProjectile)
+                {
+                    OnTimeOut();
+                }
+            };
+        }
     }
 
     /// <summary>
@@ -290,13 +309,13 @@ public partial class Projectile : CharacterBody2D
         {
             //No collision.
             //没有撞到任何东西。
-            if (_enableTracking && Target != null)
+            if (_enableTracking && TargetNode != null)
             {
                 //Track the target
                 //追踪目标
                 //Gets a vector of the projectile pointing at the enemy's position.
                 //得到抛射体指向敌人位置的向量。
-                var desiredVelocity = GlobalPosition.DirectionTo(Target.GlobalPosition) * Speed;
+                var desiredVelocity = GlobalPosition.DirectionTo(TargetNode.GlobalPosition) * Speed;
                 //The weight is smaller, the circle is larger.
                 //weight越小，子弹绕的圈越大。
                 Velocity = Velocity.Lerp(desiredVelocity, 0.1f);

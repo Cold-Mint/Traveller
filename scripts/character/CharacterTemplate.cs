@@ -178,6 +178,7 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export] public string LootListId { get; private set; } = "";
 
     private HealthBar? _healthBar;
+    private Label? _tipLabel;
     private DateTime _lastDamageTime;
 
     /// <summary>
@@ -291,6 +292,7 @@ public partial class CharacterTemplate : CharacterBody2D
         _animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _pickingArea = GetNode<Area2D>("Area2DPickingArea");
         _damageNumber = GetNode<Marker2D>("DamageNumber") as DamageNumberNodeSpawn;
+        _tipLabel = GetNodeOrNull<Label>("TipLabel");
         if (_pickingArea != null)
         {
             //If true, the zone will detect objects or areas entering and leaving the zone.
@@ -307,6 +309,52 @@ public partial class CharacterTemplate : CharacterBody2D
         //角色不能穿过墙壁和地板
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
+        InputPickable = true;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        if (GameSceneNodeHolder.TemporaryTargetNode == this)
+        {
+            GameSceneNodeHolder.TemporaryTargetNode = null;
+        }
+    }
+
+
+    private bool _mouseEntered;
+
+    public override void _InputEvent(Viewport viewport, InputEvent @event, int shapeIdx)
+    {
+        if (!_mouseEntered)
+        {
+            return;
+        }
+    }
+
+    public override void _MouseEnter()
+    {
+        _mouseEntered = true;
+        GameSceneNodeHolder.TemporaryTargetNode = this;
+        if (_tipLabel != null)
+        {
+            _tipLabel.Visible = true;
+            _tipLabel.Text = CharacterName;
+            //Vertical Centering Tip
+            //垂直居中提示
+            var oldPosition = _tipLabel.Position;
+            oldPosition.X = -_tipLabel.Size.X / 2;
+            _tipLabel.Position = oldPosition;
+        }
+    }
+
+    public override void _MouseExit()
+    {
+        _mouseEntered = false;
+        if (_tipLabel != null)
+        {
+            _tipLabel.Visible = false;
+        }
     }
 
     /// <summary>
