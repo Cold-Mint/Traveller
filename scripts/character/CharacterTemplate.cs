@@ -335,11 +335,22 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _MouseEnter()
     {
         _mouseEntered = true;
-        GameSceneNodeHolder.TemporaryTargetNode = this;
+        var canCauseHarm = false;
+        if (GameSceneNodeHolder.Player != null)
+        {
+            var targetCamp = CampManager.GetCamp(CampId);
+            var playerCamp = CampManager.GetCamp(GameSceneNodeHolder.Player.CampId);
+            canCauseHarm = CampManager.CanCauseHarm(targetCamp, playerCamp);
+            if (canCauseHarm)
+            {
+                GameSceneNodeHolder.TemporaryTargetNode = this;
+            }
+        }
+
         if (_tipLabel != null)
         {
             _tipLabel.Visible = true;
-            _tipLabel.Text = CharacterName;
+            _tipLabel.Text = canCauseHarm + CharacterName;
             //Vertical Centering Tip
             //垂直居中提示
             var oldPosition = _tipLabel.Position;

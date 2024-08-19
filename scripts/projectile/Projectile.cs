@@ -5,6 +5,7 @@ using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile.decorator;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -71,7 +72,7 @@ public partial class Projectile : CharacterBody2D
     /// <para>The target dies and destroys the projectile at the same time</para>
     /// <para>在目标死亡后销毁抛射体</para>
     /// </summary>
-    [Export]private bool _targetDiesDestroyProjectile;
+    [Export] private bool _targetDiesDestroyProjectile;
 
     /// <summary>
     /// <para>The target</para>
@@ -81,6 +82,11 @@ public partial class Projectile : CharacterBody2D
 
     private List<IProjectileDecorator>? _projectileDecorators;
 
+    /// <summary>
+    /// <para>Rays used to detect walls</para>
+    /// <para>用于检测墙壁的射线</para>
+    /// </summary>
+    private RayCast2D? _wallRayCast;
 
     /// <summary>
     /// <para>The master of the weapon</para>
@@ -90,6 +96,14 @@ public partial class Projectile : CharacterBody2D
 
     public override void _Ready()
     {
+        if (!_ignoreWall)
+        {
+            _wallRayCast = new RayCast2D();
+            _wallRayCast.SetCollisionMaskValue(Config.LayerNumber.Wall, true);
+            _wallRayCast.SetCollisionMaskValue(Config.LayerNumber.Floor, true);
+            NodeUtils.CallDeferredAddChild(this, _wallRayCast);
+        }
+
         //If the existence time is less than or equal to 0, then it is set to exist for 10 seconds, and projectiles that exist indefinitely are prohibited
         //如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
         if (_life <= 0)
@@ -315,10 +329,20 @@ public partial class Projectile : CharacterBody2D
                 //追踪目标
                 //Gets a vector of the projectile pointing at the enemy's position.
                 //得到抛射体指向敌人位置的向量。
-                var desiredVelocity = GlobalPosition.DirectionTo(TargetNode.GlobalPosition) * Speed;
+                var desiredVelocity = TargetNode.GlobalPosition - GlobalPosition;
+                if (!_ignoreWall && _wallRayCast != null)
+                {
+                    _wallRayCast!.TargetPosition = desiredVelocity;
+                    if (_wallRayCast.IsColliding())
+                    {
+                        return;
+                    }
+                }
+
+                var actualDesiredVelocity = desiredVelocity.Normalized() * Speed;
                 //The weight is smaller, the circle is larger.
                 //weight越小，子弹绕的圈越大。
-                Velocity = Velocity.Lerp(desiredVelocity, 0.1f);
+                Velocity = Velocity.Lerp(actualDesiredVelocity, 0.1f);
             }
         }
         else
