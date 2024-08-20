@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.damage;
@@ -17,8 +16,6 @@ namespace ColdMint.scripts.character;
 /// </summary>
 public partial class Player : CharacterTemplate
 {
-    private Control? _floatLabel;
-
     //Empty object projectile
     //空的物品抛射线
     private readonly Vector2[] _emptyVector2Array = [Vector2.Zero];
@@ -28,10 +25,6 @@ public partial class Player : CharacterTemplate
 
     //用于检测玩家是否站在平台上的射线
     private RayCast2D? _platformDetectionRayCast2D;
-
-
-    private const float PromptTextDistance = 50;
-
 
     //抛出物品的飞行速度
     private float _throwingVelocity = Config.CellSize * 13;
@@ -50,17 +43,6 @@ public partial class Player : CharacterTemplate
         CharacterName = TranslationServerUtils.Translate("default_player_name");
         LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, ReadOnlyCharacterName,
             GlobalPosition);
-        var floatLabelPackedScene = GD.Load<PackedScene>("res://prefab/ui/FloatLabel.tscn");
-        //Initializes the float label.
-        //初始化悬浮标签。
-        _floatLabel = NodeUtils.InstantiatePackedScene<Control>(floatLabelPackedScene);
-        if (_floatLabel == null)
-        {
-            throw new NullReferenceException(TranslationServer.Translate("float_label_instantiate_failed"));
-        }
-
-        _floatLabel.Hide();
-        NodeUtils.CallDeferredAddChild(this, _floatLabel);
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         UpdateOperationTip();
@@ -107,6 +89,14 @@ public partial class Player : CharacterTemplate
         {
             CurrentItem = null;
         }
+    }
+
+    public override void _MouseEnter()
+    {
+    }
+
+    public override void _MouseExit()
+    {
     }
 
     /// <summary>
@@ -243,8 +233,6 @@ public partial class Player : CharacterTemplate
                 {
                     PickingRangeBodiesList?.Remove(pickAbleItem);
                 }
-
-                RecycleFloatLabel();
             }
         }
 
@@ -430,46 +418,9 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        if (node is not Node2D node2D)
+        if (node is not Node2D)
         {
             return;
-        }
-
-        if (_floatLabel != null)
-        {
-            if (node is not PickAbleTemplate pickAbleTemplate)
-            {
-                return;
-            }
-
-            if (pickAbleTemplate.Picked)
-            {
-                //If the pickables are picked up, the label is not displayed.
-                //如果可拾捡物被捡起了，那么不显示标签。
-                LogCat.LogWarning("pickable_picked_up");
-                return;
-            }
-
-            NodeUtils.CallDeferredReparent(node, _floatLabel);
-            var rotationDegreesNode2D = node2D.RotationDegrees;
-            var rotationDegreesNode2DAbs = Math.Abs(rotationDegreesNode2D);
-            _floatLabel.GlobalPosition = node2D.GlobalPosition;
-            _floatLabel.Position = rotationDegreesNode2DAbs > 90
-                ? new Vector2(0, PromptTextDistance)
-                : new Vector2(0, -PromptTextDistance);
-            _floatLabel.RotationDegrees = 0 - rotationDegreesNode2D;
-            var label = _floatLabel.GetNode<Label>("Label");
-
-            var stringBuilder = new StringBuilder();
-            if (pickAbleTemplate.Owner is CharacterTemplate characterTemplate)
-            {
-                stringBuilder.Append(characterTemplate.ReadOnlyCharacterName);
-                stringBuilder.Append(TranslationServerUtils.Translate("de"));
-            }
-
-            stringBuilder.Append(TranslationServerUtils.Translate(pickAbleTemplate.Name));
-            label.Text = stringBuilder.ToString();
-            _floatLabel.Show();
         }
 
         UpdateOperationTip();
@@ -483,23 +434,7 @@ public partial class Player : CharacterTemplate
             return;
         }
 
-        RecycleFloatLabel();
         UpdateOperationTip();
-    }
-
-    /// <summary>
-    /// <para>Recycle Float Label</para>
-    /// <para>回收悬浮标签</para>
-    /// </summary>
-    private void RecycleFloatLabel()
-    {
-        if (_floatLabel == null)
-        {
-            return;
-        }
-
-        _floatLabel.Hide();
-        NodeUtils.CallDeferredReparent(this, _floatLabel);
     }
 
     protected override void OnHit(DamageTemplate damageTemplate)

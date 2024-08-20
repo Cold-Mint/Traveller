@@ -45,3 +45,9 @@ position = Vector2(65, 0)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Marker2D"]
 stream = ExtResource("4_ffr2k")
 bus = &"SoundEffect"
+
+[node name="TipLabel" type="Label" parent="."]
+offset_left = 6.0
+offset_top = 48.0
+offset_right = 46.0
+offset_bottom = 73.0

@@ -30,3 +30,8 @@ shape = SubResource("RectangleShape2D_xqyue")
 [node name="Packsack" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_l0fbh")
+
+[node name="TipLabel" type="Label" parent="."]
+offset_top = 31.0
+offset_right = 40.0
+offset_bottom = 56.0

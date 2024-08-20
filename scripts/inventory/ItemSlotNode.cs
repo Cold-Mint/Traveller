@@ -1,6 +1,8 @@
 using System;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
+using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -109,7 +111,7 @@ public partial class ItemSlotNode : MarginContainer
                 LogCat.Log("item_container_is_null");
                 return false;
             }
-            
+
             return packsack.ItemContainer.CanAddItem(_item);
         }
 
@@ -165,6 +167,11 @@ public partial class ItemSlotNode : MarginContainer
         }
 
         var duplicate = node2D.Duplicate();
+        if (node2D is PickAbleTemplate pickAbleTemplate)
+        {
+            pickAbleTemplate.CopyAttributes(duplicate);
+        }
+
         if (duplicate is not Node2D newNode2D)
         {
             return null;

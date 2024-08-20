@@ -77,6 +77,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; }
+    
+    private Label? _tipLabel;
 
     public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
@@ -87,6 +89,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         _damageArea2D = GetNode<Area2D>("DamageArea2D");
         _damageArea2D.BodyEntered += OnBodyEnter;
         _damageArea2D.BodyExited += OnBodyExited;
+        _tipLabel = GetNodeOrNull<Label>("TipLabel");
+        InputPickable = true;
     }
 
     private void OnBodyExited(Node node)
@@ -183,6 +187,35 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     }
 
 
+    public override void _MouseEnter()
+    {
+        if (Picked)
+        {
+            return;
+        }
+        if (_tipLabel == null)
+        {
+            return;
+        }
+        _tipLabel.Visible = true;
+        _tipLabel.Text = Name;
+        //Vertical Centering Tip
+        //垂直居中提示
+        var oldPosition = _tipLabel.Position;
+        oldPosition.X = -_tipLabel.Size.X / 2;
+        _tipLabel.Rotation = -Rotation;
+        _tipLabel.Position = oldPosition;
+    }
+
+    public override void _MouseExit()
+    {
+        if (_tipLabel == null)
+        {
+            return;
+        }
+        _tipLabel.Visible = false;
+    }
+
     /// <summary>
     /// <para>Flip item</para>
     /// <para>翻转物品</para>
@@ -190,6 +223,20 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="facingLeft"></param>
     public void Flip(bool facingLeft)
     {
+    }
+
+    /// <summary>
+    /// <para>Please copy node properties within this function</para>
+    /// <para>请在此函数内复制节点属性</para>
+    /// </summary>
+    /// <param name="node"></param>
+    public void CopyAttributes(Node node)
+    {
+        if (node is not PickAbleTemplate pickAbleTemplate)
+        {
+            return;
+        }
+        pickAbleTemplate.Id = Id;
     }
 
     public virtual void Destroy()

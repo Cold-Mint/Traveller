@@ -322,26 +322,15 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
 
-    private bool _mouseEntered;
-
-    public override void _InputEvent(Viewport viewport, InputEvent @event, int shapeIdx)
-    {
-        if (!_mouseEntered)
-        {
-            return;
-        }
-    }
+    
 
     public override void _MouseEnter()
     {
-        _mouseEntered = true;
-        var canCauseHarm = false;
         if (GameSceneNodeHolder.Player != null)
         {
             var targetCamp = CampManager.GetCamp(CampId);
             var playerCamp = CampManager.GetCamp(GameSceneNodeHolder.Player.CampId);
-            canCauseHarm = CampManager.CanCauseHarm(targetCamp, playerCamp);
-            if (canCauseHarm)
+            if (CampManager.CanCauseHarm(targetCamp, playerCamp))
             {
                 GameSceneNodeHolder.TemporaryTargetNode = this;
             }
@@ -350,7 +339,7 @@ public partial class CharacterTemplate : CharacterBody2D
         if (_tipLabel != null)
         {
             _tipLabel.Visible = true;
-            _tipLabel.Text = canCauseHarm + CharacterName;
+            _tipLabel.Text = CharacterName;
             //Vertical Centering Tip
             //垂直居中提示
             var oldPosition = _tipLabel.Position;
@@ -361,7 +350,6 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseExit()
     {
-        _mouseEntered = false;
         if (_tipLabel != null)
         {
             _tipLabel.Visible = false;
