@@ -3,7 +3,7 @@
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(669, 442)
+size = Vector2(664, 435)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o85u0"]
 size = Vector2(20, 48)
@@ -15,7 +15,7 @@ size = Vector2(22, 46)
 size = Vector2(11.875, 51)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1qloc"]
-vertices = PackedVector2Array(696, 425, 720, 425, 722, 467, 12, 470, 10, 426, 46, 424, 691, 84, 45, 48, 721, 44, 723, 80)
+vertices = PackedVector2Array(696.148, 425, 719.617, 425, 722.328, 467.047, 12.5391, 470.938, 10.4531, 426.43, 46.0312, 424.461, 690.859, 84.1562, 45.0234, 48.9219, 721.523, 44.0625, 723.5, 80.1875)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(0, 4, 5), PackedInt32Array(6, 0, 5, 7), PackedInt32Array(6, 7, 8, 9)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(35, 39, 36, 415, 0, 417, 3, 481, 733, 477, 729, 415, 706, 415, 701, 93, 734, 89, 731, 34)])
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -26,7 +26,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(367.5, 256)
+position = Vector2(370, 259.5)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]

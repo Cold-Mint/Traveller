@@ -38,16 +38,6 @@ public partial class Projectile : CharacterBody2D
     /// </summary>
     private DateTime? _destructionTime;
 
-    /// <summary>
-    /// <para>knockBack</para>
-    /// <para>击退</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>How much force does it have when hitting the character? Unit: Number of cells，The X direction of the force is inferred automatically.</para>
-    ///<para>当击中角色时带有多大的力？单位：格数，力的X方向是自动推断的。</para>
-    /// </remarks>
-    [Export] private Vector2 _knockBackForce;
-
     [Export] public float Speed;
 
     /// <summary>
@@ -89,6 +79,16 @@ public partial class Projectile : CharacterBody2D
     private RayCast2D? _wallRayCast;
 
     /// <summary>
+    /// <para>Repel strength</para>
+    /// <para>击退强度</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Must be greater than 0, the unit is in format.</para>
+    ///<para>必须大于0,单位为格式。</para>
+    /// </remarks>
+    [Export] private float _repelStrength;
+
+    /// <summary>
     /// <para>The master of the weapon</para>
     /// <para>武器的主人</para>
     /// </summary>
@@ -117,6 +117,7 @@ public partial class Projectile : CharacterBody2D
         SetCollisionMaskValue(Config.LayerNumber.Floor, !_ignoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
+        SetCollisionMaskValue(Config.LayerNumber.PickAbleItem, true);
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
@@ -239,42 +240,24 @@ public partial class Projectile : CharacterBody2D
                 InvokeDecorators(decorator => { decorator.OnKillCharacter(owner, characterTemplate); });
             }
 
-            if (_knockBackForce != Vector2.Zero)
+            if (_repelStrength > 0)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
-                var force = new Vector2();
-                var forceX = Math.Abs(_knockBackForce.X);
-                if (Velocity.X < 0)
-                {
-                    //Beat back to port
-                    //向左击退
-                    forceX = -forceX;
-                }
-
-                force.X = forceX * Config.CellSize;
-                force.Y = _knockBackForce.Y * Config.CellSize;
-                characterTemplate.AddForce(force);
+                var normalized = Velocity.Normalized();
+                characterTemplate.AddForce(new Vector2(normalized.X * _repelStrength * Config.CellSize,
+                    normalized.Y * _repelStrength * Config.CellSize));
             }
         }
         else if (target is PickAbleTemplate pickAbleTemplate)
         {
-            if (_knockBackForce != Vector2.Zero)
+            if (_repelStrength > 0)
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
-                var force = new Vector2();
-                var forceX = Math.Abs(_knockBackForce.X);
-                if (Velocity.X < 0)
-                {
-                    //Beat back to port
-                    //向左击退
-                    forceX = -forceX;
-                }
-
-                force.X = forceX * Config.CellSize;
-                force.Y = _knockBackForce.Y * Config.CellSize;
-                pickAbleTemplate.ApplyImpulse(force);
+                var normalized = Velocity.Normalized();
+                pickAbleTemplate.ApplyImpulse(new Vector2(normalized.X * _repelStrength * Config.CellSize,
+                    normalized.Y * _repelStrength * Config.CellSize));
             }
         }
     }

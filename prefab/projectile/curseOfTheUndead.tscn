@@ -14,10 +14,10 @@ _durability = 1.0
 _maxDamage = 10
 _minDamage = 1
 _damageType = 2
-_knockBackForce = Vector2(0, 1)
 Speed = 500.0
 _enableTracking = true
 _targetDiesDestroyProjectile = true
+_repelStrength = 2.5
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]
 texture = ExtResource("1_k8el6")

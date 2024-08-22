@@ -11,9 +11,9 @@ size = Vector2(450, 191)
 size = Vector2(18, 57.75)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_064c7"]
-vertices = PackedVector2Array(468, 174, 500, 174, 499, 214, 41, 214, 45, 45, 468, 45)
+vertices = PackedVector2Array(467.773, 174, 499.828, 174, 499.156, 214.969, 40.9375, 214.023, 40.0469, 41.0625, 470.758, 43.9297)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(35, 35, 31, 224, 509, 225, 510, 164, 478, 164, 478, 35)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(30, 31, 31, 224, 509, 225, 510, 164, 478, 164, 481, 34)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="InitialRoom" type="Node2D"]

@@ -16,8 +16,8 @@ size = Vector2(46, 20)
 size = Vector2(20, 54)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_db40i"]
-vertices = PackedVector2Array(499, 108, 501, 150, 246, 149, 471, 108, 12, 149, 11, 107, 41, 107, 203, 149, 245, 180, 203, 178, 43, 43, 470, 44)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(2, 8, 9, 7), PackedInt32Array(10, 11, 3, 2, 7, 6)])
+vertices = PackedVector2Array(499.461, 108, 501.5, 150.906, 246.312, 148.922, 471.156, 108, 245.312, 180.508, 203, 178.469, 203, 149, 11.8438, 149, 11.1562, 107.656, 40.5625, 106.688, 43.5391, 43.0391, 470.148, 44.9531)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 4, 5, 6), PackedInt32Array(7, 8, 9, 6), PackedInt32Array(10, 11, 3, 2, 6, 9)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(34, 33, 31, 97, 1, 98, 2, 159, 193, 159, 193, 188, 255, 191, 256, 159, 512, 161, 509, 98, 481, 98, 480, 35)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 

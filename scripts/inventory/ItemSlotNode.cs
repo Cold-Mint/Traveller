@@ -2,7 +2,6 @@ using System;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
-using ColdMint.scripts.weapon;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
