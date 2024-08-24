@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://b0uurp551pku"]
+[gd_scene load_steps=9 format=4 uid="uid://b0uurp551pku"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_a15hy"]
 [ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="2_wamhd"]
+[ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="3_0mlbb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(443, 118)
+size = Vector2(505, 186)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o85u0"]
 size = Vector2(20, 48)
@@ -27,7 +28,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(256.5, 95)
+position = Vector2(255.5, 97)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
@@ -74,3 +75,9 @@ tile_set = ExtResource("1_a15hy")
 use_parent_material = true
 tile_map_data = PackedByteArray("AAAAAAAAAQAAAAMAAAAAAAEAAQACAAEAAAAAAAIAAQACAAEAAAABAAAAAQABAAIAAAACAAAAAQABAAIAAAADAAAAAQABAAIAAAAEAAAAAQABAAIAAAAHAAAAAQABAAIAAAAIAAAAAQABAAIAAAAJAAAAAQABAAIAAAAKAAAAAQABAAIAAAALAAAAAQABAAIAAAAMAAAAAQABAAIAAAANAAAAAQABAAIAAAAOAAAAAQABAAMAAAAPAAAAAQACAAMAAAAPAAEAAQACAAQAAAAPAAIAAQACAAQAAAABAAUAAQABAAAAAAACAAUAAQABAAAAAAADAAUAAQABAAAAAAAEAAUAAQABAAAAAAAFAAUAAQABAAAAAAAGAAUAAQABAAAAAAAHAAUAAQABAAAAAAAIAAUAAQABAAAAAAAJAAUAAQABAAAAAAAKAAUAAQABAAAAAAALAAUAAQABAAAAAAAMAAUAAQABAAAAAAANAAUAAQABAAAAAAAOAAUAAQABAAAAAAAAAAUAAQAAAAUAAAAPAAUAAQACAAUAAAAFAAAAAQAEAAQAAAAGAAAAAQAEAAQAAAA=")
 tile_set = ExtResource("1_a15hy")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(256, 96.5)
+scale = Vector2(15.875, 5.96875)
+texture = ExtResource("3_0mlbb")

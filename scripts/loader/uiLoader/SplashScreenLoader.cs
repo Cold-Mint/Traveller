@@ -82,6 +82,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Disable all logs in the release version.
         //在发行版禁用所有日志。
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
+        AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());

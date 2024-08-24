@@ -23,6 +23,7 @@ public class Room
     private List<TileMapLayer>? _tileMapLayers;
 
     private Area2D? _area2D;
+    private PointLight2D? _pointLight2D;
     private CollisionShape2D? _collisionShape2D;
 
     public string? EnterRoomEventHandlerId { get; set; }
@@ -59,6 +60,14 @@ public class Room
                 _rootNode.Name);
         }
 
+        if (_pointLight2D != null && GameSceneNodeHolder.Player != null && node == GameSceneNodeHolder.Player)
+        {
+            //The player enters the room, opening up their view.
+            //玩家进入了房间，开放视野。
+            _pointLight2D.Show();
+            _pointLight2D.Texture = AssetHolder.White100;
+        }
+
         if (string.IsNullOrEmpty(EnterRoomEventHandlerId))
         {
             return;
@@ -67,6 +76,7 @@ public class Room
         var enterRoomEventHandler = RoomEventManager.GetEnterRoomEventHandler(EnterRoomEventHandlerId);
         enterRoomEventHandler?.OnEnterRoom(node, this);
     }
+
 
     /// <summary>
     /// <para>When a node exits the room</para>
@@ -79,6 +89,14 @@ public class Room
         {
             LogCat.LogWithFormat("exit_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, node.Name,
                 _rootNode.Name);
+        }
+
+        if (_pointLight2D != null && GameSceneNodeHolder.Player != null && node == GameSceneNodeHolder.Player)
+        {
+            //The player enters the room, opening up their view.
+            //玩家进入了房间，开放视野。
+            _pointLight2D.Show();
+            _pointLight2D.Texture = AssetHolder.White25;
         }
 
         if (string.IsNullOrEmpty(ExitRoomEventHandlerId))
@@ -153,6 +171,7 @@ public class Room
         _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
         _roomSlots = GetRoomSlots(GetTileMapLayer(Config.TileMapLayerName.Ground), _area2D,
             node2D.GetNode<Node2D>("RoomSlotList"));
+        _pointLight2D = node2D.GetNodeOrNull<PointLight2D>("PointLight2D");
     }
 
     public Node2D? RootNode => _rootNode;

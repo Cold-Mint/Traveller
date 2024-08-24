@@ -112,7 +112,6 @@ public partial class Projectile : CharacterBody2D
         }
 
         _destructionTime = DateTime.Now.AddMilliseconds(_life);
-        SetCollisionLayerValue(Config.LayerNumber.Projectile, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, !_ignoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Floor, !_ignoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Player, true);

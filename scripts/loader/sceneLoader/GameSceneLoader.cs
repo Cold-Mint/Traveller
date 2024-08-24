@@ -19,6 +19,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
 
     public override Task InitializeData()
     {
+        RenderingServer.SetDefaultClearColor(Color.FromHsv(0, 0, 0));
         //Loading the blood bar scene
         //加载血条场景
         var healthBarUi = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");

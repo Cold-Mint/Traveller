@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=8 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
+[ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="5_4pssd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(450, 191)
+size = Vector2(507, 251)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(18, 57.75)
@@ -21,7 +22,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [node name="RoomArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(253, 130.5)
+position = Vector2(254.5, 129.5)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
@@ -63,3 +64,9 @@ tile_set = ExtResource("1_rn2om")
 use_parent_material = true
 tile_map_data = PackedByteArray("AAAAAAAAAQAAAAMAAAAAAAEAAQACAAEAAAAAAAIAAQACAAEAAAAAAAMAAQACAAEAAAAAAAQAAQACAAEAAAAAAAcAAQAAAAUAAAAPAAAAAQACAAMAAAAPAAEAAQACAAQAAAAPAAIAAQACAAQAAAAPAAMAAQACAAQAAAAPAAQAAQACAAQAAAAPAAcAAQACAAUAAAAAAAUAAQACAAEAAAAAAAYAAQACAAEAAAABAAAAAQABAAIAAAACAAAAAQABAAIAAAADAAAAAQABAAIAAAAEAAAAAQABAAIAAAAFAAAAAQABAAIAAAAGAAAAAQABAAIAAAAHAAAAAQABAAIAAAAIAAAAAQABAAIAAAAJAAAAAQABAAIAAAAKAAAAAQABAAIAAAALAAAAAQABAAIAAAAMAAAAAQABAAIAAAANAAAAAQABAAIAAAAOAAAAAQABAAMAAAABAAcAAQABAAAAAAACAAcAAQABAAAAAAADAAcAAQABAAAAAAAEAAcAAQABAAAAAAAFAAcAAQABAAAAAAAGAAcAAQABAAAAAAAHAAcAAQABAAAAAAAIAAcAAQABAAAAAAAJAAcAAQABAAAAAAAKAAcAAQABAAAAAAALAAcAAQABAAAAAAAMAAcAAQABAAAAAAANAAcAAQABAAAAAAAOAAcAAQABAAAAAAA=")
 tile_set = ExtResource("1_rn2om")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(259.5, 128.5)
+scale = Vector2(16.0312, 7.96875)
+texture = ExtResource("5_4pssd")

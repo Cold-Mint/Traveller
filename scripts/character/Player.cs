@@ -52,6 +52,15 @@ public partial class Player : CharacterTemplate
             healthBarUi.MaxHp = MaxHp;
             healthBarUi.CurrentHp = CurrentHp;
         }
+
+        //Mount the camera.
+        //挂载相机。
+        var mainCameraPackedScene = GD.Load<PackedScene>("res://prefab/MainCamera.tscn");
+        var camera2D = NodeUtils.InstantiatePackedScene<Camera2D>(mainCameraPackedScene);
+        if (camera2D != null)
+        {
+            NodeUtils.CallDeferredAddChild(this, camera2D);
+        }
     }
 
     protected override void WhenBindItemContainer(IItemContainer? itemContainer)
