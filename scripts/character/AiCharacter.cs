@@ -62,9 +62,6 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// </remarks>
     private RayCast2D? _attackObstacleDetection;
 
-
-    private VisibleOnScreenEnabler2D? _screenEnabler2D;
-
     /// <summary>
     /// <para>Navigation agent</para>
     /// <para>导航代理</para>
@@ -118,22 +115,9 @@ public sealed partial class AiCharacter : CharacterTemplate
     {
         base._Ready();
 
-        _enemyInTheAttackRange = new List<CharacterTemplate>();
-        _enemyInTheScoutRange = new List<CharacterTemplate>();
-        _weaponInTheScoutRange = new List<WeaponTemplate>();
-        _screenEnabler2D = GetNode<VisibleOnScreenEnabler2D>("VisibleOnScreenEnabler2D");
-        _screenEnabler2D.ScreenEntered += () =>
-        {
-            //When the character enters the screen.
-            //当角色进入屏幕。
-            ProcessMode = ProcessModeEnum.Disabled;
-        };
-        _screenEnabler2D.ScreenExited += () =>
-        {
-            //When the character leaves the screen.
-            //当角色离开屏幕。
-            ProcessMode = ProcessModeEnum.Inherit;
-        };
+        _enemyInTheAttackRange = [];
+        _enemyInTheScoutRange = [];
+        _weaponInTheScoutRange = [];
         _bubbleMarker = GetNode<BubbleMarker>("BubbleMarker");
         if (_bubbleMarker != null)
         {

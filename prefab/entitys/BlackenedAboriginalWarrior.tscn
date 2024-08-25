@@ -88,10 +88,6 @@ shape = SubResource("CircleShape2D_c61vr")
 position = Vector2(0, -79)
 script = ExtResource("5_y2fh5")
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-position = Vector2(0, 5.5)
-scale = Vector2(2.04, 3.05)
-
 [node name="ScoutArea2D" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 76

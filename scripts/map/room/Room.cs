@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.utils;
@@ -25,6 +26,8 @@ public class Room
     private Area2D? _area2D;
     private PointLight2D? _pointLight2D;
     private CollisionShape2D? _collisionShape2D;
+    private bool _hasPlayer;
+    private readonly List<CharacterTemplate> _characterTemplateList = [];
 
     public string? EnterRoomEventHandlerId { get; set; }
 
@@ -48,6 +51,34 @@ public class Room
     }
 
     /// <summary>
+    /// <para>ShowAllCharacterTemplate</para>
+    /// <para>显示所有角色模板</para>
+    /// </summary>
+    private void ShowAllCharacterTemplate()
+    {
+        LogCat.LogWithFormat("show_all_node", LogCat.LogLabel.Room, LogCat.UploadFormat,
+            _characterTemplateList.Count);
+        foreach (var characterTemplate in _characterTemplateList)
+        {
+            characterTemplate.Show();
+        }
+    }
+
+    /// <summary>
+    /// <para>HideAllCharacterTemplate</para>
+    /// <para>隐藏所有角色模板</para>
+    /// </summary>
+    private void HideAllCharacterTemplate()
+    {
+        LogCat.LogWithFormat("hide_all_node", LogCat.LogLabel.Room, LogCat.UploadFormat,
+            _characterTemplateList.Count);
+        foreach (var characterTemplate in _characterTemplateList)
+        {
+            characterTemplate.Hide();
+        }
+    }
+
+    /// <summary>
     /// <para>When a node enters the room</para>
     /// <para>当有节点进入房间时</para>
     /// </summary>
@@ -60,12 +91,31 @@ public class Room
                 _rootNode.Name);
         }
 
-        if (_pointLight2D != null && GameSceneNodeHolder.Player != null && node == GameSceneNodeHolder.Player)
+        if (node is Player player)
         {
+            _characterTemplateList.Add(player);
+            _hasPlayer = true;
             //The player enters the room, opening up their view.
             //玩家进入了房间，开放视野。
-            _pointLight2D.Show();
-            _pointLight2D.Texture = AssetHolder.White100;
+            if (_pointLight2D != null)
+            {
+                _pointLight2D.Show();
+                _pointLight2D.Texture = AssetHolder.White100;
+            }
+
+            ShowAllCharacterTemplate();
+        }else if (node is CharacterTemplate characterTemplate)
+        {
+            if (_hasPlayer)
+            {
+                characterTemplate.Show();
+            }
+            else
+            {
+                characterTemplate.Hide();
+            }
+
+            _characterTemplateList.Add(characterTemplate);
         }
 
         if (string.IsNullOrEmpty(EnterRoomEventHandlerId))
@@ -91,12 +141,24 @@ public class Room
                 _rootNode.Name);
         }
 
-        if (_pointLight2D != null && GameSceneNodeHolder.Player != null && node == GameSceneNodeHolder.Player)
+
+        if (node is Player player)
         {
-            //The player enters the room, opening up their view.
-            //玩家进入了房间，开放视野。
-            _pointLight2D.Show();
-            _pointLight2D.Texture = AssetHolder.White25;
+            //The player leaves the room, hiding the view.
+            //玩家离开了房间，隐藏视野。
+            _characterTemplateList.Remove(player);
+            _hasPlayer = false;
+            if (_pointLight2D != null)
+            {
+                _pointLight2D.Show();
+                _pointLight2D.Texture = AssetHolder.White25;
+            }
+
+            HideAllCharacterTemplate();
+        }
+        else if (node is CharacterTemplate characterTemplate && characterTemplate.Visible)
+        {
+            _characterTemplateList.Remove(characterTemplate);
         }
 
         if (string.IsNullOrEmpty(ExitRoomEventHandlerId))
@@ -166,12 +228,17 @@ public class Room
         //Sets the collision layer that can be detected in the current room area.
         //设置当前房间区域可检测到的碰撞层。
         _area2D.SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        _area2D.SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         _area2D.BodyExited += OnExitRoom;
         _area2D.BodyEntered += OnEnterRoom;
         _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
         _roomSlots = GetRoomSlots(GetTileMapLayer(Config.TileMapLayerName.Ground), _area2D,
             node2D.GetNode<Node2D>("RoomSlotList"));
         _pointLight2D = node2D.GetNodeOrNull<PointLight2D>("PointLight2D");
+        if (_pointLight2D != null)
+        {
+            _pointLight2D.BlendMode = Light2D.BlendModeEnum.Mix;
+        }
     }
 
     public Node2D? RootNode => _rootNode;

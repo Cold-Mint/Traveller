@@ -44,7 +44,7 @@ position = Vector2(0, 4)
 shape = SubResource("CapsuleShape2D_bb8wt")
 
 [node name="Area2DPickingArea" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 64
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2DPickingArea"]
@@ -88,10 +88,6 @@ shape = SubResource("CircleShape2D_c61vr")
 [node name="BubbleMarker" type="Marker2D" parent="."]
 position = Vector2(0, -79)
 script = ExtResource("5_y2fh5")
-
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-position = Vector2(0, 5.5)
-scale = Vector2(2.04, 3.05)
 
 [node name="ScoutArea2D" type="Area2D" parent="."]
 collision_layer = 0

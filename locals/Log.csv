@@ -114,3 +114,7 @@ log_item_pickup_disables_collision_damage,物品捡起禁用碰撞伤害。,Item
 log_item_thrown_restore_collision_damage,物品扔出恢复碰撞伤害。,Item Throw restores collision damage.,アイテム投げは衝突ダメージを回復する。
 log_after_no_longer_in_contact_with_any_tiles,不再与任何瓦片接触后，可以造成伤害。,"After no longer coming into contact with any tiles, it can cause damage",タイルと接触しなくなった後、損傷を引き起こす可能性があります。
 log_contact_with_tiles_disables_damage,与瓦片接触禁用伤害。,"Disabling damage on contact with tiles",タイルとの接触によるダメージの無効化
+log_hide_all_node,隐藏{0}个节点。,Hide {0} nodes.,{0}ノードを非表示にします。
+log_show_all_node,显示{0}个节点。,Show {0} nodes.,{0}ノードが表示されます。
+log_enter_the_screen,进入屏幕。,Enter screen,画面に移動。
+log_exit_the_screen,退出屏幕。,Exit screen,画面を終了します。

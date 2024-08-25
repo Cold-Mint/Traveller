@@ -392,6 +392,8 @@ public partial class Player : CharacterTemplate
             //将Hp设置为当前Hp的目的是，使生命条刷新。
             healthBarUi.CurrentHp = CurrentHp;
         }
+        ProcessMode = ProcessModeEnum.Inherit;
+        Show();
     }
 
     /// <summary>
