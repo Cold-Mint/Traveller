@@ -7,6 +7,7 @@ using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.interfaces;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
+using ColdMint.scripts.map.preview;
 using ColdMint.scripts.map.room;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
@@ -338,6 +339,18 @@ public static class MapGenerator
         dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
         LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId,
             roomPlacementData.Position.ToString());
+        //Create a room preview image.
+        //创建房间预览图。
+        var rootNode = roomPlacementData.NewRoom.RootNode;
+        var image = RoomPreview.CreateImage(roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground));
+        if (rootNode != null && image != null)
+        {
+            var sprite = new Sprite2D();
+            sprite.Scale = new Vector2(10, 10);
+            sprite.Texture = image;
+            NodeUtils.CallDeferredAddChild(rootNode, sprite);
+        }
+
         return true;
     }
 }
