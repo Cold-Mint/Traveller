@@ -21,6 +21,7 @@ OffsetAngle = 0.087
 ProjectileScenes = [ExtResource("2_mwli5")]
 Sequentially = true
 FiringIntervalAsMillisecond = 300
+_recoilStrength = 5
 UniqueIcon = ExtResource("3_31iau")
 
 [node name="DamageArea2D" type="Area2D" parent="."]

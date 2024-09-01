@@ -18,7 +18,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// <para>开火音效播放组件</para>
     /// </summary>
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
-    
+
     public override void _Ready()
     {
         base._Ready();
@@ -38,8 +38,11 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// <para>开火间隔</para>
     /// </summary>
     private TimeSpan _firingInterval;
+
     private long _firingIntervalAsMillisecond = 100;
-    [Export] protected long FiringIntervalAsMillisecond
+
+    [Export]
+    protected long FiringIntervalAsMillisecond
     {
         get => _firingIntervalAsMillisecond;
         set
@@ -58,7 +61,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     ///<para>When the weapon is fired, how much recoil is applied to the user, in units: the number of cells, and the X direction of the force is automatically inferred.</para>
     ///<para>武器开火，要对使用者施加多大的后坐力，单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    [Export] private Vector2 _recoil;
+    [Export] private long _recoilStrength;
 
     /// <summary>
     /// <para>Discharge of the weapon</para>
@@ -88,19 +91,9 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
         {
             //We check the recoil of the weapon before each firing.
             //我们在每次开火之前，检查武器的后坐力。
-            if (_recoil != Vector2.Zero)
+            if (_recoilStrength != 0)
             {
-                var force = new Vector2();
-                var forceX = Math.Abs(_recoil.X);
-                if (Math.Abs(RotationDegrees) < 90)
-                {
-                    //The weapon goes to the right, and we apply a recoil to the left
-                    //武器朝向右边我们向左施加后坐力
-                    forceX = -forceX;
-                }
-
-                force.X = forceX * Config.CellSize;
-                force.Y = _recoil.Y * Config.CellSize;
+                var force = -characterTemplate.GlobalPosition.DirectionTo(enemyGlobalPosition) * _recoilStrength * Config.CellSize;
                 characterTemplate.AddForce(force);
             }
         }
