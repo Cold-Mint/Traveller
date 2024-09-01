@@ -60,7 +60,7 @@ public static class RoomPreview
         //填充像素点
         foreach (var vector2I in cellsArray)
         {
-            image.SetPixel(vector2I.X + offsetVector2.X, vector2I.Y + offsetVector2.Y, new Color(100, 221, 23));
+            image.SetPixel(vector2I.X + offsetVector2.X, vector2I.Y + offsetVector2.Y, Colors.Blue);
         }
 
         //Create texture.

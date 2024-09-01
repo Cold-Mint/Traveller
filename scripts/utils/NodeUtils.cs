@@ -225,29 +225,29 @@ public static class NodeUtils
     /// <returns></returns>
     public static Node FindContainerNode(Node childNode, Node defaultParentNode)
     {
-        if (GameSceneNodeHolder.AiCharacterContainer!= null && childNode is AiCharacter)
+        if (GameSceneDepend.AiCharacterContainer!= null && childNode is AiCharacter)
         {
-            return GameSceneNodeHolder.AiCharacterContainer;
+            return GameSceneDepend.AiCharacterContainer;
         }
         
-        if (GameSceneNodeHolder.ProjectileContainer != null && childNode is Projectile)
+        if (GameSceneDepend.ProjectileContainer != null && childNode is Projectile)
         {
-            return GameSceneNodeHolder.ProjectileContainer;
+            return GameSceneDepend.ProjectileContainer;
         }
 
-        if (GameSceneNodeHolder.WeaponContainer != null && childNode is WeaponTemplate)
+        if (GameSceneDepend.WeaponContainer != null && childNode is WeaponTemplate)
         {
-            return GameSceneNodeHolder.WeaponContainer;
+            return GameSceneDepend.WeaponContainer;
         }
 
-        if (GameSceneNodeHolder.PacksackContainer != null && childNode is Packsack)
+        if (GameSceneDepend.PacksackContainer != null && childNode is Packsack)
         {
-            return GameSceneNodeHolder.PacksackContainer;
+            return GameSceneDepend.PacksackContainer;
         }
 
-        if (GameSceneNodeHolder.BackpackUiContainer != null && childNode is PacksackUi)
+        if (GameSceneDepend.BackpackUiContainer != null && childNode is PacksackUi)
         {
-            return GameSceneNodeHolder.BackpackUiContainer;
+            return GameSceneDepend.BackpackUiContainer;
         }
 
         return defaultParentNode;

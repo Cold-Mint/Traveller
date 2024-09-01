@@ -315,9 +315,9 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _ExitTree()
     {
         base._ExitTree();
-        if (GameSceneNodeHolder.TemporaryTargetNode == this)
+        if (GameSceneDepend.TemporaryTargetNode == this)
         {
-            GameSceneNodeHolder.TemporaryTargetNode = null;
+            GameSceneDepend.TemporaryTargetNode = null;
         }
     }
 
@@ -326,13 +326,13 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseEnter()
     {
-        if (GameSceneNodeHolder.Player != null)
+        if (GameSceneDepend.Player != null)
         {
             var targetCamp = CampManager.GetCamp(CampId);
-            var playerCamp = CampManager.GetCamp(GameSceneNodeHolder.Player.CampId);
+            var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
             if (CampManager.CanCauseHarm(targetCamp, playerCamp))
             {
-                GameSceneNodeHolder.TemporaryTargetNode = this;
+                GameSceneDepend.TemporaryTargetNode = this;
             }
         }
 
@@ -511,7 +511,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        if (GameSceneNodeHolder.Player == null)
+        if (GameSceneDepend.Player == null)
         {
             //We didn't know who the player was, so we showed it as a hostile color
             //我们不知道玩家是谁，所以我们将其显示为敌对颜色
@@ -522,7 +522,7 @@ public partial class CharacterTemplate : CharacterBody2D
             //If we set up a player node, then compare the injured party ID to the player's party ID
             //如果我们设置了玩家节点，那么将受伤者的阵营ID与玩家的阵营ID进行比较
             var targetCamp = CampManager.GetCamp(CampId);
-            var playerCamp = CampManager.GetCamp(GameSceneNodeHolder.Player.CampId);
+            var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
             if (CampManager.CanCauseHarm(targetCamp, playerCamp))
             {
                 if (targetCamp != null && playerCamp != null)
@@ -618,6 +618,10 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="force"></param>
     public void AddForce(Vector2 force)
     {
+        if (_additionalForce != Vector2.Zero)
+        {
+            throw new InvalidOperationException("AddForce called more than once");
+        }
         _additionalForce = force;
     }
 
@@ -792,7 +796,7 @@ public partial class CharacterTemplate : CharacterBody2D
         switch (item)
         {
             case PickAbleTemplate pickAbleTemplate:
-                if (GameSceneNodeHolder.WeaponContainer == null)
+                if (GameSceneDepend.WeaponContainer == null)
                 {
                     return;
                 }

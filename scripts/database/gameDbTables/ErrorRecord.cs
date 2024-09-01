@@ -15,7 +15,9 @@ public class ErrorRecord
     /// </summary>
     [Key]
     [MaxLength(255)]
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Message { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
 
     /// <summary>
     /// <para>Count</para>

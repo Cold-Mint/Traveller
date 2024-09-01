@@ -46,7 +46,7 @@ public partial class Packsack : PickAbleTemplate
             }
         }
 
-        GameSceneNodeHolder.BackpackUiContainer?.Show();
+        GameSceneDepend.BackpackUiContainer?.Show();
         _packsackUi?.Show();
     }
 

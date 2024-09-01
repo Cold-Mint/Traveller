@@ -149,9 +149,14 @@ public static class MapGenerator
             return;
         }
 
-        if (GameSceneNodeHolder.AiCharacterContainer != null)
+        if (GameSceneDepend.MiniMapContainerNode != null)
         {
-            NodeUtils.DeleteAllChild(GameSceneNodeHolder.AiCharacterContainer);
+            NodeUtils.DeleteAllChild(GameSceneDepend.MiniMapContainerNode);
+        }
+
+        if (GameSceneDepend.AiCharacterContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneDepend.AiCharacterContainer);
         }
 
         NodeUtils.DeleteAllChild(_mapRoot);
@@ -336,21 +341,29 @@ public static class MapGenerator
             return false;
         }
 
+        //Create a room preview image.
+        //创建房间预览图。       
+        var image = RoomPreview.CreateImage(roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground));
+        if (GameSceneDepend.MiniMapContainerNode == null || roomPlacementData.Position == null ||
+            image == null)
+        {
+            return false;
+        }
+
+        var sprite = new Sprite2D();
+        sprite.Scale = new Vector2(5, 5);
+        sprite.Texture = image;
+        //TODO：Calculate the coordinates of the room preview view.
+        //TODO：计算房间预览图的坐标。
+        sprite.Position = GameSceneDepend.MiniMapMidpointCoordinate +
+                          roomPlacementData.Position.Value / Config.CellSize;
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.MiniMapContainerNode, sprite);
+
+        //Rooms are added to the dictionary only after the preview is created.
+        //创建预览图后才将房间添加到字典。
         dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
         LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId,
             roomPlacementData.Position.ToString());
-        //Create a room preview image.
-        //创建房间预览图。
-        var rootNode = roomPlacementData.NewRoom.RootNode;
-        var image = RoomPreview.CreateImage(roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground));
-        if (rootNode != null && image != null)
-        {
-            var sprite = new Sprite2D();
-            sprite.Scale = new Vector2(10, 10);
-            sprite.Texture = image;
-            NodeUtils.CallDeferredAddChild(rootNode, sprite);
-        }
-
         return true;
     }
 }

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bnftvkj2cido7"]
+[gd_scene load_steps=8 format=3 uid="uid://bnftvkj2cido7"]
 
 [ext_resource type="Script" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="2_n1yht"]
 [ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="2_owrhq"]
 [ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="2_xrm3v"]
 [ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="5_dis4v"]
+[ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainer.tscn" id="6_ljdj4"]
 [ext_resource type="PackedScene" uid="uid://bb188382q7btp" path="res://scenes/gameOverMenu.tscn" id="6_yjmrv"]
 
 [node name="Game" type="Node2D"]
@@ -89,6 +90,9 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 25.0
 grow_horizontal = 2
+
+[node name="MapContainer" parent="CanvasLayer/Control" instance=ExtResource("6_ljdj4")]
+layout_mode = 1
 
 [node name="BackpackUIContainer" type="Control" parent="CanvasLayer"]
 visible = false

@@ -46,7 +46,7 @@ public partial class Player : CharacterTemplate
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         UpdateOperationTip();
-        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        var healthBarUi = GameSceneDepend.HealthBarUi;
         if (healthBarUi != null)
         {
             healthBarUi.MaxHp = MaxHp;
@@ -89,7 +89,7 @@ public partial class Player : CharacterTemplate
     private void SelectedItemSlotChangeEvent(SelectedItemSlotChangeEvent selectedItemSlotChangeEvent)
     {
         var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItem();
-        GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
+        GameSceneDepend.HideBackpackUiContainerIfVisible();
         if (item is Node2D node2D)
         {
             CurrentItem = node2D;
@@ -114,7 +114,7 @@ public partial class Player : CharacterTemplate
     /// </summary>
     private void UpdateOperationTip()
     {
-        var operationTipLabel = GameSceneNodeHolder.OperationTipLabel;
+        var operationTipLabel = GameSceneDepend.OperationTipLabel;
         if (operationTipLabel == null)
         {
             return;
@@ -303,7 +303,7 @@ public partial class Player : CharacterTemplate
             }
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
-            GameSceneNodeHolder.HideBackpackUiContainerIfVisible();
+            GameSceneDepend.HideBackpackUiContainerIfVisible();
             CurrentItem = null;
         }
     }
@@ -385,7 +385,7 @@ public partial class Player : CharacterTemplate
     public override void Revive(int newHp)
     {
         base.Revive(newHp);
-        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        var healthBarUi = GameSceneDepend.HealthBarUi;
         if (healthBarUi != null)
         {
             //The purpose of setting Hp to the current Hp is to cause the life bar to refresh.
@@ -451,7 +451,7 @@ public partial class Player : CharacterTemplate
     protected override void OnHit(DamageTemplate damageTemplate)
     {
         base.OnHit(damageTemplate);
-        var healthBarUi = GameSceneNodeHolder.HealthBarUi;
+        var healthBarUi = GameSceneDepend.HealthBarUi;
         if (healthBarUi != null)
         {
             healthBarUi.CurrentHp = CurrentHp;

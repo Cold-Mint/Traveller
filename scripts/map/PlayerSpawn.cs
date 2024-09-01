@@ -25,10 +25,10 @@ public partial class PlayerSpawn : Marker2D
 
     private void GameReplayEvent(GameReplayEvent gameReplayEvent)
     {
-        if (GameSceneNodeHolder.Player != null)
+        if (GameSceneDepend.Player != null)
         {
-            GameSceneNodeHolder.Player.Revive(GameSceneNodeHolder.Player.MaxHp);
-            GameSceneNodeHolder.Player.GlobalPosition = GlobalPosition;
+            GameSceneDepend.Player.Revive(GameSceneDepend.Player.MaxHp);
+            GameSceneDepend.Player.GlobalPosition = GlobalPosition;
             return;
         }
 
@@ -41,7 +41,7 @@ public partial class PlayerSpawn : Marker2D
     /// </summary>
     private void SpawnPlayer()
     {
-        if (GameSceneNodeHolder.PlayerContainer == null)
+        if (GameSceneDepend.PlayerContainer == null)
         {
             return;
         }
@@ -59,10 +59,10 @@ public partial class PlayerSpawn : Marker2D
             return;
         }
 
-        //The player's parent node must be GameSceneNodeHolder PlayerContainer.
-        //玩家的父节点必须是GameSceneNodeHolder.PlayerContainer。
-        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.PlayerContainer, playerNode);
-        var itemContainer = GameSceneNodeHolder.HotBar?.GetItemContainer();
+        //The player's parent node must be GameSceneDepend PlayerContainer.
+        //玩家的父节点必须是GameSceneDepend.PlayerContainer。
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.PlayerContainer, playerNode);
+        var itemContainer = GameSceneDepend.HotBar?.GetItemContainer();
         if (itemContainer == null)
         {
             //Throws an exception when the item container is empty.
@@ -71,7 +71,7 @@ public partial class PlayerSpawn : Marker2D
         }
 
         playerNode.ItemContainer = itemContainer;
-        GameSceneNodeHolder.Player = playerNode;
+        GameSceneDepend.Player = playerNode;
         playerNode.GlobalPosition = GlobalPosition;
     }
 
@@ -79,7 +79,7 @@ public partial class PlayerSpawn : Marker2D
     {
         //After the map is generated, create the player instance.
         //当地图生成完成后，创建玩家实例。
-        if (GameSceneNodeHolder.Player != null)
+        if (GameSceneDepend.Player != null)
         {
             //An existing player instance will not be created.
             //已经存在玩家实例，不再创建。

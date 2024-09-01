@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://c74180dtf7j7a"]
+
+[ext_resource type="Texture2D" uid="uid://c35bsle7thcnh" path="res://sprites/ui/MiniMapBg.png" id="1_h88bi"]
+
+[node name="MapContainer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MiniMap" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -174.0
+offset_top = -177.0
+offset_right = -24.0
+offset_bottom = -27.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("1_h88bi")
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 7
+
+[node name="RoomPreviewContainer" type="Node2D" parent="MiniMap"]

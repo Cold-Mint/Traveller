@@ -23,39 +23,46 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //Loading the blood bar scene
         //加载血条场景
         var healthBarUi = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");
-        GameSceneNodeHolder.HealthBarUi = healthBarUi;
+        GameSceneDepend.HealthBarUi = healthBarUi;
         //Load HotBar
         //加载HotBar
         var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
-        GameSceneNodeHolder.HotBar = hotBar;
+        GameSceneDepend.HotBar = hotBar;
         //Backpack Ui container
         //背包Ui容器
         var backpackUiContainer = GetNode<Control>("CanvasLayer/BackpackUIContainer");
-        GameSceneNodeHolder.BackpackUiContainer = backpackUiContainer;
+        GameSceneDepend.BackpackUiContainer = backpackUiContainer;
         //Load operation prompt
         //加载操作提示
         var operationTip = GetNode<RichTextLabel>("CanvasLayer/Control/VBoxContainer/OperationTip");
-        GameSceneNodeHolder.OperationTipLabel = operationTip;
+        GameSceneDepend.OperationTipLabel = operationTip;
         //Loaded weapon container
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");
-        GameSceneNodeHolder.WeaponContainer = weaponContainer;
+        GameSceneDepend.WeaponContainer = weaponContainer;
         //Load projectile container
         //加载抛射体容器
         var projectileContainer = GetNode<Node2D>("ProjectileContainer");
-        GameSceneNodeHolder.ProjectileContainer = projectileContainer;
+        GameSceneDepend.ProjectileContainer = projectileContainer;
         //Load Packsack container
         //加载背包容器
         var packsackContainer = GetNode<Node2D>("PacksackContainer");
-        GameSceneNodeHolder.PacksackContainer = packsackContainer;
+        GameSceneDepend.PacksackContainer = packsackContainer;
         //Load AICharacter container
         //加载AICharacter容器
         var aiCharacterContainer = GetNode<Node2D>("AICharacterContainer");
-        GameSceneNodeHolder.AiCharacterContainer = aiCharacterContainer;
+        GameSceneDepend.AiCharacterContainer = aiCharacterContainer;
         //Load player container
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");
-        GameSceneNodeHolder.PlayerContainer = playerContainer;
+        GameSceneDepend.PlayerContainer = playerContainer;
+        //Load the room container node
+        //加载房间容器节点
+        var miniMapContainerNode = GetNode<Node2D>("CanvasLayer/Control/MapContainer/MiniMap/RoomPreviewContainer");
+        GameSceneDepend.MiniMapContainerNode = miniMapContainerNode;
+        //计算迷你地图的中点
+        var mapContainer = GetNode<NinePatchRect>("CanvasLayer/Control/MapContainer/MiniMap");
+        GameSceneDepend.MiniMapMidpointCoordinate = mapContainer.Size / 2;
         return Task.CompletedTask;
     }
 
@@ -96,6 +103,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             var seedInfo = TranslationServerUtils.TranslateWithFormat("ui_seed_info", MapGenerator.Seed);
             _seedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
         }
+
         await MapGenerator.GenerateMap();
     }
 }

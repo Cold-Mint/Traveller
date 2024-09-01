@@ -136,7 +136,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             return;
         }
 
-        if (GameSceneNodeHolder.ProjectileContainer == null)
+        if (GameSceneDepend.ProjectileContainer == null)
         {
             LogCat.LogError("projectile_container_is_null");
             return;
@@ -167,9 +167,9 @@ public partial class ProjectileWeapon : WeaponTemplate
                 projectile.AddProjectileDecorator(nodeSpawnOnKillCharacterDecorator);
             }
 
-            NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.ProjectileContainer, projectile);
+            NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
             projectile.Owner = owner;
-            projectile.TargetNode = GameSceneNodeHolder.TemporaryTargetNode;
+            projectile.TargetNode = GameSceneDepend.TemporaryTargetNode;
             projectile.Velocity =
                 (_marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed)
                 .Rotated(GetRandomAngle());

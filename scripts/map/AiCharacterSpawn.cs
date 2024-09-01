@@ -33,7 +33,7 @@ public partial class AiCharacterSpawn : Marker2D
     /// <param name="aiCharacterGenerateEvent"></param>
     public void OnAiCharacterGenerateEvent(AiCharacterGenerateEvent aiCharacterGenerateEvent)
     {
-        if (GameSceneNodeHolder.AiCharacterContainer == null)
+        if (GameSceneDepend.AiCharacterContainer == null)
         {
             return;
         }
@@ -49,7 +49,7 @@ public partial class AiCharacterSpawn : Marker2D
             return;
         }
 
-        NodeUtils.CallDeferredAddChild(GameSceneNodeHolder.AiCharacterContainer, aiCharacter);
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, aiCharacter);
         aiCharacter.GlobalPosition = GlobalPosition;
     }
 
