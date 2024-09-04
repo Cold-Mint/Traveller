@@ -93,8 +93,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
             //我们在每次开火之前，检查武器的后坐力。
             if (_recoilStrength != 0)
             {
-                var force = -characterTemplate.GlobalPosition.DirectionTo(enemyGlobalPosition) * _recoilStrength * Config.CellSize;
-                characterTemplate.AddForce(force);
+                characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
             }
         }
 
