@@ -55,7 +55,7 @@ public static class RoomPreview
         //Create an image.
         //创建image。
         var image = Image.CreateEmpty(width + 1, height + 1, false, Image.Format.Rgba8);
-        //image.Fill(Colors.Green);
+        image.Fill(Colors.Green);
         //Fill in pixels
         //填充像素点
         foreach (var vector2I in cellsArray)

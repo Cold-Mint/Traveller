@@ -83,6 +83,12 @@ public static class Config
     public const float ThrownItemsHitEnemiesReduceSpeedByPercentage = 0.5f;
 
     /// <summary>
+    /// <para>Scale of the room preview view</para>
+    /// <para>房间预览图的缩放</para>
+    /// </summary>
+    public const float RoomPreviewScale = 1f;
+
+    /// <summary>
     /// <para>How much blood does a heart represent</para>
     /// <para>一颗心代表多少血量</para>
     /// </summary>

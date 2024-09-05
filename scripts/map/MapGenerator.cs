@@ -341,29 +341,75 @@ public static class MapGenerator
             return false;
         }
 
-        //Create a room preview image.
-        //创建房间预览图。       
-        var image = RoomPreview.CreateImage(roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground));
-        if (GameSceneDepend.MiniMapContainerNode == null || roomPlacementData.Position == null ||
-            image == null)
+        var tileMapLayer = roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
+        if (!CreateRoomPreview(tileMapLayer,
+                CalculateRelativePositionOnTheMinimap(tileMapLayer, roomPlacementData)))
         {
+            LogCat.LogWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default, LogCat.UploadFormat,
+                roomNodeDataId);
             return false;
         }
-
-        var sprite = new Sprite2D();
-        sprite.Scale = new Vector2(5, 5);
-        sprite.Texture = image;
-        //TODO：Calculate the coordinates of the room preview view.
-        //TODO：计算房间预览图的坐标。
-        sprite.Position = GameSceneDepend.MiniMapMidpointCoordinate +
-                          roomPlacementData.Position.Value / Config.CellSize;
-        NodeUtils.CallDeferredAddChild(GameSceneDepend.MiniMapContainerNode, sprite);
 
         //Rooms are added to the dictionary only after the preview is created.
         //创建预览图后才将房间添加到字典。
         dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
         LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId,
             roomPlacementData.Position.ToString());
+        return true;
+    }
+
+    /// <summary>
+    /// <para>CalculateRelativePositionOnTheMinimap</para>
+    /// <para>计算在迷你地图上的相对位置</para>
+    /// </summary>
+    /// <returns>
+    ///<para>Returns the position relative to the point in the minimap container</para>
+    ///<para>返回相对对于迷你地图容器中点的位置</para>
+    /// </returns>
+    private static Vector2? CalculateRelativePositionOnTheMinimap(TileMapLayer? groundTileMapLayer,
+        RoomPlacementData roomPlacementData)
+    {
+        if (groundTileMapLayer == null || roomPlacementData.Position == null)
+        {
+            return null;
+        }
+        
+        
+
+        return roomPlacementData.Position.Value / Config.CellSize * Config.RoomPreviewScale;
+    }
+
+    /// <summary>
+    /// <para>Create a room preview image.</para>
+    /// <para>创建房间预览图</para>
+    /// </summary>
+    /// <param name="groundTileMapLayer">
+    ///<para>Layers that need to be drawn onto a minimap</para>
+    ///<para>需要绘制到迷你地图上的图层</para>
+    /// </param>
+    /// <param name="position">
+    ///<para>Relative to the position of the point in the minimap container</para>
+    ///<para>相对于迷你地图容器中点的位置</para>
+    /// </param>
+    /// <returns></returns>
+    private static bool CreateRoomPreview(TileMapLayer? groundTileMapLayer, Vector2? position)
+    {
+        if (GameSceneDepend.MiniMapContainerNode == null || position == null)
+        {
+            return false;
+        }
+
+        var image = RoomPreview.CreateImage(groundTileMapLayer);
+        if (image == null)
+        {
+            return false;
+        }
+
+        var sprite = new Sprite2D();
+        sprite.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
+        sprite.Texture = image;
+        sprite.Position = GameSceneDepend.MiniMapMidpointCoordinate + position.Value;
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.MiniMapContainerNode, sprite);
         return true;
     }
 }
