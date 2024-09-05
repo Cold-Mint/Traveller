@@ -405,7 +405,7 @@ public static class MapGenerator
             return false;
         }
 
-        var sprite = new Sprite2D();
+        var sprite = new TextureRect();
         sprite.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
         sprite.Texture = image;
         sprite.Position = GameSceneDepend.MiniMapMidpointCoordinate + position.Value;
