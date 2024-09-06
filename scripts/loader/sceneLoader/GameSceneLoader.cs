@@ -3,6 +3,7 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
+using ColdMint.scripts.map.miniMap;
 using ColdMint.scripts.map.RoomPlacer;
 using ColdMint.scripts.utils;
 using Godot;
@@ -60,9 +61,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载房间容器节点
         var miniMapContainerNode = GetNode<Node2D>("CanvasLayer/Control/MapContainer/MiniMap/RoomPreviewContainer");
         GameSceneDepend.MiniMapContainerNode = miniMapContainerNode;
-        //计算迷你地图的中点
-        var mapContainer = GetNode<NinePatchRect>("CanvasLayer/Control/MapContainer/MiniMap");
-        GameSceneDepend.MiniMapMidpointCoordinate = mapContainer.Size / 2;
+        //Setting up the mini map
+        //设置迷你地图
+        var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/MiniMap");
+        GameSceneDepend.MiniMap = miniMap;
         return Task.CompletedTask;
     }
 

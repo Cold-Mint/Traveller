@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c74180dtf7j7a"]
+[gd_scene load_steps=4 format=3 uid="uid://c74180dtf7j7a"]
 
 [ext_resource type="Texture2D" uid="uid://c35bsle7thcnh" path="res://sprites/ui/MiniMapBg.png" id="1_h88bi"]
+[ext_resource type="Script" path="res://scripts/map/miniMap/MiniMap.cs" id="2_ltp8b"]
+[ext_resource type="Texture2D" uid="uid://cfpcm0hkmpu38" path="res://sprites/ui/mark.png" id="3_x80y0"]
 
 [node name="MapContainer" type="Control"]
 layout_mode = 3
@@ -28,10 +30,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1102.0
-offset_top = -525.0
-offset_right = -952.0
-offset_bottom = -375.0
+offset_left = -169.0
+offset_top = -168.0
+offset_right = -19.0
+offset_bottom = -18.0
 grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("1_h88bi")
@@ -39,5 +41,10 @@ patch_margin_left = 7
 patch_margin_top = 7
 patch_margin_right = 7
 patch_margin_bottom = 7
+script = ExtResource("2_ltp8b")
 
 [node name="RoomPreviewContainer" type="Node2D" parent="MiniMap"]
+
+[node name="Mark" type="Sprite2D" parent="MiniMap"]
+position = Vector2(75, 75)
+texture = ExtResource("3_x80y0")

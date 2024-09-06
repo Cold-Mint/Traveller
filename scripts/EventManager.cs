@@ -38,10 +38,4 @@ public static class EventManager
     /// <para>地图生成完成事件</para>
     /// </summary>
     public static Action<MapGenerationCompleteEvent>? MapGenerationCompleteEvent;
-    
-    /// <summary>
-    /// <para>Player Instance Change Event</para>
-    /// <para>玩家实例改变事件</para>
-    /// </summary>
-    public static Action<PlayerInstanceChangeEvent>? PlayerInstanceChangeEvent;
 }

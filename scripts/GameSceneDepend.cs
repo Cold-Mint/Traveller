@@ -1,7 +1,7 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.loader.uiLoader;
-using ColdMint.scripts.map.events;
+using ColdMint.scripts.map.miniMap;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -14,11 +14,11 @@ namespace ColdMint.scripts;
 public static class GameSceneDepend
 {
     /// <summary>
-    /// <para>The midpoint of the minimap</para>
-    /// <para>迷你地图的中点</para>
+    /// <para>MiniMap</para>
+    /// <para>迷你地图</para>
     /// </summary>
-    public static Vector2 MiniMapMidpointCoordinate;
-    
+    public static MiniMap? MiniMap { get; set; }
+
     private static Player? _player;
 
     /// <summary>
@@ -31,13 +31,10 @@ public static class GameSceneDepend
         set
         {
             _player = value;
-            //Broadcast the event to the outside when the player instance changes.
-            //当玩家实例改变时，向外广播事件。
-            var playerInstanceChangeEvent = new PlayerInstanceChangeEvent
+            if (MiniMap != null)
             {
-                PlayerInstance = _player
-            };
-            EventManager.PlayerInstanceChangeEvent?.Invoke(playerInstanceChangeEvent);
+                MiniMap.OwnerNode = _player;
+            }
         }
     }
 
@@ -46,7 +43,7 @@ public static class GameSceneDepend
     /// <para>鼠标进入到某个角色的范围内时，会将其视作目标</para>
     /// </summary>
     public static Node2D? TemporaryTargetNode { get; set; }
-    
+
     /// <summary>
     /// <para>MiniMapContainerNode</para>
     /// <para>迷你地图容器节点</para>

@@ -373,8 +373,6 @@ public static class MapGenerator
         {
             return null;
         }
-        
-        
 
         return roomPlacementData.Position.Value / Config.CellSize * Config.RoomPreviewScale;
     }
@@ -408,7 +406,11 @@ public static class MapGenerator
         var sprite = new TextureRect();
         sprite.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
         sprite.Texture = image;
-        sprite.Position = GameSceneDepend.MiniMapMidpointCoordinate + position.Value;
+        if (GameSceneDepend.MiniMap != null)
+        {
+            sprite.Position = GameSceneDepend.MiniMap.MiniMapMidpointCoordinate + position.Value;
+        }
+
         NodeUtils.CallDeferredAddChild(GameSceneDepend.MiniMapContainerNode, sprite);
         return true;
     }

@@ -86,7 +86,7 @@ public static class Config
     /// <para>Scale of the room preview view</para>
     /// <para>房间预览图的缩放</para>
     /// </summary>
-    public const float RoomPreviewScale = 1f;
+    public const float RoomPreviewScale = 5f;
 
     /// <summary>
     /// <para>How much blood does a heart represent</para>
