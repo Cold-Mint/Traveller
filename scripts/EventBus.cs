@@ -4,10 +4,10 @@ using ColdMint.scripts.map.events;
 namespace ColdMint.scripts;
 
 /// <summary>
-/// <para>EventManager</para>
-/// <para>事件管理器</para>
+/// <para>EventBus</para>
+/// <para>事件总线</para>
 /// </summary>
-public static class EventManager
+public static class EventBus
 {
     /// <summary>
     /// <para>Event when the AI character is generated</para>
@@ -32,6 +32,12 @@ public static class EventManager
     /// <para>地图开始生成的事件</para>
     /// </summary>
     public static Action<MapGenerationStartEvent>? MapGenerationStartEvent;
+
+    /// <summary>
+    /// <para>New rooms are placed within the map to perform events</para>
+    /// <para>新的房间被放置在地图内执行的事件</para>
+    /// </summary>
+    public static Action<MapGenerationPlaceRoomFinishEvent>? MapGenerationPlaceRoomFinishEvent;
 
     /// <summary>
     /// <para>Map generation completion event</para>

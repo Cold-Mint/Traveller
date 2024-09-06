@@ -23,7 +23,7 @@ public partial class AiCharacterSpawn : Marker2D
             _packedScene = GD.Load<PackedScene>(ResPath);
         }
 
-        EventManager.AiCharacterGenerateEvent += OnAiCharacterGenerateEvent;
+        EventBus.AiCharacterGenerateEvent += OnAiCharacterGenerateEvent;
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ public partial class AiCharacterSpawn : Marker2D
 
     public override void _ExitTree()
     {
-        EventManager.AiCharacterGenerateEvent -= OnAiCharacterGenerateEvent;
+        EventBus.AiCharacterGenerateEvent -= OnAiCharacterGenerateEvent;
     }
 }

@@ -16,7 +16,7 @@ public partial class ItemSpawn : Marker2D
     {
         base._Ready();
 
-        EventManager.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
+        EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
     }
 
     private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
@@ -38,6 +38,6 @@ public partial class ItemSpawn : Marker2D
     public override void _ExitTree()
     {
         base._ExitTree();
-        EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
     }
 }

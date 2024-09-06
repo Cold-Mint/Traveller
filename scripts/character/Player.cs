@@ -405,7 +405,7 @@ public partial class Player : CharacterTemplate
     {
         Hide();
         ProcessMode = ProcessModeEnum.Disabled;
-        if (EventManager.GameOverEvent == null)
+        if (EventBus.GameOverEvent == null)
         {
             return;
         }
@@ -416,7 +416,7 @@ public partial class Player : CharacterTemplate
             gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damageTemplate.Attacker);
         }
 
-        EventManager.GameOverEvent.Invoke(gameOverEvent);
+        EventBus.GameOverEvent.Invoke(gameOverEvent);
     }
 
     protected override void EnterThePickingRangeBody(Node node)

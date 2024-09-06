@@ -22,7 +22,7 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
         _restartButton = GetNodeOrNull<Button>("CenterContainer/VBoxContainer/MarginContainer2/RestartButton");
         _deathInfoLabel =
             GetNode<Label>("CenterContainer/VBoxContainer/MarginContainer/CenterContainer2/DeathInfoLabel");
-        EventManager.GameOverEvent += OnGameOver;
+        EventBus.GameOverEvent += OnGameOver;
     }
 
     public override void LoadUiActions()
@@ -32,7 +32,7 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
             _restartButton.Pressed += () =>
             {
                 var replayEvent = new GameReplayEvent();
-                EventManager.GameReplayEvent?.Invoke(replayEvent);
+                EventBus.GameReplayEvent?.Invoke(replayEvent);
                 Hide();
             };
         }
@@ -52,6 +52,6 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
     public override void _ExitTree()
     {
         base._ExitTree();
-        EventManager.GameOverEvent -= OnGameOver;
+        EventBus.GameOverEvent -= OnGameOver;
     }
 }

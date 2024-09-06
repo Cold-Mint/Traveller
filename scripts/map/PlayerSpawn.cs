@@ -19,8 +19,8 @@ public partial class PlayerSpawn : Marker2D
     {
         base._Ready();
         _playerPackedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
-        EventManager.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
-        EventManager.GameReplayEvent += GameReplayEvent;
+        EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
+        EventBus.GameReplayEvent += GameReplayEvent;
     }
 
     private void GameReplayEvent(GameReplayEvent gameReplayEvent)
@@ -92,7 +92,7 @@ public partial class PlayerSpawn : Marker2D
     public override void _ExitTree()
     {
         base._ExitTree();
-        EventManager.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
-        EventManager.GameReplayEvent -= GameReplayEvent;
+        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventBus.GameReplayEvent -= GameReplayEvent;
     }
 }
