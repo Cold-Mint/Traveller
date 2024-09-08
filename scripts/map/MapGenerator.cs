@@ -148,9 +148,9 @@ public static class MapGenerator
             return;
         }
 
-        if (GameSceneDepend.MiniMapContainerNode != null)
+        if (GameSceneDepend.MiniMap != null)
         {
-            NodeUtils.DeleteAllChild(GameSceneDepend.MiniMapContainerNode);
+            GameSceneDepend.MiniMap.Clear();
         }
 
         if (GameSceneDepend.AiCharacterContainer != null)

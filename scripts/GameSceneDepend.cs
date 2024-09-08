@@ -45,12 +45,6 @@ public static class GameSceneDepend
     public static Node2D? TemporaryTargetNode { get; set; }
 
     /// <summary>
-    /// <para>MiniMapContainerNode</para>
-    /// <para>迷你地图容器节点</para>
-    /// </summary>
-    public static Node2D? MiniMapContainerNode { get; set; }
-
-    /// <summary>
     /// <para>ProjectileContainer</para>
     /// <para>抛射体容器</para>
     /// </summary>

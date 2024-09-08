@@ -86,7 +86,7 @@ public static class Config
     /// <para>Scale of the room preview view</para>
     /// <para>房间预览图的缩放</para>
     /// </summary>
-    public const float RoomPreviewScale = 5f;
+    public const float RoomPreviewScale = 3f;
 
     /// <summary>
     /// <para>How much blood does a heart represent</para>
@@ -99,12 +99,6 @@ public static class Config
     /// <para>模组清单文件的名字</para>
     /// </summary>
     public const string ModManifestFileName = "ModManifest.yaml";
-
-    /// <summary>
-    /// <para>The maximum number of stacked items in a single inventory</para>
-    /// <para>单个物品栏最大堆叠的物品数量</para>
-    /// </summary>
-    public const int MaxStackQuantity = 99;
 
     /// <summary>
     /// <para>Text change buffering Time How long does it take to execute the actual event after an event with a text change listener is triggered? (Anti-shake processing time), unit: milliseconds</para>

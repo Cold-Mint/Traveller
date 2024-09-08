@@ -103,8 +103,10 @@ public class Room
                 _pointLight2D.Texture = AssetHolder.White100;
             }
 
+            GameSceneDepend.MiniMap?.ShowRoomPreview(this);
             ShowAllCharacterTemplate();
-        }else if (node is CharacterTemplate characterTemplate)
+        }
+        else if (node is CharacterTemplate characterTemplate)
         {
             if (_hasPlayer)
             {

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.preview;
+using ColdMint.scripts.map.room;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -14,13 +16,18 @@ namespace ColdMint.scripts.map.miniMap;
 public partial class MiniMap : NinePatchRect
 {
     private Node2D? _roomPreviewContainer;
-    private Vector2 _miniMapMidpointCoordinate;
 
     /// <summary>
     /// <para>The midpoint coordinates of the mini map</para>
     /// <para>迷你地图的中点坐标</para>
     /// </summary>
-    public Vector2 MiniMapMidpointCoordinate => _miniMapMidpointCoordinate;
+    private Vector2 _miniMapMidpointCoordinate;
+
+    /// <summary>
+    /// <para>Mapping of rooms and room preview images</para>
+    /// <para>房间和房间预览图的映射</para>
+    /// </summary>
+    private readonly Dictionary<Room, TextureRect> _roomToRoomPreviews = [];
 
     /// <summary>
     /// <para>The master node of the map</para>
@@ -33,6 +40,32 @@ public partial class MiniMap : NinePatchRect
         _roomPreviewContainer = GetNode<Node2D>("RoomPreviewContainer");
         _miniMapMidpointCoordinate = Size / 2;
         EventBus.MapGenerationPlaceRoomFinishEvent += MapGenerationPlaceRoomFinishEvent;
+    }
+
+    /// <summary>
+    /// <para>Clean up all room preview images in the mini map</para>
+    /// <para>清理迷你地图内的所有房间预览图</para>
+    /// </summary>
+    public void Clear()
+    {
+        _roomToRoomPreviews.Clear();
+        if (_roomPreviewContainer != null)
+        {
+            NodeUtils.DeleteAllChild(_roomPreviewContainer);
+        }
+    }
+
+    /// <summary>
+    /// <para>Display room preview image</para>
+    /// <para>显示房间预览图</para>
+    /// </summary>
+    /// <param name="room"></param>
+    public void ShowRoomPreview(Room room)
+    {
+        if (_roomToRoomPreviews.TryGetValue(room, out var roomPreview))
+        {
+            roomPreview.Show();
+        }
     }
 
     /// <summary>
@@ -49,11 +82,16 @@ public partial class MiniMap : NinePatchRect
         }
 
         var tileMapLayer = roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
-        if (!CreateRoomPreview(tileMapLayer,
-                CalculateRelativePositionOnTheMinimap(tileMapLayer, roomPlacementData)))
+        var textureRect = CreateRoomPreview(tileMapLayer,
+            CalculateRelativePositionOnTheMinimap(tileMapLayer, roomPlacementData));
+        if (textureRect == null)
         {
             LogCat.LogWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default, LogCat.UploadFormat,
                 mapGenerationPlaceRoomFinishEvent.RoomNodeDataId);
+        }
+        else
+        {
+            _roomToRoomPreviews[roomPlacementData.NewRoom] = textureRect;
         }
     }
 
@@ -90,29 +128,26 @@ public partial class MiniMap : NinePatchRect
     ///<para>相对于迷你地图容器中点的位置</para>
     /// </param>
     /// <returns></returns>
-    private bool CreateRoomPreview(TileMapLayer? groundTileMapLayer, Vector2? position)
+    private TextureRect? CreateRoomPreview(TileMapLayer? groundTileMapLayer, Vector2? position)
     {
-        if (GameSceneDepend.MiniMapContainerNode == null || position == null)
+        if (_roomPreviewContainer == null || position == null)
         {
-            return false;
+            return null;
         }
 
         var image = RoomPreview.CreateImage(groundTileMapLayer);
         if (image == null)
         {
-            return false;
+            return null;
         }
 
-        var sprite = new TextureRect();
-        sprite.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
-        sprite.Texture = image;
-        if (GameSceneDepend.MiniMap != null)
-        {
-            sprite.Position = GameSceneDepend.MiniMap.MiniMapMidpointCoordinate + position.Value;
-        }
-
-        NodeUtils.CallDeferredAddChild(GameSceneDepend.MiniMapContainerNode, sprite);
-        return true;
+        var textureRect = new TextureRect();
+        textureRect.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
+        textureRect.Texture = image;
+        textureRect.Position = _miniMapMidpointCoordinate + position.Value;
+        textureRect.Hide();
+        NodeUtils.CallDeferredAddChild(_roomPreviewContainer, textureRect);
+        return textureRect;
     }
 
     public override void _Process(double delta)

@@ -57,10 +57,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");
         GameSceneDepend.PlayerContainer = playerContainer;
-        //Load the room container node
-        //加载房间容器节点
-        var miniMapContainerNode = GetNode<Node2D>("CanvasLayer/Control/MapContainer/MiniMap/RoomPreviewContainer");
-        GameSceneDepend.MiniMapContainerNode = miniMapContainerNode;
         //Setting up the mini map
         //设置迷你地图
         var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/MiniMap");
