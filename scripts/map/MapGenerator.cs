@@ -148,11 +148,6 @@ public static class MapGenerator
             return;
         }
 
-        if (GameSceneDepend.MiniMap != null)
-        {
-            GameSceneDepend.MiniMap.Clear();
-        }
-
         if (GameSceneDepend.AiCharacterContainer != null)
         {
             NodeUtils.DeleteAllChild(GameSceneDepend.AiCharacterContainer);
@@ -290,6 +285,13 @@ public static class MapGenerator
             await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary);
         }
 
+        //Place barriers
+        //放置屏障
+        foreach (var roomDictionaryValue in roomDictionary.Values)
+        {
+            PlaceBarrier(roomDictionaryValue);
+        }
+
         //All rooms have been placed.
         //所有房间已放置完毕。
         await _roomPlacementStrategy.GeneratedComplete(_mapRoot);
@@ -298,7 +300,8 @@ public static class MapGenerator
         //调用地图生成完成事件
         var eventObj = new MapGenerationCompleteEvent
         {
-            RandomNumberGenerator = randomNumberGenerator
+            RandomNumberGenerator = randomNumberGenerator,
+            RoomDictionary = roomDictionary
         };
         EventBus.MapGenerationCompleteEvent?.Invoke(eventObj);
         var aiCharacterGenerateEvent = new AiCharacterGenerateEvent
@@ -306,6 +309,63 @@ public static class MapGenerator
             Tag = AiCharacterGenerateEvent.TagMapGenerationComplete
         };
         EventBus.AiCharacterGenerateEvent?.Invoke(aiCharacterGenerateEvent);
+    }
+
+
+    /// <summary>
+    /// <para>Place barriers</para>
+    /// <para>放置屏障</para>
+    /// </summary>
+    /// <param name="room"></param>
+    /// <returns></returns>
+    private static void PlaceBarrier(Room? room)
+    {
+        if (room == null)
+        {
+            return;
+        }
+
+        var ground = room.GetTileMapLayer(Config.TileMapLayerName.Ground);
+        var barrier = room.GetTileMapLayer(Config.TileMapLayerName.Barrier);
+        if (ground == null || barrier == null)
+        {
+            return;
+        }
+
+        var roomSlots = room.RoomSlots;
+        if (roomSlots == null || roomSlots.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var roomSlot in roomSlots)
+        {
+            if (roomSlot == null)
+            {
+                continue;
+            }
+
+            if (roomSlot.Matched)
+            {
+                continue;
+            }
+
+            //Place the corresponding coordinate tiles of the barrier layer on the ground level.
+            //将屏障层的对应坐标瓦片放到地面层。
+            CoordinateUtils.ForEachCell(roomSlot.StartPosition, roomSlot.EndPosition,
+                i =>
+                {
+                    var cellSourceId = barrier.GetCellSourceId(i);
+                    if (cellSourceId == -1)
+                    {
+                        return;
+                    }
+
+                    ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
+                });
+        }
+
+        barrier.QueueFree();
     }
 
     /// <summary>
@@ -343,12 +403,6 @@ public static class MapGenerator
         dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
         LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, LogCat.UploadFormat, roomNodeDataId,
             roomPlacementData.Position.ToString());
-        var mapGenerationPlaceRoomFinishEvent = new MapGenerationPlaceRoomFinishEvent
-        {
-            RoomNodeDataId = roomNodeDataId,
-            RoomPlacementData = roomPlacementData
-        };
-        EventBus.MapGenerationPlaceRoomFinishEvent?.Invoke(mapGenerationPlaceRoomFinishEvent);
         return true;
     }
 }

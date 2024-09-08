@@ -39,20 +39,26 @@ public partial class MiniMap : NinePatchRect
     {
         _roomPreviewContainer = GetNode<Node2D>("RoomPreviewContainer");
         _miniMapMidpointCoordinate = Size / 2;
-        EventBus.MapGenerationPlaceRoomFinishEvent += MapGenerationPlaceRoomFinishEvent;
+        EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
+        EventBus.MapGenerationStartEvent += MapGenerationStartEvent;
     }
 
     /// <summary>
     /// <para>Clean up all room preview images in the mini map</para>
     /// <para>清理迷你地图内的所有房间预览图</para>
     /// </summary>
-    public void Clear()
+    private void Clear()
     {
         _roomToRoomPreviews.Clear();
         if (_roomPreviewContainer != null)
         {
             NodeUtils.DeleteAllChild(_roomPreviewContainer);
         }
+    }
+
+    private void MapGenerationStartEvent(MapGenerationStartEvent mapGenerationStartEvent)
+    {
+        Clear();
     }
 
     /// <summary>
@@ -72,26 +78,29 @@ public partial class MiniMap : NinePatchRect
     /// <para>After the map generator completes placing the room</para>
     /// <para>地图生成器放置房间完成后</para>
     /// </summary>
-    /// <param name="mapGenerationPlaceRoomFinishEvent"></param>
-    private void MapGenerationPlaceRoomFinishEvent(MapGenerationPlaceRoomFinishEvent mapGenerationPlaceRoomFinishEvent)
+    /// <param name="mapGenerationCompleteEvent"></param>
+    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
-        var roomPlacementData = mapGenerationPlaceRoomFinishEvent.RoomPlacementData;
-        if (roomPlacementData?.NewRoom == null || mapGenerationPlaceRoomFinishEvent.RoomNodeDataId == null)
+        if (mapGenerationCompleteEvent.RoomDictionary == null)
         {
             return;
         }
 
-        var tileMapLayer = roomPlacementData.NewRoom.GetTileMapLayer(Config.TileMapLayerName.Ground);
-        var textureRect = CreateRoomPreview(tileMapLayer,
-            CalculateRelativePositionOnTheMinimap(tileMapLayer, roomPlacementData));
-        if (textureRect == null)
+        foreach (var dictionaryKey in mapGenerationCompleteEvent.RoomDictionary.Keys)
         {
-            LogCat.LogWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default, LogCat.UploadFormat,
-                mapGenerationPlaceRoomFinishEvent.RoomNodeDataId);
-        }
-        else
-        {
-            _roomToRoomPreviews[roomPlacementData.NewRoom] = textureRect;
+            var roomDictionaryValue = mapGenerationCompleteEvent.RoomDictionary[dictionaryKey];
+            var tileMapLayer = roomDictionaryValue.GetTileMapLayer(Config.TileMapLayerName.Ground);
+            var textureRect = CreateRoomPreview(tileMapLayer,
+                CalculateRelativePositionOnTheMinimap(roomDictionaryValue));
+            if (textureRect == null)
+            {
+                LogCat.LogErrorWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default, LogCat.UploadFormat,
+                    dictionaryKey);
+            }
+            else
+            {
+                _roomToRoomPreviews[roomDictionaryValue] = textureRect;
+            }
         }
     }
 
@@ -104,15 +113,14 @@ public partial class MiniMap : NinePatchRect
     ///<para>Returns the position relative to the point in the minimap container</para>
     ///<para>返回相对对于迷你地图容器中点的位置</para>
     /// </returns>
-    private Vector2? CalculateRelativePositionOnTheMinimap(TileMapLayer? groundTileMapLayer,
-        RoomPlacementData roomPlacementData)
+    private Vector2? CalculateRelativePositionOnTheMinimap(Room room)
     {
-        if (groundTileMapLayer == null || roomPlacementData.Position == null)
+        if (room.RootNode == null)
         {
             return null;
         }
 
-        return roomPlacementData.Position.Value / Config.CellSize * Config.RoomPreviewScale;
+        return room.RootNode.Position / Config.CellSize * Config.RoomPreviewScale;
     }
 
     /// <summary>
@@ -165,6 +173,7 @@ public partial class MiniMap : NinePatchRect
 
     public override void _ExitTree()
     {
-        EventBus.MapGenerationPlaceRoomFinishEvent -= MapGenerationPlaceRoomFinishEvent;
+        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventBus.MapGenerationStartEvent -= MapGenerationStartEvent;
     }
 }

@@ -34,12 +34,6 @@ public static class EventBus
     public static Action<MapGenerationStartEvent>? MapGenerationStartEvent;
 
     /// <summary>
-    /// <para>New rooms are placed within the map to perform events</para>
-    /// <para>新的房间被放置在地图内执行的事件</para>
-    /// </summary>
-    public static Action<MapGenerationPlaceRoomFinishEvent>? MapGenerationPlaceRoomFinishEvent;
-
-    /// <summary>
     /// <para>Map generation completion event</para>
     /// <para>地图生成完成事件</para>
     /// </summary>

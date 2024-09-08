@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 
 namespace ColdMint.scripts.utils;
 
@@ -73,5 +74,22 @@ public static class CoordinateUtils
         }
 
         return orientationDescribes;
+    }
+
+    /// <summary>
+    /// <para>传入矩形起点和终点，遍历瓦片地图上的每一个坐标</para>
+    /// </summary>
+    /// <param name="startPoint"></param>
+    /// <param name="endPosition"></param>
+    /// <param name="action"></param>
+    public static void ForEachCell(Vector2I startPoint,Vector2I endPosition,Action<Vector2I> action)
+    {
+        for (var x = startPoint.X; x <= endPosition.X; x++)
+        {
+            for (var y = startPoint.Y; y <= endPosition.Y; y++)
+            {
+                action.Invoke(new Vector2I(x, y));
+            }
+        }
     }
 }

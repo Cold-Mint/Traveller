@@ -20,7 +20,7 @@ public static class Config
         /// </summary>
         public const string Test = "test";
     }
-    
+
     /// <summary>
     /// <para>Difficulty</para>
     /// <para>游戏难度</para>
@@ -32,11 +32,13 @@ public static class Config
         /// <para>简单模式</para>
         /// </summary>
         public const int Easy = 0;
+
         /// <summary>
         /// <para>Normal mode</para>
         /// <para>正常模式</para>
         /// </summary>
         public const int Normal = 1;
+
         /// <summary>
         /// <para>Hard mode</para>
         /// <para>困难模式</para>
@@ -136,7 +138,7 @@ public static class Config
     /// <para>快捷栏上有多少个物品槽</para>
     /// </summary>
     public const int HotBarSize = 9;
-    
+
 
     /// <summary>
     /// <para>Whether version isolation is enabled</para>
@@ -420,28 +422,25 @@ public static class Config
 
     public static class OffsetAngleMode
     {
-
         /// <summary>
         /// <para>Random(Default)</para>
         /// <para>随机的（默认）</para>
         /// </summary>
         public const int Random = 0;
-        
+
         /// <summary>
         /// <para>AlwaysSame</para>
         /// <para>永远不变的偏移角度</para>
         /// </summary>
         public const int AlwaysSame = 1;
-        
+
         /// <summary>
         /// <para>Cross</para>
         /// <para>交叉变换</para>
         /// </summary>
         public const int Cross = 2;
-        
-      
     }
-    
+
     /// <summary>
     /// <para>Physical collision layer number</para>
     /// <para>物理碰撞层 序号</para>
@@ -473,6 +472,12 @@ public static class Config
         ///<para>拥有碰撞节点，玩家和生物可以站在上面。</para>
         /// </remarks>
         public const string Ground = "Ground";
+
+        /// <summary>
+        /// <para>Barrier</para>
+        /// <para>屏障</para>
+        /// </summary>
+        public const string Barrier = "Barrier";
 
         /// <summary>
         /// <para>Background decorative layer</para>

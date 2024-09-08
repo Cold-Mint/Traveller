@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+using ColdMint.scripts.map.room;
 using Godot;
 
 namespace ColdMint.scripts.map.events;
@@ -16,4 +18,10 @@ public class MapGenerationCompleteEvent
     // ReSharper disable UnusedAutoPropertyAccessor.Global
     public RandomNumberGenerator? RandomNumberGenerator { get; set; }
     // ReSharper restore UnusedAutoPropertyAccessor.Global
+    
+    /// <summary>
+    /// <para>All placed rooms</para>
+    /// <para>所有已放置的房间</para>
+    /// </summary>
+    public Dictionary<string, Room>? RoomDictionary { get; set; }
 }
