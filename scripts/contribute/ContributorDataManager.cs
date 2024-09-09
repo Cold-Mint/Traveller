@@ -14,31 +14,37 @@ public static class ContributorDataManager
 
     private static readonly ContributorData[] ContributorArray =
     [
-        new ContributorData
+        new()
         {
             Name = "Cold-Mint",
             Url = "https://github.com/Cold-Mint",
             ContributorTypes = [ContributorType.Coder],
         },
-        new ContributorData
+        new()
         {
             Name = "霧雨烨",
             Url = "https://github.com/Web13234",
             ContributorTypes = [ContributorType.Coder]
         },
-        new ContributorData
+        new()
         {
             Name = "[HYPERLINK BLOCKED]",
             Url = "https://www.pixiv.net/users/74412798",
             ContributorTypes = [ContributorType.Artist],
             ToolTip = "贡献死灵法杖和背包的贴图。"
         },
-        new ContributorData
+        new()
         {
             Name = "\u2605如爱生",
             Url = "https://space.bilibili.com/425243934",
             ContributorTypes = [ContributorType.Artist],
             ToolTip = "贡献了一些枪械贴图。"
+        },
+        new()
+        {
+            Name = "Ride-A-Pig",
+            Url = "https://github.com/Ride-A-Pig",
+            ContributorTypes = [ContributorType.Coder],
         }
     ];
 

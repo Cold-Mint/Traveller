@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using ColdMint.scripts.contribute;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -98,7 +97,6 @@ public partial class MainMenuLoader : UiLoaderTemplate
         {
             _levelGraphEditorButton.Pressed += () =>
             {
-                LogCat.Log("level_graph_editor");
                 if (_levelGraphEditor == null)
                 {
                     return;
