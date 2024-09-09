@@ -219,18 +219,6 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             var index = randomNumberGenerator.Randi() % usableRoomPlacementData.Count;
             var roomPlacementData = usableRoomPlacementData[(int)index];
-            //Be sure to mark its slot as a match when you use it.
-            //一定要在使用时，将其插槽标记为匹配。
-            if (roomPlacementData.ParentRoomSlot != null)
-            {
-                roomPlacementData.ParentRoomSlot.Matched = true;
-            }
-
-            if (roomPlacementData.NewRoomSlot != null)
-            {
-                roomPlacementData.NewRoomSlot.Matched = true;
-            }
-
             return roomPlacementData;
         }
     }

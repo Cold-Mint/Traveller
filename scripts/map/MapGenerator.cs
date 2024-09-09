@@ -282,7 +282,10 @@ public static class MapGenerator
                 continue;
             }
 
-            await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary);
+            if (await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary))
+            {
+                MarkRoomSlot(roomPlacementData);
+            }
         }
 
         //Place barriers
@@ -366,6 +369,24 @@ public static class MapGenerator
         }
 
         barrier.QueueFree();
+    }
+
+    /// <summary>
+    /// <para>Mark the room slot as matched</para>
+    /// <para>将房间槽标记为已匹配</para>
+    /// </summary>
+    /// <param name="roomPlacementData"></param>
+    private static void MarkRoomSlot(RoomPlacementData roomPlacementData)
+    {
+        if (roomPlacementData.ParentRoomSlot != null)
+        {
+            roomPlacementData.ParentRoomSlot.Matched = true;
+        }
+
+        if (roomPlacementData.NewRoomSlot != null)
+        {
+            roomPlacementData.NewRoomSlot.Matched = true;
+        }
     }
 
     /// <summary>
