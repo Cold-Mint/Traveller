@@ -21,7 +21,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32
 outlines = Array[PackedVector2Array]([PackedVector2Array(35, 39, 36, 415, 0, 417, 3, 481, 733, 477, 729, 415, 706, 415, 701, 93, 734, 89, 731, 34)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
-[node name="InitialRoom" type="Node2D"]
+[node name="InitialRoom2" type="Node2D"]
 
 [node name="RoomArea" type="Area2D" parent="."]
 collision_mask = 0

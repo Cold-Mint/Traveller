@@ -162,6 +162,7 @@ locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "
 2d_physics/layer_6="Platform"
 2d_physics/layer_7="Mob"
 2d_physics/layer_8="Wall"
+2d_physics/layer_9="Furniture"
 
 [physics]
 

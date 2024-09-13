@@ -27,7 +27,7 @@ public partial class PlayerSpawn : Marker2D
     {
         if (GameSceneDepend.Player != null)
         {
-            GameSceneDepend.Player.Revive(GameSceneDepend.Player.MaxHp);
+            GameSceneDepend.Player.FullHpRevive();
             GameSceneDepend.Player.GlobalPosition = GlobalPosition;
             return;
         }

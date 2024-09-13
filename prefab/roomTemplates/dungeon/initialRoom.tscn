@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=9 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="5_4pssd"]
+[ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/MagicSeparator.tscn" id="5_7c8bh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(507, 251)
@@ -75,3 +76,8 @@ visible = false
 position = Vector2(259.5, 128.5)
 scale = Vector2(16.0312, 7.96875)
 texture = ExtResource("5_4pssd")
+
+[node name="RigidBody2D" parent="." instance=ExtResource("5_7c8bh")]
+position = Vector2(149, 109)
+collision_layer = 256
+collision_mask = 0

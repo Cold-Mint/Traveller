@@ -378,6 +378,12 @@ public static class Config
     public const int DefaultMaxHp = 100;
 
     /// <summary>
+    /// <para>The default durability of furniture</para>
+    /// <para>家具的默认耐久度</para>
+    /// </summary>
+    public const int DefaultMaxDurability = 50;
+
+    /// <summary>
     /// <para>When a creature takes damage, how long to hide the bloodline again</para>
     /// <para>生物受到伤害时，要在多长时间后再次隐藏血条</para>
     /// </summary>
@@ -448,13 +454,30 @@ public static class Config
     public static class LayerNumber
     {
         public const int RoomArea = 1;
+        /// <summary>
+        /// <para>Floor</para>
+        /// <para>地板</para>
+        /// </summary>
         public const int Floor = 2;
         public const int Player = 3;
         public const int PickAbleItem = 4;
         public const int Projectile = 5;
+        /// <summary>
+        /// <para>Platform</para>
+        /// <para>平台</para>
+        /// </summary>
         public const int Platform = 6;
         public const int Mob = 7;
+        /// <summary>
+        /// <para>Wall</para>
+        /// <para>墙壁</para>
+        /// </summary>
         public const int Wall = 8;
+        /// <summary>
+        /// <para>Furniture</para>
+        /// <para>家具</para>
+        /// </summary>
+        public const int Furniture = 9;
     }
 
     /// <summary>

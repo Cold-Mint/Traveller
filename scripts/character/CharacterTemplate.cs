@@ -163,9 +163,9 @@ public partial class CharacterTemplate : CharacterBody2D
 
     //The initial health of the character after creation
     //角色创建后的初始血量
-    [Export] public int InitialHp;
+    [Export] private int _initialHp;
 
-    [Export] public int MaxHp;
+    [Export] protected int MaxHp;
 
     /// <summary>
     /// <para>The camp ID of the role</para>
@@ -188,6 +188,16 @@ public partial class CharacterTemplate : CharacterBody2D
     protected List<Node>? PickingRangeBodiesList;
 
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
+
+
+    /// <summary>
+    /// <para>Full Hp Revive</para>
+    /// <para>满血复活</para>
+    /// </summary>
+    public void FullHpRevive()
+    {
+        Revive(MaxHp);
+    }
 
     /// <summary>
     /// <para>Resurrected character</para>
@@ -266,19 +276,17 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (MaxHp <= 0)
         {
-            //If Max blood volume is 0 or less, set Max blood volume to 10
-            //若最大血量为0或小于0，则将最大血量设置为10
             MaxHp = Config.DefaultMaxHp;
         }
 
-        if (InitialHp <= 0 || InitialHp > MaxHp)
+        if (_initialHp <= 0 || _initialHp > MaxHp)
         {
             //If the initial health is less than or equal to 0 or greater than the maximum health, then set it to the maximum health
             //如果初始血量小于等于0或者大于最大血量，那么将其设置为最大血量
-            InitialHp = MaxHp;
+            _initialHp = MaxHp;
         }
 
-        CurrentHp = InitialHp;
+        CurrentHp = _initialHp;
         //The health bar of a creature may be null.
         //生物的健康条，可能为null。
         _healthBar = GetNodeOrNull<HealthBar>("HealthBar");
@@ -321,8 +329,6 @@ public partial class CharacterTemplate : CharacterBody2D
         }
     }
 
-
-    
 
     public override void _MouseEnter()
     {
@@ -622,6 +628,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             throw new InvalidOperationException("AddForce called more than once");
         }
+
         _additionalForce = force;
     }
 
