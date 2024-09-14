@@ -31,7 +31,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         GameSceneDepend.HotBar = hotBar;
         //Backpack Ui container
         //背包Ui容器
-        var backpackUiContainer = GetNode<Control>("CanvasLayer/BackpackUIContainer");
+        var backpackUiContainer = GetNode<UiGroup>("CanvasLayer/BackpackUIContainer");
         GameSceneDepend.BackpackUiContainer = backpackUiContainer;
         //Load operation prompt
         //加载操作提示

@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.loader.uiLoader;
 using ColdMint.scripts.map.miniMap;
 using ColdMint.scripts.utils;
 using Godot;
@@ -101,35 +100,5 @@ public static class GameSceneDepend
     ///<para>The knapsack Ui container houses the container of the knapsack ui node. When a user uses a backpack, the node to which his backpack is attached is displayed from within the backpack ui container.</para>
     ///<para>背包Ui容器内存放的是背包ui节点的容器。当用户使用背包时，会从背包ui容器内将其背包对于的节点展示出来。</para>
     /// </remarks>
-    public static Control? BackpackUiContainer { get; set; }
-
-
-    /// <summary>
-    /// <para>Hide the knapsack node in the knapsack Ui if the knapsack UI is displayed</para>
-    /// <para>如果背包Ui处于显示状态，那么隐藏背包UI内的背包节点</para>
-    /// </summary>
-    public static void HideBackpackUiContainerIfVisible()
-    {
-        if (BackpackUiContainer == null)
-        {
-            return;
-        }
-
-        if (!BackpackUiContainer.Visible)
-        {
-            return;
-        }
-
-        NodeUtils.ForEachNode<PacksackUi>(BackpackUiContainer, node =>
-        {
-            //If the child node is not visible, the traversal continues.
-            //如果子节点不可见，则继续遍历。
-            if (!node.Visible)
-                return false;
-            //Until you find a visible node, hide it, and return true, ending the loop.
-            //直到找到可见的节点，隐藏该节点，然后返回true，结束遍历。
-            node.Hide();
-            return true;
-        });
-    }
+    public static UiGroup? BackpackUiContainer { get; set; }
 }

@@ -626,7 +626,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         if (_additionalForce != Vector2.Zero)
         {
-            throw new InvalidOperationException("AddForce called more than once");
+            return;
         }
 
         _additionalForce = force;

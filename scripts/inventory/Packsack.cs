@@ -14,7 +14,7 @@ public partial class Packsack : PickAbleTemplate
     private PackedScene? _packedScene;
     private PacksackUi? _packsackUi;
     [Export] public int NumberSlots { get; set; }
-    
+
     /// <summary>
     /// <para>Whether to allow backpacks</para>
     /// <para>是否允许放置背包</para>
@@ -23,7 +23,8 @@ public partial class Packsack : PickAbleTemplate
     ///<para>Can a new backpack be placed in the slot of the backpack?</para>
     ///<para>即此背包的槽位内是否可以再放置新的背包？</para>
     /// </remarks>
-    [Export] public bool BackpackAllowed { get; set; }
+    [Export]
+    public bool BackpackAllowed { get; set; }
 
     public override bool CanPutInPack => false;
 
@@ -40,14 +41,26 @@ public partial class Packsack : PickAbleTemplate
             _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene);
             if (_packsackUi != null)
             {
-                NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(_packsackUi, this), _packsackUi);
+                var containerNode = NodeUtils.FindContainerNode(_packsackUi, this);
+                if (containerNode is UiGroup uiGroup)
+                {
+                    uiGroup.RegisterControl(_packsackUi);
+                }
+                else
+                {
+                    NodeUtils.CallDeferredAddChild(containerNode, _packsackUi);
+                }
+
                 _packsackUi.Title = Name;
                 _packsackUi.ItemContainer = ItemContainer;
+                _packsackUi.Hide();
             }
         }
 
-        GameSceneDepend.BackpackUiContainer?.Show();
-        _packsackUi?.Show();
+        if (_packsackUi != null)
+        {
+            GameSceneDepend.BackpackUiContainer?.ShowControl(_packsackUi);
+        }
     }
 
     public IItemContainer? ItemContainer { get; private set; }

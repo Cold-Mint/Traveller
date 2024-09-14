@@ -107,8 +107,7 @@ public partial class PacksackUi : UiLoaderTemplate
         {
             _exitButton.Pressed += () =>
             {
-                GameSceneDepend.BackpackUiContainer?.Hide();
-                Hide();
+                GameSceneDepend.BackpackUiContainer?.HideControl(this);
             };
         }
     }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnftvkj2cido7"]
+[gd_scene load_steps=9 format=3 uid="uid://bnftvkj2cido7"]
 
 [ext_resource type="Script" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="2_n1yht"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="5_dis4v"]
 [ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainer.tscn" id="6_ljdj4"]
 [ext_resource type="PackedScene" uid="uid://bb188382q7btp" path="res://scenes/gameOverMenu.tscn" id="6_yjmrv"]
+[ext_resource type="Script" path="res://scripts/utils/UiGroup.cs" id="7_p0u6a"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_mqdgt")
@@ -103,6 +104,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("7_p0u6a")
 
 [node name="GameOverMenu" parent="CanvasLayer" instance=ExtResource("6_yjmrv")]
 visible = false
