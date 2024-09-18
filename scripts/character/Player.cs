@@ -230,6 +230,8 @@ public partial class Player : CharacterTemplate
             UseItem(GetGlobalMousePosition());
         }
 
+        
+
         //Pick up an item
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))

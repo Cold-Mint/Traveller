@@ -36,6 +36,19 @@ public partial class Furniture : RigidBody2D
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        if (Input.IsActionJustReleased("push"))
+        {
+            SetCollisionMaskValue(Config.LayerNumber.Player, false);
+        }
+
+        if (Input.IsActionJustPressed("push"))
+        {
+            SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        }
+    }
+
     /// <summary>
     /// <para>This method is called when furniture is damaged</para>
     /// <para>当家具损害时调用此方法</para>

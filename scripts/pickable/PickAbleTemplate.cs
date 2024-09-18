@@ -77,7 +77,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; }
-    
+
     private Label? _tipLabel;
 
     public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
@@ -91,6 +91,9 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         _damageArea2D.BodyExited += OnBodyExited;
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
         InputPickable = true;
+        SetCollisionMaskValue(Config.LayerNumber.Wall, true);
+        SetCollisionMaskValue(Config.LayerNumber.Platform, true);
+        SetCollisionMaskValue(Config.LayerNumber.Floor, true);
     }
 
     private void OnBodyExited(Node node)
@@ -193,10 +196,12 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
+
         if (_tipLabel == null)
         {
             return;
         }
+
         _tipLabel.Visible = true;
         _tipLabel.Text = Name;
         //Vertical Centering Tip
@@ -213,6 +218,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
+
         _tipLabel.Visible = false;
     }
 
@@ -236,6 +242,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
+
         pickAbleTemplate.Id = Id;
     }
 
