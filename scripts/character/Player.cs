@@ -89,7 +89,7 @@ public partial class Player : CharacterTemplate
     private void SelectedItemSlotChangeEvent(SelectedItemSlotChangeEvent selectedItemSlotChangeEvent)
     {
         var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItem();
-        GameSceneDepend.BackpackUiContainer?.HideAllControl();
+        GameSceneDepend.DynamicUiGroup?.HideAllControl();
         if (item is Node2D node2D)
         {
             CurrentItem = node2D;
@@ -303,7 +303,7 @@ public partial class Player : CharacterTemplate
             }
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
-            GameSceneDepend.BackpackUiContainer?.HideAllControl();
+            GameSceneDepend.DynamicUiGroup?.HideAllControl();
             CurrentItem = null;
         }
     }

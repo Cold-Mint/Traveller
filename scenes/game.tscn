@@ -95,7 +95,7 @@ grow_horizontal = 2
 [node name="MapContainer" parent="CanvasLayer/Control" instance=ExtResource("6_ljdj4")]
 layout_mode = 1
 
-[node name="BackpackUIContainer" type="Control" parent="CanvasLayer"]
+[node name="DynamicUiGroup" type="Control" parent="CanvasLayer"]
 visible = false
 layout_mode = 3
 anchors_preset = 15

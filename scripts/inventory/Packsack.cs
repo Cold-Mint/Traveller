@@ -59,7 +59,7 @@ public partial class Packsack : PickAbleTemplate
 
         if (_packsackUi != null)
         {
-            GameSceneDepend.BackpackUiContainer?.ShowControl(_packsackUi);
+            GameSceneDepend.DynamicUiGroup?.ShowControl(_packsackUi);
         }
     }
 

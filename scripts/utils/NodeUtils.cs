@@ -245,9 +245,9 @@ public static class NodeUtils
             return GameSceneDepend.PacksackContainer;
         }
 
-        if (GameSceneDepend.BackpackUiContainer != null && childNode is PacksackUi)
+        if (GameSceneDepend.DynamicUiGroup != null && childNode is PacksackUi)
         {
-            return GameSceneDepend.BackpackUiContainer;
+            return GameSceneDepend.DynamicUiGroup;
         }
 
         return defaultParentNode;
