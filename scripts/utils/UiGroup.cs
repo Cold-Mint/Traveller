@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -10,24 +11,60 @@ namespace ColdMint.scripts.utils;
 public partial class UiGroup : Control
 {
     private readonly HashSet<Control> _visibleControls = [];
-    private readonly HashSet<Control> _allControls = [];
+    private readonly Dictionary<string, Func<Control?>> _controlFunc = new();
 
     /// <summary>
-    /// <para>How many nodes are visible</para>
-    /// <para>有多少个节点处于可见状态</para>
+    /// <para>Holds the node that has been instantiated</para>
+    /// <para>持有已实例化的节点</para>
     /// </summary>
-    public int VisibleControlsCount => _visibleControls.Count;
+    private readonly Dictionary<string, Control> _instantiatedControl = new();
 
     /// <summary>
-    /// <para>Register nodes in the UI group. For registered nodes, do not use <see cref="Godot.CanvasItem.Show"/> or <see cref="Godot.CanvasItem.Hide"/> to change the visible state. Call the <see cref="ShowControl"/> and <see cref="HideControl"/> methods instead.</para>
-    /// <para>注册节点到UI组内，对于已注册的节点，不要直接使用<see cref="Godot.CanvasItem.Show"/>或<see cref="Godot.CanvasItem.Hide"/>方法来改变可见状态，请调用<see cref="ShowControl"/>和<see cref="HideControl"/>方法来替代他们。</para>
+    /// <para>Registered control node</para>
+    /// <para>注册控制节点</para>
     /// </summary>
-    /// <param name="control"></param>
-    public void RegisterControl(Control control)
+    /// <param name="key">
+    ///<para>key</para>
+    ///<para>控制节点的key</para>
+    /// </param>
+    /// <param name="func">
+    ///<para>Creates a function to control the node. UiGroup delays calling this function to create the node.</para>
+    ///<para>创建控制节点的函数，UiGroup会延迟调用这个函数创建节点。</para>
+    /// </param>
+    public void RegisterControl(string key, Func<Control?> func)
     {
-        control.TreeExited += () => { OnTreeExited(control); };
+        _controlFunc.TryAdd(key, func);
+    }
+
+
+    /// <summary>
+    /// <para>Obtain or create a controller node</para>
+    /// <para>获取或者创建控制节点</para>
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    private Control? GetOrCreateControl(string key)
+    {
+        if (_instantiatedControl.TryGetValue(key, out var instantiatedControl))
+        {
+            return instantiatedControl;
+        }
+
+        if (!_controlFunc.TryGetValue(key, out var func))
+        {
+            return null;
+        }
+
+        var control = func.Invoke();
+        if (control == null)
+        {
+            return null;
+        }
+        control.Hide();
+        control.TreeExited += () => { OnTreeExited(key, control); };
         NodeUtils.CallDeferredAddChild(this, control);
-        _allControls.Add(control);
+        _instantiatedControl.Add(key, control);
+        return control;
     }
 
     /// <summary>
@@ -54,16 +91,27 @@ public partial class UiGroup : Control
     /// <para>Hide a node</para>
     /// <para>隐藏某个节点</para>
     /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool HideControl(string key)
+    {
+        if (!_instantiatedControl.TryGetValue(key, out var control))
+        {
+            return false;
+        }
+
+        return HideControl(control);
+    }
+
+    /// <summary>
+    /// <para>Hide a node</para>
+    /// <para>隐藏某个节点</para>
+    /// </summary>
     /// <param name="control"></param>
     /// <returns></returns>
     public bool HideControl(Control control)
     {
         if (!control.IsVisible())
-        {
-            return false;
-        }
-
-        if (!_allControls.Contains(control))
         {
             return false;
         }
@@ -78,18 +126,28 @@ public partial class UiGroup : Control
     /// <para>Show node</para>
     /// <para>显示某个节点</para>
     /// </summary>
-    /// <param name="control"></param>
+    /// <param name="key"></param>
+    /// <param name="beforeDisplayControl">
+    ///<para>A callback function before the display node where you can generate rendered page content. For example, set the title</para>
+    ///<para>在显示节点之前的回调函数，您可以在此函数内生成渲染页面内容。例如：设置标题</para>
+    /// </param>
     /// <returns></returns>
-    public bool ShowControl(Control control)
+    public bool ShowControl(string key, Action<Control>? beforeDisplayControl = null)
     {
+        var control = GetOrCreateControl(key);
+        if (control == null)
+        {
+            return false;
+        }
+
         if (control.IsVisible())
         {
             return false;
         }
 
-        if (!_allControls.Contains(control))
+        if (beforeDisplayControl != null)
         {
-            return false;
+            beforeDisplayControl.Invoke(control);
         }
 
         control.Show();
@@ -114,11 +172,11 @@ public partial class UiGroup : Control
         }
     }
 
-    private void OnTreeExited(Control control)
+    private void OnTreeExited(string key, Control control)
     {
         //The Hide method is not called when a node exits from the tree, so remove the node here to prevent empty references.
         //当节点从节点树内退出时，并不会调用Hide方法，所以在这里移除节点，防止产生空引用。
         _visibleControls.Remove(control);
-        _allControls.Remove(control);
+        _instantiatedControl.Remove(key);
     }
 }

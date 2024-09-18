@@ -11,8 +11,7 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class Packsack : PickAbleTemplate
 {
-    private PackedScene? _packedScene;
-    private PacksackUi? _packsackUi;
+    private const string Path = "res://prefab/ui/packsackUI.tscn";
     [Export] public int NumberSlots { get; set; }
 
     /// <summary>
@@ -31,36 +30,14 @@ public partial class Packsack : PickAbleTemplate
 
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
-        if (_packedScene == null)
+        GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>
         {
-            return;
-        }
-
-        if (_packsackUi == null)
-        {
-            _packsackUi = NodeUtils.InstantiatePackedScene<PacksackUi>(_packedScene);
-            if (_packsackUi != null)
+            if (control is PacksackUi packsackUi)
             {
-                var containerNode = NodeUtils.FindContainerNode(_packsackUi, this);
-                if (containerNode is UiGroup uiGroup)
-                {
-                    uiGroup.RegisterControl(_packsackUi);
-                }
-                else
-                {
-                    NodeUtils.CallDeferredAddChild(containerNode, _packsackUi);
-                }
-
-                _packsackUi.Title = Name;
-                _packsackUi.ItemContainer = ItemContainer;
-                _packsackUi.Hide();
+                packsackUi.Title = Name;
+                packsackUi.ItemContainer = ItemContainer;
             }
-        }
-
-        if (_packsackUi != null)
-        {
-            GameSceneDepend.DynamicUiGroup?.ShowControl(_packsackUi);
-        }
+        });
     }
 
     public IItemContainer? ItemContainer { get; private set; }
@@ -84,6 +61,10 @@ public partial class Packsack : PickAbleTemplate
             itemSlotNode.Hide();
         }
 
-        _packedScene = GD.Load<PackedScene>("res://prefab/ui/packsackUI.tscn");
+        GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
+        {
+            var packedScene = GD.Load<PackedScene>(Path);
+            return NodeUtils.InstantiatePackedScene<PacksackUi>(packedScene);
+        });
     }
 }
