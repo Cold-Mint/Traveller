@@ -141,58 +141,7 @@ public partial class ItemSlotNode : MarginContainer
         return _item;
     }
 
-    /// <summary>
-    /// <para>CreateItemInstance</para>
-    /// <para>创建物品槽内的物品实例</para>
-    /// </summary>
-    /// <param name="number">
-    ///<para>Quantity (pass in a value less than 0 to create an instance using all the quantities of built-in items)</para>
-    ///<para>数量（传入小于0的值，使用内置物品的所有数量创建实例）</para>
-    /// </param>
-    /// <returns>
-    ///<para>Newly created item</para>
-    ///<para>新创建的物品</para>
-    /// </returns>
-    public IItem? CreateItemInstance(int number)
-    {
-        if (number == 0)
-        {
-            return null;
-        }
-
-        if (_item is not Node2D node2D)
-        {
-            return null;
-        }
-
-        var duplicate = node2D.Duplicate();
-        if (node2D is PickAbleTemplate pickAbleTemplate)
-        {
-            pickAbleTemplate.CopyAttributes(duplicate);
-        }
-
-        if (duplicate is not Node2D newNode2D)
-        {
-            return null;
-        }
-
-        newNode2D.GlobalPosition = node2D.GlobalPosition;
-        if (duplicate is not IItem newItem)
-        {
-            return null;
-        }
-
-        if (number < 0)
-        {
-            newItem.Quantity = _item.Quantity;
-        }
-        else
-        {
-            newItem.Quantity = number >= _item.Quantity ? _item.Quantity : number;
-        }
-
-        return newItem;
-    }
+    
 
     /// <summary>
     /// <para>Clean out the items in the item slot</para>

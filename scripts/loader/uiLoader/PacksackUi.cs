@@ -63,11 +63,12 @@ public partial class PacksackUi : UiLoaderTemplate
         }
 
         NodeUtils.DeleteAllChild(_hFlowContainer);
-        foreach (var itemSlotNode in itemContainer)
-        {
-            itemSlotNode.Reparent(_hFlowContainer);
-            itemSlotNode.Show();
-        }
+        //todo:实现使用物品数据刷新物品槽的方法。
+        // foreach (var item in itemContainer)
+        // {
+            // itemSlotNode.Reparent(_hFlowContainer);
+            // itemSlotNode.Show();
+        // }
     }
 
     /// <summary>

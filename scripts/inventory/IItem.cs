@@ -33,12 +33,47 @@ public interface IItem
     /// <para>当前的数量</para>
     /// </summary>
     int Quantity { get; set; }
-    
+
     /// <summary>
     /// <para>MaxItemQuantity</para>
     /// <para>最大物品数量</para>
     /// </summary>
     int MaxQuantity { get; }
+
+    /// <summary>
+    /// <para>Check or not</para>
+    /// <para>是否选中</para>
+    /// </summary>
+    bool IsSelect { get; set; }
+
+    /// <summary>
+    /// <para>Calculate how many items can be merged with other items</para>
+    /// <para>计算当前物品可与其他物品合并多少个</para>
+    /// </summary>
+    /// <param name="other"></param>
+    /// <param name="unallocatedQuantity">
+    ///<para>The amount yet to be allocated(This method doesn't actually change the number of iitems, so you need to allocate an int variable to keep track of how many items remain unallocated.)</para>
+    ///<para>尚未分配的数量（在此方法并不会实际改变IItem的数量，故您需要分配一个int型变量记录还有多少个物品尚未分配）</para>
+    /// </param>
+    /// <returns>
+    ///<para>Number of mergable numbers. 0 indicates that the number cannot be merged. Greater than 0 indicates that the number can be merged.</para>
+    ///<para>可合并的数量，0为不能合并，大于0可合并。</para>
+    /// </returns>
+    int MergeableItemCount(IItem other, int unallocatedQuantity);
+
+    /// <summary>
+    /// <para>Create a new item instance</para>
+    /// <para>创建新的物品实例</para>
+    /// </summary>
+    /// <param name="number">
+    ///<para>Quantity (pass in a value less than 0 to create an instance using all the quantities of built-in items)</para>
+    ///<para>数量（传入小于0的值，使用内置物品的所有数量创建实例）</para>
+    /// </param>
+    /// <returns>
+    ///<para>Newly created item</para>
+    ///<para>新创建的物品</para>
+    /// </returns>
+    IItem? CreateItem(int number);
 
     /// <summary>
     /// <para>Execute when current item is used <br/> e.g. when player clicks left mouse button with current item in hand</para>

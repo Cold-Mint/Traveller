@@ -77,8 +77,63 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; }
+    public bool IsSelect { get; set; }
 
     private Label? _tipLabel;
+    
+    public IItem? CreateItem(int number)
+    {
+        if (number == 0)
+        {
+            return null;
+        }
+
+        var duplicate = Duplicate();
+        if (duplicate is PickAbleTemplate pickAbleTemplate)
+        {
+            pickAbleTemplate.CopyAttributes(this);
+        }
+
+        if (duplicate is not Node2D newNode2D)
+        {
+            return null;
+        }
+
+        newNode2D.GlobalPosition = GlobalPosition;
+        if (duplicate is not IItem newItem)
+        {
+            duplicate.QueueFree();
+            return null;
+        }
+
+        if (number < 0)
+        {
+            newItem.Quantity = Quantity;
+        }
+        else
+        {
+            newItem.Quantity = Math.Min(Quantity, number);
+        }
+
+        return newItem;
+    }
+
+
+    public int MergeableItemCount(IItem other, int unallocatedQuantity)
+    {
+        var freeQuantity = MaxQuantity - Quantity;
+        if (freeQuantity == 0)
+        {
+            return 0;
+        }
+
+        if (other.Id != Id)
+        {
+            return 0;
+        }
+
+        return Math.Min(freeQuantity, unallocatedQuantity);
+    }
 
     public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using ColdMint.scripts.map.events;
-using ColdMint.scripts.utils;
-using Godot;
 using JetBrains.Annotations;
 
 namespace ColdMint.scripts.inventory;
@@ -13,11 +10,9 @@ namespace ColdMint.scripts.inventory;
 /// <para>UniversalItemContainer</para>
 /// <para>通用的物品容器</para>
 /// </summary>
-public class UniversalItemContainer : IItemContainer
+public class UniversalItemContainer(int totalCapacity) : IItemContainer
 {
-    private readonly List<ItemSlotNode>? _itemSlotNodes = [];
-
-    private readonly PackedScene? _itemSlotPackedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
+    private readonly List<IItem> _itemList = [];
 
     /// <summary>
     /// <para>UnknownIndex</para>
@@ -25,13 +20,14 @@ public class UniversalItemContainer : IItemContainer
     /// </summary>
     private const int UnknownIndex = -1;
 
+    //_selectIndex defaults to 0.
     //_selectIndex默认为0.
     private int _selectIndex;
 
     [MustDisposeResource]
-    public IEnumerator<ItemSlotNode> GetEnumerator()
+    public IEnumerator<IItem> GetEnumerator()
     {
-        return _itemSlotNodes?.GetEnumerator() ?? Enumerable.Empty<ItemSlotNode>().GetEnumerator();
+        return _itemList.GetEnumerator();
     }
 
     [MustDisposeResource]
@@ -40,22 +36,101 @@ public class UniversalItemContainer : IItemContainer
         return GetEnumerator();
     }
 
-    public Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
+    public Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
 
     public bool CanAddItem(IItem item)
     {
-        return Match(item) != null;
-    }
-
-    public bool AddItem(IItem item)
-    {
-        var itemSlotNode = Match(item);
-        if (itemSlotNode == null)
+        //If the capacity is not full, directly return to add items
+        //如果未占满容量，直接返回可添加物品
+        if (GetUsedCapacity() < GetTotalCapacity())
         {
+            return true;
+        }
+
+        if (item.MaxQuantity == 1)
+        {
+            //New items do not support overlay, capacity is full, return cannot add.
+            //新物品不支持叠加，容量已满，返回不能添加。
             return false;
         }
 
-        return itemSlotNode.AddItem(item);
+        //If the capacity is full, we calculate whether we can spread the new items evenly among the existing items.
+        //如果容量占满了，我们计算是否能将新物品均摊在已有的物品内。
+        var unallocatedQuantity = item.Quantity;
+        foreach (var unitItem in _itemList)
+        {
+            var number = unitItem.MergeableItemCount(item, unallocatedQuantity);
+            if (number == 0)
+            {
+                continue;
+            }
+
+            unallocatedQuantity -= number;
+            if (unallocatedQuantity < 1)
+            {
+                return true;
+            }
+        }
+
+        return unallocatedQuantity < 1;
+    }
+
+    public int AddItem(IItem item)
+    {
+        if (item.MaxQuantity == 1)
+        {
+            if (GetUsedCapacity() >= GetTotalCapacity())
+            {
+                //Items cannot be stacked and cannot be added if the capacity is full.
+                //物品不能叠加，且容量已满，则无法添加。
+                return 0;
+            }
+
+            _itemList.Add(item);
+            return item.Quantity;
+        }
+
+        //There can be more than one item, try to share equally.
+        //物品可有多个，尝试均摊。
+        var originalQuantity = item.Quantity;
+        foreach (var unitItem in _itemList)
+        {
+            var number = unitItem.MergeableItemCount(item, item.Quantity);
+            if (number == 0)
+            {
+                continue;
+            }
+
+            item.Quantity -= number;
+            unitItem.Quantity += number;
+            if (item.Quantity < 1)
+            {
+                //New items are fully shared.
+                //新物品完全被均摊。
+                return originalQuantity;
+            }
+        }
+
+        if (item.Quantity < 1)
+        {
+            //After traversing to the last item, the new item is fully shared.
+            //在遍历到最后的物品，新物品完全被均摊。
+            return originalQuantity;
+        }
+
+        //New items have some left over.
+        //新物品有一些剩余。
+        if (GetUsedCapacity() >= GetTotalCapacity())
+        {
+            //The capacity is full. The remaining capacity cannot be stored.
+            //容量已满，无法存放剩余。
+            return originalQuantity - item.Quantity;
+        }
+
+        //Add the rest to the container.
+        //添加剩余到容器内。
+        _itemList.Add(item);
+        return originalQuantity;
     }
 
     public bool SupportSelect { get; set; }
@@ -65,76 +140,34 @@ public class UniversalItemContainer : IItemContainer
         return _selectIndex;
     }
 
-    public ItemSlotNode? GetSelectItemSlotNode()
+    public IItem? GetSelectItem()
     {
-        if (_itemSlotNodes == null || _itemSlotNodes.Count == 0)
-        {
-            return null;
-        }
-
-        if (_selectIndex < _itemSlotNodes.Count)
-        {
-            //Prevent subscripts from going out of bounds.
-            //防止下标越界。
-            return _itemSlotNodes[_selectIndex];
-        }
-
-        return null;
+        return _itemList.Count == 0 ? null : _itemList[_selectIndex];
     }
 
-    public int RemoveItemFromItemSlotBySelectIndex(int number) => RemoveItemFromItemSlot(_selectIndex, number);
-
-    public int GetItemSlotCount()
+    public IItem? GetItem(int index)
     {
-        if (_itemSlotNodes == null)
-        {
-            return 0;
-        }
-
-        return _itemSlotNodes.Count;
-    }
-
-    public ItemSlotNode? GetItemSlotNode(int index)
-    {
-        if (_itemSlotNodes == null)
-        {
-            return null;
-        }
-
         var safeIndex = GetSafeIndex(index);
-        return _itemSlotNodes[safeIndex];
-    }
-
-    public int RemoveItemFromItemSlot(int itemSlotIndex, int number)
-    {
-        if (_itemSlotNodes == null) return number;
-        var safeIndex = GetSafeIndex(itemSlotIndex);
         if (safeIndex == UnknownIndex)
         {
-            return number;
+            return null;
         }
 
-        var itemSlot = _itemSlotNodes[safeIndex];
-        return itemSlot.RemoveItem(number);
+        return _itemList[safeIndex];
     }
 
     /// <summary>
     /// <para>Gets a secure subscript index</para>
     /// <para>获取安全的下标索引</para>
     /// </summary>
-    /// <param name="itemSlotIndex"></param>
+    /// <param name="index"></param>
     /// <returns>
     /// <para>-1 is returned on failure, and the index that does not result in an out-of-bounds subscript is returned on success</para>
     /// <para>失败返回-1，成功返回不会导致下标越界的索引</para>
     /// </returns>
-    private int GetSafeIndex(int itemSlotIndex)
+    private int GetSafeIndex(int index)
     {
-        if (_itemSlotNodes == null)
-        {
-            return UnknownIndex;
-        }
-
-        var count = _itemSlotNodes.Count;
+        var count = _itemList.Count;
         if (count == 0)
         {
             //Prevents the dividend from being 0
@@ -142,50 +175,63 @@ public class UniversalItemContainer : IItemContainer
             return UnknownIndex;
         }
 
-        return itemSlotIndex % count;
+        return index % count;
     }
 
-    public ItemSlotNode? Match(IItem item)
+
+    public int RemoveSelectItem(int number)
     {
-        //Find and return the first slot that can hold this item, if the list is null or not found, return null
-        //寻找并返回第一个遇到的可放置此物品的物品槽，若列表为空或不存在，将返回null
-        return _itemSlotNodes?.FirstOrDefault(itemSlotNode => itemSlotNode.CanAddItem(item));
+        return RemoveItem(_selectIndex, number);
     }
 
-    public ItemSlotNode? AddItemSlot(Node rootNode)
+    public int RemoveItem(int itemIndex, int number)
     {
-        if (_itemSlotNodes == null || _itemSlotPackedScene == null)
+        if (number == 0)
         {
-            return null;
+            return 0;
         }
 
-        var itemSlotNode = NodeUtils.InstantiatePackedScene<ItemSlotNode>(_itemSlotPackedScene);
-        if (itemSlotNode == null)
+        var safeIndex = GetSafeIndex(itemIndex);
+        if (safeIndex == UnknownIndex)
         {
-            return null;
-        }
-        NodeUtils.CallDeferredAddChild(rootNode, itemSlotNode);
-        if (SupportSelect)
-        {
-            itemSlotNode.IsSelect = _itemSlotNodes.Count == _selectIndex;
-        }
-        else
-        {
-            itemSlotNode.IsSelect = false;
+            return 0;
         }
 
-        _itemSlotNodes.Add(itemSlotNode);
-        return itemSlotNode;
+        var item = _itemList[safeIndex];
+        var originalQuantity = item.Quantity;
+        if (number < 0)
+        {
+            //If the number entered is less than 0, all items are removed.
+            //输入的数量小于0,则移除全部物品。
+            item.Quantity = 0;
+            _itemList.RemoveAt(safeIndex);
+            return originalQuantity;
+        }
+
+        var removed = Math.Min(number, item.Quantity);
+        item.Quantity -= removed;
+        if (item.Quantity < 1)
+        {
+            _itemList.RemoveAt(safeIndex);
+        }
+
+        return removed;
     }
 
-    public void SelectTheNextItemSlot()
+    public int GetUsedCapacity()
     {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
+        return _itemList.Count;
+    }
 
-        var count = _itemSlotNodes.Count;
+    public int GetTotalCapacity()
+    {
+        return totalCapacity;
+    }
+
+
+    public void SelectNextItem()
+    {
+        var count = _itemList.Count;
         if (count == 0)
         {
             return;
@@ -195,20 +241,15 @@ public class UniversalItemContainer : IItemContainer
         var newSelectIndex = _selectIndex + 1;
         if (newSelectIndex >= count)
         {
-            newSelectIndex = 0;
+            newSelectIndex = count - 1;
         }
 
-        PrivateSelectItemSlot(oldSelectIndex, newSelectIndex);
+        PrivateSelectItem(oldSelectIndex, newSelectIndex);
     }
 
-    public void SelectThePreviousItemSlot()
+    public void SelectPreviousItem()
     {
-        if (_itemSlotNodes == null)
-        {
-            return;
-        }
-
-        var count = _itemSlotNodes.Count;
+        var count = _itemList.Count;
         if (count == 0)
         {
             return;
@@ -221,77 +262,43 @@ public class UniversalItemContainer : IItemContainer
             newSelectIndex = count - 1;
         }
 
-        PrivateSelectItemSlot(oldSelectIndex, newSelectIndex);
+        PrivateSelectItem(oldSelectIndex, newSelectIndex);
     }
 
     /// <summary>
-    /// <para>Select an item slot</para>
-    /// <para>选中某个物品槽</para>
+    /// <para>Private methods for selecting items</para>
+    /// <para>选择物品的私有方法</para>
     /// </summary>
-    private void PrivateSelectItemSlot(int oldSelectIndex, int newSelectIndex)
+    /// <param name="oldIndex"></param>
+    /// <param name="newIndex"></param>
+    private void PrivateSelectItem(int oldIndex, int newIndex)
     {
-        if (!SupportSelect || _itemSlotNodes == null || oldSelectIndex == newSelectIndex)
+        if (!SupportSelect || oldIndex == newIndex)
         {
             return;
         }
 
-        var oldItemSlotNode = _itemSlotNodes[oldSelectIndex];
-        oldItemSlotNode.IsSelect = false;
-        var newItemSlotNode = _itemSlotNodes[newSelectIndex];
-        newItemSlotNode.IsSelect = true;
-        HideItem(oldSelectIndex);
-        DisplayItem(newSelectIndex);
-        SelectedItemSlotChangeEvent?.Invoke(new SelectedItemSlotChangeEvent
+        var oldItem = _itemList[oldIndex];
+        oldItem.IsSelect = false;
+        var newItem= _itemList[newIndex];
+        newItem.IsSelect = true;
+        SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
         {
-            NewItemSlotNode = newItemSlotNode,
-            OldItemSlotNode = oldItemSlotNode
+            NewItem = newItem,
+            OldItem = oldItem
         });
-        _selectIndex = newSelectIndex;
+        _selectIndex = newIndex;
     }
 
-    /// <summary>
-    /// <para>HideItem</para>
-    /// <para>隐藏某个物品</para>
-    /// </summary>
-    /// <param name="index"></param>
-    private void HideItem(int index)
-    {
-        var oldItem = _itemSlotNodes?[index].GetItem();
-        if (oldItem is not Node2D oldNode2D) return;
-        oldNode2D.ProcessMode = Node.ProcessModeEnum.Disabled;
-        oldNode2D.Hide();
-    }
 
-    /// <summary>
-    /// <para>Displays the items in an item slot</para>
-    /// <para>显示某个物品槽内的物品</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>This method can also be used to refresh items held by the character, for example when a new item is dragged to the current display location, then call this method to refresh items held by the character.</para>
-    ///<para>此方法也可用于刷新角色手上持有的物品，例如当新的物品被拖动到当前显示位置，那么请调用此方法刷新角色持有的物品。</para>
-    /// </remarks>
-    /// <param name="index"></param>
-    private void DisplayItem(int index)
+    public void SelectItem(int index)
     {
-        var item = _itemSlotNodes?[index].GetItem();
-        if (item is not Node2D newNode2D) return;
-        newNode2D.ProcessMode = Node.ProcessModeEnum.Inherit;
-        newNode2D.Show();
-    }
-
-    public void SelectItemSlot(int newSelectIndex)
-    {
-        if (newSelectIndex == _selectIndex)
-        {
-            return;
-        }
-
-        var safeIndex = GetSafeIndex(newSelectIndex);
+        var safeIndex = GetSafeIndex(index);
         if (safeIndex == UnknownIndex)
         {
             return;
         }
 
-        PrivateSelectItemSlot(_selectIndex, newSelectIndex);
+        PrivateSelectItem(_selectIndex, safeIndex);
     }
 }

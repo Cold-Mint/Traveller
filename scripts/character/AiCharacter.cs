@@ -179,9 +179,7 @@ public sealed partial class AiCharacter : CharacterTemplate
 
         //You must create an item container for the character before you can pick up the item.
         //必须为角色创建物品容器后才能拾起物品。
-        var universalItemContainer = new UniversalItemContainer();
-        var itemSlotNode = universalItemContainer.AddItemSlot(this);
-        itemSlotNode?.Hide();
+        var universalItemContainer = new UniversalItemContainer(1);
         ProtectedItemContainer = universalItemContainer;
         //Add initial weapon
         //添加初始武器

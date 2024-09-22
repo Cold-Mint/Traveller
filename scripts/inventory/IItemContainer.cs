@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ColdMint.scripts.map.events;
-using Godot;
 
 namespace ColdMint.scripts.inventory;
 
@@ -13,13 +12,13 @@ namespace ColdMint.scripts.inventory;
 ///<para>Item containers can store items. Things like backpacks and Hotbars are containers with visual pages.</para>
 ///<para>物品容器可以储存物品。像背包和hotbar是具有可视化页面的容器。</para>
 /// </remarks>
-public interface IItemContainer : IEnumerable<ItemSlotNode>
+public interface IItemContainer : IEnumerable<IItem>
 {
     /// <summary>
-    /// <para>This event is triggered when the selected item slot changes</para>
-    /// <para>当选中的物品槽改变时，触发此事件</para>
+    /// <para>This event is triggered when the selected item changes</para>
+    /// <para>当选中的物品改变时，触发此事件</para>
     /// </summary>
-    Action<SelectedItemSlotChangeEvent>? SelectedItemSlotChangeEvent { get; set; }
+    Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
 
     /// <summary>
     /// <para>Can the specified item be added to the container?</para>
@@ -34,15 +33,18 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     /// <para>实现添加物品的方法</para>
     /// </summary>
     /// <param name="item"></param>
-    /// <returns></returns>
-    bool AddItem(IItem item);
+    /// <returns>
+    ///<para>How many items were successfully added. The addition failed, and 0 was returned.</para>
+    ///<para>有多少个物品被成功添加了。添加失败，返回0</para>
+    /// </returns>
+    int AddItem(IItem item);
 
     /// <summary>
     /// <para>Whether this item container supports checking</para>
     /// <para>此物品容器是否支持选中</para>
     /// </summary>
     public bool SupportSelect { get; set; }
-    
+
 
     /// <summary>
     /// <para>Gets the selected location</para>
@@ -52,104 +54,88 @@ public interface IItemContainer : IEnumerable<ItemSlotNode>
     int GetSelectIndex();
 
     /// <summary>
-    /// <para>Gets the currently selected node</para>
-    /// <para>获取当前选中的节点</para>
+    /// <para>Gets the currently selected item</para>
+    /// <para>获取当前选中的物品</para>
     /// </summary>
     /// <returns></returns>
-    ItemSlotNode? GetSelectItemSlotNode();
-
-   
-    
+    IItem? GetSelectItem();
 
     /// <summary>
-    /// <para>Removes an item from the inventory at the currently selected location</para>
-    /// <para>移除当前选中位置物品栏内的物品</para>
+    /// <para>Gets the item in the specified location</para>
+    /// <para>获取指定位置的物品</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    IItem? GetItem(int index);
+
+    /// <summary>
+    /// <para>Gets the item in the specified location, equivalent to <see cref="GetItem"/></para>
+    /// <para>获取指定位置的物品，等同于<see cref="GetItem"/></para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    IItem? this[int index] => GetItem(index);
+
+
+    /// <summary>
+    /// <para>Removes the item from the currently selected location</para>
+    /// <para>移除当前选中位置的物品</para>
     /// </summary>
     /// <param name="number">
     /// <para>Quantity to be removed, inputs below zero represent all items</para>
     /// <para>要删除的数量，小于0的输入代表全部物品</para>
     /// </param>
     /// <returns>
-    /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
-    /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
+    ///<para>How many items were actually removed</para>
+    ///<para>实际移除了多少个物品</para>
     /// </returns>
-    int RemoveItemFromItemSlotBySelectIndex(int number);
+    int RemoveSelectItem(int number);
 
     /// <summary>
-    /// <para>Gets the number of item slots</para>
-    /// <para>获取物品槽的数量</para>
+    /// <para>Deduct the number of items in the specified location</para>
+    /// <para>扣除指定位置的物品数量</para>
     /// </summary>
-    /// <returns></returns>
-    int GetItemSlotCount();
-
-    /// <summary>
-    /// <para>Gets the item slot for the specified location</para>
-    /// <para>获取指定位置的物品槽</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    ItemSlotNode? GetItemSlotNode(int index);
-
-    /// <summary>
-    /// <para>Gets the item slot for the specified location, equals to <see cref="GetItemSlotNode"/></para>
-    /// <para>获取指定位置的物品槽，等同于<see cref="GetItemSlotNode"/></para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    ItemSlotNode? this[int index] => GetItemSlotNode(index);
-    
-    
-
-    /// <summary>
-    /// <para>Removes an item from the item slot in the specified location</para>
-    /// <para>在指定位置的物品槽内移除物品</para>
-    /// </summary>
-    /// <param name="itemSlotIndex"></param>
+    /// <param name="itemIndex"></param>
     /// <param name="number">
     /// <para>Quantity to be removed, inputs below zero represent all items</para>
     /// <para>要删除的数量，小于0的输入代表全部物品</para>
     /// </param>
     /// <returns>
-    /// <para>The remaining number, if the number of items in the current item stack is less than the specified number. Otherwise,0</para>
-    /// <para>若物品槽内物品少于指定的数量，返回相差的数量。否则返回0</para>
+    ///<para>How many items were actually removed</para>
+    ///<para>实际移除了多少个物品</para>
     /// </returns>
-    int RemoveItemFromItemSlot(int itemSlotIndex, int number);
+    int RemoveItem(int itemIndex, int number);
 
     /// <summary>
-    /// <para>Based on the given item, match the item slots where it can be added to </para>
-    /// <para>根据给定的物品，匹配可放置它的物品槽</para>
+    /// <para>Gets the used capacity of the item container</para>
+    /// <para>获取物品容器已使用的容量</para>
     /// </summary>
-    /// <param name="item"></param>
-    /// <returns>
-    /// <para>Return null if there is no slot to place the item in</para>
-    /// <para>若没有槽可放置此物品，则返回null</para>
-    /// </returns>
-    ItemSlotNode? Match(IItem item);
-
+    /// <returns></returns>
+    int GetUsedCapacity();
 
     /// <summary>
-    /// <para>AddItemSlot</para>
-    /// <para>添加物品槽</para>
+    /// <para>Gets the total capacity of the item container</para>
+    /// <para>获取物品容器的总容量</para>
     /// </summary>
-    /// <param name="rootNode"></param>
-    ItemSlotNode? AddItemSlot(Node rootNode);
+    /// <returns></returns>
+    int GetTotalCapacity();
 
     /// <summary>
-    /// <para>SelectTheNextItemSlot</para>
-    /// <para>选择下一个物品槽</para>
+    /// <para>Select the next item</para>
+    /// <para>选择下一个物品</para>
     /// </summary>
-    void SelectTheNextItemSlot();
+    void SelectNextItem();
 
     /// <summary>
-    /// <para>SelectThePreviousItemSlot</para>
-    /// <para>选择上一个物品槽</para>
+    /// <para>Select the previous item</para>
+    /// <para>选择上一个物品</para>
     /// </summary>
-    void SelectThePreviousItemSlot();
+    void SelectPreviousItem();
 
     /// <summary>
-    /// <para>选择物品槽</para>
-    /// <para>SelectItemSlot</para>
+    /// <para>选择物品</para>
+    /// <para>Select item</para>
     /// </summary>
-    /// <param name="newSelectIndex"></param>
-    void SelectItemSlot(int newSelectIndex);
+    /// <param name="index"></param>
+    void SelectItem(int index);
 }

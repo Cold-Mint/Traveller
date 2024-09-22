@@ -45,22 +45,8 @@ public partial class Packsack : PickAbleTemplate
     public override void _Ready()
     {
         base._Ready();
-        ItemContainer = new UniversalItemContainer();
+        ItemContainer = new UniversalItemContainer(NumberSlots);
         ItemContainer.SupportSelect = false;
-        //When the backpack is created, the item slot is generated.
-        //当背包被创建时，物品槽就被生成出来了。
-        for (var i = 0; i < NumberSlots; i++)
-        {
-            var itemSlotNode = ItemContainer.AddItemSlot(this);
-            if (itemSlotNode == null)
-            {
-                continue;
-            }
-
-            itemSlotNode.BackpackAllowed = BackpackAllowed;
-            itemSlotNode.Hide();
-        }
-
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
         {
             var packedScene = GD.Load<PackedScene>(Path);

@@ -72,7 +72,7 @@ public partial class Player : CharacterTemplate
 
         //Subscribe to events when the item container is bound to the player.
         //在物品容器与玩家绑定时订阅事件。
-        itemContainer.SelectedItemSlotChangeEvent += SelectedItemSlotChangeEvent;
+        itemContainer.SelectedItemChangeEvent += SelectedItemChangeEvent;
     }
 
     public override void _ExitTree()
@@ -82,13 +82,13 @@ public partial class Player : CharacterTemplate
         {
             //Unsubscribe to events when this object is destroyed.
             //此节点被销毁时，取消订阅事件。
-            ProtectedItemContainer.SelectedItemSlotChangeEvent -= SelectedItemSlotChangeEvent;
+            ProtectedItemContainer.SelectedItemChangeEvent -= SelectedItemChangeEvent;
         }
     }
 
-    private void SelectedItemSlotChangeEvent(SelectedItemSlotChangeEvent selectedItemSlotChangeEvent)
+    private void SelectedItemChangeEvent(SelectedItemChangeEvent selectedItemChangeEvent)
     {
-        var item = selectedItemSlotChangeEvent.NewItemSlotNode?.GetItem();
+        var item = selectedItemChangeEvent.NewItem;
         GameSceneDepend.DynamicUiGroup?.HideAllControl();
         if (item is Node2D node2D)
         {

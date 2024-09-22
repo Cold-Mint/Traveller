@@ -15,17 +15,9 @@ public partial class HotBar : HBoxContainer
     public override void _Ready()
     {
         base._Ready();
-        _itemContainer = new UniversalItemContainer();
+        _itemContainer = new UniversalItemContainer(Config.HotBarSize);
         _itemContainer.SupportSelect = true;
         NodeUtils.DeleteAllChild(this);
-        for (var i = 0; i < Config.HotBarSize; i++)
-        {
-            var itemSlotNode = _itemContainer.AddItemSlot(this);
-            if (itemSlotNode != null)
-            {
-                itemSlotNode.BackpackAllowed = true;
-            }
-        }
     }
 
 
@@ -36,14 +28,14 @@ public partial class HotBar : HBoxContainer
         {
             //Mouse wheel down
             //鼠标滚轮向下
-            _itemContainer?.SelectTheNextItemSlot();
+            _itemContainer?.SelectNextItem();
         }
 
         if (Input.IsActionJustPressed("hotbar_previous"))
         {
             //Mouse wheel up
             //鼠标滚轮向上
-            _itemContainer?.SelectThePreviousItemSlot();
+            _itemContainer?.SelectPreviousItem();
         }
 
         if (Input.IsActionJustPressed("hotbar_1"))
@@ -106,7 +98,7 @@ public partial class HotBar : HBoxContainer
             return;
         }
 
-        _itemContainer.SelectItemSlot(shortcutKeyIndex);
+        _itemContainer.SelectItem(shortcutKeyIndex);
     }
 
     public IItemContainer? GetItemContainer()

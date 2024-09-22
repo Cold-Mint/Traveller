@@ -413,14 +413,6 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
 
-        //Get the currently selected node
-        //拿到当前选择的节点
-        var selectItemSlotNode = ItemContainer.GetSelectItemSlotNode();
-        if (selectItemSlotNode == null)
-        {
-            return false;
-        }
-
         //Check to see if you can fit the item into the container first.
         //先检查是否能将物品放入容器。
         var canAddItem = ItemContainer.CanAddItem(item);
@@ -431,8 +423,8 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Is it successfully added to the container?
         //再检查是否成功的添加到容器内了？
-        var addSuccess = ItemContainer.AddItem(item);
-        if (!addSuccess)
+        var addSuccessNumber = ItemContainer.AddItem(item);
+        if (addSuccessNumber <= 0)
         {
             return false;
         }
@@ -454,7 +446,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
 
-        if (_currentItem == null && selectItemSlotNode.GetItem() == item)
+        if (_currentItem == null && ItemContainer.GetSelectItem() == item)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
@@ -723,7 +715,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        var len = ItemContainer.GetItemSlotCount();
+        var len = ItemContainer.GetUsedCapacity();
         if (len == 0)
         {
             return;
@@ -762,21 +754,19 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </param>
     protected void ThrowItem(int index, int number, Vector2 velocity)
     {
-        var itemSlotNode = ItemContainer?.GetItemSlotNode(index);
-        if (itemSlotNode is null) return;
-        if (number < 0)
+        if (number == 0)
         {
-            while (!itemSlotNode.IsEmpty())
-            {
-                ThrowOneItem(itemSlotNode, velocity);
-            }
+            return;
         }
-        else
+
+        var item = ItemContainer?.GetItem(index);
+        if (item is null) return;
+        //Less than 0, throw everything
+        //小于0,扔出所有物品
+        var actualQuantity = number < 0 ? item.Quantity : Math.Min(item.Quantity, number);
+        for (var i = 0; i < actualQuantity; i++)
         {
-            for (var i = 0; i < number && !itemSlotNode.IsEmpty(); i++)
-            {
-                ThrowOneItem(itemSlotNode, velocity);
-            }
+            ThrowOneItem(item, velocity);
         }
     }
 
@@ -784,16 +774,16 @@ public partial class CharacterTemplate : CharacterBody2D
     ///  <para>Throw item</para>
     ///  <para>抛出物品</para>
     ///  </summary>
-    ///  <param name="itemSlotNode"></param>
+    ///  <param name="originalItem"></param>
     ///  <param name="velocity">
     /// <para>The speed to be applied to the item</para>
     /// <para>要施加到物品上的速度</para>
     ///  </param>
-    private void ThrowOneItem(ItemSlotNode itemSlotNode, Vector2 velocity)
+    private void ThrowOneItem(IItem originalItem, Vector2 velocity)
     {
         //Remove the item from the item container
         //从物品容器内取出物品
-        var item = itemSlotNode.CreateItemInstance(1);
+        var item = originalItem.CreateItem(1);
         if (item is not Node2D node2D)
         {
             return;
@@ -847,7 +837,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 break;
         }
 
-        itemSlotNode.RemoveItem(1);
+        originalItem.Quantity -= 1;
     }
 
 
