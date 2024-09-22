@@ -10,13 +10,15 @@ namespace ColdMint.scripts.inventory;
 public partial class HotBar : HBoxContainer
 {
     private IItemContainer? _itemContainer;
-
-
+    private IItemContainerDisplay? _itemContainerDisplay;
+    
     public override void _Ready()
     {
         base._Ready();
         _itemContainer = new UniversalItemContainer(Config.HotBarSize);
         _itemContainer.SupportSelect = true;
+        _itemContainerDisplay = new ItemSlotContainerDisplay(this);
+        _itemContainerDisplay.BindItemContainer(_itemContainer);
         NodeUtils.DeleteAllChild(this);
     }
 

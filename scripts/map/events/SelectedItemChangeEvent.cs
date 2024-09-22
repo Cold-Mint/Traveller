@@ -8,6 +8,10 @@ namespace ColdMint.scripts.map.events;
 /// </summary>
 public class SelectedItemChangeEvent
 {
+    public int NewIndex { get; set; }
+    
+    public int OldIndex { get; set; }
+    
     /// <summary>
     /// <para>Newly selected item</para>
     /// <para>新选中的物品</para>
@@ -18,7 +22,5 @@ public class SelectedItemChangeEvent
     /// <para>Lost the selected item</para>
     /// <para>失去选中的物品</para>
     /// </summary>
-    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public IItem? OldItem { get; set; }
-    // ReSharper restore UnusedAutoPropertyAccessor.Global
 }

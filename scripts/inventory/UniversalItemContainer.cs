@@ -280,10 +280,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
         var oldItem = _itemList[oldIndex];
         oldItem.IsSelect = false;
-        var newItem= _itemList[newIndex];
+        var newItem = _itemList[newIndex];
         newItem.IsSelect = true;
         SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
         {
+            NewIndex = newIndex,
+            OldIndex = oldIndex,
             NewItem = newItem,
             OldItem = oldItem
         });

@@ -10,7 +10,7 @@ namespace ColdMint.scripts.inventory;
 /// <para>A slot in the inventory</para>
 /// <para>物品栏内的一个插槽</para>
 /// </summary>
-public partial class ItemSlotNode : MarginContainer
+public partial class ItemSlotNode : MarginContainer, IItemDisplay
 {
     private TextureRect? _backgroundTextureRect;
     private TextureRect? _iconTextureRect;
@@ -20,17 +20,6 @@ public partial class ItemSlotNode : MarginContainer
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
     private IItem? _item;
-
-    public IItem? Item
-    {
-        set
-        {
-            //Set item
-            //设置物品
-            _item = value;
-            UpdateAllDisplay();
-        }
-    }
 
     public override void _Ready()
     {
@@ -49,8 +38,6 @@ public partial class ItemSlotNode : MarginContainer
     {
         if (_isSelect || _iconTextureRect == null)
         {
-            //Drag is not allowed if there is no icon or no pile of items.
-            //如果没有图标或者没有物品堆，那么不允许拖动。
             return new Variant();
         }
 
@@ -141,35 +128,7 @@ public partial class ItemSlotNode : MarginContainer
         return _item;
     }
 
-    
 
-    /// <summary>
-    /// <para>Clean out the items in the item slot</para>
-    /// <para>清理物品槽内的物品</para>
-    /// </summary>
-    /// <param name="queueFree">
-    ///<para>Whether to release a node</para>
-    ///<para>是否释放节点</para>
-    /// </param>
-    /// <remarks>
-    ///<para>Clean up item object references in item slots.</para>
-    ///<para>清理物品槽内的物品对象引用。</para>
-    /// </remarks>
-    public void ClearItem(bool queueFree = true)
-    {
-        if (_item == null)
-        {
-            return;
-        }
-
-        if (queueFree && _item is Node node)
-        {
-            node.QueueFree();
-        }
-
-        _item = null;
-        UpdateAllDisplay();
-    }
 
     public override void _DropData(Vector2 atPosition, Variant data)
     {
@@ -202,7 +161,7 @@ public partial class ItemSlotNode : MarginContainer
             if (packsack.ItemContainer != null && _item != null)
             {
                 packsack.ItemContainer.AddItem(_item);
-                ClearItem(false);
+                // ClearItem(false);
                 return;
             }
         }
@@ -215,12 +174,12 @@ public partial class ItemSlotNode : MarginContainer
             }
 
             customPacksack.ItemContainer.AddItem(sourceItem);
-            itemSlotNode.ClearItem(false);
+            // itemSlotNode.ClearItem(false);
             return;
         }
 
-        AddItem(sourceItem);
-        itemSlotNode.ClearItem(false);
+        // AddItem(sourceItem);
+        // itemSlotNode.ClearItem(false);
     }
 
     /// <summary>
@@ -250,24 +209,6 @@ public partial class ItemSlotNode : MarginContainer
     }
 
     public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
-
-    /// <summary>
-    /// <para>Whether the item in this node is empty</para>
-    /// <para>此节点内的物品是否为空的</para>
-    /// </summary>
-    /// <returns>
-    ///<para>Return true if the number of items is 0 or the item object does not exist</para>
-    ///<para>当物品数量为0或物品对象不存在时，返回true</para>
-    /// </returns>
-    public bool IsEmpty()
-    {
-        if (_item == null || _item.Quantity == 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
 
 
     /// <summary>
@@ -386,53 +327,19 @@ public partial class ItemSlotNode : MarginContainer
         return true;
     }
 
-    /// <summary>
-    /// <para>Remove items from the item slot</para>
-    /// <para>从物品槽内移除物品</para>
-    /// </summary>
-    /// <param name="number">
-    ///<para>number(Less than 0, remove all items)</para>
-    ///<para>物品数量(小于0，则移除全部物品)</para>
-    /// </param>
-    /// <returns>
-    ///<para>How many items were actually removed</para>
-    ///<para>实际移除了多少个物品</para>
-    /// </returns>
-    public int RemoveItem(int number)
+
+    public void Update(IItem? item)
     {
-        if (_item == null)
-        {
-            return 0;
-        }
-
-        //The number of actual removals
-        //实际移除的数量
-        var removeNumber = number < 0 ? _item.Quantity : number;
-        _item.Quantity -= removeNumber;
-        if (_item.Quantity <= 0)
-        {
-            ClearItem();
-        }
-
-        return removeNumber;
+        UpdateAllDisplay();
     }
 
-    public bool AddItem(IItem item)
+    public void ShowSelf()
     {
-        if (_item == null)
-        {
-            Item = item;
-            return true;
-        }
+        Show();
+    }
 
-        var newQuantity = item.Quantity + _item.Quantity;
-        _item.Quantity = Math.Min(newQuantity, _item.MaxQuantity);
-        if (item is Node2D node2D)
-        {
-            node2D.QueueFree();
-        }
-
-        UpdateQuantityLabel();
-        return true;
+    public void HideSelf()
+    {
+        Hide();
     }
 }
