@@ -47,6 +47,12 @@ public interface IItemContainer : IEnumerable<IItem>
     /// </summary>
     public bool SupportSelect { get; set; }
 
+    /// <summary>
+    /// <para>Gets a placeholder object</para>
+    /// <para>获取占位符对象</para>
+    /// </summary>
+    /// <returns></returns>
+    IItem? GetPlaceHolderItem();
 
     /// <summary>
     /// <para>Gets the selected location</para>

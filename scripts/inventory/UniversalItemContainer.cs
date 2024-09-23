@@ -43,7 +43,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     {
         //If the capacity is not full, directly return to add items
         //如果未占满容量，直接返回可添加物品
-        if (GetUsedCapacity() < GetTotalCapacity())
+        if (GetUsedCapacity() < totalCapacity)
         {
             return true;
         }
@@ -76,12 +76,16 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         return unallocatedQuantity < 1;
     }
 
+    private void UpdateSelectStatus(int index, IItem item)
+    {
+        item.IsSelect = index == _selectIndex;
+    }
 
     public int AddItem(IItem item)
     {
         if (item.MaxQuantity == 1)
         {
-            if (GetUsedCapacity() >= GetTotalCapacity())
+            if (GetUsedCapacity() >= totalCapacity)
             {
                 //Items cannot be stacked and cannot be added if the capacity is full.
                 //物品不能叠加，且容量已满，则无法添加。
@@ -89,6 +93,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             }
 
             _itemList.Add(item);
+            UpdateSelectStatus(_itemList.Count - 1, item);
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
                 NewItem = item,
@@ -130,7 +135,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
         //New items have some left over.
         //新物品有一些剩余。
-        if (GetUsedCapacity() >= GetTotalCapacity())
+        if (GetUsedCapacity() >= totalCapacity)
         {
             //The capacity is full. The remaining capacity cannot be stored.
             //容量已满，无法存放剩余。
@@ -140,6 +145,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         //Add the rest to the container.
         //添加剩余到容器内。
         _itemList.Add(item);
+        UpdateSelectStatus(_itemList.Count - 1, item);
         ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
         {
             NewItem = item,
@@ -150,6 +156,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
     public bool SupportSelect { get; set; }
+    public bool EnablePlaceholder { get; set; }
+
+    public IItem? GetPlaceHolderItem()
+    {
+        return EnablePlaceholder ? new PlaceholderItem() : null;
+    }
 
     public int GetSelectIndex()
     {
@@ -158,7 +170,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public IItem? GetSelectItem()
     {
-        return _itemList.Count == 0 ? null : _itemList[_selectIndex];
+        if (_itemList.Count == 0)
+        {
+            return null;
+        }
+
+        return _selectIndex < _itemList.Count ? _itemList[_selectIndex] : null;
     }
 
     public IItem? GetItem(int index)
@@ -247,7 +264,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public void SelectNextItem()
     {
-        var count = _itemList.Count;
+        var count = EnablePlaceholder ? totalCapacity : _itemList.Count;
         if (count == 0)
         {
             return;
@@ -257,7 +274,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         var newSelectIndex = _selectIndex + 1;
         if (newSelectIndex >= count)
         {
-            newSelectIndex = count - 1;
+            newSelectIndex = 0;
         }
 
         PrivateSelectItem(oldSelectIndex, newSelectIndex);
@@ -265,7 +282,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public void SelectPreviousItem()
     {
-        var count = _itemList.Count;
+        var count = EnablePlaceholder ? totalCapacity : _itemList.Count;
         if (count == 0)
         {
             return;
@@ -294,10 +311,23 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             return;
         }
 
-        var oldItem = _itemList[oldIndex];
-        oldItem.IsSelect = false;
-        var newItem = _itemList[newIndex];
-        newItem.IsSelect = true;
+        //There is no need to broadcast placeholders when an event is invoked.
+        //在调用事件时，无需广播占位符。
+        var oldItem = GetItem(oldIndex);
+        if (oldItem != null)
+        {
+            oldItem.IsSelect = false;
+        }
+
+        //There is no need to broadcast placeholders when an event is invoked.
+        //在调用事件时，无需广播占位符。
+        var newItem = GetItem(newIndex);
+        if (newItem != null)
+        {
+            newItem.IsSelect = true;
+        }
+
+        _selectIndex = newIndex;
         SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
         {
             NewIndex = newIndex,
@@ -305,18 +335,28 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             NewItem = newItem,
             OldItem = oldItem
         });
-        _selectIndex = newIndex;
     }
 
 
     public void SelectItem(int index)
     {
-        var safeIndex = GetSafeIndex(index);
-        if (safeIndex == UnknownIndex)
+        if (EnablePlaceholder)
         {
-            return;
+            if (totalCapacity == 0)
+            {
+                return;
+            }
+            PrivateSelectItem(_selectIndex, index % totalCapacity);
         }
+        else
+        {
+            var safeIndex = GetSafeIndex(index);
+            if (safeIndex == UnknownIndex)
+            {
+                return;
+            }
 
-        PrivateSelectItem(_selectIndex, safeIndex);
+            PrivateSelectItem(_selectIndex, safeIndex);
+        }
     }
 }

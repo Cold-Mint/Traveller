@@ -3,8 +3,8 @@ using Godot;
 namespace ColdMint.scripts.inventory;
 
 /// <summary>
-/// <para>A blank item used to occupy a space in the display. The IsSelect property is set to true so that the item display always appears selected when drawn.</para>
-/// <para>物品容器显示器内用于占位的空白物品。IsSelect属性设置为true，使得物品显示器绘制时总是显示为选中状态。</para>
+/// <para>PlaceholderItem</para>
+/// <para>占位物品</para>
 /// </summary>
 public class PlaceholderItem : IItem
 {
@@ -14,7 +14,7 @@ public class PlaceholderItem : IItem
     public string? Description { get; } = null;
     public int Quantity { get; set; } = 1;
     public int MaxQuantity { get; } = 1;
-    public bool IsSelect { get; set; } = true;
+    public bool IsSelect { get; set; }
 
     public int MergeableItemCount(IItem other, int unallocatedQuantity)
     {

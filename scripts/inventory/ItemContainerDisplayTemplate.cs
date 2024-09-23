@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -105,7 +104,21 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         for (var i = startIndex; i < endIndex; i++)
         {
             var itemDisplay = ItemDisplayList[i];
-            itemDisplay.Update(i < usedCapacity ? itemContainer.GetItem(i) : null);
+            if (i < usedCapacity)
+            {
+                itemDisplay.Update(itemContainer.GetItem(i));
+            }
+            else
+            {
+                var placeHolderItem = itemContainer.GetPlaceHolderItem();
+                if (placeHolderItem != null)
+                {
+                    placeHolderItem.IsSelect = i == itemContainer.GetSelectIndex();
+                }
+
+                itemDisplay.Update(placeHolderItem);
+            }
+
             itemDisplay.ShowSelf();
         }
     }
@@ -120,7 +133,20 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     private void UpdateDataForSingleLocation(IItemContainer itemContainer, int index, int usedCapacity)
     {
         var itemDisplay = ItemDisplayList[index];
-        itemDisplay.Update(index < usedCapacity ? itemContainer.GetItem(index) : null);
+        if (index < usedCapacity)
+        {
+            itemDisplay.Update(itemContainer.GetItem(index));
+        }
+        else
+        {
+            var placeHolderItem = itemContainer.GetPlaceHolderItem();
+            if (placeHolderItem != null)
+            {
+                placeHolderItem.IsSelect = index == itemContainer.GetSelectIndex();
+            }
+
+            itemDisplay.Update(placeHolderItem);
+        }
     }
 
     /// <summary>

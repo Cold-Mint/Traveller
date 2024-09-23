@@ -1,4 +1,4 @@
-﻿using ColdMint.scripts.pickable;
+using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
 using Godot;
 using PacksackUi = ColdMint.scripts.loader.uiLoader.PacksackUi;
