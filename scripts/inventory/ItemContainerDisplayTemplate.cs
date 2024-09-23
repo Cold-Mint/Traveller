@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -19,10 +20,12 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         if (_itemContainer != null)
         {
             _itemContainer.SelectedItemChangeEvent -= OnSelectedItemChangeEvent;
+            _itemContainer.ItemDataChangeEvent -= OnItemDataChangeEvent;
         }
 
         _itemContainer = itemContainer;
         _itemContainer.SelectedItemChangeEvent += OnSelectedItemChangeEvent;
+        _itemContainer.ItemDataChangeEvent += OnItemDataChangeEvent;
         var totalCapacity = itemContainer.GetTotalCapacity();
         var currentCapacity = ItemDisplayList.Count;
         var capacityDifference = totalCapacity - currentCapacity;
@@ -51,6 +54,17 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         }
 
         UpdateData(itemContainer, adjustedEndIndex);
+    }
+
+    private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
+    {
+        if (_itemContainer == null)
+        {
+            return;
+        }
+
+        var usedCapacity = _itemContainer.GetUsedCapacity();
+        UpdateDataForSingleLocation(_itemContainer, itemDataChangeEvent.NewIndex, usedCapacity);
     }
 
     private void OnSelectedItemChangeEvent(SelectedItemChangeEvent selectedItemChangeEvent)

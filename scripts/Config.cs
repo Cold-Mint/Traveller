@@ -210,6 +210,29 @@ public static class Config
         /// </summary>
         public const string TimeInterval = "TimeInterval";
     }
+    
+    /// <summary>
+    /// <para>Item data changes the event type</para>
+    /// <para>物品数据改变事件类型</para>
+    /// </summary>
+    public enum ItemDataChangeEventType
+    {
+        /// <summary>
+        /// <para>add</para>
+        /// <para>添加</para>
+        /// </summary>
+        Add,
+        /// <summary>
+        /// <para>Quantity Added</para>
+        /// <para>物品数量增加</para>
+        /// </summary>
+        QuantityAdded,
+        /// <summary>
+        /// <para>remove</para>
+        /// <para>移除</para>
+        /// </summary>
+        Remove
+    }
 
     public enum OsEnum
     {

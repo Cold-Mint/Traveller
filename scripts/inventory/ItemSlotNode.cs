@@ -1,6 +1,4 @@
-using System;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -16,7 +14,6 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
     private TextureRect? _iconTextureRect;
     private Label? _quantityLabel;
     private Control? _control;
-    private bool _isSelect;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
     private IItem? _item;
@@ -31,12 +28,11 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         _quantityLabel = GetNode<Label>("Control/QuantityLabel");
         _control = GetNode<Control>("Control");
         _quantityLabel.Hide();
-        UpdateBackground(_isSelect);
     }
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
-        if (_isSelect || _iconTextureRect == null)
+        if (_iconTextureRect == null)
         {
             return new Variant();
         }
@@ -51,14 +47,6 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public override bool _CanDropData(Vector2 atPosition, Variant data)
     {
-        if (_isSelect)
-        {
-            //Do not place items in the selected item slot, even if the item slot is empty.
-            //禁止在已选中的物品槽内放置物品，即使物品槽是空的。
-            LogCat.Log("item_slot_is_selected_and_not_allowed");
-            return false;
-        }
-
         //If the preplaced slot does not have an icon, the preplaced slot is not allowed.
         //如果预放置的槽位没有图标，那么不允许放置。
         if (_iconTextureRect == null)
@@ -129,7 +117,6 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
     }
 
 
-
     public override void _DropData(Vector2 atPosition, Variant data)
     {
         if (_iconTextureRect == null)
@@ -188,15 +175,6 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
     /// </summary>
     public bool BackpackAllowed { get; set; }
 
-    public bool IsSelect
-    {
-        get => _isSelect;
-        set
-        {
-            UpdateBackground(value);
-            _isSelect = value;
-        }
-    }
 
     private void UpdateBackground(bool isSelect)
     {
@@ -330,7 +308,12 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public void Update(IItem? item)
     {
-        UpdateAllDisplay();
+        if (item is not PlaceholderItem)
+        {
+            _item = item;
+            UpdateAllDisplay();
+        }
+        UpdateBackground(item is { IsSelect: true });
     }
 
     public void ShowSelf()

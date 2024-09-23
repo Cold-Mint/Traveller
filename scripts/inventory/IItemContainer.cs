@@ -8,10 +8,6 @@ namespace ColdMint.scripts.inventory;
 /// <para>item container</para>
 /// <para>物品容器</para>
 /// </summary>
-/// <remarks>
-///<para>Item containers can store items. Things like backpacks and Hotbars are containers with visual pages.</para>
-///<para>物品容器可以储存物品。像背包和hotbar是具有可视化页面的容器。</para>
-/// </remarks>
 public interface IItemContainer : IEnumerable<IItem>
 {
     /// <summary>
@@ -19,6 +15,12 @@ public interface IItemContainer : IEnumerable<IItem>
     /// <para>当选中的物品改变时，触发此事件</para>
     /// </summary>
     Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
+
+    /// <summary>
+    /// <para>This event is triggered when the item's data changes, such as the number increases, decreases, or new items are added to the container</para>
+    /// <para>当物品的数据发生改变时，例如数量增加，减少，或者新物品被添加到容器内触发此事件</para>
+    /// </summary>
+    Action<ItemDataChangeEvent>? ItemDataChangeEvent { get; set; }
 
     /// <summary>
     /// <para>Can the specified item be added to the container?</para>

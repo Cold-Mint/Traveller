@@ -76,11 +76,11 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// </summary>
     public bool Picked { get; set; }
 
-    public int MaxQuantity { get; set; }
+    public int MaxQuantity { get; set; } = 1;
     public bool IsSelect { get; set; }
 
     private Label? _tipLabel;
-    
+
     public IItem? CreateItem(int number)
     {
         if (number == 0)

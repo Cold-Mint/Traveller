@@ -37,6 +37,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
     public Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
+    public Action<ItemDataChangeEvent>? ItemDataChangeEvent { get; set; }
 
     public bool CanAddItem(IItem item)
     {
@@ -75,6 +76,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         return unallocatedQuantity < 1;
     }
 
+
     public int AddItem(IItem item)
     {
         if (item.MaxQuantity == 1)
@@ -87,12 +89,19 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             }
 
             _itemList.Add(item);
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = item,
+                NewIndex = _itemList.Count - 1,
+                Type = Config.ItemDataChangeEventType.QuantityAdded
+            });
             return item.Quantity;
         }
 
         //There can be more than one item, try to share equally.
         //物品可有多个，尝试均摊。
         var originalQuantity = item.Quantity;
+        var index = 0;
         foreach (var unitItem in _itemList)
         {
             var number = unitItem.MergeableItemCount(item, item.Quantity);
@@ -103,19 +112,20 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
             item.Quantity -= number;
             unitItem.Quantity += number;
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = unitItem,
+                NewIndex = index,
+                Type = Config.ItemDataChangeEventType.QuantityAdded
+            });
             if (item.Quantity < 1)
             {
                 //New items are fully shared.
                 //新物品完全被均摊。
                 return originalQuantity;
             }
-        }
 
-        if (item.Quantity < 1)
-        {
-            //After traversing to the last item, the new item is fully shared.
-            //在遍历到最后的物品，新物品完全被均摊。
-            return originalQuantity;
+            index++;
         }
 
         //New items have some left over.
@@ -130,6 +140,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         //Add the rest to the container.
         //添加剩余到容器内。
         _itemList.Add(item);
+        ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+        {
+            NewItem = item,
+            NewIndex = _itemList.Count - 1,
+            Type = Config.ItemDataChangeEventType.Add
+        });
         return originalQuantity;
     }
 

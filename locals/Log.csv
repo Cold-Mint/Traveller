@@ -57,7 +57,6 @@ log_backpack_not_allowed,不允许添加到背包。,Not allowed to add to backp
 log_item_is_null,物品为空。,Item is null.,アイテムが空です。
 log_item_id_not_same,物品ID不同。,Item ID is different.,アイテムIDが異なります。
 log_max_quantity_exceeded,超过最大数量。,Exceeded maximum quantity.,最大数量を超えました。
-log_item_slot_is_selected_and_not_allowed,已选择物品槽，不允许添加。,"Item slot is selected, not allowed to add.",アイテムスロットが選択されており、追加は許可されていません。
 log_patrol_enemy_detected,检测到敌人。,Enemy detected.,敵を検出しました。
 log_attacker_or_target_is_null,攻击者或目标为空。,Attacker or target is null.,攻撃者またはターゲットが空です。
 log_in_the_same_camp,在同一阵营。,In the same camp.,同じ陣営です。
