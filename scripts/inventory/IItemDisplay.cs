@@ -6,7 +6,7 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public interface IItemDisplay
 {
-    
+
     /// <summary>
     /// <para>Call this method to refresh the display when the item's information changes</para>
     /// <para>物品的信息发生变更时，调用此方法刷新显示器</para>
@@ -20,11 +20,17 @@ public interface IItemDisplay
     void Update(IItem? item);
 
     /// <summary>
+    /// <para>Gets the item that is being displayed</para>
+    /// <para>获取正在显示的物品</para>
+    /// </summary>
+    IItem? Item { get; }
+
+    /// <summary>
     /// <para>Show item Display</para>
     /// <para>显示物品显示器</para>
     /// </summary>
     void ShowSelf();
-    
+
     /// <summary>
     /// <para>Hide item Display</para>
     /// <para>隐藏物品显示器</para>
