@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -9,7 +10,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     protected readonly List<IItemDisplay> ItemDisplayList = [];
     private IItemContainer? _itemContainer;
 
-    public void BindItemContainer(IItemContainer itemContainer)
+    public async void BindItemContainer(IItemContainer itemContainer)
     {
         if (_itemContainer == itemContainer)
         {
@@ -52,6 +53,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
             }
         }
 
+        await Task.Yield();
         UpdateData(itemContainer, adjustedEndIndex);
     }
 
@@ -62,8 +64,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
             return;
         }
 
-        var usedCapacity = _itemContainer.GetUsedCapacity();
-        UpdateDataForSingleLocation(_itemContainer, itemDataChangeEvent.NewIndex, usedCapacity);
+        UpdateDataForSingleLocation(_itemContainer, itemDataChangeEvent.NewIndex);
     }
 
     private void OnSelectedItemChangeEvent(SelectedItemChangeEvent selectedItemChangeEvent)
@@ -73,9 +74,8 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
             return;
         }
 
-        var usedCapacity = _itemContainer.GetUsedCapacity();
-        UpdateDataForSingleLocation(_itemContainer, selectedItemChangeEvent.OldIndex, usedCapacity);
-        UpdateDataForSingleLocation(_itemContainer, selectedItemChangeEvent.NewIndex, usedCapacity);
+        UpdateDataForSingleLocation(_itemContainer, selectedItemChangeEvent.OldIndex);
+        UpdateDataForSingleLocation(_itemContainer, selectedItemChangeEvent.NewIndex);
     }
 
     /// <summary>
@@ -100,26 +100,9 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     /// </param>
     private void UpdateData(IItemContainer itemContainer, int endIndex, int startIndex = 0)
     {
-        var usedCapacity = itemContainer.GetUsedCapacity();
         for (var i = startIndex; i < endIndex; i++)
         {
-            var itemDisplay = ItemDisplayList[i];
-            if (i < usedCapacity)
-            {
-                itemDisplay.Update(itemContainer.GetItem(i));
-            }
-            else
-            {
-                var placeHolderItem = itemContainer.GetPlaceHolderItem();
-                if (placeHolderItem != null)
-                {
-                    placeHolderItem.IsSelect = i == itemContainer.GetSelectIndex();
-                }
-
-                itemDisplay.Update(placeHolderItem);
-            }
-
-            itemDisplay.ShowSelf();
+            UpdateDataForSingleLocation(itemContainer,i);
         }
     }
 
@@ -129,24 +112,20 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     /// </summary>
     /// <param name="itemContainer"></param>
     /// <param name="index"></param>
-    /// <param name="usedCapacity"></param>
-    private void UpdateDataForSingleLocation(IItemContainer itemContainer, int index, int usedCapacity)
+    private void UpdateDataForSingleLocation(IItemContainer itemContainer, int index)
     {
         var itemDisplay = ItemDisplayList[index];
-        if (index < usedCapacity)
+        var item = itemContainer.GetItem(index);
+        if (item == null)
         {
-            itemDisplay.Update(itemContainer.GetItem(index));
+            item = itemContainer.GetPlaceHolderItem();
         }
-        else
+        if (item != null)
         {
-            var placeHolderItem = itemContainer.GetPlaceHolderItem();
-            if (placeHolderItem != null)
-            {
-                placeHolderItem.IsSelect = index == itemContainer.GetSelectIndex();
-            }
-
-            itemDisplay.Update(placeHolderItem);
+            item.IsSelect = index == itemContainer.GetSelectIndex();
         }
+        itemDisplay.Update(item);
+        itemDisplay.ShowSelf();
     }
 
     /// <summary>

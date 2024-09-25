@@ -170,38 +170,56 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public IItem? GetSelectItem()
     {
-        if (_itemList.Count == 0)
+        var count = _itemList.Count;
+        if (count == 0)
         {
             return null;
         }
 
-        return _selectIndex < _itemList.Count ? _itemList[_selectIndex] : null;
+        return _selectIndex < count ? _itemList[_selectIndex] : null;
     }
 
     public IItem? GetItem(int index)
     {
-        var safeIndex = GetSafeIndex(index);
-        if (safeIndex == UnknownIndex)
-        {
-            return null;
-        }
-
-        return _itemList[safeIndex];
+        return GetValidIndex(index) == UnknownIndex ? null : _itemList[index];
     }
 
     /// <summary>
-    /// <para>Gets a secure subscript index</para>
-    /// <para>获取安全的下标索引</para>
+    /// <para>Get valid index</para>
+    /// <para>获取有效的索引</para>
     /// </summary>
     /// <param name="index"></param>
     /// <returns>
-    /// <para>-1 is returned on failure, and the index that does not result in an out-of-bounds subscript is returned on success</para>
-    /// <para>失败返回-1，成功返回不会导致下标越界的索引</para>
+    ///<para>Return -1 if the given index exceeds the valid range of the list, otherwise return the given index itself.</para>
+    ///<para>如果给定的索引超过了列表的有效范围，那么返回-1,否则返回给定的索引本身。</para>
     /// </returns>
-    private int GetSafeIndex(int index)
+    private int GetValidIndex(int index)
     {
         var count = _itemList.Count;
         if (count == 0)
+        {
+            return UnknownIndex;
+        }
+        if (index >= count || index < 0)
+        {
+            return UnknownIndex;
+        }
+        return index;
+    }
+
+    /// <summary>
+    /// <para>Gets a normalized subscript index</para>
+    /// <para>获取规范化的下标索引</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>
+    /// <para>The difference between this method and <see cref="GetValidIndex"/> is that if the given index is out of range, the result will be returned after rounding.</para>
+    /// <para>失败返回-1，成功返回不会导致下标越界的索引，此方法和<see cref="GetValidIndex"/>区别是，如果给定的索引超出了范围，那么会将结果取余后返回。</para>
+    /// </returns>
+    private int GetNormalizeIndex(int index)
+    {
+        var count = _itemList.Count;
+        if (count == 0 || index < 0)
         {
             //Prevents the dividend from being 0
             //防止被除数为0
@@ -224,20 +242,20 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             return 0;
         }
 
-        var safeIndex = GetSafeIndex(itemIndex);
-        if (safeIndex == UnknownIndex)
+        var index = GetValidIndex(itemIndex);
+        if (index == UnknownIndex)
         {
             return 0;
         }
 
-        var item = _itemList[safeIndex];
+        var item = _itemList[index];
         var originalQuantity = item.Quantity;
         if (number < 0)
         {
             //If the number entered is less than 0, all items are removed.
             //输入的数量小于0,则移除全部物品。
             item.Quantity = 0;
-            _itemList.RemoveAt(safeIndex);
+            _itemList.RemoveAt(index);
             return originalQuantity;
         }
 
@@ -245,7 +263,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         item.Quantity -= removed;
         if (item.Quantity < 1)
         {
-            _itemList.RemoveAt(safeIndex);
+            _itemList.RemoveAt(index);
         }
 
         return removed;
@@ -350,7 +368,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         }
         else
         {
-            var safeIndex = GetSafeIndex(index);
+            var safeIndex = GetNormalizeIndex(index);
             if (safeIndex == UnknownIndex)
             {
                 return;
