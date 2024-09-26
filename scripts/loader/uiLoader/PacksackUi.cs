@@ -1,5 +1,4 @@
 ﻿using ColdMint.scripts.inventory;
-using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.loader.uiLoader;
@@ -21,6 +20,8 @@ public partial class PacksackUi : UiLoaderTemplate
     private string? _title;
 
     private Button? _exitButton;
+
+    private IItemContainerDisplay? _itemContainerDisplay;
 
     /// <summary>
     /// <para>title</para>
@@ -46,30 +47,10 @@ public partial class PacksackUi : UiLoaderTemplate
         set
         {
             _itemContainer = value;
-            PlaceItemSlot(value);
+            BindItemContainer();
         }
     }
 
-    /// <summary>
-    /// <para>Place item slots according to item information</para>
-    /// <para>根据物品信息放置物品槽</para>
-    /// </summary>
-    /// <param name="itemContainer"></param>
-    private void PlaceItemSlot(IItemContainer? itemContainer)
-    {
-        if (_hFlowContainer == null || itemContainer == null)
-        {
-            return;
-        }
-
-        NodeUtils.DeleteAllChild(_hFlowContainer);
-        //todo:实现使用物品数据刷新物品槽的方法。
-        // foreach (var item in itemContainer)
-        // {
-            // itemSlotNode.Reparent(_hFlowContainer);
-            // itemSlotNode.Show();
-        // }
-    }
 
     /// <summary>
     /// <para>SetTile</para>
@@ -91,14 +72,24 @@ public partial class PacksackUi : UiLoaderTemplate
         _packedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
     }
 
+    private void BindItemContainer()
+    {
+        if (ItemContainer == null)
+        {
+            return;
+        }
+        _itemContainerDisplay?.BindItemContainer(ItemContainer);
+    }
+
     public override void InitializeUi()
     {
         _hFlowContainer = GetNode<HFlowContainer>("HFlowContainer");
         _titleLabel = GetNode<Label>("TitleLabel");
         _exitButton = GetNode<Button>("ExitButton");
+        _itemContainerDisplay = new ItemSlotContainerDisplay(_hFlowContainer);
         //If the item container was set before this node was placed in the node tree, load it here.
         //若物品容器在此节点放置到节点树之前被设置了，那么在这里加载。
-        PlaceItemSlot(_itemContainer);
+        BindItemContainer();
         SetTile(_title);
     }
 
