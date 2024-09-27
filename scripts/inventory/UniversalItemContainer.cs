@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
-using JetBrains.Annotations;
 
 namespace ColdMint.scripts.inventory;
 
@@ -12,7 +11,7 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public class UniversalItemContainer(int totalCapacity) : IItemContainer
 {
-    private readonly List<IItem> _itemList = [];
+    private readonly Dictionary<int, IItem> _itemDictionary = [];
 
     /// <summary>
     /// <para>UnknownIndex</para>
@@ -24,17 +23,15 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     //_selectIndex默认为0.
     private int _selectIndex;
 
-    [MustDisposeResource]
-    public IEnumerator<IItem> GetEnumerator()
-    {
-        return _itemList.GetEnumerator();
-    }
-
-    [MustDisposeResource]
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
+    /// <summary>
+    /// <para>The next available index</para>
+    /// <para>下个可用的索引</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>For example, the variable [1,2,3,5,6] represents 4, or the variable [1,2,3,4,5,6,7] represents 8.</para>
+    ///<para>例如[1,2,3,5,6]这个变量表示4，再或者[1,2,3,4,5,6,7]这个变量表示8。</para>
+    /// </remarks>
+    private int _nextAvailableIndex;
 
     public Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
     public Action<ItemDataChangeEvent>? ItemDataChangeEvent { get; set; }
@@ -58,7 +55,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         //If the capacity is full, we calculate whether we can spread the new items evenly among the existing items.
         //如果容量占满了，我们计算是否能将新物品均摊在已有的物品内。
         var unallocatedQuantity = item.Quantity;
-        foreach (var unitItem in _itemList)
+        foreach (var unitItem in _itemDictionary.Values)
         {
             var number = unitItem.MergeableItemCount(item, unallocatedQuantity);
             if (number == 0)
@@ -81,23 +78,47 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         item.IsSelect = index == _selectIndex;
     }
 
+    /// <summary>
+    /// <para>Update the next available index location</para>
+    /// <para>更新下个可用的索引位置</para>
+    /// </summary>
+    private void UpdateNextAvailableIndex()
+    {
+        _nextAvailableIndex = UnknownIndex;
+        if (totalCapacity <= 0)
+        {
+            LogCat.Log("Next available item"+_nextAvailableIndex);
+            return;
+        }
+        for (var i = 0; i < totalCapacity; i++)
+        {
+            var contains = _itemDictionary.ContainsKey(i);
+            if (!contains)
+            {
+                _nextAvailableIndex = i;
+                LogCat.Log("Next available item"+_nextAvailableIndex);
+                return;
+            }
+        }
+    }
+
     public int AddItem(IItem item)
     {
         if (item.MaxQuantity == 1)
         {
-            if (GetUsedCapacity() >= totalCapacity)
+            if (_nextAvailableIndex == UnknownIndex)
             {
-                //Items cannot be stacked and cannot be added if the capacity is full.
-                //物品不能叠加，且容量已满，则无法添加。
                 return 0;
             }
 
-            _itemList.Add(item);
-            UpdateSelectStatus(_itemList.Count - 1, item);
+            var nextAvailableIndex = _nextAvailableIndex;
+            _itemDictionary[nextAvailableIndex] = item;
+            UpdateNextAvailableIndex();
+            UpdateSelectStatus(nextAvailableIndex, item);
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
                 NewItem = item,
-                NewIndex = _itemList.Count - 1,
+                NewIndex = nextAvailableIndex,
                 Type = Config.ItemDataChangeEventType.QuantityAdded
             });
             return item.Quantity;
@@ -107,7 +128,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         //物品可有多个，尝试均摊。
         var originalQuantity = item.Quantity;
         var index = 0;
-        foreach (var unitItem in _itemList)
+        foreach (var unitItem in _itemDictionary.Values)
         {
             var number = unitItem.MergeableItemCount(item, item.Quantity);
             if (number == 0)
@@ -144,12 +165,18 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
         //Add the rest to the container.
         //添加剩余到容器内。
-        _itemList.Add(item);
-        UpdateSelectStatus(_itemList.Count - 1, item);
+        if (_nextAvailableIndex == UnknownIndex)
+        {
+            return 0;
+        }
+        var finalNextAvailableIndex = _nextAvailableIndex;
+        _itemDictionary[finalNextAvailableIndex] = item;
+        UpdateNextAvailableIndex();
+        UpdateSelectStatus(finalNextAvailableIndex, item);
         ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
         {
             NewItem = item,
-            NewIndex = _itemList.Count - 1,
+            NewIndex = finalNextAvailableIndex,
             Type = Config.ItemDataChangeEventType.Add
         });
         return originalQuantity;
@@ -170,65 +197,13 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public IItem? GetSelectItem()
     {
-        var count = _itemList.Count;
-        if (count == 0)
-        {
-            return null;
-        }
-
-        return _selectIndex < count ? _itemList[_selectIndex] : null;
+        return _itemDictionary.TryGetValue(_selectIndex, out var item) ? item : null;
     }
 
     public IItem? GetItem(int index)
     {
-        return GetValidIndex(index) == UnknownIndex ? null : _itemList[index];
+        return _itemDictionary.TryGetValue(index, out var item) ? item : null;
     }
-
-    /// <summary>
-    /// <para>Get valid index</para>
-    /// <para>获取有效的索引</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns>
-    ///<para>Return -1 if the given index exceeds the valid range of the list, otherwise return the given index itself.</para>
-    ///<para>如果给定的索引超过了列表的有效范围，那么返回-1,否则返回给定的索引本身。</para>
-    /// </returns>
-    private int GetValidIndex(int index)
-    {
-        var count = _itemList.Count;
-        if (count == 0)
-        {
-            return UnknownIndex;
-        }
-        if (index >= count || index < 0)
-        {
-            return UnknownIndex;
-        }
-        return index;
-    }
-
-    /// <summary>
-    /// <para>Gets a normalized subscript index</para>
-    /// <para>获取规范化的下标索引</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns>
-    /// <para>The difference between this method and <see cref="GetValidIndex"/> is that if the given index is out of range, the result will be returned after rounding.</para>
-    /// <para>失败返回-1，成功返回不会导致下标越界的索引，此方法和<see cref="GetValidIndex"/>区别是，如果给定的索引超出了范围，那么会将结果取余后返回。</para>
-    /// </returns>
-    private int GetNormalizeIndex(int index)
-    {
-        var count = _itemList.Count;
-        if (count == 0 || index < 0)
-        {
-            //Prevents the dividend from being 0
-            //防止被除数为0
-            return UnknownIndex;
-        }
-
-        return index % count;
-    }
-
 
     public int RemoveSelectItem(int number)
     {
@@ -242,20 +217,19 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             return 0;
         }
 
-        var index = GetValidIndex(itemIndex);
-        if (index == UnknownIndex)
+        if (!_itemDictionary.TryGetValue(itemIndex, out var item))
         {
             return 0;
         }
-
-        var item = _itemList[index];
+        
         var originalQuantity = item.Quantity;
         if (number < 0)
         {
             //If the number entered is less than 0, all items are removed.
             //输入的数量小于0,则移除全部物品。
             item.Quantity = 0;
-            _itemList.RemoveAt(index);
+            _itemDictionary.Remove(itemIndex);
+            UpdateNextAvailableIndex();
             return originalQuantity;
         }
 
@@ -263,7 +237,8 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         item.Quantity -= removed;
         if (item.Quantity < 1)
         {
-            _itemList.RemoveAt(index);
+            _itemDictionary.Remove(itemIndex);
+            UpdateNextAvailableIndex();
         }
 
         return removed;
@@ -271,7 +246,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public int GetUsedCapacity()
     {
-        return _itemList.Count;
+        return _itemDictionary.Count;
     }
 
     public int GetTotalCapacity()
@@ -282,7 +257,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public void SelectNextItem()
     {
-        var count = EnablePlaceholder ? totalCapacity : _itemList.Count;
+        var count = totalCapacity;
         if (count == 0)
         {
             return;
@@ -300,7 +275,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public void SelectPreviousItem()
     {
-        var count = EnablePlaceholder ? totalCapacity : _itemList.Count;
+        var count = totalCapacity;
         if (count == 0)
         {
             return;
@@ -358,23 +333,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public void SelectItem(int index)
     {
-        if (EnablePlaceholder)
+        if (totalCapacity == 0 || index < 0)
         {
-            if (totalCapacity == 0)
-            {
-                return;
-            }
-            PrivateSelectItem(_selectIndex, index % totalCapacity);
+            return;
         }
-        else
-        {
-            var safeIndex = GetNormalizeIndex(index);
-            if (safeIndex == UnknownIndex)
-            {
-                return;
-            }
-
-            PrivateSelectItem(_selectIndex, safeIndex);
-        }
+        PrivateSelectItem(_selectIndex, index % totalCapacity);
     }
 }

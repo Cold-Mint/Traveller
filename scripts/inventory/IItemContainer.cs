@@ -8,7 +8,7 @@ namespace ColdMint.scripts.inventory;
 /// <para>item container</para>
 /// <para>物品容器</para>
 /// </summary>
-public interface IItemContainer : IEnumerable<IItem>
+public interface IItemContainer
 {
     /// <summary>
     /// <para>This event is triggered when the selected item changes</para>
