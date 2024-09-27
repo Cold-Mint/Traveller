@@ -45,6 +45,12 @@ public interface IItem
     /// <para>是否选中</para>
     /// </summary>
     bool IsSelect { get; set; }
+    
+    /// <summary>
+    /// <para>The container in which the item is located</para>
+    /// <para>物品所在的物品容器</para>
+    /// </summary>
+    IItemContainer? ItemContainer { get; set; }
 
     /// <summary>
     /// <para>Calculate how many items can be merged with other items</para>

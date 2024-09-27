@@ -789,7 +789,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
-
+        item.ItemContainer = null;
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
         switch (item)
         {

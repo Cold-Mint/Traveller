@@ -32,9 +32,17 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
+        switch (Item)
+        {
+            case null:
+                return Config.EmptyVariant;
+            case PlaceholderItem:
+                return Config.EmptyVariant;
+        }
+
         if (_iconTextureRect == null)
         {
-            return new Variant();
+            return Config.EmptyVariant;
         }
 
         var textureRect = new TextureRect();
@@ -47,15 +55,25 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public override bool _CanDropData(Vector2 atPosition, Variant data)
     {
-        if (Item == null)
+        var type = data.VariantType;
+        if (type == Variant.Type.Nil)
         {
             return false;
         }
-        if (Item is PlaceholderItem)
+        switch (Item)
         {
-            return false;
+            case null:
+            case PlaceholderItem:
+                return true;
+            default:
+                var itemSlotNode = data.As<ItemSlotNode>();
+                var sourceItem = itemSlotNode.Item;
+                if (sourceItem == null)
+                {
+                    return false;
+                }
+                return Item.MergeableItemCount(sourceItem, sourceItem.Quantity) > 0;
         }
-        return true;
     }
 
     public override void _DropData(Vector2 atPosition, Variant data)
@@ -63,25 +81,20 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         var type = data.VariantType;
         if (type == Variant.Type.Nil)
         {
-            //The passed variable is null.
-            //传入的变量为null。
             return;
         }
         var itemSlotNode = data.As<ItemSlotNode>();
         var sourceItem = itemSlotNode.Item;
         if (sourceItem == null)
         {
-            //Return null when trying to get the source item.
-            //尝试获取源物品时返回null。
             return;
         }
+        if (Item is null || Item is PlaceholderItem)
+        {
+            sourceItem.ItemContainer?.RemoveItem(sourceItem, -1);
+            Item?.ItemContainer?.ReplaceItem(Item, sourceItem);
+        }
     }
-
-    /// <summary>
-    /// <para>Whether to place a backpack in the current slot</para>
-    /// <para>当前槽位是否允许放置背包</para>
-    /// </summary>
-    public bool BackpackAllowed { get; set; }
 
 
     private void UpdateBackground(bool isSelect)

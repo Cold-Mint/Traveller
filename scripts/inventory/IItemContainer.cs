@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -77,6 +76,21 @@ public interface IItemContainer
     IItem? GetItem(int index);
 
     /// <summary>
+    /// <para>ReplaceItem</para>
+    /// <para>替换物品</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Even if the item corresponding to the index is null, it can be successfully replaced.</para>
+    ///<para>即使索引对应的物品为null，也可以成功的替换。</para>
+    /// </remarks>
+    /// <param name="index"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    bool ReplaceItem(int index, IItem item);
+
+    bool ReplaceItem(IItem oldItem, IItem newItem);
+    
+    /// <summary>
     /// <para>Gets the item in the specified location, equivalent to <see cref="GetItem"/></para>
     /// <para>获取指定位置的物品，等同于<see cref="GetItem"/></para>
     /// </summary>
@@ -113,6 +127,14 @@ public interface IItemContainer
     ///<para>实际移除了多少个物品</para>
     /// </returns>
     int RemoveItem(int itemIndex, int number);
+
+    /// <summary>
+    /// <para>Remove item</para>
+    /// <para>移除物品</para>
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    int RemoveItem(IItem item, int number);
 
     /// <summary>
     /// <para>Gets the used capacity of the item container</para>
