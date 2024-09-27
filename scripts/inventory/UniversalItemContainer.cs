@@ -230,6 +230,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             item.Quantity = 0;
             _itemDictionary.Remove(itemIndex);
             UpdateNextAvailableIndex();
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = item,
+                NewIndex = itemIndex,
+                Type = Config.ItemDataChangeEventType.Remove
+            });
             return originalQuantity;
         }
 
@@ -239,6 +245,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         {
             _itemDictionary.Remove(itemIndex);
             UpdateNextAvailableIndex();
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = item,
+                NewIndex = itemIndex,
+                Type = Config.ItemDataChangeEventType.Remove
+            });
         }
 
         return removed;

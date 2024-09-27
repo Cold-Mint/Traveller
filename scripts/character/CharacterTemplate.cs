@@ -766,7 +766,7 @@ public partial class CharacterTemplate : CharacterBody2D
         var actualQuantity = number < 0 ? item.Quantity : Math.Min(item.Quantity, number);
         for (var i = 0; i < actualQuantity; i++)
         {
-            ThrowOneItem(item, velocity);
+            ThrowOneItem(index, item, velocity);
         }
     }
 
@@ -774,12 +774,13 @@ public partial class CharacterTemplate : CharacterBody2D
     ///  <para>Throw item</para>
     ///  <para>抛出物品</para>
     ///  </summary>
+    ///  <param name="index"></param>
     ///  <param name="originalItem"></param>
     ///  <param name="velocity">
     /// <para>The speed to be applied to the item</para>
     /// <para>要施加到物品上的速度</para>
     ///  </param>
-    private void ThrowOneItem(IItem originalItem, Vector2 velocity)
+    private void ThrowOneItem(int index, IItem originalItem, Vector2 velocity)
     {
         //Remove the item from the item container
         //从物品容器内取出物品
@@ -837,7 +838,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 break;
         }
 
-        originalItem.Quantity -= 1;
+        ProtectedItemContainer?.RemoveItem(index, 1);
     }
 
 

@@ -114,7 +114,7 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
     /// </summary>
     private void UpdateTooltipText()
     {
-        if (Item == null)
+        if (Item is PlaceholderItem or null)
         {
             TooltipText = null;
             return;
@@ -149,6 +149,12 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
             return;
         }
 
+        if (Item is PlaceholderItem or null)
+        {
+            _quantityLabel.Hide();
+            return;
+        }
+
         switch (Item?.Quantity)
         {
             case null or 1:
@@ -178,11 +184,8 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public void Update(IItem? item)
     {
-        if (item is not PlaceholderItem)
-        {
-            Item = item;
-            UpdateAllDisplay();
-        }
+        Item = item;
+        UpdateAllDisplay();
         UpdateBackground(item is { IsSelect: true });
     }
 
