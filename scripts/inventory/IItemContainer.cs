@@ -50,8 +50,12 @@ public interface IItemContainer
     /// <para>Gets a placeholder object</para>
     /// <para>获取占位符对象</para>
     /// </summary>
+    /// <param name="index">
+    ///<para>index</para>
+    ///<para>占位符代替的索引</para>
+    /// </param>
     /// <returns></returns>
-    IItem? GetPlaceHolderItem();
+    IItem GetPlaceHolderItem(int index);
 
     /// <summary>
     /// <para>Gets the selected location</para>
@@ -88,7 +92,13 @@ public interface IItemContainer
     /// <returns></returns>
     bool ReplaceItem(int index, IItem item);
 
-    bool ReplaceItem(IItem oldItem, IItem newItem);
+    /// <summary>
+    /// <para>ClearItem</para>
+    /// <para>清理物品</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    bool ClearItem(int index);
     
     /// <summary>
     /// <para>Gets the item in the specified location, equivalent to <see cref="GetItem"/></para>
@@ -127,14 +137,6 @@ public interface IItemContainer
     ///<para>实际移除了多少个物品</para>
     /// </returns>
     int RemoveItem(int itemIndex, int number);
-
-    /// <summary>
-    /// <para>Remove item</para>
-    /// <para>移除物品</para>
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    int RemoveItem(IItem item, int number);
 
     /// <summary>
     /// <para>Gets the used capacity of the item container</para>

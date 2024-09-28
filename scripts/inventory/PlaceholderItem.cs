@@ -8,6 +8,7 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public class PlaceholderItem : IItem
 {
+    public int Index { get; set; }
     public string Id { get; set; }
     public Texture2D Icon { get; }
     public string Name { get; }

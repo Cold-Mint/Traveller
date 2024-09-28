@@ -78,6 +78,12 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public override void _DropData(Vector2 atPosition, Variant data)
     {
+        //The item is empty and the corresponding item container cannot be retrieved.
+        //物品为空，无法获取对应的物品容器。
+        if (Item is null)
+        {
+            return;
+        }
         var type = data.VariantType;
         if (type == Variant.Type.Nil)
         {
@@ -89,10 +95,20 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         {
             return;
         }
-        if (Item is null || Item is PlaceholderItem)
+
+        if (Item is PlaceholderItem placeholderItem)
         {
-            sourceItem.ItemContainer?.RemoveItem(sourceItem, -1);
-            Item?.ItemContainer?.ReplaceItem(Item, sourceItem);
+            var placeholderItemContainer = placeholderItem.ItemContainer;
+            var sourceItemContainer = sourceItem.ItemContainer;
+            var sourceItemIndex = sourceItem.Index;
+            if (placeholderItemContainer != null)
+            {
+                placeholderItemContainer.ReplaceItem(placeholderItem.Index, sourceItem);
+            }
+            if (sourceItemContainer != null)
+            {
+                sourceItemContainer.ClearItem(sourceItemIndex);
+            }
         }
     }
 

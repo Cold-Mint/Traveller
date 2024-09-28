@@ -15,10 +15,7 @@ public partial class HotBar : HBoxContainer
     public override void _Ready()
     {
         base._Ready();
-        var universalItemContainer = new UniversalItemContainer(Config.HotBarSize)
-        {
-            EnablePlaceholder = true
-        };
+        var universalItemContainer = new UniversalItemContainer(Config.HotBarSize);
         _itemContainer = universalItemContainer;
         _itemContainer.SupportSelect = true;
         _itemContainerDisplay = new ItemSlotContainerDisplay(this);

@@ -110,6 +110,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
             var nextAvailableIndex = _nextAvailableIndex;
             _itemDictionary[nextAvailableIndex] = item;
+            item.Index = nextAvailableIndex;
             item.ItemContainer = this;
             UpdateNextAvailableIndex();
             UpdateSelectStatus(nextAvailableIndex, item);
@@ -169,6 +170,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         }
         var finalNextAvailableIndex = _nextAvailableIndex;
         _itemDictionary[finalNextAvailableIndex] = item;
+        item.Index = finalNextAvailableIndex;
         item.ItemContainer = this;
         UpdateNextAvailableIndex();
         UpdateSelectStatus(finalNextAvailableIndex, item);
@@ -182,11 +184,16 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
     public bool SupportSelect { get; set; }
-    public bool EnablePlaceholder { get; set; }
 
-    public IItem? GetPlaceHolderItem()
+
+    public IItem GetPlaceHolderItem(int index)
     {
-        return EnablePlaceholder ? new PlaceholderItem() : null;
+        var placeholderItem = new PlaceholderItem
+        {
+            Index = index,
+            ItemContainer = this
+        };
+        return placeholderItem;
     }
 
     public int GetSelectIndex()
@@ -208,6 +215,8 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     {
         var oldItem = GetItem(index);
         _itemDictionary[index] = item;
+        item.Index = index;
+        item.ItemContainer = this;
         ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
         {
             NewItem = item,
@@ -219,11 +228,24 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         return true;
     }
 
-    public bool ReplaceItem(IItem oldItem, IItem newItem)
+
+    public bool ClearItem(int index)
     {
-        var index = GetIndexByItem(oldItem);
-        return index != UnknownIndex && ReplaceItem(index, newItem);
+        var result = _itemDictionary.Remove(index);
+        if (result)
+        {
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = null,
+                NewIndex = index,
+                OldIndex = index,
+                OldItem = null,
+                Type = Config.ItemDataChangeEventType.Clear
+            });
+        }
+        return result;
     }
+    
 
     public int RemoveSelectItem(int number)
     {
@@ -274,37 +296,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         }
 
         return removed;
-    }
-
-    public int RemoveItem(IItem item, int number)
-    {
-        var index = GetIndexByItem(item);
-        return index == UnknownIndex ? 0 : RemoveItem(index, number);
-    }
-
-
-    /// <summary>
-    /// <para>Find the corresponding index based on the item object</para>
-    /// <para>根据物品对象查找对应的索引</para>
-    /// </summary>
-    /// <param name="item"></param>
-    /// <returns></returns>
-    private int GetIndexByItem(IItem item)
-    {
-        if (totalCapacity <= 0)
-        {
-            return UnknownIndex;
-        }
-        for (var i = 0; i < totalCapacity; i++)
-        {
-            var contains = _itemDictionary.ContainsKey(i);
-            if (!contains) continue;
-            if (item == _itemDictionary[i])
-            {
-                return i;
-            }
-        }
-        return UnknownIndex;
     }
 
     public int GetUsedCapacity()

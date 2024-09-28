@@ -35,18 +35,30 @@ public partial class Packsack : PickAbleTemplate
             if (control is PacksackUi packsackUi)
             {
                 packsackUi.Title = Name;
-                packsackUi.ItemContainer = ItemContainer;
+                packsackUi.ItemContainer = SelfItemContainer;
             }
         });
     }
 
-    public IItemContainer? ItemContainer { get; private set; }
+    public override void CopyAttributes(Node node)
+    {
+        base.CopyAttributes(node);
+        if (node is Packsack packsack)
+        {
+            SelfItemContainer = packsack.SelfItemContainer;
+        }
+    }
+
+    public IItemContainer? SelfItemContainer { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
-        ItemContainer = new UniversalItemContainer(NumberSlots);
-        ItemContainer.SupportSelect = false;
+        if (SelfItemContainer == null)
+        {
+            SelfItemContainer = new UniversalItemContainer(NumberSlots);
+            SelfItemContainer.SupportSelect = false;
+        }
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
         {
             var packedScene = GD.Load<PackedScene>(Path);

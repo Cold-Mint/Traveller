@@ -15,6 +15,7 @@ namespace ColdMint.scripts.pickable;
 /// </summary>
 public partial class PickAbleTemplate : RigidBody2D, IItem
 {
+    public int Index { get; set; }
     //Do not export this field because the ID is specified within yaml.
     //不要导出此字段，因为ID是在yaml内指定的。
     public virtual string Id { get; set; } = "ID";
@@ -292,7 +293,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <para>请在此函数内复制节点属性</para>
     /// </summary>
     /// <param name="node"></param>
-    public void CopyAttributes(Node node)
+    public virtual void CopyAttributes(Node node)
     {
         if (node is not PickAbleTemplate pickAbleTemplate)
         {

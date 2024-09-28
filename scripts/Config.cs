@@ -170,12 +170,12 @@ public static class Config
     ///<para>在禁用版本隔离时用的</para>
     /// </remarks>
     public const string DefaultVersionName = "Default";
-    
+
     /// <summary>
     /// <para>EmptyVariant</para>
     /// <para>空变量</para>
     /// </summary>
-    public static readonly Variant EmptyVariant  = new();
+    public static readonly Variant EmptyVariant = new();
 
 
     /// <summary>
@@ -216,7 +216,7 @@ public static class Config
         /// </summary>
         public const string TimeInterval = "TimeInterval";
     }
-    
+
     /// <summary>
     /// <para>Item data changes the event type</para>
     /// <para>物品数据改变事件类型</para>
@@ -238,12 +238,17 @@ public static class Config
         /// <para>移除</para>
         /// </summary>
         Remove,
-        
+
         /// <summary>
         /// <para>Replace</para>
         /// <para>被替换</para>
         /// </summary>
-        Replace
+        Replace,
+        /// <summary>
+        /// <para>Clear</para>
+        /// <para>被清空</para>
+        /// </summary>
+        Clear
     }
 
     public enum OsEnum

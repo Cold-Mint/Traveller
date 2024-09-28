@@ -118,11 +118,15 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         var item = itemContainer.GetItem(index);
         if (item == null)
         {
-            item = itemContainer.GetPlaceHolderItem();
+            item = itemContainer.GetPlaceHolderItem(index);
         }
-        if (item != null)
+        if (itemContainer.SupportSelect)
         {
             item.IsSelect = index == itemContainer.GetSelectIndex();
+        }
+        else
+        {
+            item.IsSelect = false;
         }
         itemDisplay.Update(item);
         itemDisplay.ShowSelf();

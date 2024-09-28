@@ -5,6 +5,11 @@ namespace ColdMint.scripts.inventory;
 public interface IItem
 {
     /// <summary>
+    /// <para>The position of the item in the container</para>
+    /// <para>物品在容器内的位置</para>
+    /// </summary>
+    public int Index { get; set; }
+    /// <summary>
     /// <para>ID of current item</para>
     /// <para>当前物品的ID</para>
     /// </summary>
