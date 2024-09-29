@@ -60,18 +60,24 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         {
             return false;
         }
+        var itemSlotNode = data.As<ItemSlotNode>();
+        var sourceItem = itemSlotNode.Item;
+        if (sourceItem == null)
+        {
+            return false;
+        }
         switch (Item)
         {
             case null:
-            case PlaceholderItem:
                 return true;
-            default:
-                var itemSlotNode = data.As<ItemSlotNode>();
-                var sourceItem = itemSlotNode.Item;
-                if (sourceItem == null)
+            case PlaceholderItem placeholderItem:
+                var placeholderItemContainer = placeholderItem.ItemContainer;
+                if (placeholderItemContainer == null)
                 {
-                    return false;
+                    return true;
                 }
+                return placeholderItemContainer.CanReplaceItem(placeholderItem.Index, sourceItem);
+            default:
                 return Item.MergeableItemCount(sourceItem, sourceItem.Quantity) > 0;
         }
     }
@@ -101,11 +107,12 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
             var placeholderItemContainer = placeholderItem.ItemContainer;
             var sourceItemContainer = sourceItem.ItemContainer;
             var sourceItemIndex = sourceItem.Index;
+            var replaceResult = false;
             if (placeholderItemContainer != null)
             {
-                placeholderItemContainer.ReplaceItem(placeholderItem.Index, sourceItem);
+                replaceResult = placeholderItemContainer.ReplaceItem(placeholderItem.Index, sourceItem);
             }
-            if (sourceItemContainer != null)
+            if (replaceResult && sourceItemContainer != null)
             {
                 sourceItemContainer.ClearItem(sourceItemIndex);
             }

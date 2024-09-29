@@ -13,21 +13,7 @@ public partial class Packsack : PickAbleTemplate
 {
     private const string Path = "res://prefab/ui/packsackUI.tscn";
     [Export] public int NumberSlots { get; set; }
-
-    /// <summary>
-    /// <para>Whether to allow backpacks</para>
-    /// <para>是否允许放置背包</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>Can a new backpack be placed in the slot of the backpack?</para>
-    ///<para>即此背包的槽位内是否可以再放置新的背包？</para>
-    /// </remarks>
-    [Export]
-    public bool BackpackAllowed { get; set; }
-
-    public override bool CanPutInPack => false;
-
-
+    public override bool CanContainItems { get; set; } = true;
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
         GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>

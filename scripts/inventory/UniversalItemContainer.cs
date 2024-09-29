@@ -37,6 +37,12 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public bool CanAddItem(IItem item)
     {
+        if (item.CanContainItems && !CanContainContainer)
+        {
+            //The item to be added can hold other items, and this item container does not allow item containers.
+            //要添加的物品能够容纳其他物品，且此物品容器不允许放置物品容器。
+            return false;
+        }
         //If the capacity is not full, directly return to add items
         //如果未占满容量，直接返回可添加物品
         if (GetUsedCapacity() < totalCapacity)
@@ -184,6 +190,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
     public bool SupportSelect { get; set; }
+    public bool CanContainContainer { get; set; }
 
 
     public IItem GetPlaceHolderItem(int index)
@@ -225,6 +232,15 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             OldItem = oldItem,
             Type = Config.ItemDataChangeEventType.Replace
         });
+        return true;
+    }
+
+    public bool CanReplaceItem(int index, IItem item)
+    {
+        if (item.CanContainItems && !CanContainContainer)
+        {
+            return false;
+        }
         return true;
     }
 

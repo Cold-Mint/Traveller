@@ -30,9 +30,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return TranslationServerUtils.Translate(key) ?? key;
         }
     }
-
-    public virtual bool CanPutInPack => true;
-
+    
     /// <summary>
     /// <para>Owner</para>
     /// <para>主人</para>
@@ -79,6 +77,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     public int MaxQuantity { get; set; } = 1;
     public bool IsSelect { get; set; }
+    public virtual bool CanContainItems { get; set; }
     public IItemContainer? ItemContainer { get; set; }
 
     private Label? _tipLabel;

@@ -44,7 +44,13 @@ public interface IItemContainer
     /// <para>Whether this item container supports checking</para>
     /// <para>此物品容器是否支持选中</para>
     /// </summary>
-    public bool SupportSelect { get; set; }
+    bool SupportSelect { get; set; }
+
+    /// <summary>
+    /// <para>Whether this item container supports items that CanContainItems=true, such as backpacks</para>
+    /// <para>此物品容器是否支持容纳CanContainItems=true的物品，例如背包</para>
+    /// </summary>
+    bool CanContainContainer { get; set; }
 
     /// <summary>
     /// <para>Gets a placeholder object</para>
@@ -91,6 +97,15 @@ public interface IItemContainer
     /// <param name="item"></param>
     /// <returns></returns>
     bool ReplaceItem(int index, IItem item);
+    
+    /// <summary>
+    /// <para>Whether items are replaceable</para>
+    /// <para>是否可替换物品</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    bool CanReplaceItem(int index, IItem item);
 
     /// <summary>
     /// <para>ClearItem</para>
@@ -99,7 +114,7 @@ public interface IItemContainer
     /// <param name="index"></param>
     /// <returns></returns>
     bool ClearItem(int index);
-    
+
     /// <summary>
     /// <para>Gets the item in the specified location, equivalent to <see cref="GetItem"/></para>
     /// <para>获取指定位置的物品，等同于<see cref="GetItem"/></para>

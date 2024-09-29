@@ -17,6 +17,7 @@ public partial class HotBar : HBoxContainer
         base._Ready();
         var universalItemContainer = new UniversalItemContainer(Config.HotBarSize);
         _itemContainer = universalItemContainer;
+        _itemContainer.CanContainContainer = true;
         _itemContainer.SupportSelect = true;
         _itemContainerDisplay = new ItemSlotContainerDisplay(this);
         _itemContainerDisplay.BindItemContainer(_itemContainer);
