@@ -13,7 +13,6 @@ public partial class Packsack : PickAbleTemplate
 {
     private const string Path = "res://prefab/ui/packsackUI.tscn";
     [Export] public int NumberSlots { get; set; }
-    public override bool CanContainItems { get; set; } = true;
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
         GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>
@@ -35,7 +34,6 @@ public partial class Packsack : PickAbleTemplate
         }
     }
 
-    public IItemContainer? SelfItemContainer { get; set; }
 
     public override void _Ready()
     {

@@ -77,8 +77,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     public int MaxQuantity { get; set; } = 1;
     public bool IsSelect { get; set; }
-    public virtual bool CanContainItems { get; set; }
     public IItemContainer? ItemContainer { get; set; }
+    public IItemContainer? SelfItemContainer { get; set; }
 
     private Label? _tipLabel;
 

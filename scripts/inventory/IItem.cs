@@ -52,20 +52,20 @@ public interface IItem
     bool IsSelect { get; set; }
     
     /// <summary>
-    /// <para>Whether this item can also hold other items</para>
-    /// <para>此物品是否还能容纳其他物品</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>For example, a backpack is an object that can hold other objects.</para>
-    ///<para>例如，背包是一个物品，他可以容纳其他物品。</para>
-    /// </remarks>
-    bool CanContainItems { get; set; }
-    
-    /// <summary>
     /// <para>The container in which the item is located</para>
     /// <para>物品所在的物品容器</para>
     /// </summary>
     IItemContainer? ItemContainer { get; set; }
+    
+    /// <summary>
+    /// <para>Its own container of items</para>
+    /// <para>自身的物品容器</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>Returns a non-null value if the item itself can hold other items</para>
+    /// <para>物品本身可容纳其他物品，则返回非空值</para>
+    /// </remarks>
+    public IItemContainer? SelfItemContainer { get; set; }
 
     /// <summary>
     /// <para>Calculate how many items can be merged with other items</para>

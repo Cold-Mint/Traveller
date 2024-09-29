@@ -37,7 +37,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public bool CanAddItem(IItem item)
     {
-        if (item.CanContainItems && !CanContainContainer)
+        if (item.SelfItemContainer != null && !CanContainContainer)
         {
             //The item to be added can hold other items, and this item container does not allow item containers.
             //要添加的物品能够容纳其他物品，且此物品容器不允许放置物品容器。
@@ -132,16 +132,17 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         //There can be more than one item, try to share equally.
         //物品可有多个，尝试均摊。
         var originalQuantity = item.Quantity;
+        var temporarilyQuantity = item.Quantity;
         var index = 0;
         foreach (var unitItem in _itemDictionary.Values)
         {
-            var number = unitItem.MergeableItemCount(item, item.Quantity);
+            var number = unitItem.MergeableItemCount(item, temporarilyQuantity);
             if (number == 0)
             {
                 continue;
             }
 
-            item.Quantity -= number;
+            temporarilyQuantity -= number;
             unitItem.Quantity += number;
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
@@ -165,7 +166,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         {
             //The capacity is full. The remaining capacity cannot be stored.
             //容量已满，无法存放剩余。
-            return originalQuantity - item.Quantity;
+            return originalQuantity - temporarilyQuantity;
         }
 
         //Add the rest to the container.
@@ -237,7 +238,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public bool CanReplaceItem(int index, IItem item)
     {
-        if (item.CanContainItems && !CanContainContainer)
+        if (item.SelfItemContainer != null && !CanContainContainer)
         {
             return false;
         }
@@ -261,7 +262,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         }
         return result;
     }
-    
+
 
     public int RemoveSelectItem(int number)
     {

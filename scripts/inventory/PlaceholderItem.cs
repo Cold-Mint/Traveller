@@ -18,6 +18,7 @@ public class PlaceholderItem : IItem
     public bool IsSelect { get; set; }
     public bool CanContainItems { get; set; } = false;
     public IItemContainer? ItemContainer { get; set; }
+    public IItemContainer? SelfItemContainer { get; set; }
 
     public int MergeableItemCount(IItem other, int unallocatedQuantity)
     {

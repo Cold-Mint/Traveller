@@ -78,6 +78,20 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
                 }
                 return placeholderItemContainer.CanReplaceItem(placeholderItem.Index, sourceItem);
             default:
+                var sourceItemSelfContainer = sourceItem.SelfItemContainer;
+                if (sourceItemSelfContainer != null)
+                {
+                    //Place the container on the item.
+                    //将容器放在物品上。
+                    return sourceItemSelfContainer.CanAddItem(Item);
+                }
+                var itemSelfContainer = Item.SelfItemContainer;
+                if (itemSelfContainer != null)
+                {
+                    //Drag the item onto the container.
+                    //将物品拖到容器上。
+                    return itemSelfContainer.CanAddItem(sourceItem);
+                }
                 return Item.MergeableItemCount(sourceItem, sourceItem.Quantity) > 0;
         }
     }
@@ -99,6 +113,48 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         var sourceItem = itemSlotNode.Item;
         if (sourceItem == null)
         {
+            return;
+        }
+
+        if (Item.SelfItemContainer != null)
+        {
+            //Use items and place them on the container.
+            //用物品，在物品容器上放置。
+            var oldIndex = sourceItem.Index;
+            var oldItemContainer = sourceItem.ItemContainer;
+            var addNumber = Item.SelfItemContainer.AddItem(sourceItem);
+            if (addNumber >= 0)
+            {
+                if (addNumber == sourceItem.Quantity)
+                {
+                    oldItemContainer?.ClearItem(oldIndex);
+                }
+                else
+                {
+                    oldItemContainer?.RemoveItem(oldIndex, addNumber);
+                }
+            }
+            return;
+        }
+
+        if (sourceItem.SelfItemContainer != null)
+        {
+            //Use containers and place on top of items.
+            //用容器物品，在物品上放置。
+            var oldIndex = Item.Index;
+            var oldItemContainer = Item.ItemContainer;
+            var addNumber = sourceItem.SelfItemContainer.AddItem(Item);
+            if (addNumber >= 0)
+            {
+                if (addNumber == Item.Quantity)
+                {
+                    oldItemContainer?.ClearItem(oldIndex);
+                }
+                else
+                {
+                    oldItemContainer?.RemoveItem(oldIndex, addNumber);
+                }
+            }
             return;
         }
 
