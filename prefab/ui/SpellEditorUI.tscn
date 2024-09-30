@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://h7lvaqqlsi4t"]
+
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/SpellEditorUi.cs" id="1_1pxjs"]
+[ext_resource type="PackedScene" uid="uid://d2i4udh0hho41" path="res://prefab/ui/ItemSlot.tscn" id="2_3ut57"]
+
+[node name="SpellEditorUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1pxjs")
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 25.0
+grow_horizontal = 2
+text = "ui_spell_editor"
+horizontal_alignment = 1
+
+[node name="ExitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -91.0
+offset_top = 11.0
+offset_right = -24.0
+offset_bottom = 44.0
+grow_horizontal = 0
+text = "ui_close"
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 35.0
+offset_top = 127.0
+offset_right = -20.0
+offset_bottom = 446.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="ItemSlot" parent="." instance=ExtResource("2_3ut57")]
+layout_mode = 1
+offset_left = 34.0
+offset_top = 73.0
+offset_right = 72.0
+offset_bottom = 111.0

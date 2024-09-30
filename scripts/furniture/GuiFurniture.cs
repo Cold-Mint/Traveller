@@ -1,3 +1,6 @@
+using ColdMint.scripts.character;
+using ColdMint.scripts.loader.uiLoader;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.furniture;
@@ -18,22 +21,95 @@ public partial class GuiFurniture : Furniture
     /// </remarks>
     private Area2D? _operateArea2D;
 
+    /// <summary>
+    /// <para>Whether the player is within range of the operation</para>
+    /// <para>玩家是否在操作范围内</para>
+    /// </summary>
+    private bool _playerInRange;
+    [Export]
+    public string? Path;
+
+    /// <summary>
+    /// <para>There's a mouse hover</para>
+    /// <para>有鼠标悬停</para>
+    /// </summary>
+    private bool _hasMouseOver;
+
     public override void _Ready()
     {
         base._Ready();
+        InputPickable = true;
         _operateArea2D = GetNode<Area2D>("OperateArea2D");
         _operateArea2D.BodyEntered += OnBodyEntered;
         _operateArea2D.BodyExited += OnBodyExited;
+        _operateArea2D.SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        if (Path != null)
+        {
+            GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
+            {
+                var packedScene = GD.Load<PackedScene>(Path);
+                return NodeUtils.InstantiatePackedScene<SpellEditorUi>(packedScene);
+            });
+        }
+    }
+
+    /// <summary>
+    /// <para>Use furniture</para>
+    /// <para>使用家具</para>
+    /// </summary>
+    /// <param name="player"></param>
+    private void Use(Player player)
+    {
+        if (Path == null)
+        {
+            return;
+        }
+        GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>
+        {
+            if (control is SpellEditorUi spellEditorUi)
+            {
+                // spellEditorUi.Title = Name;
+                // spellEditorUi.ItemContainer = SelfItemContainer;
+            }
+        });
+    }
+
+    public override void _MouseEnter()
+    {
+        _hasMouseOver = true;
+    }
+
+    public override void _MouseExit()
+    {
+        _hasMouseOver = false;
     }
 
     private void OnBodyEntered(Node node)
     {
-        
+        if (node is Player)
+        {
+            _playerInRange = true;
+        }
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (GameSceneDepend.Player == null || !_playerInRange || !_hasMouseOver)
+        {
+            return;
+        }
+        if (Input.IsActionJustPressed("use_item"))
+        {
+            Use(GameSceneDepend.Player);
+        }
     }
 
     private void OnBodyExited(Node2D node2D)
     {
-        
+        if (node2D is Player)
+        {
+            _playerInRange = false;
+        }
     }
 
     public override void _ExitTree()

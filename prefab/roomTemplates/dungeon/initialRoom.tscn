@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="5_4pssd"]
-[ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/MagicSeparator.tscn" id="5_7c8bh"]
+[ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_7c8bh"]
 [ext_resource type="PackedScene" uid="uid://bq5d2w22wnxrf" path="res://prefab/packsacks/PortableBackpacks.tscn" id="6_0iot7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
