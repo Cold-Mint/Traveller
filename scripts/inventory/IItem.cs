@@ -14,6 +14,24 @@ public interface IItem
     /// <para>当前物品的ID</para>
     /// </summary>
     string Id { get; set; }
+    
+    /// <summary>
+    /// <para>ShowSelf</para>
+    /// <para>显示自身</para>
+    /// </summary>
+    void ShowSelf();
+
+    /// <summary>
+    /// <para>QueueFreeSelf</para>
+    /// <para>销毁自身</para>
+    /// </summary>
+    void QueueFreeSelf();
+    
+    /// <summary>
+    /// <para>HideSelf</para>
+    /// <para>隐藏自身</para>
+    /// </summary>
+    void HideSelf();
 
     /// <summary>
     /// <para>Icon of current item</para>

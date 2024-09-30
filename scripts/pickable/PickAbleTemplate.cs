@@ -20,6 +20,22 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     //不要导出此字段，因为ID是在yaml内指定的。
     public virtual string Id { get; set; } = "ID";
     [Export] protected Texture2D? UniqueIcon { get; set; }
+
+    public void ShowSelf()
+    {
+        Show();
+    }
+
+    public void QueueFreeSelf()
+    {
+        QueueFree();
+    }
+
+    public void HideSelf()
+    {
+        Hide();
+    }
+
     public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
 
     public new string Name

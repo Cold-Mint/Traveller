@@ -839,6 +839,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         ProtectedItemContainer?.RemoveItem(index, 1);
+        originalItem.QueueFreeSelf();
     }
 
 

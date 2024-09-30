@@ -10,6 +10,22 @@ public class PlaceholderItem : IItem
 {
     public int Index { get; set; }
     public string Id { get; set; }
+
+    public void ShowSelf()
+    {
+        
+    }
+
+    public void QueueFreeSelf()
+    {
+        
+    }
+
+    public void HideSelf()
+    {
+        
+    }
+
     public Texture2D Icon { get; }
     public string Name { get; }
     public string? Description { get; } = null;

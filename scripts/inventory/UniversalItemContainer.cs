@@ -118,6 +118,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             _itemDictionary[nextAvailableIndex] = item;
             item.Index = nextAvailableIndex;
             item.ItemContainer = this;
+            if (nextAvailableIndex != _selectIndex)
+            {
+                item.HideSelf();
+            }
             UpdateNextAvailableIndex();
             UpdateSelectStatus(nextAvailableIndex, item);
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
@@ -154,6 +158,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             {
                 //New items are fully shared.
                 //新物品完全被均摊。
+                item.HideSelf();
                 return originalQuantity;
             }
 
@@ -179,6 +184,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         _itemDictionary[finalNextAvailableIndex] = item;
         item.Index = finalNextAvailableIndex;
         item.ItemContainer = this;
+        if (finalNextAvailableIndex != _selectIndex)
+        {
+            item.HideSelf();
+        }
         UpdateNextAvailableIndex();
         UpdateSelectStatus(finalNextAvailableIndex, item);
         ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
@@ -380,6 +389,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         var oldItem = GetItem(oldIndex);
         if (oldItem != null)
         {
+            oldItem.HideSelf();
             oldItem.IsSelect = false;
         }
 
@@ -388,6 +398,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         var newItem = GetItem(newIndex);
         if (newItem != null)
         {
+            newItem.ShowSelf();
             newItem.IsSelect = true;
         }
 
