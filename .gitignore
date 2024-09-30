@@ -3,6 +3,7 @@
 .idea/
 .vs/
 .vscode/
+.fleet/
 export_presets.cfg
 *.translation
 *.user
