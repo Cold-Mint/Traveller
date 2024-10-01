@@ -49,6 +49,7 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         textureRect.ExpandMode = _iconTextureRect.ExpandMode;
         textureRect.Size = _iconTextureRect.Size;
         textureRect.Texture = _iconTextureRect.Texture;
+        textureRect.ZIndex = Config.ZIndexManager.FloatingIcon;
         SetDragPreview(textureRect);
         return Variant.CreateFrom(this);
     }

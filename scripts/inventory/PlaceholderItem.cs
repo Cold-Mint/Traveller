@@ -48,11 +48,9 @@ public class PlaceholderItem : IItem
 
     public void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnThrow(Vector2 velocity)
     {
-        throw new System.NotImplementedException();
     }
 }

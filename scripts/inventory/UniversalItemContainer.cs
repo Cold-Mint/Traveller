@@ -257,6 +257,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public bool ClearItem(int index)
     {
+        if (!_itemDictionary.TryGetValue(index, out var item))
+        {
+            return false;
+        }
         var result = _itemDictionary.Remove(index);
         if (result)
         {
@@ -268,6 +272,17 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
                 OldItem = null,
                 Type = Config.ItemDataChangeEventType.Clear
             });
+            if (SupportSelect && index == _selectIndex)
+            {
+                item.HideSelf();
+                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent()
+                {
+                    NewIndex = index,
+                    OldIndex = index,
+                    NewItem = null,
+                    OldItem = null
+                });
+            }
         }
         return result;
     }

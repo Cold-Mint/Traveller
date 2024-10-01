@@ -94,6 +94,7 @@ public partial class GuiFurniture : Furniture
 
     public override void _PhysicsProcess(double delta)
     {
+        base._PhysicsProcess(delta);
         if (GameSceneDepend.Player == null || !_playerInRange || !_hasMouseOver)
         {
             return;

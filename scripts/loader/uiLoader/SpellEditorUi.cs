@@ -21,11 +21,17 @@ public partial class SpellEditorUi : UiLoaderTemplate
 
     private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
     {
-        if (_itemSlot == null)
+        if (_itemSlot == null || _itemContainer == null)
         {
             return;
         }
-        _itemSlot.Update(itemDataChangeEvent.NewItem);
+        var item = itemDataChangeEvent.NewItem;
+        if (item == null)
+        {
+            item = _itemContainer.GetPlaceHolderItem(itemDataChangeEvent.NewIndex);
+        }
+        item.IsSelect = false;
+        _itemSlot.Update(item);
     }
 
     public override void _ExitTree()

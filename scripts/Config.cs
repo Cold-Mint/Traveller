@@ -216,6 +216,15 @@ public static class Config
         /// </summary>
         public const string TimeInterval = "TimeInterval";
     }
+    
+    public class ZIndexManager
+    {
+        /// <summary>
+        /// <para>Floating icon</para>
+        /// <para>悬浮图标</para>
+        /// </summary>
+        public const int FloatingIcon = 1;
+    }
 
     /// <summary>
     /// <para>Item data changes the event type</para>
