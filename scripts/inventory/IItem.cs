@@ -121,4 +121,11 @@ public interface IItem
     /// <param name="owner">Owner of current item, if any</param>
     /// <param name="targetGlobalPosition">Target position, such as the position of the cursor when used by the player</param>
     void Use(Node2D? owner, Vector2 targetGlobalPosition);
+
+    /// <summary>
+    /// <para>When the item is thrown</para>
+    /// <para>当物品被抛出时</para>
+    /// </summary>
+    /// <param name="velocity"></param>
+    void OnThrow(Vector2 velocity);
 }

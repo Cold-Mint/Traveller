@@ -89,7 +89,6 @@ public partial class Player : CharacterTemplate
     private void SelectedItemChangeEvent(SelectedItemChangeEvent selectedItemChangeEvent)
     {
         var item = selectedItemChangeEvent.NewItem;
-        GameSceneDepend.DynamicUiGroup?.HideAllControl();
         if (item is Node2D node2D)
         {
             CurrentItem = node2D;
@@ -229,9 +228,6 @@ public partial class Player : CharacterTemplate
         {
             UseItem(GetGlobalMousePosition());
         }
-
-        
-
         //Pick up an item
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
@@ -305,7 +301,6 @@ public partial class Player : CharacterTemplate
             }
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
-            GameSceneDepend.DynamicUiGroup?.HideAllControl();
             CurrentItem = null;
         }
     }

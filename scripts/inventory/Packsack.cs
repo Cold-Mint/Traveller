@@ -25,6 +25,20 @@ public partial class Packsack : PickAbleTemplate
         });
     }
 
+    protected override void OnSelectChange(bool isSelected)
+    {
+        if (isSelected)
+        {
+            return;
+        }
+        GameSceneDepend.DynamicUiGroup?.HideControl(Path);
+    }
+
+    public override void OnThrow(Vector2 velocity)
+    {
+        GameSceneDepend.DynamicUiGroup?.HideControl(Path);
+    }
+
     public override void CopyAttributes(Node node)
     {
         base.CopyAttributes(node);

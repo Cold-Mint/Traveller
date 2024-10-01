@@ -46,7 +46,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return TranslationServerUtils.Translate(key) ?? key;
         }
     }
-    
+
     /// <summary>
     /// <para>Owner</para>
     /// <para>主人</para>
@@ -92,11 +92,37 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; } = 1;
-    public bool IsSelect { get; set; }
+
+    private bool _isSelected;
+
+    public bool IsSelect
+    {
+        get => _isSelected;
+        set
+        {
+            if (_isSelected == value)
+            {
+                return;
+            }
+            _isSelected = value;
+            OnSelectChange(value);
+        }
+    }
+    
     public IItemContainer? ItemContainer { get; set; }
     public IItemContainer? SelfItemContainer { get; set; }
 
     private Label? _tipLabel;
+
+    /// <summary>
+    /// <para></para>
+    /// <para>当选中状态发生改变时</para>
+    /// </summary>
+    /// <param name="isSelected"></param>
+    protected virtual void OnSelectChange(bool isSelected)
+    {
+        
+    }
 
     public IItem? CreateItem(int number)
     {
@@ -154,6 +180,11 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
+    }
+
+    public virtual void OnThrow(Vector2 velocity)
+    {
+
     }
 
     public override void _Ready()

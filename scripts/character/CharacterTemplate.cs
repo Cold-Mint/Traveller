@@ -784,6 +784,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Remove the item from the item container
         //从物品容器内取出物品
+        originalItem.OnThrow(velocity);
         var item = originalItem.CreateItem(1);
         if (item is not Node2D node2D)
         {

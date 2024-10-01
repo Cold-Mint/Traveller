@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://djsh4unystlf0"]
+[gd_scene load_steps=16 format=3 uid="uid://djsh4unystlf0"]
 
-[ext_resource type="Texture2D" uid="uid://qowlv0viyqbb" path="res://sprites/ui/Null.png" id="1_346je"]
 [ext_resource type="Script" path="res://scripts/furniture/GuiFurniture.cs" id="1_t1qdg"]
+[ext_resource type="Texture2D" uid="uid://cyciw4drjvrs8" path="res://sprites/furnitures/SpellEditor.png" id="2_sbshw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4tg"]
 size = Vector2(31, 31)
@@ -9,14 +9,89 @@ size = Vector2(31, 31)
 [sub_resource type="CircleShape2D" id="CircleShape2D_in1f7"]
 radius = 52.6118
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq6e3"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(0, 0, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljyfv"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(44, 0, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_46j2i"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(88, 0, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6a2v"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(132, 0, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyh2i"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(0, 43, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_84sml"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(44, 43, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xncbb"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(88, 43, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eaqhr"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(132, 43, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcdl4"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(0, 86, 44, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a4mgy"]
+atlas = ExtResource("2_sbshw")
+region = Rect2(44, 86, 44, 43)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mppe5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq6e3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljyfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_46j2i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q6a2v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyh2i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84sml")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xncbb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eaqhr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcdl4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a4mgy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="RigidBody2D" type="RigidBody2D"]
 collision_layer = 256
 collision_mask = 160
 script = ExtResource("1_t1qdg")
 Path = "res://prefab/ui/SpellEditorUI.tscn"
-
-[node name="Null" type="Sprite2D" parent="."]
-texture = ExtResource("1_346je")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -0.5)
@@ -27,3 +102,9 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OperateArea2D"]
 shape = SubResource("CircleShape2D_in1f7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_mppe5")
+autoplay = "default"
+frame_progress = 0.717769
