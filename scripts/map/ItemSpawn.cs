@@ -1,4 +1,5 @@
-﻿using ColdMint.scripts.inventory;
+﻿using ColdMint.scripts.debug;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.events;
 using Godot;
 
@@ -15,7 +16,6 @@ public partial class ItemSpawn : Marker2D
     public override void _Ready()
     {
         base._Ready();
-
         EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
     }
 
@@ -29,6 +29,7 @@ public partial class ItemSpawn : Marker2D
         }
 
         var item = ItemTypeManager.CreateItem(ItemId, this);
+        LogCat.LogWithFormat("generated_item_is_empty",LogCat.LogLabel.ItemSpawn,true,ItemId,item == null);
         if (item is Node2D node2D)
         {
             node2D.GlobalPosition = GlobalPosition;

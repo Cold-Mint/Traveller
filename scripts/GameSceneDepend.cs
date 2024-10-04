@@ -48,6 +48,12 @@ public static class GameSceneDepend
     /// <para>抛射体容器</para>
     /// </summary>
     public static Node2D? ProjectileContainer { get; set; }
+    
+    /// <summary>
+    /// <para>MagicContainer</para>
+    /// <para>法术容器</para>
+    /// </summary>
+    public static Node2D? MagicContainer { get; set; }
 
     /// <summary>
     /// <para>WeaponContainer</para>

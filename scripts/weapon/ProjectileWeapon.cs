@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.map.events;
+using ColdMint.scripts.projectile;
 using Godot;
 
 namespace ColdMint.scripts.weapon;
@@ -19,28 +22,60 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>抛射体的生成位置</para>
     /// </summary>
     private Marker2D? _marker2D;
-    
-    private int _projectileIndex;
-    
+
     /// <summary>
     /// <para>Number of slots for ranged weapons</para>
     /// <para>远程武器的槽位数量</para>
     /// </summary>
     [Export] public int NumberSlots { get; set; }
 
+    private readonly List<IMagic> _magics = new();
+
     public override int ItemType
     {
         get => Config.ItemType.ProjectileWeapon;
     }
-    
+
     public override void _Ready()
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
         SelfItemContainer = new UniversalItemContainer(NumberSlots);
         SelfItemContainer.AllowAddingItemByType(Config.ItemType.Magic);
+        SelfItemContainer.ItemDataChangeEvent += OnItemDataChangeEvent;
     }
-    
+
+    private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
+    {
+        if (SelfItemContainer == null)
+        {
+            return;
+        }
+        _magics.Clear();
+        var totalCapacity = SelfItemContainer.GetTotalCapacity();
+        for (var i = 0; i < totalCapacity; i++)
+        {
+            var item = SelfItemContainer.GetItem(i);
+            if (item == null)
+            {
+                continue;
+            }
+            if (item is not IMagic magic)
+            {
+                continue;
+            }
+            _magics.Add(magic);
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        if (SelfItemContainer != null)
+        {
+            SelfItemContainer.ItemDataChangeEvent -= OnItemDataChangeEvent;
+        }
+    }
 
     protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
@@ -61,6 +96,10 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogError("projectile_container_is_null");
             return;
         }
-        
+        if (_magics.Count == 0)
+        {
+            LogCat.LogError("magics_is_null");
+            return;
+        }
     }
 }

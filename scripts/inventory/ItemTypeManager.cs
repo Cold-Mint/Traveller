@@ -97,16 +97,4 @@ public static class ItemTypeManager
         Registry.TryGetValue(id, out var itemType)
             ? itemType.Icon ?? DefaultTexture
             : DefaultTexture;
-
-    /// <summary>
-    /// <para>Gets the maximum number of stacks for an item</para>
-    /// <para>获取某个物品的最大堆叠数量</para>
-    /// </summary>
-    /// <param name="id">
-    ///<para>id</para>
-    ///<para>物品ID</para>
-    /// </param>
-    /// <returns></returns>
-    public static int MaxStackQuantityOf(string id) =>
-        Registry.TryGetValue(id, out var itemType) ? itemType.MaxStackQuantity : 0;
 }

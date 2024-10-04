@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=9 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="2_6p8mv"]
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="3_v1tlc"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="5_4pssd"]
 [ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_7c8bh"]
-[ext_resource type="PackedScene" uid="uid://bq5d2w22wnxrf" path="res://prefab/packsacks/PortableBackpacks.tscn" id="6_0iot7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(507, 251)
@@ -46,6 +45,11 @@ position = Vector2(142, 84)
 script = ExtResource("3_v1tlc")
 ItemId = "staff_necromancy"
 
+[node name="ItemMarker2D2" type="Marker2D" parent="."]
+position = Vector2(321, 118)
+script = ExtResource("3_v1tlc")
+ItemId = "necromancy"
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_064c7")
 
@@ -81,9 +85,3 @@ texture = ExtResource("5_4pssd")
 [node name="RigidBody2D" parent="." instance=ExtResource("5_7c8bh")]
 position = Vector2(149, 109)
 collision_mask = 0
-
-[node name="RigidBody2D2" parent="." instance=ExtResource("6_0iot7")]
-position = Vector2(338, 115)
-
-[node name="RigidBody2D3" parent="." instance=ExtResource("6_0iot7")]
-position = Vector2(206, 123)

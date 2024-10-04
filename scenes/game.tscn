@@ -118,6 +118,8 @@ visible = false
 
 [node name="WeaponContainer" type="Node2D" parent="."]
 
+[node name="MagicContainer" type="Node2D" parent="."]
+
 [node name="PlayerContainer" type="Node2D" parent="."]
 
 [node name="AICharacterContainer" type="Node2D" parent="."]

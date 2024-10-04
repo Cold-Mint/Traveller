@@ -225,16 +225,21 @@ public static class NodeUtils
     /// <returns></returns>
     public static Node FindContainerNode(Node childNode, Node defaultParentNode)
     {
-        if (GameSceneDepend.AiCharacterContainer!= null && childNode is AiCharacter)
+        if (GameSceneDepend.AiCharacterContainer != null && childNode is AiCharacter)
         {
             return GameSceneDepend.AiCharacterContainer;
         }
-        
+
         if (GameSceneDepend.ProjectileContainer != null && childNode is Projectile)
         {
             return GameSceneDepend.ProjectileContainer;
         }
-
+        
+        if (GameSceneDepend.MagicContainer != null && childNode is IMagic)
+        {
+            return GameSceneDepend.MagicContainer;
+        }
+        
         if (GameSceneDepend.WeaponContainer != null && childNode is WeaponTemplate)
         {
             return GameSceneDepend.WeaponContainer;
