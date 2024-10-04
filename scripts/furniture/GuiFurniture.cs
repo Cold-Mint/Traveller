@@ -64,14 +64,7 @@ public partial class GuiFurniture : Furniture
         {
             return;
         }
-        GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>
-        {
-            if (control is SpellEditorUi spellEditorUi)
-            {
-                // spellEditorUi.Title = Name;
-                // spellEditorUi.ItemContainer = SelfItemContainer;
-            }
-        });
+        GameSceneDepend.DynamicUiGroup?.ShowControl(Path);
     }
 
     public override void _MouseEnter()
@@ -110,6 +103,10 @@ public partial class GuiFurniture : Furniture
         if (node2D is Player)
         {
             _playerInRange = false;
+            if (Path != null)
+            {
+                GameSceneDepend.DynamicUiGroup?.HideControl(Path);
+            }
         }
     }
 

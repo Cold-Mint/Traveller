@@ -9,5 +9,5 @@ public interface IItemContainerDisplay : IEnumerable<IItemDisplay>
     /// <para>为物品容器显示器绑定物品容器</para>
     /// </summary>
     /// <param name="itemContainer"></param>
-    void BindItemContainer(IItemContainer itemContainer);
+    void BindItemContainer(IItemContainer? itemContainer);
 }

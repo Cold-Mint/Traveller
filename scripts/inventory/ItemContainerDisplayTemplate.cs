@@ -10,7 +10,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     protected readonly List<IItemDisplay> ItemDisplayList = [];
     private IItemContainer? _itemContainer;
 
-    public async void BindItemContainer(IItemContainer itemContainer)
+    public async void BindItemContainer(IItemContainer? itemContainer)
     {
         if (_itemContainer == itemContainer)
         {
@@ -24,8 +24,19 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         }
 
         _itemContainer = itemContainer;
-        _itemContainer.SelectedItemChangeEvent += OnSelectedItemChangeEvent;
-        _itemContainer.ItemDataChangeEvent += OnItemDataChangeEvent;
+        if (itemContainer == null)
+        {
+            //Set empty items container to hide all ui.
+            //设置空物品容器，隐藏全部ui。
+            foreach (var itemDisplay in ItemDisplayList)
+            {
+                itemDisplay.Update(null);
+                itemDisplay.HideSelf();
+            }
+            return;
+        }
+        itemContainer.SelectedItemChangeEvent += OnSelectedItemChangeEvent;
+        itemContainer.ItemDataChangeEvent += OnItemDataChangeEvent;
         var totalCapacity = itemContainer.GetTotalCapacity();
         var currentCapacity = ItemDisplayList.Count;
         var capacityDifference = totalCapacity - currentCapacity;
@@ -102,7 +113,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     {
         for (var i = startIndex; i < endIndex; i++)
         {
-            UpdateDataForSingleLocation(itemContainer,i);
+            UpdateDataForSingleLocation(itemContainer, i);
         }
     }
 
