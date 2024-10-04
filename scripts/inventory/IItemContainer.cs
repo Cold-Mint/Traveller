@@ -20,6 +20,20 @@ public interface IItemContainer
     /// <para>当物品的数据发生改变时，例如数量增加，减少，或者新物品被添加到容器内触发此事件</para>
     /// </summary>
     Action<ItemDataChangeEvent>? ItemDataChangeEvent { get; set; }
+    
+    /// <summary>
+    /// <para>Allow Adding Item By Type</para>
+    /// <para>允许添加指定类型的物品</para>
+    /// </summary>
+    /// <param name="itemType"></param>
+    void AllowAddingItemByType(int itemType);
+    
+    /// <summary>
+    /// <para>Disallow Adding Item By Type</para>
+    /// <para>禁止添加指定类型的物品</para>
+    /// </summary>
+    /// <param name="itemType"></param>
+    void DisallowAddingItemByType(int itemType);
 
     /// <summary>
     /// <para>Can the specified item be added to the container?</para>
@@ -45,13 +59,7 @@ public interface IItemContainer
     /// <para>此物品容器是否支持选中</para>
     /// </summary>
     bool SupportSelect { get; set; }
-
-    /// <summary>
-    /// <para>Whether this item container supports items that CanContainItems=true, such as backpacks</para>
-    /// <para>此物品容器是否支持容纳CanContainItems=true的物品，例如背包</para>
-    /// </summary>
-    bool CanContainContainer { get; set; }
-
+    
     /// <summary>
     /// <para>Gets a placeholder object</para>
     /// <para>获取占位符对象</para>

@@ -62,6 +62,12 @@ public interface IItem
     /// <para>最大物品数量</para>
     /// </summary>
     int MaxQuantity { get; }
+    
+    /// <summary>
+    /// <para>ItemType</para>
+    /// <para>获取物品类型</para>
+    /// </summary>
+    int ItemType { get; }
 
     /// <summary>
     /// <para>Check or not</para>

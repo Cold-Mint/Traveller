@@ -92,6 +92,10 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; } = 1;
+    public virtual int ItemType
+    {
+        get => Config.ItemType.Unknown;
+    }
 
     private bool _isSelected;
 
@@ -108,7 +112,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             OnSelectChange(value);
         }
     }
-    
+
     public IItemContainer? ItemContainer { get; set; }
     public IItemContainer? SelfItemContainer { get; set; }
 
@@ -121,7 +125,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="isSelected"></param>
     protected virtual void OnSelectChange(bool isSelected)
     {
-        
+
     }
 
     public IItem? CreateItem(int number)
@@ -348,11 +352,4 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
         pickAbleTemplate.Id = Id;
     }
-
-    public virtual void Destroy()
-    {
-        QueueFree();
-    }
-
-    public bool CanStackWith(IItem item) => false;
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -32,15 +33,59 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     /// </remarks>
     private int _nextAvailableIndex;
 
+    /// <summary>
+    /// <para>The type of item that can be added to the item container</para>
+    /// <para>物品容器允许添加的物品类型</para>
+    /// </summary>
+    private readonly HashSet<int> _allowedItemTypes = new();
+
     public Action<SelectedItemChangeEvent>? SelectedItemChangeEvent { get; set; }
     public Action<ItemDataChangeEvent>? ItemDataChangeEvent { get; set; }
 
+    /// <summary>
+    /// <para>Allow Item Types Except Placeholder</para>
+    /// <para>允许添加除占位符以外的所有物品类型</para>
+    /// </summary>
+    public void AllowItemTypesExceptPlaceholder()
+    {
+        var itemTypeType = typeof(Config.ItemType);
+        //Get all fields
+        //获取所有字段
+        var fields = itemTypeType.GetFields(BindingFlags.Public | BindingFlags.Static);
+        //Traversal field
+        //遍历字段
+        foreach (var field in fields)
+        {
+            //Gets the value of the field
+            //获取字段的值
+            var value = field.GetValue(null);
+            if (value == null)
+            {
+                continue;
+            }
+            var intValue = (int)value;
+            if (intValue == Config.ItemType.Placeholder)
+            {
+                continue;
+            }
+            _allowedItemTypes.Add(intValue);
+        }
+    }
+
+    public void AllowAddingItemByType(int itemType)
+    {
+        _allowedItemTypes.Add(itemType);
+    }
+
+    public void DisallowAddingItemByType(int itemType)
+    {
+        _allowedItemTypes.Remove(itemType);
+    }
+
     public bool CanAddItem(IItem item)
     {
-        if (item.SelfItemContainer != null && !CanContainContainer)
+        if (!_allowedItemTypes.Contains(item.ItemType))
         {
-            //The item to be added can hold other items, and this item container does not allow item containers.
-            //要添加的物品能够容纳其他物品，且此物品容器不允许放置物品容器。
             return false;
         }
         //If the capacity is not full, directly return to add items
@@ -200,8 +245,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
     public bool SupportSelect { get; set; }
-    public bool CanContainContainer { get; set; }
-
 
     public IItem GetPlaceHolderItem(int index)
     {
@@ -247,7 +290,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
     public bool CanReplaceItem(int index, IItem item)
     {
-        if (item.SelfItemContainer != null && !CanContainContainer)
+        if (!_allowedItemTypes.Contains(item.ItemType))
         {
             return false;
         }

@@ -13,17 +13,17 @@ public class PlaceholderItem : IItem
 
     public void ShowSelf()
     {
-        
+
     }
 
     public void QueueFreeSelf()
     {
-        
+
     }
 
     public void HideSelf()
     {
-        
+
     }
 
     public Texture2D Icon { get; }
@@ -31,6 +31,10 @@ public class PlaceholderItem : IItem
     public string? Description { get; } = null;
     public int Quantity { get; set; } = 1;
     public int MaxQuantity { get; } = 1;
+    public int ItemType
+    {
+        get => Config.ItemType.Placeholder;
+    }
     public bool IsSelect { get; set; }
     public bool CanContainItems { get; set; } = false;
     public IItemContainer? ItemContainer { get; set; }

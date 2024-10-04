@@ -11,13 +11,13 @@ public partial class HotBar : HBoxContainer
 {
     private IItemContainer? _itemContainer;
     private IItemContainerDisplay? _itemContainerDisplay;
-    
+
     public override void _Ready()
     {
         base._Ready();
         var universalItemContainer = new UniversalItemContainer(Config.HotBarSize);
         _itemContainer = universalItemContainer;
-        _itemContainer.CanContainContainer = true;
+        universalItemContainer.AllowItemTypesExceptPlaceholder();
         _itemContainer.SupportSelect = true;
         _itemContainerDisplay = new ItemSlotContainerDisplay(this);
         _itemContainerDisplay.BindItemContainer(_itemContainer);

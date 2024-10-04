@@ -117,7 +117,7 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
             return;
         }
 
-        if (Item.SelfItemContainer != null)
+        if (Item.SelfItemContainer != null && Item.SelfItemContainer.CanAddItem(sourceItem))
         {
             //Use items and place them on the container.
             //用物品，在物品容器上放置。
@@ -138,7 +138,7 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
             return;
         }
 
-        if (sourceItem.SelfItemContainer != null)
+        if (sourceItem.SelfItemContainer != null && sourceItem.SelfItemContainer.CanAddItem(Item))
         {
             //Use containers and place on top of items.
             //用容器物品，在物品上放置。

@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dnnn2xyayiehk"]
+[gd_scene load_steps=7 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://wt50kx6bup51" path="res://sprites/weapon/StaffNecromancy.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
-[ext_resource type="PackedScene" uid="uid://c01av43yk1q71" path="res://prefab/projectile/curseOfTheUndead.tscn" id="2_mwli5"]
 [ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="3_31iau"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 
@@ -17,9 +16,7 @@ collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_w8hhv")
-OffsetAngle = 0.087
-ProjectileScenes = [ExtResource("2_mwli5")]
-Sequentially = true
+NumberSlots = 5
 FiringIntervalAsMillisecond = 300
 _recoilStrength = 5
 UniqueIcon = ExtResource("3_31iau")

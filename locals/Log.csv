@@ -4,7 +4,6 @@ log_missing_parameters,缺少参数。,Missing parameters.,パラメータが不
 log_room_root_node_must_be_node2d,房间根节点必须是 Node2D。,Room root node must be an instance of Node2D.,ルートノードはNode2Dでなければなりません。
 log_width_or_height_of_room_slot_must_be_1,房间槽的宽度或高度必须为1。,The width or height of the room slot must be 1.,部屋の溝の幅または高さは1でなければなりません。
 log_connected_room_timeout,连接房间超时。,Timeout when connecting rooms.,接続部屋はタイムアウトです。
-log_projectiles_is_empty,未设置抛射体。,The projectile is not set.,射出体は設置されていません。
 log_map_generator_missing_parameters,地图生成器缺少参数。,Map generator missing parameters.,マップジェネレータが不足しています。
 log_map_generator_attempts_to_parse_empty_layout_diagrams,地图生成器尝试解析空的布局图。,Map generator attempts to parse empty layout diagrams.,マップジェネレータは空のレイアウト図を解析しようとしています。
 log_map_generator_has_no_starting_room_data,地图生成器没有起点房间数据。,Map generator has no starting room data.,マップ生成器に起点部屋データはありません。

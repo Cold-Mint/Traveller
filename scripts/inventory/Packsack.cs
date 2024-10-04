@@ -12,6 +12,11 @@ namespace ColdMint.scripts.inventory;
 public partial class Packsack : PickAbleTemplate
 {
     private const string Path = "res://prefab/ui/packsackUI.tscn";
+
+    public override int ItemType
+    {
+        get => Config.ItemType.Packsack;
+    }
     [Export] public int NumberSlots { get; set; }
     public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
@@ -54,7 +59,10 @@ public partial class Packsack : PickAbleTemplate
         base._Ready();
         if (SelfItemContainer == null)
         {
-            SelfItemContainer = new UniversalItemContainer(NumberSlots);
+            var universalItemContainer = new UniversalItemContainer(NumberSlots);
+            universalItemContainer.AllowItemTypesExceptPlaceholder();
+            universalItemContainer.DisallowAddingItemByType(Config.ItemType.Packsack);
+            SelfItemContainer = universalItemContainer;
             SelfItemContainer.SupportSelect = false;
         }
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>

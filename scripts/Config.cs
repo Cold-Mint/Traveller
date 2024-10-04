@@ -197,6 +197,45 @@ public static class Config
     {
         return OS.HasFeature("editor");
     }
+    
+    /// <summary>
+    /// <para>ItemType</para>
+    /// <para>物品类型</para>
+    /// </summary>
+    public static class ItemType
+    {
+        /// <summary>
+        /// <para>Unknown</para>
+        /// <para>未知的</para>
+        /// </summary>
+        public const int Unknown = 0;
+        /// <summary>
+        /// <para>Placeholder</para>
+        /// <para>占位符</para>
+        /// </summary>
+        public const int Placeholder = 1;
+        /// <summary>
+        /// <para>Packsack</para>
+        /// <para>背包</para>
+        /// </summary>
+        public const int Packsack = 2;
+
+        /// <summary>
+        /// <para>ProjectileWeapon</para>
+        /// <para>远程武器</para>
+        /// </summary>
+        public const int ProjectileWeapon = 3;
+
+        /// <summary>
+        /// <para>Magic</para>
+        /// <para>法术</para>
+        /// </summary>
+        /// <remarks>
+        ///<para>Type of special item used in Projectile weapons</para>
+        ///<para>用于远程武器内的特殊物品类型</para>
+        /// </remarks>
+        public const int Magic = 4;
+    }
 
     /// <summary>
     /// <para>Room Injector ID</para>
