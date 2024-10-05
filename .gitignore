@@ -4,6 +4,8 @@
 .vs/
 .vscode/
 .fleet/
+# Ignore the Android build directory
+android/
 export_presets.cfg
 *.translation
 *.user
