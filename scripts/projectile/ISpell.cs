@@ -4,14 +4,14 @@ using Godot;
 namespace ColdMint.scripts.projectile;
 
 /// <summary>
-/// <para>Magic</para>
+/// <para>Spell</para>
 /// <para>法术</para>
 /// </summary>
 /// <remarks>
 ///<para>For projectile weapons</para>
 ///<para>用于抛射体武器</para>
 /// </remarks>
-public interface IMagic
+public interface ISpell
 {
     /// <summary>
     /// <para>GetProjectile</para>

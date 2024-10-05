@@ -235,9 +235,9 @@ public static class NodeUtils
             return GameSceneDepend.ProjectileContainer;
         }
         
-        if (GameSceneDepend.MagicContainer != null && childNode is IMagic)
+        if (GameSceneDepend.SpellContainer != null && childNode is ISpell)
         {
-            return GameSceneDepend.MagicContainer;
+            return GameSceneDepend.SpellContainer;
         }
         
         if (GameSceneDepend.WeaponContainer != null && childNode is WeaponTemplate)

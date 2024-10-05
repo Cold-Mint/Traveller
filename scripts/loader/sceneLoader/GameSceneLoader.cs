@@ -47,8 +47,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         GameSceneDepend.ProjectileContainer = projectileContainer;
         //Load magic container
         //加载魔术容器
-        var magicContainer = GetNode<Node2D>("MagicContainer");
-        GameSceneDepend.MagicContainer = magicContainer;
+        var magicContainer = GetNode<Node2D>("SpellContainer");
+        GameSceneDepend.SpellContainer = magicContainer;
         //Load Packsack container
         //加载背包容器
         var packsackContainer = GetNode<Node2D>("PacksackContainer");

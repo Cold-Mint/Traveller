@@ -227,14 +227,14 @@ public static class Config
         public const int ProjectileWeapon = 3;
 
         /// <summary>
-        /// <para>Magic</para>
+        /// <para>Spell</para>
         /// <para>法术</para>
         /// </summary>
         /// <remarks>
         ///<para>Type of special item used in Projectile weapons</para>
         ///<para>用于远程武器内的特殊物品类型</para>
         /// </remarks>
-        public const int Magic = 4;
+        public const int Spell = 4;
     }
 
     /// <summary>

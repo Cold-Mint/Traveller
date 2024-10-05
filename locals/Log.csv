@@ -113,4 +113,4 @@ log_enter_the_screen,进入屏幕。,Enter screen,画面に移動。
 log_exit_the_screen,退出屏幕。,Exit screen,画面を終了します。
 log_failed_to_create_room_preview,创建{0}的房间预览图失败。,Failed to create a room preview of the {0}.,{0}の部屋のプレビューを作成できませんでした。
 log_generated_item_is_empty,生成的物品{0}是空的吗{1}。,Generated item {0} is empty {1}.,生成したアイテム{0}は空ですか{1}。
-log_magics_is_null,法术列表是空的。,The spell list is empty.,スペルリストは空です。
+log_projectile_generate_magic_is_null,没有装填可提供抛射体的法术。,There is no reload spell that provides projectiles.,射出体を提供するスペルを装填していません。

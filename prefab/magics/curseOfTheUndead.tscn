@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://crthy8a50a4t"]
 
-[ext_resource type="Script" path="res://scripts/pickable/MagicPickAble.cs" id="1_5mane"]
+[ext_resource type="Script" path="res://scripts/spell/SpellPickAble.cs" id="1_v0grp"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 [ext_resource type="Texture2D" uid="uid://bbcjkyrsx88av" path="res://sprites/projectile/curseOfTheUndead.png" id="4_y6nkf"]
 
@@ -14,8 +14,8 @@ size = Vector2(20, 20.75)
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
-script = ExtResource("1_5mane")
-UniqueIcon = ExtResource("4_y6nkf")
+script = ExtResource("1_v0grp")
+_projectilePath = "res://prefab/projectile/curseOfTheUndead.tscn"
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

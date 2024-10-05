@@ -50,10 +50,10 @@ public static class GameSceneDepend
     public static Node2D? ProjectileContainer { get; set; }
     
     /// <summary>
-    /// <para>MagicContainer</para>
+    /// <para>SpellContainer</para>
     /// <para>法术容器</para>
     /// </summary>
-    public static Node2D? MagicContainer { get; set; }
+    public static Node2D? SpellContainer { get; set; }
 
     /// <summary>
     /// <para>WeaponContainer</para>

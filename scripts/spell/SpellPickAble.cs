@@ -1,8 +1,9 @@
+using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile;
 using ColdMint.scripts.weapon;
 using Godot;
 
-namespace ColdMint.scripts.pickable;
+namespace ColdMint.scripts.spell;
 
 /// <summary>
 /// <para>magic</para>
@@ -12,8 +13,9 @@ namespace ColdMint.scripts.pickable;
 ///<para>For projectile weapons</para>
 ///<para>用于抛射体武器</para>
 /// </remarks>
-public partial class MagicPickAble : PickAbleTemplate, IMagic
+public partial class SpellPickAble : PickAbleTemplate, ISpell
 {
+    [Export]
     private string? _projectilePath;
 
     private PackedScene? _projectileScene;
@@ -28,7 +30,7 @@ public partial class MagicPickAble : PickAbleTemplate, IMagic
 
     public override int ItemType
     {
-        get => Config.ItemType.Magic;
+        get => Config.ItemType.Spell;
     }
 
     public PackedScene? GetProjectile()
