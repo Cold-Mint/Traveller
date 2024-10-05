@@ -86,19 +86,19 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
         {
             return;
         }
-
-        if (owner is CharacterTemplate characterTemplate)
+        var result = DoFire(owner, enemyGlobalPosition);
+        if (result)
         {
-            //We check the recoil of the weapon before each firing.
-            //我们在每次开火之前，检查武器的后坐力。
-            if (_recoilStrength != 0)
+            if (owner is CharacterTemplate characterTemplate)
             {
-                characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
+                if (_recoilStrength != 0)
+                {
+                    characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
+                }
             }
-        }
 
-        _audioStreamPlayer2D?.Play();
-        DoFire(owner, enemyGlobalPosition);
+            _audioStreamPlayer2D?.Play();
+        }
         _lastFiringTime = nowTime;
     }
 
@@ -106,5 +106,9 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// <para>Execute fire</para>
     /// <para>执行开火</para>
     /// </summary>
-    protected abstract void DoFire(Node2D? owner, Vector2 enemyGlobalPosition);
+    /// <returns>
+    ///<para>Return Is the fire successful?</para>
+    ///<para>返回是否成功开火？</para>
+    /// </returns>
+    protected abstract bool DoFire(Node2D? owner, Vector2 enemyGlobalPosition);
 }

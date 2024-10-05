@@ -182,29 +182,29 @@ public partial class ProjectileWeapon : WeaponTemplate
         }
     }
 
-    protected override void DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
+    protected override bool DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
         if (owner == null)
         {
             LogCat.LogError("owner_is_null");
-            return;
+            return false;
         }
 
         if (_marker2D == null)
         {
             LogCat.LogError("marker2d_is_null");
-            return;
+            return false;
         }
 
         if (GameSceneDepend.ProjectileContainer == null)
         {
             LogCat.LogError("projectile_container_is_null");
-            return;
+            return false;
         }
         if (_spellProjectileIndexes.Count == 0)
         {
             LogCat.LogError("projectile_generate_magic_is_null");
-            return;
+            return false;
         }
         var spellScope = GetSpellScope();
         //The final spell is a projectile generator.
@@ -213,7 +213,8 @@ public partial class ProjectileWeapon : WeaponTemplate
         var packedScene = spellProjectile.GetProjectile();
         if (packedScene == null)
         {
-            return;
+            LogCat.LogError("projectile_scene_is_null");
+            return false;
         }
         for (var i = spellScope[0]; i <= spellScope[1]; i++)
         {
@@ -223,7 +224,11 @@ public partial class ProjectileWeapon : WeaponTemplate
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
             var projectile = NodeUtils.InstantiatePackedScene<Projectile>(packedScene);
-            if (projectile == null) return;
+            if (projectile == null)
+            {
+                LogCat.LogError("projectile_is_null");
+                return false;
+            }
             for (var s = spellScope[0]; s <= spellScope[1]; s++)
             {
                 var spell = _spells[s];
@@ -241,5 +246,6 @@ public partial class ProjectileWeapon : WeaponTemplate
             var spell = _spells[i];
             spell.RestoreWeapon(this);
         }
+        return true;
     }
 }
