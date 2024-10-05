@@ -116,3 +116,4 @@ log_generated_item_is_empty,生成的物品{0}是空的吗{1}。,Generated item 
 log_projectile_generate_magic_is_null,没有装填可提供抛射体的法术。,There is no reload spell that provides projectiles.,射出体を提供するスペルを装填していません。
 log_projectile_scene_is_null,抛射体场景为空。,Projectile scene is empty.,射出体は空です。
 log_projectile_is_null,抛射体为空。,Projectile scene is empty.,射出シーンは空です。
+log_projectile_weapon_range,加载法术范围{0}顺序模式吗{1}上次发射法术时采用的索引{2}。,Load spell range {0} Sequential mode {1} Index used when the spell was last fired {2}.,スペル範囲{0}順序モードですか{1}前回スペルを送信した時のインデックス{2}。

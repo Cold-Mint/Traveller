@@ -55,7 +55,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>The index used the last time a spell was cast</para>
     /// <para>上次发射法术时采用的索引</para>
     /// </summary>
-    private int _lastUsedProjectileMagicIndex;
+    private int _lastUsedProjectileMagicIndex = -1;
 
     /// <summary>
     /// <para>Get next index</para>
@@ -69,7 +69,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             _lastUsedProjectileMagicIndex++;
             if (_lastUsedProjectileMagicIndex >= _spellProjectileIndexes.Count)
             {
-                return 0;
+                _lastUsedProjectileMagicIndex = 0;
             }
             return _lastUsedProjectileMagicIndex;
         }
@@ -83,25 +83,27 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>Gets the loading range of the spell</para>
     /// <para>获取法术的加载范围</para>
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    ///<para>Return array meaning: 0, starting position 1, ending position 2, with projectile generated spell position, length 3.</para>
+    ///<para>返回数组的含义为：0,起始位置1,结束位置2,带有抛射体生成的法术位置，长度为3。</para>
+    /// </returns>
     private int[] GetSpellScope()
     {
         var index = GetNextProjectileMagicIndex();
-        var endIndex = _spellProjectileIndexes[index];
+        var projectileSpellPosition = _spellProjectileIndexes[index];
+        var endIndex = projectileSpellPosition;
+        var startIndex = 0;
         if (index > 0)
         {
             //And the previous index can set the starting position.(The starting position is increased by 1 to avoid using spells with projectile generation as starting points.)
             //还有前面的索引可设定起始位置。(这里起始位置加1是为了避免 具有抛射体生成能力的法术 作为起点。)
-            var startIndex = _spellProjectileIndexes[index - 1] + 1;
-            return [startIndex, endIndex];
+            startIndex = _spellProjectileIndexes[index - 1] + 1;
         }
-        else
+        if (index == _spellProjectileIndexes.Count - 1)
         {
-            return
-            [
-                0, endIndex
-            ];
+            endIndex = _spells.Count - 1;
         }
+        return [startIndex, endIndex, projectileSpellPosition];
     }
 
     public override int ItemType
@@ -207,9 +209,10 @@ public partial class ProjectileWeapon : WeaponTemplate
             return false;
         }
         var spellScope = GetSpellScope();
+        LogCat.LogWithFormat("projectile_weapon_range", LogCat.LogLabel.Default, true, string.Join(",", spellScope), _fireSequentially, _lastUsedProjectileMagicIndex);
         //The final spell is a projectile generator.
         //最后的法术是拥有抛射体生成能力的。
-        var spellProjectile = _spells[spellScope[1]];
+        var spellProjectile = _spells[spellScope[2]];
         var packedScene = spellProjectile.GetProjectile();
         if (packedScene == null)
         {
