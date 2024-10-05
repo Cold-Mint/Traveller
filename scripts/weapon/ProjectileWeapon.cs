@@ -113,11 +113,22 @@ public partial class ProjectileWeapon : WeaponTemplate
     {
         base._Ready();
         _marker2D = GetNode<Marker2D>("Marker2D");
-        SelfItemContainer = new UniversalItemContainer(_numberSlots);
-        SelfItemContainer.AllowAddingItemByType(Config.ItemType.Spell);
+        if (SelfItemContainer == null)
+        {
+            SelfItemContainer = new UniversalItemContainer(_numberSlots);
+            SelfItemContainer.AllowAddingItemByType(Config.ItemType.Spell);
+        }
     }
 
-    private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
+    /// <summary>
+    /// <para>Update spell cache</para>
+    /// <para>更新法术缓存</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>This will parse available spells from inside the item container.</para>
+    ///<para>这将从物品容器内解析可用的法术。</para>
+    /// </remarks>
+    public void UpdateSpellCache()
     {
         if (SelfItemContainer == null)
         {
@@ -146,6 +157,11 @@ public partial class ProjectileWeapon : WeaponTemplate
                 _spellProjectileIndexes.Add(_spells.Count - 1);
             }
         }
+    }
+
+    private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
+    {
+        UpdateSpellCache();
     }
 
     public override void _EnterTree()

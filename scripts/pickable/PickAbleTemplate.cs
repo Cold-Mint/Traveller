@@ -342,14 +342,14 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <para>Please copy node properties within this function</para>
     /// <para>请在此函数内复制节点属性</para>
     /// </summary>
-    /// <param name="node"></param>
-    public virtual void CopyAttributes(Node node)
+    /// <param name="originalNode"></param>
+    public void CopyAttributes(Node originalNode)
     {
-        if (node is not PickAbleTemplate pickAbleTemplate)
+        if (originalNode is not PickAbleTemplate originalPickAbleTemplate)
         {
             return;
         }
-
-        pickAbleTemplate.Id = Id;
+        Id = originalPickAbleTemplate.Id;
+        SelfItemContainer = originalPickAbleTemplate.SelfItemContainer;
     }
 }

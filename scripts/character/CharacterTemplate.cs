@@ -9,6 +9,7 @@ using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.pickable;
+using ColdMint.scripts.weapon;
 using Godot;
 using WeaponTemplate = ColdMint.scripts.weapon.WeaponTemplate;
 
@@ -445,6 +446,10 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Sleeping = true;
         }
 
+        if (pickAbleItemNode2D is ProjectileWeapon projectileWeapon)
+        {
+            projectileWeapon.UpdateSpellCache();
+        }
 
         if (_currentItem == null && ItemContainer.GetSelectItem() == item)
         {

@@ -44,15 +44,6 @@ public partial class Packsack : PickAbleTemplate
         GameSceneDepend.DynamicUiGroup?.HideControl(Path);
     }
 
-    public override void CopyAttributes(Node node)
-    {
-        base.CopyAttributes(node);
-        if (node is Packsack packsack)
-        {
-            SelfItemContainer = packsack.SelfItemContainer;
-        }
-    }
-
 
     public override void _Ready()
     {

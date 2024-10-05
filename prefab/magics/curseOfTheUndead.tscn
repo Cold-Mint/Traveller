@@ -4,11 +4,9 @@
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 [ext_resource type="Texture2D" uid="uid://bbcjkyrsx88av" path="res://sprites/projectile/curseOfTheUndead.png" id="4_y6nkf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
-size = Vector2(20, 21)
+[sub_resource type="CircleShape2D" id="CircleShape2D_qgdry"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
-size = Vector2(20, 20.75)
+[sub_resource type="CircleShape2D" id="CircleShape2D_akp3k"]
 
 [node name="curseOfTheUndead" type="RigidBody2D"]
 collision_layer = 8
@@ -23,11 +21,11 @@ collision_mask = 102
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
 position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_obcq2")
+shape = SubResource("CircleShape2D_qgdry")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.625)
-shape = SubResource("RectangleShape2D_14m1g")
+shape = SubResource("CircleShape2D_akp3k")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(65, 0)
