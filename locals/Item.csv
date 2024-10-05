@@ -5,3 +5,5 @@ item_portable_backpacks,便携式背包,PortableBackpacks,ポータブルバッ�
 item_portable_backpacks_desc,为玩家提供9个物品槽。,Provides 9 item slots for the player.,プレイヤーに9つのアイテムスロットを提供します。
 item_necromancy,死灵法术,necromancy,ネクロマンシー
 item_necromancy_desc,法术的实体化弹丸。,The materialized projectile of a spell.,術の実体化した弾丸です。
+item_x3,三重射击法术,Triple shot spell,三重射撃術です
+item_x3_desc,使发射器一次射出三颗弹丸。,Make the launcher shoot three pellets at a time.,発射機から一度に三つの弾丸を発射させます。

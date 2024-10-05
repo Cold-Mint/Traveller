@@ -216,36 +216,57 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogError("projectile_scene_is_null");
             return false;
         }
-        for (var i = spellScope[0]; i <= spellScope[1]; i++)
-        {
-            var spell = _spells[i];
-            spell.ModifyWeapon(this);
-        }
+        ModifyWeapon(spellScope);
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
             var projectile = NodeUtils.InstantiatePackedScene<Projectile>(packedScene);
             if (projectile == null)
             {
                 LogCat.LogError("projectile_is_null");
+                RestoreWeapon(spellScope);
                 return false;
             }
+            var velocity = _marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed;
             for (var s = spellScope[0]; s <= spellScope[1]; s++)
             {
                 var spell = _spells[s];
-                spell.ModifyProjectile(projectile);
+                spell.ModifyProjectile(i, projectile, ref velocity);
             }
             NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
             projectile.Owner = owner;
             projectile.TargetNode = GameSceneDepend.TemporaryTargetNode;
-            projectile.Velocity =
-                _marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed;
+            projectile.Velocity = velocity;
             projectile.Position = _marker2D.GlobalPosition;
         }
+        RestoreWeapon(spellScope);
+        return true;
+    }
+
+    /// <summary>
+    /// <para>Modify weapon attributes</para>
+    /// <para>修改武器属性</para>
+    /// </summary>
+    /// <param name="spellScope"></param>
+    private void ModifyWeapon(int[] spellScope)
+    {
+        for (var i = spellScope[0]; i <= spellScope[1]; i++)
+        {
+            var spell = _spells[i];
+            spell.ModifyWeapon(this);
+        }
+    }
+
+    /// <summary>
+    /// <para>Restores modifications to weapons</para>
+    /// <para>恢复对武器的修改</para>
+    /// </summary>
+    /// <param name="spellScope"></param>
+    private void RestoreWeapon(int[] spellScope)
+    {
         for (var i = spellScope[0]; i <= spellScope[1]; i++)
         {
             var spell = _spells[i];
             spell.RestoreWeapon(this);
         }
-        return true;
     }
 }

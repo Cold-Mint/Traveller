@@ -8,3 +8,7 @@
   scene_path: res://prefab/magics/curseOfTheUndead.tscn
   icon_path: res://sprites/projectile/curseOfTheUndead.png
   max_stack_value: 1
+- id: x3
+  scene_path: res://prefab/magics/x3.tscn
+  icon_path: res://sprites/projectile/x3.png
+  max_stack_value: 1

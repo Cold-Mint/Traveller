@@ -38,17 +38,17 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
         return _projectileScene;
     }
 
-    public void ModifyWeapon(ProjectileWeapon projectileWeapon)
+    public virtual void ModifyWeapon(ProjectileWeapon projectileWeapon)
     {
 
     }
 
-    public void RestoreWeapon(ProjectileWeapon projectileWeapon)
+    public virtual void RestoreWeapon(ProjectileWeapon projectileWeapon)
     {
 
     }
 
-    public void ModifyProjectile(Projectile projectile)
+    public virtual void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity)
     {
 
     }

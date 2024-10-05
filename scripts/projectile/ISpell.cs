@@ -33,12 +33,23 @@ public interface ISpell
     /// </summary>
     /// <param name="projectileWeapon"></param>
     void RestoreWeapon(ProjectileWeapon projectileWeapon);
-    
+
     /// <summary>
     /// <para>Modify the projectile</para>
     /// <para>修改抛射体</para>
     /// </summary>
-    /// <param name="projectile"></param>
-    void ModifyProjectile(Projectile projectile);
+    /// <param name="index">
+    ///<para>What is the current projectile? For example, a weapon can fire three projectiles at once, with indexes 0,1,2</para>
+    ///<para>当前抛射体是第几个？例如：武器可一下发射3个抛射体，索引为0,1,2</para>
+    /// </param>
+    /// <param name="projectile">
+    ///<para>Projectile object</para>
+    ///<para>抛射体对象</para>
+    /// </param>
+    /// <param name="velocity">
+    ///<para>The velocity of the projectile</para>
+    ///<para>抛射体的飞行速度</para>
+    /// </param>
+    void ModifyProjectile(int index,Projectile projectile, ref Vector2 velocity);
 
 }

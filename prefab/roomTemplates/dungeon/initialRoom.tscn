@@ -45,6 +45,16 @@ position = Vector2(142, 84)
 script = ExtResource("3_v1tlc")
 ItemId = "staff_necromancy"
 
+[node name="ItemMarker2D3" type="Marker2D" parent="."]
+position = Vector2(214, 83)
+script = ExtResource("3_v1tlc")
+ItemId = "x3"
+
+[node name="ItemMarker2D4" type="Marker2D" parent="."]
+position = Vector2(366, 90)
+script = ExtResource("3_v1tlc")
+ItemId = "necromancy"
+
 [node name="ItemMarker2D2" type="Marker2D" parent="."]
 position = Vector2(321, 118)
 script = ExtResource("3_v1tlc")
