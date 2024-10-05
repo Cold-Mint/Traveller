@@ -25,9 +25,9 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
     }
 
-    public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    public override bool Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
-        Fire(owner, targetGlobalPosition);
+        return Fire(owner, targetGlobalPosition);
     }
 
 
@@ -77,15 +77,16 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     ///<para>敌人所在位置</para>
     /// </param>
     /// </remarks>
-    public void Fire(Node2D? owner, Vector2 enemyGlobalPosition)
+    public bool Fire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
         var nowTime = DateTime.Now;
         //If the present time minus the time of the last fire is less than the interval between fires, it means that the fire cannot be fired yet.
         //如果现在时间减去上次开火时间小于开火间隔，说明还不能开火。
         if (_lastFiringTime != null && nowTime - _lastFiringTime < _firingInterval)
         {
-            return;
+            return false;
         }
+        _lastFiringTime = nowTime;
         var result = DoFire(owner, enemyGlobalPosition);
         if (result)
         {
@@ -96,10 +97,9 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
                     characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
                 }
             }
-
             _audioStreamPlayer2D?.Play();
         }
-        _lastFiringTime = nowTime;
+        return result;
     }
 
     /// <summary>

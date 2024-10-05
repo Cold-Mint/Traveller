@@ -18,9 +18,13 @@ public partial class Packsack : PickAbleTemplate
         get => Config.ItemType.Packsack;
     }
     [Export] public int NumberSlots { get; set; }
-    public override void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    public override bool Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
-        GameSceneDepend.DynamicUiGroup?.ShowControl(Path, control =>
+        if (GameSceneDepend.DynamicUiGroup == null)
+        {
+            return false;
+        }
+        return GameSceneDepend.DynamicUiGroup.ShowControl(Path, control =>
         {
             if (control is PacksackUi packsackUi)
             {

@@ -15,7 +15,6 @@ _maxDamage = 10
 _minDamage = 1
 _damageType = 2
 Speed = 500.0
-_enableTracking = true
 _targetDiesDestroyProjectile = true
 _repelStrength = 2.5
 

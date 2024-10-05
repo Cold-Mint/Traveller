@@ -50,8 +50,9 @@ public class PlaceholderItem : IItem
         return null;
     }
 
-    public void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    public bool Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
+        return false;
     }
 
     public void OnThrow(Vector2 velocity)

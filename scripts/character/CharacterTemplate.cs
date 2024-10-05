@@ -481,10 +481,10 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (_currentItem is IItem item)
         {
-            item.Use(this, position);
+            return item.Use(this, position);
         }
 
-        return true;
+        return false;
     }
 
     public override void _Process(double delta)

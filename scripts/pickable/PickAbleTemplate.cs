@@ -182,8 +182,9 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         return Math.Min(freeQuantity, unallocatedQuantity);
     }
 
-    public virtual void Use(Node2D? owner, Vector2 targetGlobalPosition)
+    public virtual bool Use(Node2D? owner, Vector2 targetGlobalPosition)
     {
+        return false;
     }
 
     public virtual void OnThrow(Vector2 velocity)

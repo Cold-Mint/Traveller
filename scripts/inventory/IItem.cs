@@ -126,7 +126,11 @@ public interface IItem
     /// </summary>
     /// <param name="owner">Owner of current item, if any</param>
     /// <param name="targetGlobalPosition">Target position, such as the position of the cursor when used by the player</param>
-    void Use(Node2D? owner, Vector2 targetGlobalPosition);
+    /// <returns>
+    ///<para>Whether it was successfully executed</para>
+    ///<para>是否成功被执行了</para>
+    /// </returns>
+    bool Use(Node2D? owner, Vector2 targetGlobalPosition);
 
     /// <summary>
     /// <para>When the item is thrown</para>
