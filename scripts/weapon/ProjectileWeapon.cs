@@ -143,7 +143,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             {
                 //Has the ability to generate projectiles.
                 //拥有抛射体生成能力。
-                _spellProjectileIndexes.Add(i);
+                _spellProjectileIndexes.Add(_spells.Count - 1);
             }
         }
     }
