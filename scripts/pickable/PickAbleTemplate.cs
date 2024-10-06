@@ -57,7 +57,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <para>Enabled contact injury</para>
     /// <para>启用接触伤害</para>
     /// </summary>
-    public bool EnableContactInjury;
+    public virtual bool EnableContactInjury { get; set; }
 
     [Export] private int _minContactInjury = 1;
     [Export] private int _maxContactInjury = 2;
