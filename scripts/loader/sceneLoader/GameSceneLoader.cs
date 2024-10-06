@@ -61,6 +61,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");
         GameSceneDepend.PlayerContainer = playerContainer;
+        //Load the pickable container
+        //加载可拾捡物容器
+        var pickAbleContainer = GetNode<Node2D>("PickAbleContainer");
+        GameSceneDepend.PickAbleContainer = pickAbleContainer;
         //Setting up the mini map
         //设置迷你地图
         var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/MiniMap");

@@ -84,6 +84,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
+        DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());

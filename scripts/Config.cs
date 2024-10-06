@@ -176,6 +176,12 @@ public static class Config
     /// <para>空变量</para>
     /// </summary>
     public static readonly Variant EmptyVariant = new();
+    
+    /// <summary>
+    /// <para>Blank string</para>
+    /// <para>空白字符串</para>
+    /// </summary>
+    public static readonly string? EmptyString = null;
 
 
     /// <summary>
@@ -197,7 +203,7 @@ public static class Config
     {
         return OS.HasFeature("editor");
     }
-    
+
     /// <summary>
     /// <para>ItemType</para>
     /// <para>物品类型</para>
@@ -235,6 +241,12 @@ public static class Config
         ///<para>用于远程武器内的特殊物品类型</para>
         /// </remarks>
         public const int Spell = 4;
+        
+        /// <summary>
+        /// <para>Common item types</para>
+        /// <para>普通的物品类型</para>
+        /// </summary>
+        public const int Item = 5;
     }
 
     /// <summary>
@@ -255,7 +267,7 @@ public static class Config
         /// </summary>
         public const string TimeInterval = "TimeInterval";
     }
-    
+
     public class ZIndexManager
     {
         /// <summary>

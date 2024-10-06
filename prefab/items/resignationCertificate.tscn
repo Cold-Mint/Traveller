@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://cj36fjtrlo03t"]
+
+[ext_resource type="Script" path="res://scripts/inventory/ResignationCertificate.cs" id="1_nydte"]
+[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_ei0j2"]
+[ext_resource type="Texture2D" uid="uid://dyfqdpdlq286h" path="res://sprites/projectile/resignationCertificate.png" id="3_jwff2"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujexv"]
+radius = 6.0
+height = 21.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xnc20"]
+radius = 6.0
+height = 21.0
+
+[node name="Resignation certificate" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 34
+angular_damp = -1.0
+script = ExtResource("1_nydte")
+
+[node name="DamageArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 102
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
+position = Vector2(1, 0.5)
+shape = SubResource("CapsuleShape2D_ujexv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0.5)
+shape = SubResource("CapsuleShape2D_xnc20")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(65, 0)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Marker2D"]
+stream = ExtResource("2_ei0j2")
+bus = &"SoundEffect"
+
+[node name="TipLabel" type="Label" parent="."]
+offset_left = -19.0
+offset_top = 23.0
+offset_right = 21.0
+offset_bottom = 48.0
+
+[node name="CurseOfTheUndead" type="Sprite2D" parent="."]
+
+[node name="X3" type="Sprite2D" parent="."]
+texture = ExtResource("3_jwff2")

@@ -120,6 +120,8 @@ visible = false
 
 [node name="SpellContainer" type="Node2D" parent="."]
 
+[node name="PickAbleContainer" type="Node2D" parent="."]
+
 [node name="PlayerContainer" type="Node2D" parent="."]
 
 [node name="AICharacterContainer" type="Node2D" parent="."]

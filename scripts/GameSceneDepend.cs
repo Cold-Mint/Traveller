@@ -72,6 +72,12 @@ public static class GameSceneDepend
     /// <para>玩家容器</para>
     /// </summary>
     public static Node2D? PlayerContainer { get; set; }
+    
+    /// <summary>
+    /// <para>PickAbleContainer</para>
+    /// <para>可拾捡物容器</para>
+    /// </summary>
+    public static Node2D? PickAbleContainer { get; set; }
 
     /// <summary>
     /// <para>AICharacterContainer</para>

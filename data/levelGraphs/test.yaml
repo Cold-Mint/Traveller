@@ -19,39 +19,297 @@ connection_data_list:
     to_id: 7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613
     from_port: 0
     to_port: 0
+  - from_id: c0255eb6-2c75-44f7-9058-0921fe8fb0d8
+    to_id: 46d8c16d-66fb-409e-b02a-7825dcf59796
+    from_port: 0
+    to_port: 0
+  - from_id: 7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613
+    to_id: 20b486d3-3558-4d4a-b67b-d6df08e66a6a
+    from_port: 0
+    to_port: 0
+  - from_id: 7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613
+    to_id: 012795b2-297c-404a-b96f-dff8a6b6a720
+    from_port: 0
+    to_port: 0
+  - from_id: 012795b2-297c-404a-b96f-dff8a6b6a720
+    to_id: 7eba7a72-88c9-4018-82db-100c9521938b
+    from_port: 0
+    to_port: 0
+  - from_id: 46d8c16d-66fb-409e-b02a-7825dcf59796
+    to_id: 5e27b3cd-7de8-4476-b96f-199ffce9b10c
+    from_port: 0
+    to_port: 0
+  - from_id: 46d8c16d-66fb-409e-b02a-7825dcf59796
+    to_id: 43d7c799-3db5-4b13-b160-f9133f15a970
+    from_port: 0
+    to_port: 0
+  - from_id: 7eba7a72-88c9-4018-82db-100c9521938b
+    to_id: a54cf238-a368-4979-abb2-3a435b726d29
+    from_port: 0
+    to_port: 0
+  - from_id: 20b486d3-3558-4d4a-b67b-d6df08e66a6a
+    to_id: e69c3d51-11d3-408f-bfc8-b955183e2abe
+    from_port: 0
+    to_port: 0
+  - from_id: e69c3d51-11d3-408f-bfc8-b955183e2abe
+    to_id: 27111bc7-cbbd-4a4f-9fe6-cf3948f74efd
+    from_port: 0
+    to_port: 0
+  - from_id: 27111bc7-cbbd-4a4f-9fe6-cf3948f74efd
+    to_id: 7e5d5fd3-1255-4523-8057-377a4fbd50d8
+    from_port: 0
+    to_port: 0
+  - from_id: 5e27b3cd-7de8-4476-b96f-199ffce9b10c
+    to_id: 4129b4a0-a02e-4751-9ca8-b2bc1c679b02
+    from_port: 0
+    to_port: 0
+  - from_id: 4129b4a0-a02e-4751-9ca8-b2bc1c679b02
+    to_id: fb77ea9a-fd4d-4fc8-92a4-1e5d4d1219a8
+    from_port: 0
+    to_port: 0
+  - from_id: fb77ea9a-fd4d-4fc8-92a4-1e5d4d1219a8
+    to_id: 0aa908bd-b5fe-4a80-8e74-9a862d7c9af0
+    from_port: 0
+    to_port: 0
+  - from_id: 43d7c799-3db5-4b13-b160-f9133f15a970
+    to_id: dff8a1e6-a5ae-41b4-b136-95729bf3a8d3
+    from_port: 0
+    to_port: 0
+  - from_id: dff8a1e6-a5ae-41b4-b136-95729bf3a8d3
+    to_id: 676ba8a3-9ac8-4606-858e-5aa3b3e5101c
+    from_port: 0
+    to_port: 0
+  - from_id: 676ba8a3-9ac8-4606-858e-5aa3b3e5101c
+    to_id: 80c69468-6558-4c12-86cd-7ba6533d3758
+    from_port: 0
+    to_port: 0
+  - from_id: 0aa908bd-b5fe-4a80-8e74-9a862d7c9af0
+    to_id: c6f9bd56-5025-40f6-97b9-1e73eac1c5f6
+    from_port: 0
+    to_port: 0
+  - from_id: 7e5d5fd3-1255-4523-8057-377a4fbd50d8
+    to_id: 03896855-9956-4442-909c-7d633fa97ed9
+    from_port: 0
+    to_port: 0
+  - from_id: 80c69468-6558-4c12-86cd-7ba6533d3758
+    to_id: d43494e4-0ec3-4e29-a617-6a3ff7727a11
+    from_port: 0
+    to_port: 0
 room_node_data_list:
-  - id: c0255eb6-2c75-44f7-9058-0921fe8fb0d8
-    title: 起点房间
-    description: 测试的起点房间。
-    room_template_set:
-      - 'res://prefab/roomTemplates/dungeon/initialRoom.tscn'
-    tags:
-      - StartingRoom
-    room_injection_processor_data: null
-  - id: ba32e05c-0c80-4a79-b5ce-5b8150400e05
-    title: 房间3
-    description: ''
-    room_template_set:
-      - 'res://prefab/roomTemplates/dungeon/'
-    tags: null
-  - id: 4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03
-    title: 大厅
-    description: 比普通房间要大一些的房间，有多个门，用于连接到其他房间。
-    room_template_set:
-      - 'res://prefab/roomTemplates/dungeon/utilityRoom.tscn'
-    tags: null
-    room_injection_processor_data: null
   - id: 8b3d645a-96c0-407e-871d-6f4a0b69557b
     title: 房间4
     description: ''
     room_template_set:
-      - 'res://prefab/roomTemplates/dungeon/'
-    tags: null
+      - res://prefab/roomTemplates/dungeon/
+    tags:
     room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: ba32e05c-0c80-4a79-b5ce-5b8150400e05
+    title: 房间3
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data:
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
   - id: 7e3ae680-3d7e-4ae9-b82f-5bfbe1c2f613
     title: 房间5
     description: ''
     room_template_set:
-      - 'res://prefab/roomTemplates/dungeon/'
-    tags: null
+      - res://prefab/roomTemplates/dungeon/
+    tags:
     room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 20b486d3-3558-4d4a-b67b-d6df08e66a6a
+    title: 房间7
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 012795b2-297c-404a-b96f-dff8a6b6a720
+    title: 房间8
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 46d8c16d-66fb-409e-b02a-7825dcf59796
+    title: 房间6
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 7eba7a72-88c9-4018-82db-100c9521938b
+    title: 房间9
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 5e27b3cd-7de8-4476-b96f-199ffce9b10c
+    title: 房间10
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: a54cf238-a368-4979-abb2-3a435b726d29
+    title: 房间12
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: e69c3d51-11d3-408f-bfc8-b955183e2abe
+    title: 房间13
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 4ae948ea-82b7-4b2d-bec2-19ed8a9d4c03
+    title: 大厅
+    description: 比普通房间要大一些的房间，有多个门，用于连接到其他房间。
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/utilityRoom.tscn
+    tags:
+    room_injection_processor_data:
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: c0255eb6-2c75-44f7-9058-0921fe8fb0d8
+    title: 起点房间
+    description: 测试的起点房间。
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/initialRoom.tscn
+    tags:
+      - StartingRoom
+    room_injection_processor_data:
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 27111bc7-cbbd-4a4f-9fe6-cf3948f74efd
+    title: 房间15
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 7e5d5fd3-1255-4523-8057-377a4fbd50d8
+    title: 房间14
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 4129b4a0-a02e-4751-9ca8-b2bc1c679b02
+    title: 房间17
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: fb77ea9a-fd4d-4fc8-92a4-1e5d4d1219a8
+    title: 房间18
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 0aa908bd-b5fe-4a80-8e74-9a862d7c9af0
+    title: 房间19
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 43d7c799-3db5-4b13-b160-f9133f15a970
+    title: 房间11
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 676ba8a3-9ac8-4606-858e-5aa3b3e5101c
+    title: 房间23
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: dff8a1e6-a5ae-41b4-b136-95729bf3a8d3
+    title: 房间20
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 80c69468-6558-4c12-86cd-7ba6533d3758
+    title: 房间24
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: c6f9bd56-5025-40f6-97b9-1e73eac1c5f6
+    title: 房间22
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: 03896855-9956-4442-909c-7d633fa97ed9
+    title: 房间21
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id:
+  - id: d43494e4-0ec3-4e29-a617-6a3ff7727a11
+    title: 房间16
+    description: ''
+    room_template_set:
+      - res://prefab/roomTemplates/dungeon/
+    tags:
+    room_injection_processor_data: ''
+    enter_room_event_handler_id:
+    exit_room_event_handler_id: 

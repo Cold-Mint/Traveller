@@ -3,6 +3,9 @@ id,zh,en,ja
 #自杀
 death_info_self_1,{0}误伤了自己。,{0} accidentally shot themself.,{0}誤って自分を傷つけました。
 death_info_self_2,{0}忘记了瞄准。,{0} forgot to aim.,{0}照準を忘れました。
+#Died reading a separation certificate.
+#死于阅读离职证明。
+death_info_resignation_certificate,{0}阅读冷薄荷的离职证明被毒害了！(你知道的太多了),{0} Read Cold Mint's separation certificate was poisoned!(You know too much),{0}コールドミントの離職証明書を読んで毒されました!(あなたは知りすぎです)
 #Default death message
 #默认死亡信息
 death_info_default,{0}被{1}杀死了。,{0} is killed by {1}.,{0}は{1}に殺されました。

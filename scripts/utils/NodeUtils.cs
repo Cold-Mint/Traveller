@@ -1,6 +1,7 @@
 ﻿using System;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile;
 using Godot;
 using Packsack = ColdMint.scripts.inventory.Packsack;
@@ -234,12 +235,12 @@ public static class NodeUtils
         {
             return GameSceneDepend.ProjectileContainer;
         }
-        
+
         if (GameSceneDepend.SpellContainer != null && childNode is ISpell)
         {
             return GameSceneDepend.SpellContainer;
         }
-        
+
         if (GameSceneDepend.WeaponContainer != null && childNode is WeaponTemplate)
         {
             return GameSceneDepend.WeaponContainer;
@@ -253,6 +254,11 @@ public static class NodeUtils
         if (GameSceneDepend.DynamicUiGroup != null && childNode is PacksackUi)
         {
             return GameSceneDepend.DynamicUiGroup;
+        }
+
+        if (GameSceneDepend.PickAbleContainer != null && childNode is PickAbleTemplate)
+        {
+            return GameSceneDepend.PickAbleContainer;
         }
 
         return defaultParentNode;

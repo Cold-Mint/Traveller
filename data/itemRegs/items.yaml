@@ -1,0 +1,10 @@
+#Register spells used by the projectile here.
+#在这里注册抛射体使用的法术。
+#Note: The id must be the same as the item id in the scene. Otherwise, an ArgumentException will be thrown.
+#备注：id必须和场景内的物品id保持一致。否则会抛出ArgumentException。
+#After you declare the id of the item, add the corresponding localized text to the csv file in the locals' folder. For example, if the id is a corresponding name is item_a and the corresponding description is item_a_desc.
+#当您声明物品的id后，请在locals文件夹中的csv文件中添加相应的本地化文本。例如：id为a，则对应的名称为item_a，对应的描述为item_a_desc。
+- id: resignation_certificate
+  scene_path: res://prefab/items/resignationCertificate.tscn
+  icon_path: res://sprites/projectile/resignationCertificate.png
+  max_stack_value: 1
