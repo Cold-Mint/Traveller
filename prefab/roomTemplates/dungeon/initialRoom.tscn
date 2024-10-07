@@ -62,7 +62,7 @@ ItemId = "necromancy"
 [node name="ItemMarker2D5" type="Marker2D" parent="."]
 position = Vector2(381, 136)
 script = ExtResource("3_v1tlc")
-ItemId = "resignation_certificate"
+ItemId = "iron_axe"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_064c7")

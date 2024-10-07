@@ -88,12 +88,18 @@ public static class LogCat
         /// <para>房间</para>
         /// </summary>
         public const string Room = "Room";
-        
+
         /// <summary>
         /// <para>ItemSpawn</para>
         /// <para>物品生成器</para>
         /// </summary>
         public const string ItemSpawn = "ItemSpawn";
+
+        /// <summary>
+        /// <para>MeleeWeapon</para>
+        /// <para>近战武器</para>
+        /// </summary>
+        public const string MeleeWeapon = "MeleeWeapon";
     }
 
 

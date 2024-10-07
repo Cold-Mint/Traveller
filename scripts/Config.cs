@@ -241,7 +241,7 @@ public static class Config
         ///<para>用于远程武器内的特殊物品类型</para>
         /// </remarks>
         public const int Spell = 4;
-        
+
         /// <summary>
         /// <para>Common item types</para>
         /// <para>普通的物品类型</para>
@@ -578,6 +578,11 @@ public static class Config
         /// <para>家具</para>
         /// </summary>
         public const int Furniture = 9;
+        /// <summary>
+        /// <para>WeaponDamageArea</para>
+        /// <para>武器伤害区域</para>
+        /// </summary>
+        public const int WeaponDamageArea = 10;
     }
 
     /// <summary>
