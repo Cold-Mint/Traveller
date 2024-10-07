@@ -29,8 +29,12 @@ collision_mask = 162
 platform_floor_layers = 4294967042
 platform_wall_layers = 128
 script = ExtResource("1_1dlls")
+CharacterName = null
+CanMutateAfterDeath = null
+_initialHp = null
 MaxHp = 32
 CampId = "Default"
+LootListId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_bb8wt")

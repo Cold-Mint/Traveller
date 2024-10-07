@@ -12,3 +12,7 @@
   scene_path: res://prefab/magics/x3.tscn
   icon_path: res://sprites/projectile/x3.png
   max_stack_value: 1
+- id: curse
+  scene_path: res://prefab/magics/curse.tscn
+  icon_path: res://sprites/projectile/x3.png
+  max_stack_value: 1

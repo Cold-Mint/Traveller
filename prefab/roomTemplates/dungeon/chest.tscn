@@ -89,3 +89,5 @@ texture = ExtResource("3_r2p3x")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("4_rean8")]
 position = Vector2(239, 101)
+_initialDurability = null
+_maxDurability = null
