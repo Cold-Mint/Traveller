@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dld3qttpsdjpe"]
+
+[ext_resource type="Script" path="res://scripts/furniture/Barrier.cs" id="1_hfnuj"]
+[ext_resource type="Texture2D" uid="uid://cvlm5tmv43i8t" path="res://sprites/furnitures/wooden_box.png" id="2_24vtp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4tg"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_in1f7"]
+radius = 52.6118
+
+[node name="WoodenBox" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 160
+script = ExtResource("1_hfnuj")
+_initialDurability = null
+_maxDurability = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vx4tg")
+
+[node name="OperateArea2D" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OperateArea2D"]
+shape = SubResource("CircleShape2D_in1f7")
+
+[node name="WoodenBox" type="Sprite2D" parent="."]
+texture = ExtResource("2_24vtp")

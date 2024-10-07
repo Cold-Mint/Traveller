@@ -15,6 +15,12 @@ collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_cnhod")
+NumberOfProjectiles = null
+RandomAngle = null
+UnitRadian = null
+_projectilePath = null
+_minContactInjury = null
+_maxContactInjury = null
 
 [node name="DamageArea2D" type="Area2D" parent="."]
 collision_layer = 8

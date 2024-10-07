@@ -583,6 +583,7 @@ public static class Config
         /// <para>武器伤害区域</para>
         /// </summary>
         public const int WeaponDamageArea = 10;
+        public const int Barrier = 11;
     }
 
     /// <summary>

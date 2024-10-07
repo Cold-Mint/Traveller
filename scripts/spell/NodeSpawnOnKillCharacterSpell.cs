@@ -1,4 +1,3 @@
-using ColdMint.scripts.debug;
 using ColdMint.scripts.projectile;
 using ColdMint.scripts.projectile.decorator;
 using Godot;
@@ -31,10 +30,8 @@ public partial class NodeSpawnOnKillCharacterSpell : SpellPickAble
     {
         if (_nodeSpawnOnKillCharacterDecorator == null)
         {
-            LogCat.Log("添加失败");
             return;
         }
-        LogCat.Log("添加成功");
         projectile.AddProjectileDecorator(_nodeSpawnOnKillCharacterDecorator);
     }
 }

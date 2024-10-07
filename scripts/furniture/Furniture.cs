@@ -31,6 +31,7 @@ public partial class Furniture : RigidBody2D
         }
 
         _durability = _initialDurability;
+        SetCollisionLayerValue(Config.LayerNumber.Furniture, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
@@ -60,6 +61,11 @@ public partial class Furniture : RigidBody2D
     /// </returns>
     public bool Damage(DamageTemplate damageTemplate)
     {
-        return false;
+        _durability -= damageTemplate.Damage;
+        if (_durability <= 0)
+        {
+            QueueFree();
+        }
+        return true;
     }
 }

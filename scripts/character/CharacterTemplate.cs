@@ -318,6 +318,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //角色不能穿过墙壁和地板
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
+        SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         InputPickable = true;
     }
 

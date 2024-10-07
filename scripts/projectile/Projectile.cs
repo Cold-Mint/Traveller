@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.furniture;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile.decorator;
 using ColdMint.scripts.utils;
@@ -117,6 +118,7 @@ public partial class Projectile : CharacterBody2D
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         SetCollisionMaskValue(Config.LayerNumber.PickAbleItem, true);
+        SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
@@ -191,6 +193,11 @@ public partial class Projectile : CharacterBody2D
             return true;
         }
 
+        if (target is Furniture)
+        {
+            return true;
+        }
+
         if (target is PickAbleTemplate pickAbleTemplate)
         {
             //The picked-up item cannot resist the bullet.
@@ -258,6 +265,18 @@ public partial class Projectile : CharacterBody2D
                 pickAbleTemplate.ApplyImpulse(new Vector2(normalized.X * _repelStrength * Config.CellSize,
                     normalized.Y * _repelStrength * Config.CellSize));
             }
+        }else if (target is Furniture furniture)
+        {
+            var damage = new Damage
+            {
+                Attacker = owner,
+                MaxDamage = _maxDamage,
+                MinDamage = _minDamage
+            };
+            damage.CreateDamage();
+            damage.MoveLeft = Velocity.X < 0;
+            damage.Type = _damageType;
+            furniture.Damage(damage);
         }
     }
 
