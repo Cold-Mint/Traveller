@@ -37,7 +37,7 @@ position = Vector2(751.5, 289.438)
 shape = SubResource("RectangleShape2D_jxmys")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
-[node name="Marker2D" type="Marker2D" parent="."]
+[node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(54, 256)
 script = ExtResource("1_q04qt")
 
@@ -73,16 +73,6 @@ position = Vector2(386, 178)
 scale = Vector2(23.9375, 11.0625)
 texture = ExtResource("3_atgj7")
 
-[node name="Marker2D2" type="Marker2D" parent="."]
-position = Vector2(100, 250)
-script = ExtResource("4_6ihp7")
-ItemId = "staff_necromancy"
-
-[node name="Marker2D3" type="Marker2D" parent="."]
-position = Vector2(134, 248)
-script = ExtResource("4_6ihp7")
-ItemId = "necromancy"
-
 [node name="Label" type="Label" parent="."]
 offset_left = 37.0
 offset_top = 46.0
@@ -115,3 +105,15 @@ position = Vector2(715, 162)
 
 [node name="WoodenBox4" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(714, 122)
+
+[node name="AutoSpawn" type="Node2D" parent="."]
+
+[node name="necromancy" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(134, 248)
+script = ExtResource("4_6ihp7")
+ItemId = "necromancy"
+
+[node name="staff_necromancy" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(100, 250)
+script = ExtResource("4_6ihp7")
+ItemId = "staff_necromancy"

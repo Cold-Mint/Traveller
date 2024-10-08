@@ -2,6 +2,7 @@
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
+using ColdMint.scripts.map.room;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -11,7 +12,7 @@ namespace ColdMint.scripts.map;
 /// <para>PlayerSpawn</para>
 /// <para>玩家出生点</para>
 /// </summary>
-public partial class PlayerSpawn : Marker2D
+public partial class PlayerSpawn : Marker2D,ISpawnMarker
 {
     private PackedScene? _playerPackedScene;
 
@@ -31,32 +32,49 @@ public partial class PlayerSpawn : Marker2D
             GameSceneDepend.Player.GlobalPosition = GlobalPosition;
             return;
         }
+        Spawn();
+    }
+    
 
-        SpawnPlayer();
+    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    {
+        //After the map is generated, create the player instance.
+        //当地图生成完成后，创建玩家实例。
+        if (GameSceneDepend.Player != null)
+        {
+            //An existing player instance will not be created.
+            //已经存在玩家实例，不再创建。
+            return;
+        }
+
+        Spawn();
     }
 
-    /// <summary>
-    /// <para>Generate player instance</para>
-    /// <para>生成玩家实例</para>
-    /// </summary>
-    private void SpawnPlayer()
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        EventBus.GameReplayEvent -= GameReplayEvent;
+    }
+
+    public Node2D? Spawn()
     {
         if (GameSceneDepend.PlayerContainer == null)
         {
-            return;
+            return null;
         }
 
         if (_playerPackedScene == null)
         {
             LogCat.LogError("player_packed_scene_not_exist");
-            return;
+            return null;
         }
 
         var playerNode =
             NodeUtils.InstantiatePackedScene<Player>(_playerPackedScene);
         if (playerNode == null)
         {
-            return;
+            return null;
         }
 
         //The player's parent node must be GameSceneDepend PlayerContainer.
@@ -73,26 +91,16 @@ public partial class PlayerSpawn : Marker2D
         playerNode.ItemContainer = itemContainer;
         GameSceneDepend.Player = playerNode;
         playerNode.GlobalPosition = GlobalPosition;
+        return playerNode;
     }
 
-    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    public bool CanQueueFree()
     {
-        //After the map is generated, create the player instance.
-        //当地图生成完成后，创建玩家实例。
-        if (GameSceneDepend.Player != null)
-        {
-            //An existing player instance will not be created.
-            //已经存在玩家实例，不再创建。
-            return;
-        }
-
-        SpawnPlayer();
+        return false;
     }
 
-    public override void _ExitTree()
+    public void DoQueueFree()
     {
-        base._ExitTree();
-        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
-        EventBus.GameReplayEvent -= GameReplayEvent;
+        QueueFree();
     }
 }

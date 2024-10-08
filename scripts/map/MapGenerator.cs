@@ -311,11 +311,6 @@ public static class MapGenerator
             RoomDictionary = roomDictionary
         };
         EventBus.MapGenerationCompleteEvent?.Invoke(eventObj);
-        var aiCharacterGenerateEvent = new AiCharacterGenerateEvent
-        {
-            Tag = AiCharacterGenerateEvent.TagMapGenerationComplete
-        };
-        EventBus.AiCharacterGenerateEvent?.Invoke(aiCharacterGenerateEvent);
     }
 
 

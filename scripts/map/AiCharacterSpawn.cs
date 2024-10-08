@@ -1,5 +1,5 @@
 ﻿using ColdMint.scripts.character;
-using ColdMint.scripts.map.events;
+using ColdMint.scripts.map.room;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -9,52 +9,45 @@ namespace ColdMint.scripts.map;
 /// <para>Ai character generation point</para>
 /// <para>Ai角色生成点</para>
 /// </summary>
-public partial class AiCharacterSpawn : Marker2D
+public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
 {
     private PackedScene? _packedScene;
-    [Export]
-    public string? ResPath;
+    [Export] private string? _resPath;
 
     public override void _Ready()
     {
         base._Ready();
-        if (!string.IsNullOrEmpty(ResPath))
+        if (!string.IsNullOrEmpty(_resPath))
         {
-            _packedScene = GD.Load<PackedScene>(ResPath);
+            _packedScene = GD.Load<PackedScene>(_resPath);
         }
-
-        EventBus.AiCharacterGenerateEvent += OnAiCharacterGenerateEvent;
     }
 
-    /// <summary>
-    /// <para>When an event is triggered</para>
-    /// <para>当触发事件时</para>
-    /// </summary>
-    /// <param name="aiCharacterGenerateEvent"></param>
-    public void OnAiCharacterGenerateEvent(AiCharacterGenerateEvent aiCharacterGenerateEvent)
+    public Node2D? Spawn()
     {
-        if (GameSceneDepend.AiCharacterContainer == null)
+        if (GameSceneDepend.AiCharacterContainer == null || _packedScene == null)
         {
-            return;
-        }
-
-        if (_packedScene == null)
-        {
-            return;
+            return null;
         }
 
         var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(_packedScene);
         if (aiCharacter == null)
         {
-            return;
+            return null;
         }
 
         NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, aiCharacter);
         aiCharacter.GlobalPosition = GlobalPosition;
+        return aiCharacter;
     }
 
-    public override void _ExitTree()
+    public bool CanQueueFree()
     {
-        EventBus.AiCharacterGenerateEvent -= OnAiCharacterGenerateEvent;
+        return true;
+    }
+
+    public void DoQueueFree()
+    {
+        QueueFree();
     }
 }

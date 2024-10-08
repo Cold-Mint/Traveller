@@ -28,6 +28,18 @@ public class Room
     private CollisionShape2D? _collisionShape2D;
     private bool _hasPlayer;
     private readonly List<CharacterTemplate> _characterTemplateList = [];
+    
+    /// <summary>
+    /// <para>When the player first enters the room, all <see cref="ISpawnMarker"/> nodes under this node are executed</para>
+    /// <para>当玩家首次进入房间时，会执行此节点下所有<see cref="ISpawnMarker"/>节点</para>
+    /// </summary>
+    private Node2D? _autoSpawn;
+
+    /// <summary>
+    /// <para>The number of times the player visits the room</para>
+    /// <para>玩家访问房间的次数</para>
+    /// </summary>
+    private int PlayerRoomVisitCount { get; set; }
 
     public string? EnterRoomEventHandlerId { get; set; }
 
@@ -51,47 +63,31 @@ public class Room
     }
 
     /// <summary>
-    ///  <para>Places a barrier in a slot where a match has been found.</para>
-    /// <para>在找到匹配的槽位放置屏障。</para>
+    /// <para>Place barriers in all slots</para>
+    /// <para>在所有的槽位放置屏障</para>
     /// </summary>
-    private void PlaceBarrierInMatchedSlot()
+    public void PlaceBarriersInAllSlots()
     {
-        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
+        var barrier = GetTileMapLayer(Config.TileMapLayerName.Barrier);
+        if (barrier == null)
         {
-            if (!roomSlot.Matched)
-            {
-                return;
-            }
-            var cellSourceId = barrier.GetCellSourceId(i);
-            if (cellSourceId == -1)
-            {
-                return;
-            }
-
-            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
-        });
+            return;
+        }
+        barrier.Enabled = true;
     }
 
     /// <summary>
-    /// <para>Clear the barrier that finds a matching slot</para>
-    /// <para>清空找到匹配的槽位的屏障。</para>
+    /// <para>Clear all matched barriers</para>
+    /// <para>清空所有已匹配位置的屏障</para>
     /// </summary>
-    private void ClearBarriersInMatchedSlots()
+    public void ClearAllMatchedBarriers()
     {
-        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
+        var barrier = GetTileMapLayer(Config.TileMapLayerName.Barrier);
+        if (barrier == null)
         {
-            if (!roomSlot.Matched)
-            {
-                return;
-            }
-            var cellSourceId = barrier.GetCellSourceId(i);
-            if (cellSourceId == -1)
-            {
-                return;
-            }
-
-            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
-        });
+            return;
+        }
+        barrier.Enabled = false;
     }
 
     /// <summary>
@@ -99,32 +95,6 @@ public class Room
     /// <para>在未匹配的槽位放置屏障。</para>
     /// </summary>
     public void PlaceBarrierInUnmatchedSlots()
-    {
-        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
-        {
-            if (roomSlot.Matched)
-            {
-                return;
-            }
-            var cellSourceId = barrier.GetCellSourceId(i);
-            if (cellSourceId == -1)
-            {
-                return;
-            }
-
-            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
-        });
-    }
-
-    /// <summary>
-    /// <para>Executes a callback for each room slot, providing the corresponding coordinates in the barrier and ground layers.</para>
-    /// <para>对每个房间槽位执行回调，提供barrier层和ground层对应的坐标。</para>
-    /// </summary>
-    /// <param name="action">
-    ///<para>The callback action to be executed, which takes the barrier layer, ground layer, and coordinates as parameters.</para>
-    ///<para>要执行的回调操作，它以屏障层、底层和坐标作为参数。</para>
-    /// </param>
-    private void ProcessRoomSlots(Action<RoomSlot, TileMapLayer, TileMapLayer, Vector2I> action)
     {
         var ground = GetTileMapLayer(Config.TileMapLayerName.Ground);
         var barrier = GetTileMapLayer(Config.TileMapLayerName.Barrier);
@@ -144,16 +114,26 @@ public class Room
             {
                 continue;
             }
-            
+
             //Place the corresponding coordinate tiles of the barrier layer on the ground level.
             //将屏障层的对应坐标瓦片放到地面层。
             CoordinateUtils.ForEachCell(roomSlot.StartPosition, roomSlot.EndPosition, i =>
             {
-                action.Invoke(roomSlot, ground, barrier, i);
+                if (roomSlot.Matched)
+                {
+                    return;
+                }
+                var cellSourceId = barrier.GetCellSourceId(i);
+                if (cellSourceId == -1)
+                {
+                    return;
+                }
+                ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
             });
         }
-        barrier.QueueFree();
+        barrier.Enabled = false;
     }
+
 
     /// <summary>
     /// <para>ShowAllCharacterTemplate</para>
@@ -200,6 +180,15 @@ public class Room
         {
             _characterTemplateList.Add(player);
             _hasPlayer = true;
+            PlayerRoomVisitCount++;
+            if (PlayerRoomVisitCount == 1 && _autoSpawn != null)
+            {
+                NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
+                {
+                    marker.Spawn();
+                    return false;
+                });
+            }
             //The player enters the room, opening up their view.
             //玩家进入了房间，开放视野。
             if (_pointLight2D != null)
@@ -231,7 +220,7 @@ public class Room
         }
 
         var enterRoomEventHandler = RoomEventManager.GetEnterRoomEventHandler(EnterRoomEventHandlerId);
-        enterRoomEventHandler?.OnEnterRoom(node, this);
+        enterRoomEventHandler?.OnEnterRoom(PlayerRoomVisitCount, node, this);
     }
 
 
@@ -260,8 +249,18 @@ public class Room
                 _pointLight2D.Show();
                 _pointLight2D.Texture = AssetHolder.White25;
             }
-
             HideAllCharacterTemplate();
+            if (PlayerRoomVisitCount == 1 && _autoSpawn != null)
+            {
+                NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
+                {
+                    if (marker.CanQueueFree())
+                    {
+                        marker.DoQueueFree();
+                    }
+                    return false;
+                });
+            }
         }
         else if (node is CharacterTemplate characterTemplate && characterTemplate.Visible)
         {
@@ -312,8 +311,8 @@ public class Room
             return;
         }
 
-        var node2D = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
-        if (node2D == null)
+        var rootNode = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
+        if (rootNode == null)
         {
             //The room node is not of Node2D type. An exception is thrown
             //房间节点不是Node2D类型，抛出异常
@@ -321,15 +320,15 @@ public class Room
             return;
         }
 
-        _rootNode = node2D;
-        var tileMapNode = node2D.GetNode<Node2D>("TileMap");
+        _rootNode = rootNode;
+        var tileMapNode = rootNode.GetNode<Node2D>("TileMap");
         NodeUtils.ForEachNode<TileMapLayer>(tileMapNode, node =>
         {
             _tileMapLayers ??= [];
             _tileMapLayers.Add(node);
             return false;
         });
-        _area2D = node2D.GetNode<Area2D>("RoomArea");
+        _area2D = rootNode.GetNode<Area2D>("RoomArea");
         _area2D.Monitoring = true;
         _area2D.SetCollisionLayerValue(Config.LayerNumber.RoomArea, true);
         //Sets the collision layer that can be detected in the current room area.
@@ -340,12 +339,13 @@ public class Room
         _area2D.BodyEntered += OnEnterRoom;
         _collisionShape2D = _area2D.GetChild<CollisionShape2D>(0);
         _roomSlots = GetRoomSlots(GetTileMapLayer(Config.TileMapLayerName.Ground), _area2D,
-            node2D.GetNode<Node2D>("RoomSlotList"));
-        _pointLight2D = node2D.GetNodeOrNull<PointLight2D>("PointLight2D");
+            rootNode.GetNode<Node2D>("RoomSlotList"));
+        _pointLight2D = rootNode.GetNodeOrNull<PointLight2D>("PointLight2D");
         if (_pointLight2D != null)
         {
             _pointLight2D.BlendMode = Light2D.BlendModeEnum.Mix;
         }
+        _autoSpawn = rootNode.GetNodeOrNull<Node2D>("AutoSpawn");
     }
 
     public Node2D? RootNode => _rootNode;

@@ -91,11 +91,6 @@ offset_right = 453.0
 offset_bottom = 151.0
 text = "ui_tutorial_combine_more_powerful_spells"
 
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(434, 105)
-script = ExtResource("4_fh50l")
-ItemId = "x3"
-
 [node name="WoodenBox" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(711, 179)
 
@@ -129,3 +124,10 @@ position = Vector2(473, 285)
 [node name="TripleShotSpell" type="Sprite2D" parent="."]
 position = Vector2(637, 85)
 texture = ExtResource("6_2qcf3")
+
+[node name="AutoSpawn" type="Node2D" parent="."]
+
+[node name="x3" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(434, 105)
+script = ExtResource("4_fh50l")
+ItemId = "x3"

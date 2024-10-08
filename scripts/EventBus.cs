@@ -10,12 +10,6 @@ namespace ColdMint.scripts;
 public static class EventBus
 {
     /// <summary>
-    /// <para>Event when the AI character is generated</para>
-    /// <para>AI角色生成事件</para>
-    /// </summary>
-    public static Action<AiCharacterGenerateEvent>? AiCharacterGenerateEvent;
-
-    /// <summary>
     /// <para>Game Over Event</para>
     /// <para>游戏结束事件</para>
     /// </summary>

@@ -131,17 +131,17 @@ public static class NodeUtils
     ///<para>用于处理回调的函数，返回true终止遍历节点</para>
     /// </param>
     /// <typeparam name="T">
-    ///<para>When the type is specified as Node, all child nodes are returned.</para>
-    ///<para>当指定类型为Node时，将返回所有子节点。</para>
+    ///<para>Specifies the generic type</para>
+    ///<para>指定的泛型</para>
     /// </typeparam>
-    public static void ForEachNode<T>(Node parent, Func<T, bool> func) where T : Node
+    public static void ForEachNode<T>(Node parent, Func<T, bool> func) where T : class
     {
         var count = parent.GetChildCount();
         if (count <= 0)
         {
             return;
         }
-
+        
         for (var i = 0; i < count; i++)
         {
             var node = parent.GetChild(i);

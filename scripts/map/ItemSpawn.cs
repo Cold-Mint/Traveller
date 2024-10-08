@@ -1,6 +1,6 @@
 ﻿using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.map.events;
+using ColdMint.scripts.map.room;
 using Godot;
 
 namespace ColdMint.scripts.map;
@@ -9,36 +9,34 @@ namespace ColdMint.scripts.map;
 /// <para>ItemSpawn</para>
 /// <para>物品出生点</para>
 /// </summary>
-public partial class ItemSpawn : Marker2D
+public partial class ItemSpawn : Marker2D, ISpawnMarker
 {
-    [Export] public string? ItemId { get; private set; }
+    [Export] private string? ItemId { get; set; }
 
-    public override void _Ready()
+    public Node2D? Spawn()
     {
-        base._Ready();
-        EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
-    }
-
-    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
-    {
-        //After the map is generated, create the item instance.
-        //当地图生成完成后，创建物品实例。
-        if (ItemId == null)
+        if (string.IsNullOrEmpty(ItemId))
         {
-            return;
+            return null;
         }
 
         var item = ItemTypeManager.CreateItem(ItemId, this);
-        LogCat.LogWithFormat("generated_item_is_empty",LogCat.LogLabel.ItemSpawn,true,ItemId,item == null);
-        if (item is Node2D node2D)
+        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, true, ItemId, item == null);
+        if (item is not Node2D node2D)
         {
-            node2D.GlobalPosition = GlobalPosition;
+            return null;
         }
+        node2D.GlobalPosition = GlobalPosition;
+        return node2D;
     }
 
-    public override void _ExitTree()
+    public bool CanQueueFree()
     {
-        base._ExitTree();
-        EventBus.MapGenerationCompleteEvent -= MapGenerationCompleteEvent;
+        return true;
+    }
+
+    public void DoQueueFree()
+    {
+        QueueFree();
     }
 }
