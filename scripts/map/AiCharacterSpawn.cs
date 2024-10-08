@@ -11,26 +11,33 @@ namespace ColdMint.scripts.map;
 /// </summary>
 public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
 {
-    private PackedScene? _packedScene;
-    [Export] private string? _resPath;
+    [Export] private string[]? _resPathArray;
 
-    public override void _Ready()
+    public Node2D? Spawn(int waveNumber)
     {
-        base._Ready();
-        if (!string.IsNullOrEmpty(_resPath))
-        {
-            _packedScene = GD.Load<PackedScene>(_resPath);
-        }
-    }
-
-    public Node2D? Spawn()
-    {
-        if (GameSceneDepend.AiCharacterContainer == null || _packedScene == null)
+        if (GameSceneDepend.AiCharacterContainer == null)
         {
             return null;
         }
-
-        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(_packedScene);
+        if (_resPathArray == null)
+        {
+            return null;
+        }
+        if (waveNumber < 0 || waveNumber >= _resPathArray.Length)
+        {
+            return null;
+        }
+        var resPath = _resPathArray[waveNumber];
+        if (string.IsNullOrEmpty(resPath))
+        {
+            return null;
+        }
+        var packedScene = GD.Load<PackedScene>(resPath);
+        if (packedScene == null)
+        {
+            return null;
+        }
+        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(packedScene);
         if (aiCharacter == null)
         {
             return null;
@@ -39,6 +46,11 @@ public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
         NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, aiCharacter);
         aiCharacter.GlobalPosition = GlobalPosition;
         return aiCharacter;
+    }
+
+    public int GetMaxWaveNumber()
+    {
+        return _resPathArray?.Length ?? 0;
     }
 
     public bool CanQueueFree()

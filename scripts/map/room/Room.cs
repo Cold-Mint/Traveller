@@ -28,12 +28,26 @@ public class Room
     private CollisionShape2D? _collisionShape2D;
     private bool _hasPlayer;
     private readonly List<CharacterTemplate> _characterTemplateList = [];
-    
+
     /// <summary>
     /// <para>When the player first enters the room, all <see cref="ISpawnMarker"/> nodes under this node are executed</para>
     /// <para>当玩家首次进入房间时，会执行此节点下所有<see cref="ISpawnMarker"/>节点</para>
     /// </summary>
     private Node2D? _autoSpawn;
+
+    /// <summary>
+    /// <para>Current generated wave number</para>
+    /// <para>当前生成波数</para>
+    /// </summary>
+    private int _currentWaveNumber;
+
+    private readonly List<CharacterTemplate> _spawnedCharacterTemplateList = [];
+
+    /// <summary>
+    /// <para>Max generated wave number</para>
+    /// <para>最大的生成波数</para>
+    /// </summary>
+    private int _maxWaveNumber;
 
     /// <summary>
     /// <para>The number of times the player visits the room</para>
@@ -162,6 +176,76 @@ public class Room
             characterTemplate.Hide();
         }
     }
+    /// <summary>
+    /// <para>Spawn a wave of entities</para>
+    /// <para>生成一波实体</para>
+    /// </summary>
+    private void SpawnEnemyWave()
+    {
+        if (PlayerRoomVisitCount != 1 || _autoSpawn == null)
+        {
+            return;
+        }
+        if (_maxWaveNumber > 0 && _currentWaveNumber == _maxWaveNumber)
+        {
+            //Complete all waves.
+            //完成所有的波次。
+            ClearAllMatchedBarriers();
+            GameSceneDepend.MiniMap?.Show();
+            return;
+        }
+        NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
+        {
+            var node2D = marker.Spawn(_currentWaveNumber);
+            if (node2D is CharacterTemplate characterTemplate)
+            {
+                //The maximum wave number should be the maximum wave number produced by living organisms.For now, the player's condition for the next step is to kill all enemies.
+                //最大波数应该是生物生成的最大波数。就目前而言，玩家进入下一步的条件是杀死所有敌人。
+                _maxWaveNumber = Math.Max(_maxWaveNumber, marker.GetMaxWaveNumber());
+                _spawnedCharacterTemplateList.Add(characterTemplate);
+                characterTemplate.TreeExited += () =>
+                {
+                    _spawnedCharacterTemplateList.Remove(characterTemplate);
+                    if (_spawnedCharacterTemplateList.Count == 0)
+                    {
+                        //All the creatures they summoned are dead.
+                        //召唤的生物全死了。
+                        _currentWaveNumber++;
+                        AddTimer(SpawnEnemyWave);
+                    }
+                };
+            }
+            return false;
+        });
+        if (_spawnedCharacterTemplateList.Count > 0)
+        {
+            GameSceneDepend.MiniMap?.Hide();
+            AddTimer(PlaceBarriersInAllSlots);
+        }
+    }
+
+    /// <summary>
+    /// <para>Add a timer node to handle some events</para>
+    /// <para>添加定时器节点处理一些事件</para>
+    /// </summary>
+    /// <param name="timeoutAction"></param>
+    private void AddTimer(Action timeoutAction)
+    {
+        if (_rootNode == null)
+        {
+            return;
+        }
+        var timer = new Timer();
+        timer.Autostart = true;
+        timer.OneShot = true;
+        timer.WaitTime = 0.3f;
+        timer.Timeout += () =>
+        {
+            timeoutAction.Invoke();
+            timer.QueueFree();
+        };
+        NodeUtils.CallDeferredAddChild(_rootNode, timer);
+    }
 
     /// <summary>
     /// <para>When a node enters the room</para>
@@ -181,14 +265,7 @@ public class Room
             _characterTemplateList.Add(player);
             _hasPlayer = true;
             PlayerRoomVisitCount++;
-            if (PlayerRoomVisitCount == 1 && _autoSpawn != null)
-            {
-                NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
-                {
-                    marker.Spawn();
-                    return false;
-                });
-            }
+            SpawnEnemyWave();
             //The player enters the room, opening up their view.
             //玩家进入了房间，开放视野。
             if (_pointLight2D != null)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=4 uid="uid://c57cc1tyreybb"]
+[gd_scene load_steps=9 format=4 uid="uid://c57cc1tyreybb"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="2_1ctsj"]
+[ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="3_u5h84"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
 size = Vector2(728, 509)
@@ -72,7 +73,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAQAAAAMAAAAAAAEAAQACAAEAAAAAAAIAAQACAAE
 tile_set = ExtResource("1_rn2om")
 
 [node name="Barrier" type="TileMapLayer" parent="TileMap"]
-visible = false
 use_parent_material = true
 tile_map_data = PackedByteArray("AAAWAA0AAQAAAAEAAAAWAA4AAQAAAAEAAAAWAAEAAQAAAAEAAAAWAAIAAQAAAAEAAAAAAA0AAQACAAEAAAAAAA4AAQACAAEAAAA=")
 tile_set = ExtResource("1_rn2om")
@@ -82,3 +82,15 @@ visible = false
 position = Vector2(367.5, 258)
 scale = Vector2(23.0938, 16.25)
 texture = ExtResource("2_1ctsj")
+
+[node name="AutoSpawn" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(121, 178)
+script = ExtResource("3_u5h84")
+_resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn")
+
+[node name="Marker2D2" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(545, 438)
+script = ExtResource("3_u5h84")
+_resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "")

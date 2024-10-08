@@ -12,9 +12,14 @@ namespace ColdMint.scripts.map;
 /// <para>PlayerSpawn</para>
 /// <para>玩家出生点</para>
 /// </summary>
-public partial class PlayerSpawn : Marker2D,ISpawnMarker
+public partial class PlayerSpawn : Marker2D, ISpawnMarker
 {
     private PackedScene? _playerPackedScene;
+    /// <summary>
+    /// <para>The player's generated wave count</para>
+    /// <para>玩家的生成波数</para>
+    /// </summary>
+    private static readonly int PlayerWaveNumber = 1;
 
     public override void _Ready()
     {
@@ -32,9 +37,9 @@ public partial class PlayerSpawn : Marker2D,ISpawnMarker
             GameSceneDepend.Player.GlobalPosition = GlobalPosition;
             return;
         }
-        Spawn();
+        Spawn(PlayerWaveNumber);
     }
-    
+
 
     private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
@@ -47,7 +52,7 @@ public partial class PlayerSpawn : Marker2D,ISpawnMarker
             return;
         }
 
-        Spawn();
+        Spawn(PlayerWaveNumber);
     }
 
     public override void _ExitTree()
@@ -57,8 +62,13 @@ public partial class PlayerSpawn : Marker2D,ISpawnMarker
         EventBus.GameReplayEvent -= GameReplayEvent;
     }
 
-    public Node2D? Spawn()
+
+    public Node2D? Spawn(int waveNumber)
     {
+        if (waveNumber != PlayerWaveNumber)
+        {
+            return null;
+        }
         if (GameSceneDepend.PlayerContainer == null)
         {
             return null;
@@ -92,6 +102,11 @@ public partial class PlayerSpawn : Marker2D,ISpawnMarker
         GameSceneDepend.Player = playerNode;
         playerNode.GlobalPosition = GlobalPosition;
         return playerNode;
+    }
+
+    public int GetMaxWaveNumber()
+    {
+        return PlayerWaveNumber;
     }
 
     public bool CanQueueFree()

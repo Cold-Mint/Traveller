@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(709, 296)
+size = Vector2(758, 342)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -25,7 +25,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [node name="RoomArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(383.5, 176)
+position = Vector2(383, 175)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
@@ -111,9 +111,9 @@ position = Vector2(714, 122)
 [node name="necromancy" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(134, 248)
 script = ExtResource("4_6ihp7")
-ItemId = "necromancy"
+_itemIdList = PackedStringArray("necromancy")
 
 [node name="staff_necromancy" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(100, 250)
 script = ExtResource("4_6ihp7")
-ItemId = "staff_necromancy"
+_itemIdList = PackedStringArray("staff_necromancy")

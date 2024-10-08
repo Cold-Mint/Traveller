@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://kgodvs3ilxbs" path="res://sprites/tutorials/tripleShotSpell.png" id="6_2qcf3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(709, 296)
+size = Vector2(755, 340)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -130,4 +130,4 @@ texture = ExtResource("6_2qcf3")
 [node name="x3" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(434, 105)
 script = ExtResource("4_fh50l")
-ItemId = "x3"
+_itemIdList = PackedStringArray("x3")

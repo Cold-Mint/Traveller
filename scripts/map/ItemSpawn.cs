@@ -11,23 +11,37 @@ namespace ColdMint.scripts.map;
 /// </summary>
 public partial class ItemSpawn : Marker2D, ISpawnMarker
 {
-    [Export] private string? ItemId { get; set; }
+    [Export] private string[]? _itemIdList;
 
-    public Node2D? Spawn()
+    public Node2D? Spawn(int waveNumber)
     {
-        if (string.IsNullOrEmpty(ItemId))
+        if (_itemIdList == null)
         {
             return null;
         }
 
-        var item = ItemTypeManager.CreateItem(ItemId, this);
-        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, true, ItemId, item == null);
+        if (waveNumber < 0 || waveNumber >= _itemIdList.Length)
+        {
+            return null;
+        }
+        var itemId = _itemIdList[waveNumber];
+        if (string.IsNullOrEmpty(itemId))
+        {
+            return null;
+        }
+        var item = ItemTypeManager.CreateItem(itemId, this);
+        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, true, itemId, item == null);
         if (item is not Node2D node2D)
         {
             return null;
         }
         node2D.GlobalPosition = GlobalPosition;
         return node2D;
+    }
+
+    public int GetMaxWaveNumber()
+    {
+        return _itemIdList?.Length ?? 0;
     }
 
     public bool CanQueueFree()

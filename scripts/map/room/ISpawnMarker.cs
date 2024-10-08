@@ -12,11 +12,22 @@ public interface ISpawnMarker
     /// <para>Generating entity</para>
     /// <para>生成实体</para>
     /// </summary>
+    /// <param name="waveNumber">
+    ///<para>Spawning waves</para>
+    ///<para>刷怪的波次</para>
+    /// </param>
     /// <remarks>
     ///<para>Return the result of the generation. If null is returned, the generation fails.</para>
     ///<para>返回生成结果，为null则生成失败。</para>
     /// </remarks>
-    Node2D? Spawn();
+    Node2D? Spawn(int waveNumber);
+
+    /// <summary>
+    /// <para>GetMaxWaveNumber</para>
+    /// <para>获取生成器支持的最大生成波数</para>
+    /// </summary>
+    /// <returns></returns>
+    int GetMaxWaveNumber();
 
     /// <summary>
     /// <para>Can Queue Free</para>
