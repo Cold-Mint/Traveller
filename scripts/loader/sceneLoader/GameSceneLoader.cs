@@ -33,10 +33,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //背包Ui容器
         var backpackUiContainer = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
         GameSceneDepend.DynamicUiGroup = backpackUiContainer;
-        //Load operation prompt
-        //加载操作提示
-        var operationTip = GetNode<RichTextLabel>("CanvasLayer/Control/VBoxContainer/OperationTip");
-        GameSceneDepend.OperationTipLabel = operationTip;
         //Loaded weapon container
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");

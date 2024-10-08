@@ -109,13 +109,6 @@ public static class Config
     public const long TextChangesBuffetingDuration = 300;
 
     /// <summary>
-    /// <para>Operation prompts, function key text color</para>
-    /// <para>操作提示内，功能键文本颜色</para>
-    /// </summary>
-    public const string OperationTipActionColor = "#2b8a3e";
-
-
-    /// <summary>
     /// <para>Company/Creator name</para>
     /// <para>公司/创作者名字</para>
     /// </summary>

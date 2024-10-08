@@ -59,12 +59,6 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_n1yht")
 
-[node name="OperationTip" type="RichTextLabel" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-bbcode_enabled = true
-fit_content = true
-
 [node name="FPSLabel" type="Label" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 1

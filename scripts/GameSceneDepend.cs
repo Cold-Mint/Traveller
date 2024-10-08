@@ -97,12 +97,6 @@ public static class GameSceneDepend
     /// <para>健康条UI</para>
     /// </summary>
     public static HealthBarUi? HealthBarUi { get; set; }
-
-    /// <summary>
-    /// <para>operation tip</para>
-    /// <para>操作提示</para>
-    /// </summary>
-    public static RichTextLabel? OperationTipLabel { get; set; }
     
     /// <summary>
     /// <para>DynamicUiGroup</para>

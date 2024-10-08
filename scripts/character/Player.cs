@@ -1,4 +1,3 @@
-using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
@@ -45,7 +44,6 @@ public partial class Player : CharacterTemplate
             GlobalPosition);
         _parabola = GetNode<Line2D>("Parabola");
         _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
-        UpdateOperationTip();
         var healthBarUi = GameSceneDepend.HealthBarUi;
         if (healthBarUi != null)
         {
@@ -107,109 +105,13 @@ public partial class Player : CharacterTemplate
     {
     }
 
-    /// <summary>
-    /// <para>Update operation prompt</para>
-    /// <para>更新操作提示</para>
-    /// </summary>
-    private void UpdateOperationTip()
-    {
-        var operationTipLabel = GameSceneDepend.OperationTipLabel;
-        if (operationTipLabel == null)
-        {
-            return;
-        }
-
-        var operationTipBuilder = new StringBuilder();
-
-        operationTipBuilder.Append("[color=");
-        operationTipBuilder.Append(Config.OperationTipActionColor);
-        operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_left")[0].AsText()));
-        operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("action_move_left"));
-        operationTipBuilder.Append(' ');
-        operationTipBuilder.Append("[color=");
-        operationTipBuilder.Append(Config.OperationTipActionColor);
-        operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_right")[0].AsText()));
-        operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("action_move_right"));
-        operationTipBuilder.Append(' ');
-        operationTipBuilder.Append("[color=");
-        operationTipBuilder.Append(Config.OperationTipActionColor);
-        operationTipBuilder.Append(']');
-        operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_up")[0].AsText()));
-        operationTipBuilder.Append("[/color]");
-        operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump"));
-        if (_collidingWithPlatform)
-        {
-            operationTipBuilder.Append(' ');
-            operationTipBuilder.Append("[color=");
-            operationTipBuilder.Append(Config.OperationTipActionColor);
-            operationTipBuilder.Append(']');
-            operationTipBuilder.Append(
-                TranslationServerUtils.Translate(InputMap.ActionGetEvents("ui_down")[0].AsText()));
-            operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("action_jump_down"));
-        }
-
-        var nearestItem = FindTheNearestItem();
-        if (nearestItem != null)
-        {
-            operationTipBuilder.Append(' ');
-            operationTipBuilder.Append("[color=");
-            operationTipBuilder.Append(Config.OperationTipActionColor);
-            operationTipBuilder.Append(']');
-            operationTipBuilder.Append(
-                TranslationServerUtils.Translate(InputMap.ActionGetEvents("pick_up")[0].AsText()));
-            operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("action_pick_up"));
-            if (nearestItem is IItem item)
-            {
-                operationTipBuilder.Append(item.Name);
-            }
-
-            operationTipLabel.Text = operationTipBuilder.ToString();
-        }
-
-        if (CurrentItem != null)
-        {
-            operationTipBuilder.Append(' ');
-            operationTipBuilder.Append("[color=");
-            operationTipBuilder.Append(Config.OperationTipActionColor);
-            operationTipBuilder.Append(']');
-            operationTipBuilder.Append(TranslationServerUtils.Translate(InputMap.ActionGetEvents("throw")[0].AsText()));
-            operationTipBuilder.Append("[/color]");
-            operationTipBuilder.Append(TranslationServerUtils.Translate("action_throw"));
-            if (CurrentItem is IItem item)
-            {
-                operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
-                operationTipBuilder.Append(' ');
-                operationTipBuilder.Append("[color=");
-                operationTipBuilder.Append(Config.OperationTipActionColor);
-                operationTipBuilder.Append(']');
-                operationTipBuilder.Append(
-                    TranslationServerUtils.Translate(InputMap.ActionGetEvents("use_item")[0].AsText()));
-                operationTipBuilder.Append("[/color]");
-                operationTipBuilder.Append(TranslationServerUtils.Translate("action_use_item"));
-                operationTipBuilder.Append(TranslationServerUtils.Translate(item.Name));
-            }
-        }
-
-        operationTipLabel.Text = operationTipBuilder.ToString();
-    }
-
-
     protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
     {
         //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
         if (_platformDetectionRayCast2D != null && _platformDetectionRayCast2D.IsColliding() != _collidingWithPlatform)
         {
-            //When the state changes, update the action hint
-            //当状态改变时，更新操作提示
             _collidingWithPlatform = _platformDetectionRayCast2D.IsColliding();
-            UpdateOperationTip();
         }
 
         //If the character is on the ground, give an upward velocity when the jump button is pressed
@@ -304,12 +206,7 @@ public partial class Player : CharacterTemplate
             CurrentItem = null;
         }
     }
-
-    protected override void WhenUpdateCurrentItem(Node2D? currentItem)
-    {
-        UpdateOperationTip();
-    }
-
+    
     /// <summary>
     /// <para>当玩家手动抛出物品时，施加到物品上的速度值</para>
     /// </summary>
@@ -415,35 +312,7 @@ public partial class Player : CharacterTemplate
 
         EventBus.GameOverEvent.Invoke(gameOverEvent);
     }
-
-    protected override void EnterThePickingRangeBody(Node node)
-    {
-        base.EnterThePickingRangeBody(node);
-        if (CurrentItem == node)
-        {
-            //If the node entering the pick range is the node held by the player, then return.
-            //如果说进入拾捡范围的节点是玩家所持有的节点，那么返回。
-            return;
-        }
-
-        if (node is not Node2D)
-        {
-            return;
-        }
-
-        UpdateOperationTip();
-    }
-
-    protected override void ExitThePickingRangeBody(Node node)
-    {
-        base.ExitThePickingRangeBody(node);
-        if (node is not Node2D)
-        {
-            return;
-        }
-
-        UpdateOperationTip();
-    }
+    
 
     protected override void OnHit(DamageTemplate damageTemplate)
     {
