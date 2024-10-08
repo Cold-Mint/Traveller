@@ -23,7 +23,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(479, 34, 228, 32, 226, 1, 159, 1, 160, 31, 32, 35, 33, 97, 1, 97, -1, 162, 512, 160, 509, 96, 480, 97)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
-[node name="InitialRoom" type="Node2D"]
+[node name="InitialRoom2" type="Node2D"]
 
 [node name="RoomArea" type="Area2D" parent="."]
 collision_mask = 0
@@ -89,5 +89,3 @@ texture = ExtResource("3_r2p3x")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("4_rean8")]
 position = Vector2(239, 101)
-_initialDurability = null
-_maxDurability = null

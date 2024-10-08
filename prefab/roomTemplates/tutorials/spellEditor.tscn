@@ -20,7 +20,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(36, 32, 731, 32, 733, 258, 766, 257, 767, 316, 35, 317)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
-[node name="InitialRoom" type="Node2D"]
+[node name="InitialRoom3" type="Node2D"]
 
 [node name="RoomArea" type="Area2D" parent="."]
 
@@ -103,8 +103,6 @@ texture = ExtResource("6_dbg76")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_0kep0")]
 position = Vector2(227, 283)
-_initialDurability = null
-_maxDurability = null
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)

@@ -125,8 +125,6 @@ position = Vector2(711, 98)
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_ll4ng")]
 position = Vector2(473, 285)
-_initialDurability = null
-_maxDurability = null
 
 [node name="TripleShotSpell" type="Sprite2D" parent="."]
 position = Vector2(637, 85)

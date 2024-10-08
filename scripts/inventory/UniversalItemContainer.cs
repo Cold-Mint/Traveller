@@ -24,16 +24,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     private int _selectIndex;
 
     /// <summary>
-    /// <para>The next available index</para>
-    /// <para>下个可用的索引</para>
-    /// </summary>
-    /// <remarks>
-    ///<para>For example, the variable [1,2,3,5,6] represents 4, or the variable [1,2,3,4,5,6,7] represents 8.</para>
-    ///<para>例如[1,2,3,5,6]这个变量表示4，再或者[1,2,3,4,5,6,7]这个变量表示8。</para>
-    /// </remarks>
-    private int _nextAvailableIndex;
-
-    /// <summary>
     /// <para>The type of item that can be added to the item container</para>
     /// <para>物品容器允许添加的物品类型</para>
     /// </summary>
@@ -132,34 +122,41 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     /// <para>Update the next available index location</para>
     /// <para>更新下个可用的索引位置</para>
     /// </summary>
-    private void UpdateNextAvailableIndex()
+    /// <remarks>
+    ///<para>For example, the variable [1,2,3,5,6] represents 4, or the variable [1,2,3,4,5,6,7] represents 8.</para>
+    ///<para>例如[1,2,3,5,6]这个变量表示4，再或者[1,2,3,4,5,6,7]这个变量表示8。</para>
+    /// </remarks>
+    /// <returns>
+    ///<para>The next available index is returned after obtaining failure<see cref="UnknownIndex"/></para>
+    ///<para>下次可用的索引，获取失败返回<see cref="UnknownIndex"/></para>
+    /// </returns>
+    private int GetNextAvailableIndex()
     {
-        _nextAvailableIndex = UnknownIndex;
         if (totalCapacity <= 0)
         {
-            return;
+            return UnknownIndex;
         }
         for (var i = 0; i < totalCapacity; i++)
         {
             var contains = _itemDictionary.ContainsKey(i);
             if (!contains)
             {
-                _nextAvailableIndex = i;
-                return;
+                return i;
             }
         }
+        return UnknownIndex;
     }
 
     public int AddItem(IItem item)
     {
+        var nextAvailableIndex = GetNextAvailableIndex();
         if (item.MaxQuantity == 1)
         {
-            if (_nextAvailableIndex == UnknownIndex)
+            if (nextAvailableIndex == UnknownIndex)
             {
                 return 0;
             }
 
-            var nextAvailableIndex = _nextAvailableIndex;
             _itemDictionary[nextAvailableIndex] = item;
             item.Index = nextAvailableIndex;
             item.ItemContainer = this;
@@ -167,7 +164,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             {
                 item.HideSelf();
             }
-            UpdateNextAvailableIndex();
             UpdateSelectStatus(nextAvailableIndex, item);
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
@@ -221,24 +217,22 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
 
         //Add the rest to the container.
         //添加剩余到容器内。
-        if (_nextAvailableIndex == UnknownIndex)
+        if (nextAvailableIndex == UnknownIndex)
         {
             return 0;
         }
-        var finalNextAvailableIndex = _nextAvailableIndex;
-        _itemDictionary[finalNextAvailableIndex] = item;
-        item.Index = finalNextAvailableIndex;
+        _itemDictionary[nextAvailableIndex] = item;
+        item.Index = nextAvailableIndex;
         item.ItemContainer = this;
-        if (finalNextAvailableIndex != _selectIndex)
+        if (nextAvailableIndex != _selectIndex)
         {
             item.HideSelf();
         }
-        UpdateNextAvailableIndex();
-        UpdateSelectStatus(finalNextAvailableIndex, item);
+        UpdateSelectStatus(nextAvailableIndex, item);
         ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
         {
             NewItem = item,
-            NewIndex = finalNextAvailableIndex,
+            NewIndex = nextAvailableIndex,
             Type = Config.ItemDataChangeEventType.Add
         });
         return originalQuantity;
@@ -355,7 +349,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             //输入的数量小于0,则移除全部物品。
             item.Quantity = 0;
             _itemDictionary.Remove(itemIndex);
-            UpdateNextAvailableIndex();
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
                 NewItem = item,
@@ -370,7 +363,6 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         if (item.Quantity < 1)
         {
             _itemDictionary.Remove(itemIndex);
-            UpdateNextAvailableIndex();
             ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
             {
                 NewItem = item,
