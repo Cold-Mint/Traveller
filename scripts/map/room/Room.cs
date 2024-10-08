@@ -51,6 +51,111 @@ public class Room
     }
 
     /// <summary>
+    ///  <para>Places a barrier in a slot where a match has been found.</para>
+    /// <para>在找到匹配的槽位放置屏障。</para>
+    /// </summary>
+    private void PlaceBarrierInMatchedSlot()
+    {
+        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
+        {
+            if (!roomSlot.Matched)
+            {
+                return;
+            }
+            var cellSourceId = barrier.GetCellSourceId(i);
+            if (cellSourceId == -1)
+            {
+                return;
+            }
+
+            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
+        });
+    }
+
+    /// <summary>
+    /// <para>Clear the barrier that finds a matching slot</para>
+    /// <para>清空找到匹配的槽位的屏障。</para>
+    /// </summary>
+    private void ClearBarriersInMatchedSlots()
+    {
+        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
+        {
+            if (!roomSlot.Matched)
+            {
+                return;
+            }
+            var cellSourceId = barrier.GetCellSourceId(i);
+            if (cellSourceId == -1)
+            {
+                return;
+            }
+
+            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
+        });
+    }
+
+    /// <summary>
+    /// <para>Places barriers in slots that do not have a match.</para>
+    /// <para>在未匹配的槽位放置屏障。</para>
+    /// </summary>
+    public void PlaceBarrierInUnmatchedSlots()
+    {
+        ProcessRoomSlots(action: (roomSlot, ground, barrier, i) =>
+        {
+            if (roomSlot.Matched)
+            {
+                return;
+            }
+            var cellSourceId = barrier.GetCellSourceId(i);
+            if (cellSourceId == -1)
+            {
+                return;
+            }
+
+            ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
+        });
+    }
+
+    /// <summary>
+    /// <para>Executes a callback for each room slot, providing the corresponding coordinates in the barrier and ground layers.</para>
+    /// <para>对每个房间槽位执行回调，提供barrier层和ground层对应的坐标。</para>
+    /// </summary>
+    /// <param name="action">
+    ///<para>The callback action to be executed, which takes the barrier layer, ground layer, and coordinates as parameters.</para>
+    ///<para>要执行的回调操作，它以屏障层、底层和坐标作为参数。</para>
+    /// </param>
+    private void ProcessRoomSlots(Action<RoomSlot, TileMapLayer, TileMapLayer, Vector2I> action)
+    {
+        var ground = GetTileMapLayer(Config.TileMapLayerName.Ground);
+        var barrier = GetTileMapLayer(Config.TileMapLayerName.Barrier);
+        if (ground == null || barrier == null)
+        {
+            return;
+        }
+
+        if (RoomSlots == null || RoomSlots.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var roomSlot in RoomSlots)
+        {
+            if (roomSlot == null)
+            {
+                continue;
+            }
+            
+            //Place the corresponding coordinate tiles of the barrier layer on the ground level.
+            //将屏障层的对应坐标瓦片放到地面层。
+            CoordinateUtils.ForEachCell(roomSlot.StartPosition, roomSlot.EndPosition, i =>
+            {
+                action.Invoke(roomSlot, ground, barrier, i);
+            });
+        }
+        barrier.QueueFree();
+    }
+
+    /// <summary>
     /// <para>ShowAllCharacterTemplate</para>
     /// <para>显示所有角色模板</para>
     /// </summary>

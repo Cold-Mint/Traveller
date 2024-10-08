@@ -60,7 +60,11 @@ public static class MapGenerator
         if (_roomInjectionProcessorsDictionary == null)
         {
             _roomInjectionProcessorsDictionary = new Dictionary<string, IRoomInjectionProcessor>
-                { { key, roomInjectionProcessor } };
+            {
+                {
+                    key, roomInjectionProcessor
+                }
+            };
             return true;
         }
 
@@ -327,48 +331,7 @@ public static class MapGenerator
         {
             return;
         }
-
-        var ground = room.GetTileMapLayer(Config.TileMapLayerName.Ground);
-        var barrier = room.GetTileMapLayer(Config.TileMapLayerName.Barrier);
-        if (ground == null || barrier == null)
-        {
-            return;
-        }
-
-        var roomSlots = room.RoomSlots;
-        if (roomSlots == null || roomSlots.Length == 0)
-        {
-            return;
-        }
-
-        foreach (var roomSlot in roomSlots)
-        {
-            if (roomSlot == null)
-            {
-                continue;
-            }
-
-            if (roomSlot.Matched)
-            {
-                continue;
-            }
-
-            //Place the corresponding coordinate tiles of the barrier layer on the ground level.
-            //将屏障层的对应坐标瓦片放到地面层。
-            CoordinateUtils.ForEachCell(roomSlot.StartPosition, roomSlot.EndPosition,
-                i =>
-                {
-                    var cellSourceId = barrier.GetCellSourceId(i);
-                    if (cellSourceId == -1)
-                    {
-                        return;
-                    }
-
-                    ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
-                });
-        }
-
-        barrier.QueueFree();
+        room.PlaceBarrierInUnmatchedSlots();
     }
 
     /// <summary>
