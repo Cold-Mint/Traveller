@@ -32,7 +32,7 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
     public override void _Ready()
     {
         base._Ready();
-        if (_projectilePath != null)
+        if (!string.IsNullOrEmpty(_projectilePath))
         {
             _projectileScene = GD.Load<PackedScene>(_projectilePath);
         }
