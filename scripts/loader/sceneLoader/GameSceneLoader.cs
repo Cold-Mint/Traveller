@@ -63,8 +63,12 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         GameSceneDepend.PickAbleContainer = pickAbleContainer;
         //Setting up the mini map
         //设置迷你地图
-        var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/MiniMap");
+        var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/Control/MiniMap");
         GameSceneDepend.MiniMap = miniMap;
+        //Set the mini map animation
+        //设置迷你地图动画
+        var miniMapAnimationPlayer = GetNode<AnimationPlayer>("CanvasLayer/Control/MapContainer/MiniMapAnimationPlayer");
+        GameSceneDepend.MiniMapAnimationPlayer = miniMapAnimationPlayer;
         return Task.CompletedTask;
     }
 

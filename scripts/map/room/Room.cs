@@ -191,7 +191,10 @@ public class Room
             //Complete all waves.
             //完成所有的波次。
             ClearAllMatchedBarriers();
-            GameSceneDepend.MiniMap?.Show();
+            if (GameSceneDepend.MiniMap != null && !GameSceneDepend.MiniMap.Visible)
+            {
+                GameSceneDepend.MiniMapAnimationPlayer?.Play(name: "show");
+            }
             return;
         }
         NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
@@ -219,7 +222,10 @@ public class Room
         });
         if (_spawnedCharacterTemplateList.Count > 0)
         {
-            GameSceneDepend.MiniMap?.Hide();
+            if (GameSceneDepend.MiniMap != null && GameSceneDepend.MiniMap.Visible)
+            {
+                GameSceneDepend.MiniMapAnimationPlayer?.Play(name: "hide");
+            }
             AddTimer(PlaceBarriersInAllSlots);
         }
     }

@@ -17,6 +17,12 @@ public static class GameSceneDepend
     /// <para>迷你地图</para>
     /// </summary>
     public static MiniMap? MiniMap { get; set; }
+    
+    /// <summary>
+    /// <para>MiniMapAnimationPlayer</para>
+    /// <para>迷你地图的动画节点</para>
+    /// </summary>
+    public static AnimationPlayer? MiniMapAnimationPlayer { get; set; }
 
     private static Player? _player;
 
