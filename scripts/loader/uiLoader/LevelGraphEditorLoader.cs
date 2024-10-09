@@ -60,8 +60,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void InitializeData()
     {
         base.InitializeData();
-        _mainMenu = GD.Load<PackedScene>("res://scenes/mainMenu.tscn");
-        _roomNodeScene = GD.Load<PackedScene>("res://prefab/ui/RoomNode.tscn");
+        _mainMenu = ResourceLoader.Load<PackedScene>("res://scenes/mainMenu.tscn");
+        _roomNodeScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/RoomNode.tscn");
         _defaultRoomName = TranslationServerUtils.Translate("ui_default_room_name");
         var folder = Config.GetLevelGraphExportDirectory();
         if (!Directory.Exists(folder))

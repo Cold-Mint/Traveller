@@ -5,7 +5,7 @@ namespace ColdMint.scripts.inventory;
 
 public class ItemSlotContainerDisplay(Node rootNode) : ItemContainerDisplayTemplate
 {
-    private readonly PackedScene? _packedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
+    private readonly PackedScene? _packedScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
 
     protected override void AddItemDisplay()
     {

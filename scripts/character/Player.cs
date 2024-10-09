@@ -53,7 +53,7 @@ public partial class Player : CharacterTemplate
 
         //Mount the camera.
         //挂载相机。
-        var mainCameraPackedScene = GD.Load<PackedScene>("res://prefab/MainCamera.tscn");
+        var mainCameraPackedScene = ResourceLoader.Load<PackedScene>("res://prefab/MainCamera.tscn");
         var camera2D = NodeUtils.InstantiatePackedScene<Camera2D>(mainCameraPackedScene);
         if (camera2D != null)
         {

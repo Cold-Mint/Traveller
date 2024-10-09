@@ -34,7 +34,7 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
         base._Ready();
         if (!string.IsNullOrEmpty(_projectilePath))
         {
-            _projectileScene = GD.Load<PackedScene>(_projectilePath);
+            _projectileScene = ResourceLoader.Load<PackedScene>(_projectilePath);
         }
     }
 

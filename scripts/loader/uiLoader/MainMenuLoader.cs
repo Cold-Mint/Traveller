@@ -25,9 +25,9 @@ public partial class MainMenuLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
-        _gameScene = GD.Load<PackedScene>("res://scenes/game.tscn");
-        _contributor = GD.Load<PackedScene>("res://scenes/contributor.tscn");
-        _levelGraphEditor = GD.Load<PackedScene>("res://scenes/levelGraphEditor.tscn");
+        _gameScene = ResourceLoader.Load<PackedScene>("res://scenes/game.tscn");
+        _contributor = ResourceLoader.Load<PackedScene>("res://scenes/contributor.tscn");
+        _levelGraphEditor = ResourceLoader.Load<PackedScene>("res://scenes/levelGraphEditor.tscn");
     }
 
     public override void InitializeUi()

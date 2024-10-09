@@ -46,7 +46,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
     public override void _Ready()
     {
         base._Ready();
-        _damageNumberPackedScene = GD.Load("res://prefab/ui/DamageNumber.tscn") as PackedScene;
+        _damageNumberPackedScene = ResourceLoader.Load("res://prefab/ui/DamageNumber.tscn") as PackedScene;
         _rootNode = GetNode<Node2D>("/root/Game/DamageNumberContainer");
         //The horizontal velocity is in the X positive direction
         //水平速度的X正方向

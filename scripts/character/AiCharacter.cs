@@ -121,14 +121,14 @@ public sealed partial class AiCharacter : CharacterTemplate
         _bubbleMarker = GetNode<BubbleMarker>("BubbleMarker");
         if (_bubbleMarker != null)
         {
-            using var plaintScene = GD.Load<PackedScene>("res://prefab/ui/plaint.tscn");
+            using var plaintScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/plaint.tscn");
             var plaint = NodeUtils.InstantiatePackedScene<Control>(plaintScene);
             if (plaint != null)
             {
                 _bubbleMarker.AddBubble(PlaintBubbleId, plaint);
             }
 
-            using var queryScene = GD.Load<PackedScene>("res://prefab/ui/query.tscn");
+            using var queryScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/query.tscn");
             var query = NodeUtils.InstantiatePackedScene<Control>(queryScene);
             if (query != null)
             {
@@ -200,7 +200,7 @@ public sealed partial class AiCharacter : CharacterTemplate
 
         //Set the resource path of the initial weapon and try to create the object of the initial weapon.
         //设置了初始武器的资源路径，尝试创建初始武器的对象。
-        var packedScene = GD.Load<PackedScene>(initWeaponRes);
+        var packedScene = ResourceLoader.Load<PackedScene>(initWeaponRes);
         var weaponTemplate = NodeUtils.InstantiatePackedScene<WeaponTemplate>(packedScene);
         if (weaponTemplate == null)
         {

@@ -32,7 +32,7 @@ public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
         {
             return null;
         }
-        var packedScene = GD.Load<PackedScene>(resPath);
+        var packedScene = ResourceLoader.Load<PackedScene>(resPath);
         if (packedScene == null)
         {
             return null;

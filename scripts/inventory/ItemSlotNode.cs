@@ -20,8 +20,8 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     public override void _Ready()
     {
-        _backgroundTexture = GD.Load<Texture2D>("res://sprites/ui/ItemBarEmpty.png");
-        _backgroundTextureWhenSelect = GD.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
+        _backgroundTexture = ResourceLoader.Load<Texture2D>("res://sprites/ui/ItemBarEmpty.png");
+        _backgroundTextureWhenSelect = ResourceLoader.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
         _backgroundTextureRect =
             GetNode<TextureRect>("BackgroundTexture");
         _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/IconTextureRect");

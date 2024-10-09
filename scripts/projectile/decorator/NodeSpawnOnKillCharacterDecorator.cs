@@ -42,7 +42,7 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
             return;
         }
 
-        var packedScene = GD.Load<PackedScene>(PackedScenePath);
+        var packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
         var node2D = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
         if (node2D == null)
         {

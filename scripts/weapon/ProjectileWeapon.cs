@@ -32,6 +32,17 @@ public partial class ProjectileWeapon : WeaponTemplate
     private int _numberSlots;
 
     /// <summary>
+    /// <para>SpellList</para>
+    /// <para>法术列表</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>To make weapons out of the box, you need to configure pre-made spells here.</para>
+    ///<para>为了使武器开箱即用，您需要在这里配置预制的法术。</para>
+    /// </remarks>
+    [Export]
+    private string[]? _spellList;
+
+    /// <summary>
     /// <para>How many projectiles are generated per fire</para>
     /// <para>每次开火生成多少个抛射体</para>
     /// </summary>
@@ -119,6 +130,25 @@ public partial class ProjectileWeapon : WeaponTemplate
         {
             SelfItemContainer = new UniversalItemContainer(_numberSlots);
             SelfItemContainer.AllowAddingItemByType(Config.ItemType.Spell);
+            //Reload pre-made spells.
+            //装填预制的法术。
+            if (_spellList is not { Length: > 0 }) return;
+            foreach (var spellId in _spellList)
+            {
+                if (string.IsNullOrEmpty(spellId))
+                {
+                    continue;
+                }
+                var item = ItemTypeManager.CreateItem(spellId, this);
+                if (item == null)
+                {
+                    continue;
+                }
+                if (SelfItemContainer.CanAddItem(item))
+                {
+                    SelfItemContainer.AddItem(item);
+                }
+            }
         }
     }
 

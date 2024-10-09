@@ -24,7 +24,7 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
     public override void _Ready()
     {
         base._Ready();
-        _playerPackedScene = GD.Load<PackedScene>("res://prefab/entitys/Character.tscn");
+        _playerPackedScene = ResourceLoader.Load<PackedScene>("res://prefab/entitys/Character.tscn");
         EventBus.MapGenerationCompleteEvent += MapGenerationCompleteEvent;
         EventBus.GameReplayEvent += GameReplayEvent;
     }

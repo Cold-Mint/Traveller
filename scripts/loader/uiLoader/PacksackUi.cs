@@ -69,7 +69,7 @@ public partial class PacksackUi : UiLoaderTemplate
 
     public override void InitializeData()
     {
-        _packedScene = GD.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
+        _packedScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/ItemSlot.tscn");
     }
 
     private void BindItemContainer()

@@ -47,7 +47,7 @@ public partial class GuiFurniture : Furniture
         {
             GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
             {
-                var packedScene = GD.Load<PackedScene>(Path);
+                var packedScene = ResourceLoader.Load<PackedScene>(Path);
                 return NodeUtils.InstantiatePackedScene<SpellEditorUi>(packedScene);
             });
         }

@@ -153,10 +153,10 @@ public partial class HealthBarUi : HBoxContainer
     {
         base._Ready();
         NodeUtils.DeleteAllChild(this);
-        _heartEmpty = GD.Load<Texture2D>("res://sprites/ui/HeartEmpty.png");
-        _heartQuarter = GD.Load<Texture2D>("res://sprites/ui/HeartQuarter.png");
-        _heartHalf = GD.Load<Texture2D>("res://sprites/ui/HeartHalf.png");
-        _heartThreeFourths = GD.Load<Texture2D>("res://sprites/ui/HeartThreeFourths.png");
-        _heartFull = GD.Load<Texture2D>("res://sprites/ui/HeartFull.png");
+        _heartEmpty = ResourceLoader.Load<Texture2D>("res://sprites/ui/HeartEmpty.png");
+        _heartQuarter = ResourceLoader.Load<Texture2D>("res://sprites/ui/HeartQuarter.png");
+        _heartHalf = ResourceLoader.Load<Texture2D>("res://sprites/ui/HeartHalf.png");
+        _heartThreeFourths = ResourceLoader.Load<Texture2D>("res://sprites/ui/HeartThreeFourths.png");
+        _heartFull = ResourceLoader.Load<Texture2D>("res://sprites/ui/HeartFull.png");
     }
 }

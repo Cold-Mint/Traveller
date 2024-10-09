@@ -29,7 +29,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
-        _mainMenuScene = GD.Load<PackedScene>("res://scenes/mainMenu.tscn");
+        _mainMenuScene = ResourceLoader.Load<PackedScene>("res://scenes/mainMenu.tscn");
     }
 
     public override void InitializeUi()

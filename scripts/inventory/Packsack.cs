@@ -62,7 +62,7 @@ public partial class Packsack : PickAbleTemplate
         }
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
         {
-            var packedScene = GD.Load<PackedScene>(Path);
+            var packedScene = ResourceLoader.Load<PackedScene>(Path);
             return NodeUtils.InstantiatePackedScene<PacksackUi>(packedScene);
         });
     }

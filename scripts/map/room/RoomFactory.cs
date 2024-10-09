@@ -88,7 +88,7 @@ public static class RoomFactory
 
         var room = new Room
         {
-            RoomScene = GD.Load<PackedScene>(ResUtils.GetEditorResPath(resPath)),
+            RoomScene = ResourceLoader.Load<PackedScene>(ResUtils.GetEditorResPath(resPath)),
             EnterRoomEventHandlerId = enterRoomEventHandlerId,
             ExitRoomEventHandlerId = exitRoomEventHandlerId
         };

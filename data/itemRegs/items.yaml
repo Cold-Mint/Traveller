@@ -1,5 +1,5 @@
-#Register spells used by the projectile here.
-#在这里注册抛射体使用的法术。
+#Register items here.
+#在这里注册物品。
 #Note: The id must be the same as the item id in the scene. Otherwise, an ArgumentException will be thrown.
 #备注：id必须和场景内的物品id保持一致。否则会抛出ArgumentException。
 #After you declare the id of the item, add the corresponding localized text to the csv file in the locals' folder. For example, if the id is a corresponding name is item_a and the corresponding description is item_a_desc.

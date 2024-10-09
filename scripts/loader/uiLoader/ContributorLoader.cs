@@ -18,9 +18,9 @@ public partial class ContributorLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
-        _mainMenu = GD.Load<PackedScene>("res://scenes/mainMenu.tscn");
-        _packedScene = GD.Load<PackedScene>("res://prefab/ui/contributorGroup.tscn");
-        _contributorGroup = GD.Load<PackedScene>("res://prefab/ui/contributorGroup.tscn");
+        _mainMenu = ResourceLoader.Load<PackedScene>("res://scenes/mainMenu.tscn");
+        _packedScene = ResourceLoader.Load<PackedScene>("res://prefab/ui/contributorGroup.tscn");
+        _contributorGroup = ResourceLoader.Load<PackedScene>("res://prefab/ui/contributorGroup.tscn");
     }
 
     public override void InitializeUi()
