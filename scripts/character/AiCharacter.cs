@@ -106,10 +106,10 @@ public sealed partial class AiCharacter : CharacterTemplate
     private BubbleMarker? _bubbleMarker;
 
     /// <summary>
-    /// <para>The initial weapons scene</para>
-    /// <para>初始的武器场景</para>
+    /// <para>Initial weapon ID</para>
+    /// <para>初始的武器ID</para>
     /// </summary>
-    [Export] public string? InitWeaponRes;
+    [Export] public string? InitWeaponId;
 
     public override void _Ready()
     {
@@ -184,30 +184,26 @@ public sealed partial class AiCharacter : CharacterTemplate
         ProtectedItemContainer = universalItemContainer;
         //Add initial weapon
         //添加初始武器
-        AddInitialWeapon(InitWeaponRes);
+        AddInitialWeapon(InitWeaponId);
     }
 
     /// <summary>
     /// <para>Adds an initial weapon to the character</para>
     /// <para>为角色添加初始的武器</para>
     /// </summary>
-    private void AddInitialWeapon(string? initWeaponRes)
+    private void AddInitialWeapon(string? initWeaponId)
     {
-        if (string.IsNullOrEmpty(initWeaponRes))
+        if (string.IsNullOrEmpty(initWeaponId))
         {
             return;
         }
 
-        //Set the resource path of the initial weapon and try to create the object of the initial weapon.
-        //设置了初始武器的资源路径，尝试创建初始武器的对象。
-        var packedScene = ResourceLoader.Load<PackedScene>(initWeaponRes);
-        var weaponTemplate = NodeUtils.InstantiatePackedScene<WeaponTemplate>(packedScene);
-        if (weaponTemplate == null)
+        var item = ItemTypeManager.CreateItem(initWeaponId, this);
+        if (item is not WeaponTemplate weaponTemplate)
         {
             return;
         }
-
-        NodeUtils.CallDeferredAddChild(this, weaponTemplate);
+        NodeUtils.CallDeferredReparent(this, weaponTemplate);
         PickItem(weaponTemplate);
     }
 

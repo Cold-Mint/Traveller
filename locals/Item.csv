@@ -13,3 +13,5 @@ item_iron_axe,铁斧子,Iron axe,鉄の斧です
 item_iron_axe_desc,铁斧子,Iron axe,鉄の斧です
 item_curse,死灵诅咒法术,The curse of the Dead,死霊呪いの術
 item_curse_desc,杀死敌人后在生成死灵敌人。,Spawn Undead enemies after killing them.,敵を殺すと死霊敵が発生します。
+item_beginner_staff,初学者法杖,Beginner's staff,初心者用の杖です
+item_beginner_staff_desc,送给初来乍到的冒险家。,For new adventurers.,初心者の冒険家に贈ります。

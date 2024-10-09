@@ -19,3 +19,7 @@
   scene_path: res://prefab/weapons/IronAxe.tscn
   icon_path: res://sprites/weapon/StaffNecromancy_Icon.png
   max_stack_value: 1
+- id: beginner_staff
+  scene_path: res://prefab/weapons/BeginnerStaff.tscn
+  icon_path: res://sprites/weapon/BeginnerStaff_Icon.png
+  max_stack_value: 1
