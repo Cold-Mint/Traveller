@@ -21,6 +21,12 @@ public interface ISpell
     PackedScene? GetProjectile();
 
     /// <summary>
+    /// <para>LoadResource</para>
+    /// <para>加载资源</para>
+    /// </summary>
+    void LoadResource();
+
+    /// <summary>
     /// <para>Modify Weapon</para>
     /// <para>修改武器</para>
     /// </summary>
@@ -50,6 +56,6 @@ public interface ISpell
     ///<para>The velocity of the projectile</para>
     ///<para>抛射体的飞行速度</para>
     /// </param>
-    void ModifyProjectile(int index,Projectile projectile, ref Vector2 velocity);
+    void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity);
 
 }

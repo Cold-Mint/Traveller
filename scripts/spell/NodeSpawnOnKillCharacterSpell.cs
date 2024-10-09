@@ -13,10 +13,11 @@ public partial class NodeSpawnOnKillCharacterSpell : SpellPickAble
     [Export]
     private string? _packedScenePath;
     private NodeSpawnOnKillCharacterDecorator? _nodeSpawnOnKillCharacterDecorator;
-    public override void _Ready()
+
+    public override void LoadResource()
     {
-        base._Ready();
-        if (!string.IsNullOrEmpty(_packedScenePath))
+        base.LoadResource();
+        if (_nodeSpawnOnKillCharacterDecorator == null && !string.IsNullOrEmpty(_packedScenePath))
         {
             _nodeSpawnOnKillCharacterDecorator = new NodeSpawnOnKillCharacterDecorator
             {

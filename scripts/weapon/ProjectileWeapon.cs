@@ -140,15 +140,17 @@ public partial class ProjectileWeapon : WeaponTemplate
                     continue;
                 }
                 var item = ItemTypeManager.CreateItem(spellId, this);
-                if (item == null)
+                if (item is not ISpell spell)
                 {
                     continue;
                 }
+                spell.LoadResource();
                 if (SelfItemContainer.CanAddItem(item))
                 {
                     SelfItemContainer.AddItem(item);
                 }
             }
+            UpdateSpellCache();
         }
     }
 

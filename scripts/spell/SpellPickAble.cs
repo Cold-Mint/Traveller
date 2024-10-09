@@ -29,13 +29,10 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
     }
 
     private PackedScene? _projectileScene;
-    public override void _Ready()
+    public sealed override void _Ready()
     {
         base._Ready();
-        if (!string.IsNullOrEmpty(_projectilePath))
-        {
-            _projectileScene = ResourceLoader.Load<PackedScene>(_projectilePath);
-        }
+        LoadResource();
     }
 
     public override int ItemType
@@ -47,6 +44,15 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
     {
         return _projectileScene;
     }
+
+    public virtual void LoadResource()
+    {
+        if (_projectileScene == null && !string.IsNullOrEmpty(_projectilePath))
+        {
+            _projectileScene = ResourceLoader.Load<PackedScene>(_projectilePath);
+        }
+    }
+    
 
     public virtual void ModifyWeapon(ProjectileWeapon projectileWeapon)
     {
