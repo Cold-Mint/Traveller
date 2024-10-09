@@ -24,10 +24,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c61vr"]
-radius = 153.0
+radius = 220.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fowd5"]
-radius = 172.29
+radius = 300.0
 
 [node name="BlackenedAboriginalWarrior" type="CharacterBody2D"]
 collision_layer = 64

@@ -14,11 +14,8 @@ public class PatrolStateMachine : StateMachineTemplate
         {
             Points =
             [
-                new Godot.Vector2(100, 0),
-                new Godot.Vector2(-100, 0),
-                new Godot.Vector2(50, 0),
-                new Godot.Vector2(-50, 0),
-                new Godot.Vector2(0, 0)
+                new Godot.Vector2(Config.CellSize * 3, 0),
+                new Godot.Vector2(-Config.CellSize * 3, 0),
             ]
         };
         RegisterProcessor(patrolStateProcessor);
@@ -28,5 +25,7 @@ public class PatrolStateMachine : StateMachineTemplate
         RegisterProcessor(lookForWeaponProcessor);
         var fleeProcessor = new FleeProcessor();
         RegisterProcessor(fleeProcessor);
+        var attackStateProcessor = new AttackStateProcessor();
+        RegisterProcessor(attackStateProcessor);
     }
 }

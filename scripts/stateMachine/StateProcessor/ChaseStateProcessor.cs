@@ -40,10 +40,7 @@ public class ChaseStateProcessor : StateProcessorTemplate
             }
             else
             {
-                //TODO:转到攻击状态。
-                aiCharacter.HideQuery();
-                aiCharacter.DispladyPlaint();
-                aiCharacter.UseItem(enemy.GlobalPosition);
+                context.CurrentState = State.Attack;
             }
 
             //Set the position of the enemy entering the range to the position we are going to.
