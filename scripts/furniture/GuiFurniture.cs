@@ -38,7 +38,6 @@ public partial class GuiFurniture : Furniture
     public override void _Ready()
     {
         base._Ready();
-        InputPickable = true;
         _operateArea2D = GetNode<Area2D>("OperateArea2D");
         _operateArea2D.BodyEntered += OnBodyEntered;
         _operateArea2D.BodyExited += OnBodyExited;
@@ -69,11 +68,13 @@ public partial class GuiFurniture : Furniture
 
     public override void _MouseEnter()
     {
+        base._MouseEnter();
         _hasMouseOver = true;
     }
 
     public override void _MouseExit()
     {
+        base._MouseExit();
         _hasMouseOver = false;
     }
 

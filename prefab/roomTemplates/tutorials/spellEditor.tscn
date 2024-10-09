@@ -103,9 +103,6 @@ position = Vector2(715, 200)
 [node name="WoodenBox3" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 162)
 
-[node name="WoodenBox4" parent="." instance=ExtResource("7_jybe6")]
-position = Vector2(714, 122)
-
 [node name="AutoSpawn" type="Node2D" parent="."]
 
 [node name="necromancy" type="Marker2D" parent="AutoSpawn"]

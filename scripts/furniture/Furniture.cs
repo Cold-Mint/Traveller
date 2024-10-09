@@ -1,4 +1,5 @@
 using ColdMint.scripts.damage;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.furniture;
@@ -11,6 +12,41 @@ public partial class Furniture : RigidBody2D
 {
     [Export] private int _initialDurability;
     [Export] private int _maxDurability;
+    [Export]
+    private string? _furnitureName;
+
+    private Label? _tipLabel;
+
+    public override void _MouseEnter()
+    {
+        if (_tipLabel == null || string.IsNullOrEmpty(_furnitureName))
+        {
+            return;
+        }
+        var translation = TranslationServerUtils.Translate(_furnitureName);
+        if (string.IsNullOrEmpty(translation))
+        {
+            return;
+        }
+        _tipLabel.Visible = true;
+        _tipLabel.Text = translation;
+        //Vertical Centering Tip
+        //垂直居中提示
+        var oldPosition = _tipLabel.Position;
+        oldPosition.X = -_tipLabel.Size.X / 2;
+        _tipLabel.Rotation = -Rotation;
+        _tipLabel.Position = oldPosition;
+    }
+
+    public override void _MouseExit()
+    {
+        if (_tipLabel == null)
+        {
+            return;
+        }
+
+        _tipLabel.Visible = false;
+    }
 
     /// <summary>
     /// <para></para>
@@ -29,7 +65,8 @@ public partial class Furniture : RigidBody2D
         {
             _initialDurability = _maxDurability;
         }
-
+        _tipLabel = GetNodeOrNull<Label>("TipLabel");
+        InputPickable = true;
         _durability = _initialDurability;
         SetCollisionLayerValue(Config.LayerNumber.Furniture, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);

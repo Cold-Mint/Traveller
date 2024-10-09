@@ -202,6 +202,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
+        SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
     }
 
     private void OnBodyExited(Node node)
