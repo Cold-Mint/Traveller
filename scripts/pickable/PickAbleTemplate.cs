@@ -86,6 +86,12 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     private Area2D? _damageArea2D;
 
     /// <summary>
+    /// <para>Damage collision shape</para>
+    /// <para>伤害的碰撞形状</para>
+    /// </summary>
+    private CollisionShape2D? _damageAreaCollisionShape2D;
+
+    /// <summary>
     /// <para>Whether the item is currently picked up</para>
     /// <para>当前物品是否被捡起了</para>
     /// </summary>
@@ -192,17 +198,38 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     }
 
+    private CollisionShape2D? _collisionShape2D;
+
+
+    /// <summary>
+    /// <para>Whether the resource has been loaded</para>
+    /// <para>是否已加载过资源了</para>
+    /// </summary>
+    private bool _loadedResource;
+
     public override void _Ready()
     {
+        LoadingResource();
+    }
+
+    public void LoadingResource()
+    {
+        if (_loadedResource)
+        {
+            return;
+        }
         _damageArea2D = GetNode<Area2D>("DamageArea2D");
+        _damageAreaCollisionShape2D = _damageArea2D.GetNode<CollisionShape2D>("CollisionShape2D");
         _damageArea2D.BodyEntered += OnBodyEnter;
         _damageArea2D.BodyExited += OnBodyExited;
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
+        _collisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
         InputPickable = true;
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
+        _loadedResource = true;
     }
 
     private void OnBodyExited(Node node)
@@ -338,6 +365,42 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="facingLeft"></param>
     public void Flip(bool facingLeft)
     {
+    }
+
+    /// <summary>
+    /// <para>Collision forbidden shape</para>
+    /// <para>禁用碰撞形状</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Prevents pickables from blocking projectiles.</para>
+    ///<para>防止可拾捡物阻挡抛射体。</para>
+    /// </remarks>
+    public void DisabledCollisionShape2D()
+    {
+        if (_collisionShape2D != null)
+        {
+            _collisionShape2D.Disabled = true;
+        }
+        if (_damageAreaCollisionShape2D != null)
+        {
+            _damageAreaCollisionShape2D.Disabled = true;
+        }
+    }
+
+    /// <summary>
+    /// <para>EnabledCollisionShape2D</para>
+    /// <para>启用碰撞形状</para>
+    /// </summary>
+    public void EnabledCollisionShape2D()
+    {
+        if (_collisionShape2D != null)
+        {
+            _collisionShape2D.Disabled = false;
+        }
+        if (_damageAreaCollisionShape2D != null)
+        {
+            _damageAreaCollisionShape2D.Disabled = false;
+        }
     }
 
     /// <summary>

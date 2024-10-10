@@ -71,6 +71,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected const float JumpVelocity = -240;
 
+    //How long it takes for an item to recover from a collision with the ground and platform after being thrown (in seconds)
     //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
     private readonly double _itemCollisionRecoveryTime = 0.045f;
 
@@ -406,8 +407,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return false;
         }
-
-
+        
         //The item store is marked null, or the item container is null.
         //物品存放的标记为null，或者物品容器为null。
         if (ItemMarker2D == null || ItemContainer == null)
@@ -437,14 +437,13 @@ public partial class CharacterTemplate : CharacterBody2D
         //您可以在这里补充更多类型对象的捡起状态处理。
         if (pickAbleItemNode2D is PickAbleTemplate pickAbleTemplate)
         {
+            pickAbleTemplate.LoadingResource();
             pickAbleTemplate.Owner = this;
             pickAbleTemplate.Picked = true;
-            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Floor, false);
-            pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Wall, false);
-            LogCat.Log("item_pickup_disables_collision_damage", LogCat.LogLabel.ContactInjury);
+            pickAbleTemplate.Freeze = true;
+            pickAbleTemplate.DisabledCollisionShape2D();
             pickAbleTemplate.EnableContactInjury = false;
-            pickAbleTemplate.Sleeping = true;
+            LogCat.Log("item_pickup_disables_collision_damage", LogCat.LogLabel.ContactInjury);
         }
 
         if (pickAbleItemNode2D is ProjectileWeapon projectileWeapon)
@@ -805,10 +804,14 @@ public partial class CharacterTemplate : CharacterBody2D
                 {
                     return;
                 }
-
-                pickAbleTemplate.Sleeping = false;
+                pickAbleTemplate.LoadingResource();
                 pickAbleTemplate.Owner = this;
                 pickAbleTemplate.Picked = false;
+                //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
+                //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
+                pickAbleTemplate.LinearVelocity = Vector2.Zero;
+                pickAbleTemplate.EnabledCollisionShape2D();
+                pickAbleTemplate.Freeze = false;
                 var timer = new Timer();
                 pickAbleTemplate.AddChild(timer);
                 timer.WaitTime = _itemCollisionRecoveryTime;
@@ -820,14 +823,9 @@ public partial class CharacterTemplate : CharacterBody2D
                     //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
                     pickAbleTemplate.EnableContactInjury = true;
                     LogCat.Log("item_thrown_restore_collision_damage", LogCat.LogLabel.ContactInjury);
-                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Floor, true);
-                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Wall, true);
-                    pickAbleTemplate.SetCollisionMaskValue(Config.LayerNumber.Platform, true);
                     timer.QueueFree();
                 };
-                //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
-                //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
-                pickAbleTemplate.LinearVelocity = Vector2.Zero;
+                
                 break;
         }
 

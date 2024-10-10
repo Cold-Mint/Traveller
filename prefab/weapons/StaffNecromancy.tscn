@@ -23,6 +23,7 @@ _recoilStrength = 5
 UniqueIcon = ExtResource("3_31iau")
 
 [node name="DamageArea2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 8
 collision_mask = 102
 
