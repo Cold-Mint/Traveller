@@ -30,6 +30,28 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
         _quantityLabel.Hide();
     }
 
+    public override void _EnterTree()
+    {
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
+    }
+
+    public override void _ExitTree()
+    {
+        MouseEntered -= OnMouseEntered;
+        MouseExited -= OnMouseExited;
+    }
+
+    private void OnMouseExited()
+    {
+        GameSceneDepend.IsMouseOverItemSlotNode = false;
+    }
+
+    private void OnMouseEntered()
+    {
+        GameSceneDepend.IsMouseOverItemSlotNode = true;
+    }
+
     public override Variant _GetDragData(Vector2 atPosition)
     {
         switch (Item)

@@ -31,6 +31,8 @@ public partial class Player : CharacterTemplate
     //射线是否与平台碰撞
     private bool _collidingWithPlatform;
 
+    private bool _canUseItem;
+
     //How long does it take for the character to recover from a collision with the platform after jumping off the platform (in seconds)
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private double _platformCollisionRecoveryTime = 0.2f;
@@ -124,11 +126,19 @@ public partial class Player : CharacterTemplate
         var axis = Input.GetAxis("ui_left", "ui_right");
         velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
 
+
+        if (Input.IsActionJustPressed("use_item"))
+        {
+            _canUseItem = !GameSceneDepend.IsMouseOverFurnitureGui && !GameSceneDepend.IsMouseOverItemSlotNode;
+        }
         //Use items
         //使用物品
         if (Input.IsActionPressed("use_item"))
         {
-            UseItem(GetGlobalMousePosition());
+            if (_canUseItem)
+            {
+                UseItem(GetGlobalMousePosition());
+            }
         }
         //Pick up an item
         //捡起物品
@@ -206,7 +216,7 @@ public partial class Player : CharacterTemplate
             CurrentItem = null;
         }
     }
-    
+
     /// <summary>
     /// <para>当玩家手动抛出物品时，施加到物品上的速度值</para>
     /// </summary>
@@ -312,7 +322,7 @@ public partial class Player : CharacterTemplate
 
         EventBus.GameOverEvent.Invoke(gameOverEvent);
     }
-    
+
 
     protected override void OnHit(DamageTemplate damageTemplate)
     {

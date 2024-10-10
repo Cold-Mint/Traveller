@@ -113,4 +113,18 @@ public static class GameSceneDepend
     ///<para>动态生成的Ui对象将放置在此节点下</para>
     /// </remarks>
     public static UiGroup? DynamicUiGroup  { get; set; }
+
+
+    /// <summary>
+    /// <para>Whether the player's mouse is hovering over GUI furniture</para>
+    /// <para>玩家的鼠标是否悬浮在GUI家具上</para>
+    /// </summary>
+    public static bool IsMouseOverFurnitureGui;
+
+    
+    /// <summary>
+    /// <para>Whether the mouse is suspended over the item slot</para>
+    /// <para>鼠标是否悬浮在物品槽上</para>
+    /// </summary>
+    public static bool IsMouseOverItemSlotNode;
 }

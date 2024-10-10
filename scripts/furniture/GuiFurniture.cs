@@ -70,12 +70,14 @@ public partial class GuiFurniture : Furniture
     {
         base._MouseEnter();
         _hasMouseOver = true;
+        GameSceneDepend.IsMouseOverFurnitureGui = true;
     }
 
     public override void _MouseExit()
     {
         base._MouseExit();
         _hasMouseOver = false;
+        GameSceneDepend.IsMouseOverFurnitureGui = false;
     }
 
     private void OnBodyEntered(Node node)
