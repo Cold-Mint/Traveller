@@ -169,7 +169,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             {
                 NewItem = item,
                 NewIndex = nextAvailableIndex,
-                Type = Config.ItemDataChangeEventType.QuantityAdded
+                Type = Config.ItemDataChangeEventType.Add
             });
             return item.Quantity;
         }
@@ -279,6 +279,18 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             OldItem = oldItem,
             Type = Config.ItemDataChangeEventType.Replace
         });
+        if (SupportSelect && index == _selectIndex)
+        {
+            oldItem?.HideSelf();
+            item.ShowSelf();
+            SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
+            {
+                NewIndex = index,
+                OldIndex = index,
+                NewItem = item,
+                OldItem = oldItem
+            });
+        }
         return true;
     }
 
