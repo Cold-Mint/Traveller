@@ -22,19 +22,19 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_platformDetectionRayCast2DList")]
 light_mask = 2
 collision_layer = 4
 collision_mask = 162
 platform_floor_layers = 4294967042
 platform_wall_layers = 128
 script = ExtResource("1_1dlls")
+_platformDetectionRayCast2DList = [NodePath("PlatformDetectionRayCast1"), NodePath("PlatformDetectionRayCast2"), NodePath("PlatformDetectionRayCast3")]
 MaxHp = 32
 CampId = "Default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_bb8wt")
-debug_color = Color(0.886275, 0, 0.803922, 0.419608)
 
 [node name="Area2DPickingArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -50,7 +50,15 @@ sprite_frames = SubResource("SpriteFrames_qumby")
 width = 5.0
 default_color = Color(0.858824, 0.65098, 0.682353, 1)
 
-[node name="PlatformDetectionRayCast" type="RayCast2D" parent="."]
+[node name="PlatformDetectionRayCast1" type="RayCast2D" parent="."]
+collision_mask = 32
+
+[node name="PlatformDetectionRayCast2" type="RayCast2D" parent="."]
+position = Vector2(20, 0)
+collision_mask = 32
+
+[node name="PlatformDetectionRayCast3" type="RayCast2D" parent="."]
+position = Vector2(-20, 0)
 collision_mask = 32
 
 [node name="ItemMarker2D" type="Marker2D" parent="."]

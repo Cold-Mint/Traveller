@@ -23,7 +23,7 @@ public partial class Player : CharacterTemplate
     private Line2D? _parabola;
 
     //用于检测玩家是否站在平台上的射线
-    private RayCast2D? _platformDetectionRayCast2D;
+    [Export] private RayCast2D[]? _platformDetectionRayCast2DList;
 
     //抛出物品的飞行速度
     private float _throwingVelocity = Config.CellSize * 13;
@@ -41,11 +41,15 @@ public partial class Player : CharacterTemplate
     public override void _Ready()
     {
         base._Ready();
+        if (_platformDetectionRayCast2DList == null || _platformDetectionRayCast2DList.Length == 0)
+        {
+            LogCat.LogError("no_platform_detection_raycast_found");
+            return;
+        }
         CharacterName = TranslationServerUtils.Translate("default_player_name");
         LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, ReadOnlyCharacterName,
             GlobalPosition);
         _parabola = GetNode<Line2D>("Parabola");
-        _platformDetectionRayCast2D = GetNode<RayCast2D>("PlatformDetectionRayCast");
         var healthBarUi = GameSceneDepend.HealthBarUi;
         if (healthBarUi != null)
         {
@@ -107,15 +111,27 @@ public partial class Player : CharacterTemplate
     {
     }
 
-    protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    /// <summary>
+    /// <para>UpdateCollidingWithPlatform</para>
+    /// <para>更新与平台发生碰撞的状态</para>
+    /// </summary>
+    private void UpdateCollidingWithPlatform()
     {
         //When the collision state between the platform detection ray and the platform changes
         //在平台检测射线与平台碰撞状态改变时
-        if (_platformDetectionRayCast2D != null && _platformDetectionRayCast2D.IsColliding() != _collidingWithPlatform)
+        if (_platformDetectionRayCast2DList is not { Length: > 0 }) return;
+        foreach (var rayCast2D in _platformDetectionRayCast2DList)
         {
-            _collidingWithPlatform = _platformDetectionRayCast2D.IsColliding();
+            if (!rayCast2D.IsColliding()) continue;
+            _collidingWithPlatform = true;
+            return;
         }
+        _collidingWithPlatform = false;
+    }
 
+    protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    {
+        UpdateCollidingWithPlatform();
         //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度
         if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
