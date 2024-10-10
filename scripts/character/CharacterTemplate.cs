@@ -721,7 +721,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
-        var len = ItemContainer.GetUsedCapacity();
+        var len = ItemContainer.GetTotalCapacity();
         if (len == 0)
         {
             return;
