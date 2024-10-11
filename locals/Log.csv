@@ -35,9 +35,6 @@ log_register_item,注册物品类型{0}结果为{1},Registered item type {0}; re
 log_error_when_open_item_regs_dir,尝试打开物品信息目录{0}时发生错误，错误代码：{1},"An error occurred when trying to open the item information directory {0}, error code: {1}",アイテム情報ディレクトリ{0}を開こうとしてエラーが発生しました、エラーコード：{1}
 log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched parameter: type {0} and value {1},パラメータの不一致：型{0}と値{1}。
 log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です
-log_item_has_no_owner,物品没有所有者,Item has no owner,アイテムに所有者がいません
-log_no_damage_between_camps,没有阵营之间的伤害,No damage between camps,陣営間のダメージはありません
-log_owner_of_the_item_is_not_character,物品的所有者不是角色,The owner of the item is not a character,アイテムの所有者はキャラクターではありません
 log_try_to_open_state_machine_that_is_on,尝试打开处于运行状态的状态机。,Try to open a state machine that is on.,実行中のステートマシンを開こうとしています。
 log_state_machine_does_not_specify_context,状态机没有指定上下文。,The state machine does not specify a context.,ステートマシンはコンテキストを指定していません。
 log_state_processor_already_registered,状态处理器已经注册。,State processor already registered.,ステートプロセッサは既に登録されています。

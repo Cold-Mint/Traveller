@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://dodxp4mm0emj3"]
+[gd_scene load_steps=12 format=4 uid="uid://dodxp4mm0emj3"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_k54gk"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="3_d6t7n"]
@@ -6,9 +6,6 @@
 [ext_resource type="Script" path="res://scripts/map/ItemSpawn.cs" id="4_fh50l"]
 [ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_ll4ng"]
 [ext_resource type="Texture2D" uid="uid://kgodvs3ilxbs" path="res://sprites/tutorials/tripleShotSpell.png" id="6_2qcf3"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(755, 340)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -22,13 +19,13 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(33, 34, 32, 256, 0, 259, 0, 320, 416, 319, 415, 166, 447, 162, 448, 321, 764, 319, 766, 259, 738, 259, 736, 36, 609, 35, 611, 255, 573, 256, 575, 33)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
+size = Vector2(755, 340)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o4dgl"]
+size = Vector2(706, 289)
+
 [node name="InitialRoom" type="Node2D"]
-
-[node name="RoomArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(383.5, 176)
-shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
 
@@ -124,6 +121,18 @@ position = Vector2(473, 285)
 [node name="TripleShotSpell" type="Sprite2D" parent="."]
 position = Vector2(637, 85)
 texture = ExtResource("6_2qcf3")
+
+[node name="RoomArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
+position = Vector2(383.5, 176)
+shape = SubResource("RectangleShape2D_kiih8")
+
+[node name="SpawnArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
+position = Vector2(385, 177.5)
+shape = SubResource("RectangleShape2D_o4dgl")
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 

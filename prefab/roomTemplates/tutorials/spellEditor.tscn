@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=12 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="1_q04qt"]
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_5bnvh"]
@@ -7,9 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_0kep0"]
 [ext_resource type="Texture2D" uid="uid://cdjmfqp854utu" path="res://sprites/tutorials/spellEditor.png" id="6_dbg76"]
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(758, 342)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -20,13 +17,13 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Arr
 outlines = Array[PackedVector2Array]([PackedVector2Array(36, 32, 731, 32, 733, 258, 766, 257, 767, 316, 35, 317)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
+size = Vector2(758, 342)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u54ac"]
+size = Vector2(658, 284)
+
 [node name="InitialRoom3" type="Node2D"]
-
-[node name="RoomArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(383, 175)
-shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
 
@@ -114,3 +111,15 @@ _itemIdList = PackedStringArray("necromancy")
 position = Vector2(100, 250)
 script = ExtResource("4_6ihp7")
 _itemIdList = PackedStringArray("beginner_staff")
+
+[node name="RoomArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
+position = Vector2(383, 175)
+shape = SubResource("RectangleShape2D_kiih8")
+
+[node name="SpawnArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
+position = Vector2(405, 178)
+shape = SubResource("RectangleShape2D_u54ac")

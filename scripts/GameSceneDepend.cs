@@ -17,7 +17,7 @@ public static class GameSceneDepend
     /// <para>迷你地图</para>
     /// </summary>
     public static MiniMap? MiniMap { get; set; }
-    
+
     /// <summary>
     /// <para>MiniMapAnimationPlayer</para>
     /// <para>迷你地图的动画节点</para>
@@ -54,7 +54,7 @@ public static class GameSceneDepend
     /// <para>抛射体容器</para>
     /// </summary>
     public static Node2D? ProjectileContainer { get; set; }
-    
+
     /// <summary>
     /// <para>SpellContainer</para>
     /// <para>法术容器</para>
@@ -78,7 +78,7 @@ public static class GameSceneDepend
     /// <para>玩家容器</para>
     /// </summary>
     public static Node2D? PlayerContainer { get; set; }
-    
+
     /// <summary>
     /// <para>PickAbleContainer</para>
     /// <para>可拾捡物容器</para>
@@ -103,7 +103,7 @@ public static class GameSceneDepend
     /// <para>健康条UI</para>
     /// </summary>
     public static HealthBarUi? HealthBarUi { get; set; }
-    
+
     /// <summary>
     /// <para>DynamicUiGroup</para>
     /// <para>动态生成的Ui组</para>
@@ -112,7 +112,7 @@ public static class GameSceneDepend
     ///<para>Dynamically generated Ui objects will be placed under this node</para>
     ///<para>动态生成的Ui对象将放置在此节点下</para>
     /// </remarks>
-    public static UiGroup? DynamicUiGroup  { get; set; }
+    public static UiGroup? DynamicUiGroup { get; set; }
 
 
     /// <summary>
@@ -121,10 +121,45 @@ public static class GameSceneDepend
     /// </summary>
     public static bool IsMouseOverFurnitureGui;
 
-    
+
     /// <summary>
     /// <para>Whether the mouse is suspended over the item slot</para>
     /// <para>鼠标是否悬浮在物品槽上</para>
     /// </summary>
     public static bool IsMouseOverItemSlotNode;
+
+
+    /// <summary>
+    /// <para>ShowMiniMap</para>
+    /// <para>显示迷你地图</para>
+    /// </summary>
+    public static void ShowMiniMap()
+    {
+        if (MiniMap == null)
+        {
+            return;
+        }
+        if (MiniMap.Visible)
+        {
+            return;
+        }
+        MiniMapAnimationPlayer?.Play(name: "show");
+    }
+    
+
+    /// <summary>
+    /// <para>HideMiniMap</para>
+    /// <para>隐藏迷你地图</para>
+    /// </summary>
+    public static void HideMiniMap()
+    {
+        if (MiniMap == null)
+        {
+            return;
+        }
+        if (MiniMap.Visible)
+        {
+            MiniMapAnimationPlayer?.Play(name: "hide");
+        }
+    }
 }

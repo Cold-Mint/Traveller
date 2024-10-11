@@ -36,8 +36,10 @@ script = ExtResource("1_ubaid")
 InitWeaponId = "staff_necromancy"
 CharacterName = "character_evil_crow"
 CanMutateAfterDeath = false
+_initialHp = null
 MaxHp = 50
 CampId = "Mazoku"
+LootListId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 10)

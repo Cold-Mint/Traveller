@@ -436,7 +436,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             //Ignore yourself when detecting room overlap
             //检测房间重叠时应忽略自身
-            _selfArea2D = newRoom.Area2D;
+            _selfArea2D = newRoom.RoomArea2D;
             _measuringArea2D.Position = result;
             _measuringCollisionShape2D.Shape = newRoom.RoomCollisionShape2D.Shape;
             //Calculate the offset of the shape.

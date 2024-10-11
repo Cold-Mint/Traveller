@@ -12,6 +12,10 @@ collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_cnhod")
+NumberOfProjectiles = null
+RandomAngle = null
+UnitRadian = null
+_projectilePath = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)

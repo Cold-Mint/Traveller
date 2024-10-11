@@ -1,11 +1,8 @@
-[gd_scene load_steps=9 format=4 uid="uid://c57cc1tyreybb"]
+[gd_scene load_steps=10 format=4 uid="uid://c57cc1tyreybb"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="2_1ctsj"]
 [ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="3_u5h84"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(728, 509)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o85u0"]
 size = Vector2(20, 48)
@@ -22,14 +19,13 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32
 outlines = Array[PackedVector2Array]([PackedVector2Array(35, 39, 36, 415, 0, 417, 3, 481, 733, 477, 729, 415, 706, 415, 701, 93, 734, 89, 731, 34)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
+size = Vector2(728, 509)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kfmgh"]
+size = Vector2(509, 407)
+
 [node name="InitialRoom2" type="Node2D"]
-
-[node name="RoomArea" type="Area2D" parent="."]
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(365, 255.5)
-shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="RoomSlotList" type="Node2D" parent="."]
 
@@ -94,3 +90,16 @@ _resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarri
 position = Vector2(545, 438)
 script = ExtResource("3_u5h84")
 _resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "")
+
+[node name="RoomArea" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
+position = Vector2(365, 255.5)
+shape = SubResource("RectangleShape2D_kiih8")
+
+[node name="SpawnArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
+position = Vector2(359.5, 246.5)
+shape = SubResource("RectangleShape2D_kfmgh")
