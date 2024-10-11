@@ -37,7 +37,6 @@ log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched pa
 log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です
 log_item_has_no_owner,物品没有所有者,Item has no owner,アイテムに所有者がいません
 log_no_damage_between_camps,没有阵营之间的伤害,No damage between camps,陣営間のダメージはありません
-log_contact_damage_disabled_during_collision,在碰撞期间禁用接触伤害,Contact damage disabled during collision,衝突中に接触ダメージが無効になります
 log_owner_of_the_item_is_not_character,物品的所有者不是角色,The owner of the item is not a character,アイテムの所有者はキャラクターではありません
 log_try_to_open_state_machine_that_is_on,尝试打开处于运行状态的状态机。,Try to open a state machine that is on.,実行中のステートマシンを開こうとしています。
 log_state_machine_does_not_specify_context,状态机没有指定上下文。,The state machine does not specify a context.,ステートマシンはコンテキストを指定していません。
@@ -103,8 +102,6 @@ log_dll_does_not_register_lifecycle_processor,位于{0}的dll文件，未注册�
 log_mod_lifecycle_handler_not_implement_interface,位于{0}的dll文件，生命周期处理器未实现IModLifecycleHandler接口。,"The DLL file located at {0}, the lifecycle processor does not implement the IModLifecycleHandler interface.",{0}にあるDLLファイル、ライフサイクルプロセッサはIModLifecycleHandlerインターフェースを実装していません。
 log_dll_no_parameterless_constructor,位于{0}的dll文件，没有无参构造函数。,"The DLL file located at {0} does not have a parameterless constructor.",{0}にあるDLLファイルにはパラメータのないコンストラクタがありません。
 log_dll_type_length,位于{0}的dll文件内，共包含{1}个类型。,"The DLL file located at {0} contains a total of {1} types.",{0}にあるDLLファイルには合計{1}個のタイプが含まれています。
-log_item_pickup_disables_collision_damage,物品捡起禁用碰撞伤害。,Item pickup disables collision damage.,アイテムのピックアップが衝突によるダメージを無効にする
-log_item_thrown_restore_collision_damage,物品扔出恢复碰撞伤害。,Item Throw restores collision damage.,アイテム投げは衝突ダメージを回復する。
 log_after_no_longer_in_contact_with_any_tiles,不再与任何瓦片接触后，可以造成伤害。,"After no longer coming into contact with any tiles, it can cause damage",タイルと接触しなくなった後、損傷を引き起こす可能性があります。
 log_contact_with_tiles_disables_damage,与瓦片接触禁用伤害。,"Disabling damage on contact with tiles",タイルとの接触によるダメージの無効化
 log_hide_all_node,隐藏{0}个节点。,Hide {0} nodes.,{0}ノードを非表示にします。

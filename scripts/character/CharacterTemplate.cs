@@ -70,11 +70,6 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     protected const float JumpVelocity = -240;
-
-    //How long it takes for an item to recover from a collision with the ground and platform after being thrown (in seconds)
-    //物品被扔出后多长时间恢复与地面和平台的碰撞（单位：秒）
-    private readonly double _itemCollisionRecoveryTime = 0.045f;
-
     public string? ReadOnlyCharacterName => TranslationServerUtils.Translate(CharacterName);
 
     [Export] public string? CharacterName;
@@ -442,8 +437,6 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.Freeze = true;
             pickAbleTemplate.DisabledCollisionShape2D();
-            pickAbleTemplate.EnableContactInjury = false;
-            LogCat.Log("item_pickup_disables_collision_damage", LogCat.LogLabel.ContactInjury);
         }
 
         if (pickAbleItemNode2D is ProjectileWeapon projectileWeapon)
@@ -812,20 +805,6 @@ public partial class CharacterTemplate : CharacterBody2D
                 pickAbleTemplate.LinearVelocity = Vector2.Zero;
                 pickAbleTemplate.EnabledCollisionShape2D();
                 pickAbleTemplate.Freeze = false;
-                var timer = new Timer();
-                pickAbleTemplate.AddChild(timer);
-                timer.WaitTime = _itemCollisionRecoveryTime;
-                timer.Autostart = true;
-                timer.OneShot = true;
-                timer.Timeout += () =>
-                {
-                    //We cannot immediately resume the physical collision when the weapon is discharged, which will cause the weapon to collide with the ground and platform earlier, preventing the weapon from flying.
-                    //仍出武器时，我们不能立即恢复物理碰撞，立即恢复会导致武器更早的与地面和平台碰撞，阻止武器的飞行。
-                    pickAbleTemplate.EnableContactInjury = true;
-                    LogCat.Log("item_thrown_restore_collision_damage", LogCat.LogLabel.ContactInjury);
-                    timer.QueueFree();
-                };
-                
                 break;
         }
 

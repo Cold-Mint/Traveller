@@ -53,15 +53,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// </summary>
     public new Node2D? Owner { get; set; }
 
-    /// <summary>
-    /// <para>Enabled contact injury</para>
-    /// <para>启用接触伤害</para>
-    /// </summary>
-    public virtual bool EnableContactInjury { get; set; }
-
-    [Export] private int _minContactInjury = 1;
-    [Export] private int _maxContactInjury = 2;
-
     public string Description
     {
         get
@@ -72,24 +63,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     }
 
     public int Quantity { get; set; } = 1;
-
-    /// <summary>
-    /// <para>The number of tile maps that come into contact with this item</para>
-    /// <para>与此物品接触的瓦片地图数量</para>
-    /// </summary>
-    private int _tileMapNumber;
-
-    /// <summary>
-    /// <para>This area represents the collision range of the weapon, and when other nodes enter this area, they will deal damage.</para>
-    /// <para>这个区域表示武器的碰撞范围，当其他节点进入此区域时，会造成伤害。</para>
-    /// </summary>
-    private Area2D? _damageArea2D;
-
-    /// <summary>
-    /// <para>Damage collision shape</para>
-    /// <para>伤害的碰撞形状</para>
-    /// </summary>
-    private CollisionShape2D? _damageAreaCollisionShape2D;
 
     /// <summary>
     /// <para>Whether the item is currently picked up</para>
@@ -218,10 +191,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
-        _damageArea2D = GetNode<Area2D>("DamageArea2D");
-        _damageAreaCollisionShape2D = _damageArea2D.GetNode<CollisionShape2D>("CollisionShape2D");
-        _damageArea2D.BodyEntered += OnBodyEnter;
-        _damageArea2D.BodyExited += OnBodyExited;
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _collisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
         InputPickable = true;
@@ -231,101 +200,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         _loadedResource = true;
     }
-
-    private void OnBodyExited(Node node)
-    {
-        if (Picked)
-        {
-            return;
-        }
-
-        //If it leaves the ground or walls.
-        //如果离开了地面或墙壁。
-        if (node is TileMapLayer)
-        {
-            _tileMapNumber--;
-            if (_tileMapNumber == 0)
-            {
-                //No longer in contact with any shingles can cause injury
-                //不再与任何瓦片接触后，可以造成伤害
-                EnableContactInjury = true;
-                LogCat.Log("after_no_longer_in_contact_with_any_tiles", LogCat.LogLabel.ContactInjury);
-                SetCollisionMaskValue(Config.LayerNumber.Player, false);
-            }
-        }
-    }
-
-    /// <summary>
-    /// <para>Use objects to smash enemies</para>
-    /// <para>使用物品砸敌人</para>
-    /// </summary>
-    /// <param name="node"></param>
-    private void OnBodyEnter(Node node)
-    {
-        if (Picked)
-        {
-            return;
-        }
-
-        if (node is TileMapLayer)
-        {
-            _tileMapNumber++;
-            EnableContactInjury = false;
-            LogCat.Log("contact_with_tiles_disables_damage", LogCat.LogLabel.ContactInjury);
-            //Items can be pushed by the player when they are on the ground
-            //当物品在地面上时，可被玩家推动
-            SetCollisionMaskValue(Config.LayerNumber.Player, true);
-        }
-        else if (node is CharacterTemplate characterTemplate)
-        {
-            if (!EnableContactInjury)
-            {
-                LogCat.LogWarning("contact_damage_disabled_during_collision", LogCat.LogLabel.ContactInjury);
-                return;
-            }
-
-
-            if (Owner == null)
-            {
-                LogCat.LogWarning("item_has_no_owner", LogCat.LogLabel.PickAbleTemplate);
-                return;
-            }
-
-            if (Owner is not CharacterTemplate ownerCharacterTemplate)
-            {
-                LogCat.LogWarning("owner_of_the_item_is_not_character", LogCat.LogLabel.PickAbleTemplate);
-                return;
-            }
-
-            //Determine if your side can cause damage
-            //判断所属的阵营是否可以造成伤害
-            var canCauseHarm = CampManager.CanCauseHarm(CampManager.GetCamp(ownerCharacterTemplate.CampId),
-                CampManager.GetCamp(characterTemplate.CampId));
-            if (!canCauseHarm)
-            {
-                LogCat.Log("no_damage_between_camps", LogCat.LogLabel.PickAbleTemplate);
-                return;
-            }
-
-            //If allowed to cause harm
-            //如果允许造成伤害
-            var damage = new Damage
-            {
-                MaxDamage = Math.Abs(_maxContactInjury),
-                MinDamage = Math.Abs(_minContactInjury),
-                Attacker = ownerCharacterTemplate
-            };
-            damage.CreateDamage();
-            damage.MoveLeft = LinearVelocity.X < 0;
-            damage.Type = Config.DamageType.Physical;
-            characterTemplate.Damage(damage);
-            //Reduce speed after hitting enemies.
-            //击中敌人后减少速度。
-            LinearVelocity *= 1 - Config.ThrownItemsHitEnemiesReduceSpeedByPercentage;
-        }
-    }
-
-
+    
     public override void _MouseEnter()
     {
         if (Picked)
@@ -381,10 +256,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             _collisionShape2D.Disabled = true;
         }
-        if (_damageAreaCollisionShape2D != null)
-        {
-            _damageAreaCollisionShape2D.Disabled = true;
-        }
     }
 
     /// <summary>
@@ -396,10 +267,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         if (_collisionShape2D != null)
         {
             _collisionShape2D.Disabled = false;
-        }
-        if (_damageAreaCollisionShape2D != null)
-        {
-            _damageAreaCollisionShape2D.Disabled = false;
         }
     }
 

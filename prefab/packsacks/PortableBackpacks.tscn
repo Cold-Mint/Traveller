@@ -1,10 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bq5d2w22wnxrf"]
+[gd_scene load_steps=4 format=3 uid="uid://bq5d2w22wnxrf"]
 
 [ext_resource type="Script" path="res://scripts/inventory/Packsack.cs" id="1_slakl"]
 [ext_resource type="Texture2D" uid="uid://di0sw4rgd26y0" path="res://sprites/PortableBackpacks.png" id="2_l0fbh"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_brthl"]
-size = Vector2(21, 29)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqyue"]
 size = Vector2(21, 29)
@@ -14,14 +11,6 @@ collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
 NumberSlots = 30
-
-[node name="DamageArea2D" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 102
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
-position = Vector2(-2.5, 1.5)
-shape = SubResource("RectangleShape2D_brthl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2.5, 1.5)

@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cg2jmn7cs8m2c"]
+[gd_scene load_steps=6 format=3 uid="uid://cg2jmn7cs8m2c"]
 
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w4b6p"]
 [ext_resource type="Texture2D" uid="uid://pf2ilanjwino" path="res://sprites/weapon/BeginnerStaff_Icon.png" id="2_ip8xd"]
 [ext_resource type="Texture2D" uid="uid://b4g1mkvjf7uns" path="res://sprites/weapon/BeginnerStaff.png" id="3_rhhwp"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_p12sk"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
-size = Vector2(48, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
 size = Vector2(48, 5)
@@ -20,14 +17,6 @@ _fireSequentially = true
 FiringIntervalAsMillisecond = 300
 _recoilStrength = 5
 UniqueIcon = ExtResource("2_ip8xd")
-
-[node name="DamageArea2D" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 102
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
-position = Vector2(26, 0.5)
-shape = SubResource("RectangleShape2D_obcq2")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)

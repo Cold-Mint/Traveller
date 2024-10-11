@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnnn2xyayiehk"]
+[gd_scene load_steps=6 format=3 uid="uid://dnnn2xyayiehk"]
 
 [ext_resource type="Texture2D" uid="uid://wt50kx6bup51" path="res://sprites/weapon/StaffNecromancy.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="3_31iau"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_obcq2"]
-size = Vector2(49, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
 size = Vector2(49, 5.25)
@@ -21,15 +18,6 @@ _fireSequentially = true
 FiringIntervalAsMillisecond = 300
 _recoilStrength = 5
 UniqueIcon = ExtResource("3_31iau")
-
-[node name="DamageArea2D" type="Area2D" parent="."]
-visible = false
-collision_layer = 8
-collision_mask = 102
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
-position = Vector2(25.5, 0.5)
-shape = SubResource("RectangleShape2D_obcq2")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)

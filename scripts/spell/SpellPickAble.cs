@@ -18,16 +18,6 @@ public partial class SpellPickAble : PickAbleTemplate, ISpell
     [Export]
     private string? _projectilePath;
 
-    /// <summary>
-    /// <para>Spells do no collision damage</para>
-    /// <para>法术没有碰撞伤害</para>
-    /// </summary>
-    public override bool EnableContactInjury
-    {
-        get => false;
-        set { }
-    }
-
     private PackedScene? _projectileScene;
     public sealed override void _Ready()
     {

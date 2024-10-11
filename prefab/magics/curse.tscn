@@ -1,11 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://m3tkjcbrrhfj"]
+[gd_scene load_steps=5 format=3 uid="uid://m3tkjcbrrhfj"]
 
 [ext_resource type="Script" path="res://scripts/spell/NodeSpawnOnKillCharacterSpell.cs" id="1_gg5rs"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_83n3c"]
 [ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_thtsv"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eq4k"]
-size = Vector2(30, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
@@ -16,13 +13,6 @@ collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_gg5rs")
 _packedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
-
-[node name="DamageArea2D" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 102
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
-shape = SubResource("RectangleShape2D_3eq4k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)

@@ -1,11 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cg75t3fw5c6er"]
+[gd_scene load_steps=5 format=3 uid="uid://cg75t3fw5c6er"]
 
 [ext_resource type="Script" path="res://scripts/spell/MultipleFireSpell.cs" id="1_cnhod"]
 [ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_b3s8h"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eq4k"]
-size = Vector2(30, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
@@ -15,13 +12,6 @@ collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_cnhod")
-
-[node name="DamageArea2D" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 102
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
-shape = SubResource("RectangleShape2D_3eq4k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
