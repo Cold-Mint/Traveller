@@ -122,9 +122,9 @@ public partial class ProjectileWeapon : WeaponTemplate
         get => Config.ItemType.ProjectileWeapon;
     }
 
-    public override void _Ready()
+    public override void LoadResource()
     {
-        base._Ready();
+        base.LoadResource();
         _marker2D = GetNode<Marker2D>("Marker2D");
         if (SelfItemContainer == null)
         {
@@ -144,6 +144,8 @@ public partial class ProjectileWeapon : WeaponTemplate
                 {
                     continue;
                 }
+                //The spell is stored in memory and has not yet been loaded into the node tree. So we call the InvokeLoadResource method to initialize the resource.
+                //法术保存在内存中，尚未加载到节点树。所以我们调用InvokeLoadResource方法来初始化资源。
                 spell.LoadResource();
                 if (SelfItemContainer.CanAddItem(item))
                 {

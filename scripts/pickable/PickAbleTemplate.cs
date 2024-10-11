@@ -1,8 +1,4 @@
 ﻿using System;
-using ColdMint.scripts.camp;
-using ColdMint.scripts.character;
-using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using Godot;
@@ -172,20 +168,20 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     }
 
     private CollisionShape2D? _collisionShape2D;
-
-
+    
     /// <summary>
     /// <para>Whether the resource has been loaded</para>
     /// <para>是否已加载过资源了</para>
     /// </summary>
     private bool _loadedResource;
 
-    public override void _Ready()
+    public sealed override void _Ready()
     {
-        LoadingResource();
+        LoadResource();
     }
+    
 
-    public void LoadingResource()
+    public virtual void LoadResource()
     {
         if (_loadedResource)
         {

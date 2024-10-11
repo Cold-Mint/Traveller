@@ -18,9 +18,9 @@ public partial class ResignationCertificate : WeaponTemplate
         Type = Config.DamageType.Magic
     };
 
-    public override void _Ready()
+    public override void LoadResource()
     {
-        base._Ready();
+        base.LoadResource();
         _damage.CreateDamage();
         _damage.Attacker = this;
     }

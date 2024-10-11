@@ -49,9 +49,9 @@ public partial class Packsack : PickAbleTemplate
     }
 
 
-    public override void _Ready()
+    public override void LoadResource()
     {
-        base._Ready();
+        base.LoadResource();
         if (SelfItemContainer == null)
         {
             var universalItemContainer = new UniversalItemContainer(NumberSlots);

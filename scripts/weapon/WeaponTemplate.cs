@@ -19,10 +19,10 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// </summary>
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
 
-    public override void _Ready()
+    public override void LoadResource()
     {
-        base._Ready();
-        _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
+        base.LoadResource();
+        _audioStreamPlayer2D = GetNode<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
     }
 
     public override bool Use(Node2D? owner, Vector2 targetGlobalPosition)

@@ -28,10 +28,10 @@ public partial class MeleeWeapon : WeaponTemplate
     private readonly List<CharacterTemplate> _characterTemplates =
     [
     ];
-    public override void _Ready()
+
+    public override void LoadResource()
     {
-        base._Ready();
-        LogCat.Log("ready", LogCat.LogLabel.MeleeWeapon);
+        base.LoadResource();
         _weaponDamageArea = GetNode<Area2D>("WeaponDamageArea");
         _weaponDamageArea.InputPickable = false;
         _weaponDamageArea.SetCollisionMaskValue(Config.LayerNumber.Player, true);
@@ -45,7 +45,6 @@ public partial class MeleeWeapon : WeaponTemplate
         _damageTemplate.MaxDamage = _maxDamage;
         _damageTemplate.MinDamage = _minDamage;
         _damageTemplate.Type = Config.DamageType.Physical;
-        LogCat.Log("success", LogCat.LogLabel.MeleeWeapon);
     }
 
     private void AreaExited(Node2D node2D)

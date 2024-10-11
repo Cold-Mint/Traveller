@@ -432,7 +432,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //您可以在这里补充更多类型对象的捡起状态处理。
         if (pickAbleItemNode2D is PickAbleTemplate pickAbleTemplate)
         {
-            pickAbleTemplate.LoadingResource();
+            pickAbleTemplate.LoadResource();
             pickAbleTemplate.Owner = this;
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.Freeze = true;
@@ -797,7 +797,7 @@ public partial class CharacterTemplate : CharacterBody2D
                 {
                     return;
                 }
-                pickAbleTemplate.LoadingResource();
+                pickAbleTemplate.LoadResource();
                 pickAbleTemplate.Owner = this;
                 pickAbleTemplate.Picked = false;
                 //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
