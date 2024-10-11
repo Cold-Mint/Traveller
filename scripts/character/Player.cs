@@ -47,7 +47,7 @@ public partial class Player : CharacterTemplate
             return;
         }
         CharacterName = TranslationServerUtils.Translate("default_player_name");
-        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, ReadOnlyCharacterName,
+        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default,  ReadOnlyCharacterName,
             GlobalPosition);
         _parabola = GetNode<Line2D>("Parabola");
         var healthBarUi = GameSceneDepend.HealthBarUi;

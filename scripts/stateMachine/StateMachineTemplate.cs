@@ -68,8 +68,7 @@ public abstract class StateMachineTemplate : IStateMachine
         }
         else
         {
-            LogCat.LogErrorWithFormat("state_processor_not_found", label: LogCat.LogLabel.StateMachineTemplate,
-                LogCat.UploadFormat,newState);
+            LogCat.LogErrorWithFormat("state_processor_not_found", label: LogCat.LogLabel.StateMachineTemplate, newState);
         }
     }
 

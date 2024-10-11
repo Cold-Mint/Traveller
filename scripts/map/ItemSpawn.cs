@@ -30,7 +30,7 @@ public partial class ItemSpawn : Marker2D, ISpawnMarker
             return null;
         }
         var item = ItemTypeManager.CreateItem(itemId, this);
-        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, true, itemId, item == null);
+        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, itemId, item == null);
         if (item is not Node2D node2D)
         {
             return null;

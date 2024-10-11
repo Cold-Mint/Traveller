@@ -170,8 +170,7 @@ public class Room
     /// </summary>
     private void ShowAllCharacterTemplate()
     {
-        LogCat.LogWithFormat("show_all_node", LogCat.LogLabel.Room, LogCat.UploadFormat,
-            _allCharacter.Count);
+        LogCat.LogWithFormat("show_all_node", LogCat.LogLabel.Room, _allCharacter.Count);
         foreach (var characterTemplate in _allCharacter)
         {
             characterTemplate.Show();
@@ -184,8 +183,7 @@ public class Room
     /// </summary>
     private void HideAllCharacterTemplate()
     {
-        LogCat.LogWithFormat("hide_all_node", LogCat.LogLabel.Room, LogCat.UploadFormat,
-            _allCharacter.Count);
+        LogCat.LogWithFormat("hide_all_node", LogCat.LogLabel.Room, _allCharacter.Count);
         foreach (var characterTemplate in _allCharacter)
         {
             characterTemplate.Hide();
@@ -272,7 +270,7 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("enter_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, node.Name,
+            LogCat.LogWithFormat("enter_the_room_debug", LogCat.LogLabel.Default, node.Name,
                 _rootNode.Name);
         }
 
@@ -325,7 +323,7 @@ public class Room
     {
         if (_rootNode != null)
         {
-            LogCat.LogWithFormat("exit_the_room_debug", LogCat.LogLabel.Default, LogCat.UploadFormat, node.Name,
+            LogCat.LogWithFormat("exit_the_room_debug", LogCat.LogLabel.Default, node.Name,
                 _rootNode.Name);
         }
 

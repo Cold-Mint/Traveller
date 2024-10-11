@@ -93,7 +93,7 @@ public partial class MiniMap : NinePatchRect
                 CalculateRelativePositionOnTheMinimap(roomDictionaryValue));
             if (textureRect == null)
             {
-                LogCat.LogErrorWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default, LogCat.UploadFormat,
+                LogCat.LogErrorWithFormat("failed_to_create_room_preview", LogCat.LogLabel.Default,
                     dictionaryKey);
             }
             else

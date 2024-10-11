@@ -40,7 +40,7 @@ public static class CampManager
         if (camp.Id != Config.CampId.Default) return false;
         _defaultCamp = camp;
         AddCamp(camp);
-        LogCat.LogWithFormat("set_default_camp", label: LogCat.LogLabel.CampManager, LogCat.UploadFormat, camp.Id);
+        LogCat.LogWithFormat("set_default_camp", label: LogCat.LogLabel.CampManager,  camp.Id);
         return true;
     }
 

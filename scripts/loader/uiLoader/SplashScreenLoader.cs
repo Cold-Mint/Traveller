@@ -69,14 +69,6 @@ public partial class SplashScreenLoader : UiLoaderTemplate
     /// </summary>
     private async Task LoadingGlobalData()
     {
-        //Loading App configuration
-        //加载App配置
-        var appConfigData = AppConfig.LoadFromFile();
-        if (appConfigData != null)
-        {
-            AppConfig.ApplyAppConfig(appConfigData);
-        }
-
         //Set the minimum log level to Info in debug mode.(Print all logs)
         //在调试模式下将最小日志等级设置为Info。（打印全部日志）
         //Disable all logs in the release version.

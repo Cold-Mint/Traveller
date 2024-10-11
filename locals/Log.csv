@@ -62,10 +62,6 @@ log_owner_is_not_AiCharacter,所有者不是AiCharacter。,Owner is not AiCharac
 log_find_nearest_item,查找最近的物品。,Find the nearest item.,最も近いアイテムを見つけます。
 log_float_label_instantiate_failed,浮动标签实例化失败。,Float label instantiation failed.,フロートラベルのインスタンス化に失敗しました。
 log_pickable_picked_up,可拾捡物被捡起了，那么不显示标签。,"If the pickable item is picked up, the label is not displayed.",でも、拾得物が拾い上げられたら、ラベルは表示されません。
-log_start_uploading,开始上传{0}条日志。,Start uploading {0} logs.,{0}個のログをアップロードを開始します。
-log_upload_successful,上传成功，已上传{0}条日志，剩余{1}条日志待上传。,"Upload successful, {0} logs uploaded, {1} logs remaining.",アップロードが成功しました、{0}個のログがアップロードされ、{1}個のログが残っています。
-log_upload_failed,上传失败，错误代码：{0}，剩余{1}条日志待上传。,"Upload failed, error code: {0}, {1} logs remaining.",アップロードに失敗しました、エラーコード：{0}、{1}個のログが残っています。
-log_upload_status,已记录{0}条日志，上传阈值为{1}。,"{0} logs recorded, upload threshold is {1}.",{0}個のログが記録され、アップロード閾値は{1}です。
 log_weapon_detected,检测到武器。,Weapon detected.,武器が検出されました。
 log_no_weapon_detected,没有检测到武器。,No weapon detected.,武器が検出されません。
 log_weapon_lost,武器丢失。,Weapon lost.,武器が失われました。

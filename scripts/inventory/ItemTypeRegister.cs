@@ -34,7 +34,7 @@ public static class ItemTypeRegister
         var error = DirAccess.GetOpenError();
         if (error is not Error.Ok)
         {
-            LogCat.LogErrorWithFormat("error_when_open_item_regs_dir", LogCat.LogLabel.Default, true, itemRegsDirPath,
+            LogCat.LogErrorWithFormat("error_when_open_item_regs_dir", LogCat.LogLabel.Default, itemRegsDirPath,
                 error.ToString());
             return;
         }
@@ -44,11 +44,11 @@ public static class ItemTypeRegister
         var files = itemRegsDir.GetFiles();
         if (files == null)
         {
-            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, LogCat.UploadFormat, 0);
+            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, 0);
             return;
         }
 
-        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, LogCat.UploadFormat, files.Length);
+        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, files.Length);
         //将文件解析为项目类型信息
         //parse files to item type infos
         var count = 0;
@@ -68,7 +68,7 @@ public static class ItemTypeRegister
             count++;
         }
 
-        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, LogCat.UploadFormat, count);
+        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, count);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public static class ItemTypeRegister
                 return newItem;
             });
         var succeed = ItemTypeManager.Register(itemType);
-        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, LogCat.UploadFormat, itemType.Id,
+        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, itemType.Id,
             succeed);
     }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ColdMint.scripts.openObserve;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -142,12 +141,7 @@ public static class LogCat
         get => _minLogLevel;
         set => _minLogLevel = value;
     }
-
-    /// <summary>
-    /// <para>Whether to upload logs that need to be formatted by default</para>
-    /// <para>是否默认上传需要格式化的日志</para>
-    /// </summary>
-    public static bool UploadFormat { get; set; } = true;
+    
 
     private static readonly StringBuilder StringBuilder = new StringBuilder();
 
@@ -249,14 +243,12 @@ public static class LogCat
     /// </param>
     /// <param name="label">
     /// </param>
-    /// <param name="upload">
-    /// </param>
-    public static void Log(string message, string label = LogLabel.Default, bool upload = true)
+    public static void Log(string message, string label = LogLabel.Default)
     {
-        PrintLog(InfoLogLevel, HandleMessage(InfoLogLevel, message, label).ToString(), label, upload);
+        PrintLog(InfoLogLevel, HandleMessage(InfoLogLevel, message, label).ToString(), label);
     }
 
-    private static void PrintLog(int level, string concreteLog, string label, bool upload)
+    private static void PrintLog(int level, string concreteLog, string label)
     {
         if (!IsEnabledLogLabel(label))
         {
@@ -266,20 +258,6 @@ public static class LogCat
         if (_minLogLevel > InfoLogLevel)
         {
             return;
-        }
-
-        //If you need to upload logs, you can upload logs.
-        //如果需要上传日志，并且能够上传日志。
-        if (LogCollector.CanUploadLog && upload)
-        {
-            var logData = new LogData
-            {
-                Level = level,
-                Message = concreteLog
-            };
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            LogCollector.Push(logData);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         switch (level)
@@ -307,34 +285,30 @@ public static class LogCat
     /// <para>这个消息支持本地化输出，假设已存在翻译key，Hello = 你好，传入Hello则会输出你好。</para>
     /// </param>
     /// <param name="label"></param>
-    /// <param name="upload"></param>
-    public static void LogError(string message, string label = LogLabel.Default, bool upload = true)
+    public static void LogError(string message, string label = LogLabel.Default)
     {
-        PrintLog(ErrorLogLevel, HandleMessage(ErrorLogLevel, message, label).ToString(), label, upload);
+        PrintLog(ErrorLogLevel, HandleMessage(ErrorLogLevel, message, label).ToString(), label);
     }
 
-    public static void LogWarning(string message, string label = LogLabel.Default, bool upload = true)
+    public static void LogWarning(string message, string label = LogLabel.Default)
     {
-        PrintLog(WarningLogLevel, HandleMessage(WarningLogLevel, message, label).ToString(), label, upload);
+        PrintLog(WarningLogLevel, HandleMessage(WarningLogLevel, message, label).ToString(), label);
     }
 
-    public static void LogErrorWithFormat(string message, string label, bool upload, params object?[] args)
+    public static void LogErrorWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(ErrorLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label,
-            upload);
+        PrintLog(ErrorLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label);
     }
 
 
-    public static void LogWithFormat(string message, string label, bool upload, params object?[] args)
+    public static void LogWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(InfoLogLevel, string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args), label,
-            upload);
+        PrintLog(InfoLogLevel, string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args), label);
     }
 
-    public static void LogWarningWithFormat(string message, string label, bool upload, params object?[] args)
+    public static void LogWarningWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args), label,
-            upload);
+        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args), label);
     }
 
     /// <summary>
@@ -353,6 +327,6 @@ public static class LogCat
         //Log an exception here or send it to the server.
         //请在这里记录异常或将异常发送至服务器。
         PrintLog(ErrorLogLevel,
-            HandleMessage(ErrorLogLevel, e.Message, label).Append('\n').Append(e.StackTrace).ToString(), label, true);
+            HandleMessage(ErrorLogLevel, e.Message, label).Append('\n').Append(e.StackTrace).ToString(), label);
     }
 }

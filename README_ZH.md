@@ -72,34 +72,6 @@ data/*
 ./Traveler.sh
 ```
 
-## 配置Openobserve
-
-> 这是可选的操作，即使您不配置Openobserve，游戏也能正常运行。
-
-openobserve用于在游戏发布后，持续收集日志和报警信息。
-
-#### 搭建openobserve服务器
-
-请见：[openobserve](https://github.com/openobserve/openobserve)
-
-#### 编写配置
-
-在您搭建完毕openobserve的服务器后，按如下步骤配置文件：
-
-1. 在项目的根目录创建名为**AppConfig.yaml**的配置文件。
-
-2. 填入远程服务器的信息。
-
-   ```yaml
-   open_observe:
-     address: [address]
-     access_token: [token]
-     org_id: [org_id]
-     stream_name: [stream_name]
-   ```
-
-   address 服务器的地址，格式为 http(s)://www.example.com。（支持http和https）
-
 ## 参与翻译
 
 此项目在编写之初就为本地化做好了准备。您可以编辑locals目录下的csv文件。来修改和添加新的翻译。

@@ -59,7 +59,7 @@ public class ModLoader
             {
                 //When the dll that must be loaded does not exist, an error is reported immediately.
                 //当必须加载的dll不存在时，立即报错。
-                LogCat.LogErrorWithFormat("dll_not_exist", LogCat.LogLabel.ModLoader, true, dllPath);
+                LogCat.LogErrorWithFormat("dll_not_exist", LogCat.LogLabel.ModLoader, dllPath);
                 throw new FileNotFoundException("dll not exist:" + dllPath);
             }
 
@@ -88,7 +88,7 @@ public class ModLoader
 
         //Load the dll.
         //加载dll。
-        LogCat.LogWithFormat("load_dll", LogCat.LogLabel.ModLoader, true, dllPath);
+        LogCat.LogWithFormat("load_dll", LogCat.LogLabel.ModLoader, dllPath);
         try
         {
             var assembly = _assemblyLoadContext.LoadFromAssemblyPath(dllPath);
@@ -98,7 +98,7 @@ public class ModLoader
                 return;
             }
 
-            LogCat.LogWithFormat("dll_name", LogCat.LogLabel.ModLoader, true, assemblyName);
+            LogCat.LogWithFormat("dll_name", LogCat.LogLabel.ModLoader, assemblyName);
             //If the load is not its own Dll file.
             //如果加载的不是自身的Dll文件.
             if (assemblyName == Config.SolutionName)
@@ -109,7 +109,7 @@ public class ModLoader
             //Call the method of the entry class.
             //调用入口类的方法
             var exportedTypes = assembly.GetExportedTypes();
-            LogCat.LogWarningWithFormat("dll_type_length", LogCat.LogLabel.ModLoader, LogCat.UploadFormat, dllPath,
+            LogCat.LogWarningWithFormat("dll_type_length", LogCat.LogLabel.ModLoader, dllPath,
                 exportedTypes.Length);
             var modLifecycleHandlerType =
                 FindTypeInTypeArray(exportedTypes, Config.ModLifecycleHandlerName);
@@ -118,7 +118,6 @@ public class ModLoader
                 //The module does not register a lifecycle processor.
                 //模组没有注册生命周期处理器。
                 LogCat.LogWarningWithFormat("dll_does_not_register_lifecycle_processor", LogCat.LogLabel.ModLoader,
-                    LogCat.UploadFormat,
                     dllPath, Config.ModLifecycleHandlerName);
                 return;
             }
@@ -129,7 +128,6 @@ public class ModLoader
                 //No parameterless constructor found.
                 //未找到无参构造方法。
                 LogCat.LogWarningWithFormat("dll_no_parameterless_constructor", LogCat.LogLabel.ModLoader,
-                    LogCat.UploadFormat,
                     dllPath);
                 return;
             }
@@ -141,7 +139,7 @@ public class ModLoader
             {
                 LogCat.LogWarningWithFormat("mod_lifecycle_handler_not_implement_interface",
                     LogCat.LogLabel.ModLoader,
-                    LogCat.UploadFormat, dllPath);
+                    dllPath);
                 return;
             }
 
@@ -151,7 +149,7 @@ public class ModLoader
         {
             //The assemblyPath parameter is null.
             //assemblyPath参数为空。
-            LogCat.LogErrorWithFormat("load_dll_argument_null_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.LogErrorWithFormat("load_dll_argument_null_exception", LogCat.LogLabel.ModLoader, dllPath);
             LogCat.WhenCaughtException(argumentNullException, LogCat.LogLabel.ModLoader);
             return;
         }
@@ -159,7 +157,7 @@ public class ModLoader
         {
             //Not an absolute path.
             //不是绝对路径
-            LogCat.LogErrorWithFormat("load_dll_argument_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.LogErrorWithFormat("load_dll_argument_exception", LogCat.LogLabel.ModLoader, dllPath);
             LogCat.WhenCaughtException(argumentException, LogCat.LogLabel.ModLoader);
             return;
         }
@@ -167,7 +165,7 @@ public class ModLoader
         {
             //A file that was found could not be loaded.
             //无法加载找到的文件。
-            LogCat.LogErrorWithFormat("load_dll_file_load_exception", LogCat.LogLabel.ModLoader, true, dllPath);
+            LogCat.LogErrorWithFormat("load_dll_file_load_exception", LogCat.LogLabel.ModLoader, dllPath);
             LogCat.WhenCaughtException(fileLoadException, LogCat.LogLabel.ModLoader);
             return;
         }
@@ -175,7 +173,7 @@ public class ModLoader
         {
             //assemblyPath is not a valid assembly.
             //assemblyPath不是有效的程序集。
-            LogCat.LogErrorWithFormat("load_dll_bad_image_format_exception", LogCat.LogLabel.ModLoader, true,
+            LogCat.LogErrorWithFormat("load_dll_bad_image_format_exception", LogCat.LogLabel.ModLoader,
                 dllPath);
             LogCat.WhenCaughtException(badImageFormatException, LogCat.LogLabel.ModLoader);
             return;
@@ -183,7 +181,7 @@ public class ModLoader
 
         //Loading the dll succeeded.
         //加载dll成功。
-        LogCat.LogWithFormat("load_dll_success", LogCat.LogLabel.ModLoader, true, dllPath);
+        LogCat.LogWithFormat("load_dll_success", LogCat.LogLabel.ModLoader, dllPath);
     }
 
 
@@ -275,7 +273,7 @@ public class ModLoader
         {
             //The module does not contain a pck file.
             //模组不包含pck文件。
-            LogCat.LogWarningWithFormat("mod_not_contain_pck", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
+            LogCat.LogWarningWithFormat("mod_not_contain_pck", LogCat.LogLabel.ModLoader,
                 modFolderPath);
         }
         else
@@ -294,7 +292,7 @@ public class ModLoader
         {
             //The module does not contain a dll file.
             //模组不包含dll文件。
-            LogCat.LogWarningWithFormat("mod_not_contain_dll", LogCat.LogLabel.ModLoader, LogCat.UploadFormat,
+            LogCat.LogWarningWithFormat("mod_not_contain_dll", LogCat.LogLabel.ModLoader,
                 modFolderPath);
         }
         else
@@ -335,11 +333,11 @@ public class ModLoader
         var success = ProjectSettings.LoadResourcePack(pckPath);
         if (success)
         {
-            LogCat.LogWithFormat("load_pck_success", LogCat.LogLabel.ModLoader, true, pckPath);
+            LogCat.LogWithFormat("load_pck_success", LogCat.LogLabel.ModLoader, pckPath);
         }
         else
         {
-            LogCat.LogErrorWithFormat("load_pck_failed", LogCat.LogLabel.ModLoader, true, pckPath);
+            LogCat.LogErrorWithFormat("load_pck_failed", LogCat.LogLabel.ModLoader, pckPath);
             //Throw a suitable exception here for handling at the caller.
             //为这里抛出合适的异常，以便在调用方处理。
             throw new DataException("load pck failed:" + pckPath);

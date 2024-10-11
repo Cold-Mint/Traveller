@@ -75,34 +75,6 @@ Enter the following command in the directory where the game is located:
 ./Traveler.sh
 ```
 
-## Configuring Openobserve
-
-> This is optional, and the game will work even if you do not configure Openobserve.
-
-openobserve is used to continuously collect logs and alarm information after a game has been released.
-
-#### Set up the openobserve server
-
-see：[openobserve](https://github.com/openobserve/openobserve)
-
-#### Write configuration
-
-After you have set up an openobserve server, follow the following steps to configure the file:
-
-1. Create a configuration file named **AppConfig.yaml** in the root directory of your project.
-
-2. Fill in the information for the remote server.
-
-   ```yaml
-   open_observe:
-     address: [address]
-     access_token: [token]
-     org_id: [org_id]
-     stream_name: [stream_name]
-   ```
-
-   address Indicates the address of the server in the format of http(s)://www.example.com. (Support http and https)
-
 ## Participate in translation
 
 The project is prepared for localization at the beginning of writing. You can edit the csv file in the locals directory.
