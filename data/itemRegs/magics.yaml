@@ -16,3 +16,7 @@
   scene_path: res://prefab/magics/curse.tscn
   icon_path: res://sprites/projectile/x3.png
   max_stack_value: 1
+- id: magic_missile
+  scene_path: res://prefab/magics/magicMissile.tscn
+  icon_path: res://sprites/projectile/magicMissile.png
+  max_stack_value: 1

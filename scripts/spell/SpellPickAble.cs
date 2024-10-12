@@ -15,45 +15,44 @@ namespace ColdMint.scripts.spell;
 /// </remarks>
 public partial class SpellPickAble : PickAbleTemplate, ISpell
 {
-    [Export]
-    private string? _projectilePath;
+	[Export]
+	private string? _projectilePath;
 
-    private PackedScene? _projectileScene;
+	private PackedScene? _projectileScene;
 
-    public override int ItemType
-    {
-        get => Config.ItemType.Spell;
-    }
+	public override int ItemType
+	{
+		get => Config.ItemType.Spell;
+	}
 
-    public PackedScene? GetProjectile()
-    {
-        return _projectileScene;
-    }
-
-   
-
-    public override void LoadResource()
-    {
-        base.LoadResource();
-        if (_projectileScene == null && !string.IsNullOrEmpty(_projectilePath))
-        {
-            _projectileScene = ResourceLoader.Load<PackedScene>(_projectilePath);
-        }
-    }
+	public PackedScene? GetProjectile()
+	{
+		return _projectileScene;
+	}
 
 
-    public virtual void ModifyWeapon(ProjectileWeapon projectileWeapon)
-    {
+	public override void LoadResource()
+	{
+		base.LoadResource();
+		if (_projectileScene == null && !string.IsNullOrEmpty(_projectilePath))
+		{
+			_projectileScene = ResourceLoader.Load<PackedScene>(_projectilePath);
+		}
+	}
 
-    }
 
-    public virtual void RestoreWeapon(ProjectileWeapon projectileWeapon)
-    {
+	public virtual void ModifyWeapon(ProjectileWeapon projectileWeapon)
+	{
 
-    }
+	}
 
-    public virtual void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity)
-    {
+	public virtual void RestoreWeapon(ProjectileWeapon projectileWeapon)
+	{
 
-    }
+	}
+
+	public virtual void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity)
+	{
+
+	}
 }

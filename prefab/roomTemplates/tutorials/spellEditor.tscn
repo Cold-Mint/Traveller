@@ -102,15 +102,15 @@ position = Vector2(715, 162)
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 
-[node name="necromancy" type="Marker2D" parent="AutoSpawn"]
+[node name="beginner_staff" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(134, 248)
 script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("necromancy")
+_itemIdList = PackedStringArray("beginner_staff")
 
-[node name="beginner_staff" type="Marker2D" parent="AutoSpawn"]
+[node name="magic_missile" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(100, 250)
 script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("beginner_staff")
+_itemIdList = PackedStringArray("magic_missile")
 
 [node name="RoomArea" type="Area2D" parent="."]
 

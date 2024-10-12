@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bt3ck8twqowke"]
+
+[ext_resource type="Script" path="res://scripts/spell/SpellPickAble.cs" id="1_xxv2a"]
+[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_p1csa"]
+[ext_resource type="Texture2D" uid="uid://ca3paw31aubkd" path="res://sprites/projectile/magicMissile.png" id="3_ckdw6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
+size = Vector2(20, 14)
+
+[node name="MagicMissile" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 34
+angular_damp = -1.0
+script = ExtResource("1_xxv2a")
+_projectilePath = "res://prefab/projectile/magicMissile.tscn"
+UniqueIcon = ExtResource("3_ckdw6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i3lbq")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_p1csa")
+bus = &"SoundEffect"
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="TipLabel" type="Label" parent="."]
+offset_left = -19.0
+offset_top = 23.0
+offset_right = 21.0
+offset_bottom = 48.0
+
+[node name="CurseOfTheUndead" type="Sprite2D" parent="."]
+
+[node name="MagicMissile" type="Sprite2D" parent="."]
+texture = ExtResource("3_ckdw6")
