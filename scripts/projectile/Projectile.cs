@@ -39,7 +39,28 @@ public partial class Projectile : CharacterBody2D
     /// </summary>
     private DateTime? _destructionTime;
 
-    [Export] public float Speed;
+    private float _actualSpeed;
+
+    /// <summary>
+    /// <para>The speed of the bullet</para>
+    /// <para>子弹的飞行速度</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Indicates the number of units moved per second</para>
+    ///<para>表示每秒移动的单位格数</para>
+    /// </remarks>
+    [Export] 
+    public float Speed
+    {
+        get => _actualSpeed / Config.CellSize;
+        private set => _actualSpeed = value * Config.CellSize;
+    }
+
+    /// <summary>
+    /// <para>Get actual speed</para>
+    /// <para>获取实际速度</para>
+    /// </summary>
+    public float ActualSpeed => _actualSpeed;
 
     /// <summary>
     /// <para>Whether it bounces back after hitting an enemy or a wall</para>
@@ -57,13 +78,13 @@ public partial class Projectile : CharacterBody2D
     /// <para>Enable the tracking of the enemy</para>
     /// <para>启用追踪敌人的功能</para>
     /// </summary>
-    [Export] private bool _enableTracking;
+    [Export] public bool EnableTracking;
 
     /// <summary>
     /// <para>The target dies and destroys the projectile at the same time</para>
     /// <para>在目标死亡后销毁抛射体</para>
     /// </summary>
-    [Export] private bool _targetDiesDestroyProjectile;
+    [Export] public bool TargetDiesDestroyProjectile;
 
     /// <summary>
     /// <para>The target</para>
@@ -94,6 +115,7 @@ public partial class Projectile : CharacterBody2D
     /// <para>武器的主人</para>
     /// </summary>
     public new Node2D? Owner { get; set; }
+
 
     public override void _Ready()
     {
@@ -129,7 +151,7 @@ public partial class Projectile : CharacterBody2D
                 //Clear the trace when the target is destroyed.
                 //在目标被销毁的时候清空跟踪。
                 TargetNode = null;
-                if (_targetDiesDestroyProjectile)
+                if (TargetDiesDestroyProjectile)
                 {
                     OnTimeOut();
                 }
@@ -265,7 +287,8 @@ public partial class Projectile : CharacterBody2D
                 pickAbleTemplate.ApplyImpulse(new Vector2(normalized.X * _repelStrength * Config.CellSize,
                     normalized.Y * _repelStrength * Config.CellSize));
             }
-        }else if (target is Furniture furniture)
+        }
+        else if (target is Furniture furniture)
         {
             var damage = new Damage
             {
@@ -315,6 +338,7 @@ public partial class Projectile : CharacterBody2D
         {
             OnTimeOut();
         }
+        LookAt(GlobalPosition + Velocity);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -324,7 +348,7 @@ public partial class Projectile : CharacterBody2D
         {
             //No collision.
             //没有撞到任何东西。
-            if (_enableTracking && TargetNode != null)
+            if (EnableTracking && TargetNode != null)
             {
                 //Track the target
                 //追踪目标
@@ -340,7 +364,7 @@ public partial class Projectile : CharacterBody2D
                     }
                 }
 
-                var actualDesiredVelocity = desiredVelocity.Normalized() * Speed;
+                var actualDesiredVelocity = desiredVelocity.Normalized() * _actualSpeed;
                 //The weight is smaller, the circle is larger.
                 //weight越小，子弹绕的圈越大。
                 Velocity = Velocity.Lerp(actualDesiredVelocity, 0.1f);

@@ -15,6 +15,7 @@ public static class LogCat
         /// <para>默认的日志标签</para>
         /// </summary>
         public const string Default = "Default";
+        public const string Debug = "Debug";
 
         /// <summary>
         /// <para>LookForWeaponProcessor</para>

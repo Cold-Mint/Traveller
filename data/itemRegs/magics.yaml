@@ -20,3 +20,7 @@
   scene_path: res://prefab/magics/magicMissile.tscn
   icon_path: res://sprites/projectile/magicMissile.png
   max_stack_value: 1
+- id: tracking_spell
+  scene_path: res://prefab/magics/trackingSpell.tscn
+  icon_path: res://sprites/projectile/trackingSpell.png
+  max_stack_value: 1

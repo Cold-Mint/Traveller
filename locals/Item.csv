@@ -16,4 +16,6 @@ item_curse_desc,杀死敌人后在生成死灵敌人。,Spawn Undead enemies aft
 item_beginner_staff,初学者法杖,Beginner's staff,初心者用の杖です
 item_beginner_staff_desc,送给初来乍到的冒险家。,For new adventurers.,初心者の冒険家に贈ります。
 item_magic_missile,魔法飞弹,Magic missile,魔法のミサイルです
-item_magic_missile_desc,魔法飞弹,Magic missile,魔法のミサイルです
+item_magic_missile_desc,轻快的法术。,A light spell.,軽快な術です。
+item_tracking_spell,追踪法术,Tracking spell,追跡術です
+item_tracking_spell_desc,使发射的子弹追踪敌人,Let the fired bullets track the enemy,発射した弾丸で敵を追跡させます

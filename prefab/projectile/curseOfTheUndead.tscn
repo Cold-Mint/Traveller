@@ -14,11 +14,7 @@ _durability = 1.0
 _maxDamage = 7
 _minDamage = 3
 _damageType = 2
-Speed = 500.0
-_enableBounce = null
-_ignoreWall = null
-_enableTracking = null
-_targetDiesDestroyProjectile = true
+Speed = 10.0
 _repelStrength = 2.5
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]

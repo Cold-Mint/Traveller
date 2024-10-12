@@ -263,7 +263,7 @@ public partial class ProjectileWeapon : WeaponTemplate
                 RestoreWeapon(spellScope);
                 return false;
             }
-            var velocity = _marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.Speed;
+            var velocity = _marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.ActualSpeed;
             for (var s = spellScope[0]; s <= spellScope[1]; s++)
             {
                 var spell = _spells[s];

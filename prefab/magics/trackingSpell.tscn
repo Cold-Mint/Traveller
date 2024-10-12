@@ -1,19 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://cg75t3fw5c6er"]
 
-[ext_resource type="Script" path="res://scripts/spell/MultipleFireSpell.cs" id="1_cnhod"]
-[ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_b3s8h"]
-[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
+[ext_resource type="Script" path="res://scripts/spell/TrackingSpell.cs" id="1_vhnwx"]
+[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_3fbv3"]
+[ext_resource type="Texture2D" uid="uid://dhgbij2ifphar" path="res://sprites/projectile/trackingSpell.png" id="2_i33g0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
 
-[node name="x3" type="RigidBody2D"]
+[node name="trackingSpell" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
-script = ExtResource("1_cnhod")
-RandomAngle = true
-UnitRadian = 0.07
+script = ExtResource("1_vhnwx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
@@ -23,7 +21,7 @@ shape = SubResource("RectangleShape2D_i3lbq")
 position = Vector2(65, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Marker2D"]
-stream = ExtResource("4_ffr2k")
+stream = ExtResource("2_3fbv3")
 bus = &"SoundEffect"
 
 [node name="TipLabel" type="Label" parent="."]
@@ -34,5 +32,5 @@ offset_bottom = 48.0
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]
 
-[node name="X3" type="Sprite2D" parent="."]
-texture = ExtResource("3_b3s8h")
+[node name="TrackingSpell" type="Sprite2D" parent="."]
+texture = ExtResource("2_i33g0")
