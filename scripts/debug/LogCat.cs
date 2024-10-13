@@ -16,6 +16,12 @@ public static class LogCat
         /// </summary>
         public const string Default = "Default";
         public const string Debug = "Debug";
+        
+        /// <summary>
+        /// <para>ItemContainerDisplay</para>
+        /// <para>项目容器显示器</para>
+        /// </summary>
+        public const string ItemContainerDisplay = "ItemContainerDisplay";
 
         /// <summary>
         /// <para>LookForWeaponProcessor</para>

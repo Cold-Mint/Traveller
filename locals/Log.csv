@@ -108,3 +108,7 @@ log_projectile_scene_is_null,抛射体场景为空。,Projectile scene is empty.
 log_projectile_is_null,抛射体为空。,Projectile scene is empty.,射出シーンは空です。
 log_projectile_weapon_range,加载法术范围{0}顺序模式吗{1}上次发射法术时采用的索引{2}。,Load spell range {0} Sequential mode {1} Index used when the spell was last fired {2}.,スペル範囲{0}順序モードですか{1}前回スペルを送信した時のインデックス{2}。
 log_no_platform_detection_raycast_found,缺少必要的平台检测射线。,Lack of necessary platform detection rays.,放射線を検出するのに必要なプラットフォームが不足しています。
+log_hide_display_item,项目{0}被隐藏了。,Item {0} is hidden.,アイテム{0}は非表示にされます。
+log_add_display_item,添加项目{0}。,Add item {0}.,項目{0}を追加します。
+log_update_display_item,更新项目{0}。,Update item {0}.,更新項目{0}です。
+log_batch_update_data,批量更新数据开始为{0}结束为{1}.,Batch update data starts with {0} and ends with {1}.,一括更新データの開始を{0}、終了を{1}とします。

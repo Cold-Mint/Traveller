@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts.inventory;
@@ -28,8 +29,10 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         {
             //Set empty items container to hide all ui.
             //设置空物品容器，隐藏全部ui。
-            foreach (var itemDisplay in ItemDisplayList)
+            for (var i = 0; i < ItemDisplayList.Count; i++)
             {
+                var itemDisplay = ItemDisplayList[i];
+                LogCat.LogWithFormat("hide_display_item", LogCat.LogLabel.ItemContainerDisplay, i);
                 itemDisplay.Update(null);
                 itemDisplay.HideSelf();
             }
@@ -40,13 +43,13 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         var totalCapacity = itemContainer.GetTotalCapacity();
         var currentCapacity = ItemDisplayList.Count;
         var capacityDifference = totalCapacity - currentCapacity;
-        var adjustedEndIndex = totalCapacity;
         if (capacityDifference > 0)
         {
             //There are those that need to be added, and we create them.
             //有需要添加的，我们创建他们。
             for (var i = 0; i < capacityDifference; i++)
             {
+                LogCat.LogWithFormat("add_display_item", LogCat.LogLabel.ItemContainerDisplay, i);
                 AddItemDisplay();
             }
         }
@@ -54,10 +57,9 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         {
             //There are things that need to be hidden
             //有需要被隐藏的
-            adjustedEndIndex += capacityDifference;
-            var loopEndIndex = currentCapacity + capacityDifference;
-            for (var i = currentCapacity - 1; i >= loopEndIndex; i--)
+            for (var i = currentCapacity - 1; i >= totalCapacity; i--)
             {
+                LogCat.LogWithFormat("hide_display_item", LogCat.LogLabel.ItemContainerDisplay, i);
                 var itemDisplay = ItemDisplayList[i];
                 itemDisplay.Update(null);
                 itemDisplay.HideSelf();
@@ -65,7 +67,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
         }
 
         await Task.Yield();
-        UpdateData(itemContainer, adjustedEndIndex);
+        UpdateData(itemContainer, totalCapacity);
     }
 
     private void OnItemDataChangeEvent(ItemDataChangeEvent itemDataChangeEvent)
@@ -111,6 +113,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     /// </param>
     private void UpdateData(IItemContainer itemContainer, int endIndex, int startIndex = 0)
     {
+        LogCat.LogWithFormat("batch_update_data", LogCat.LogLabel.ItemContainerDisplay, startIndex, endIndex);
         for (var i = startIndex; i < endIndex; i++)
         {
             UpdateDataForSingleLocation(itemContainer, i);
@@ -125,6 +128,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     /// <param name="index"></param>
     private void UpdateDataForSingleLocation(IItemContainer itemContainer, int index)
     {
+        LogCat.LogWithFormat("update_display_item", LogCat.LogLabel.ItemContainerDisplay, index);
         var itemDisplay = ItemDisplayList[index];
         var item = itemContainer.GetItem(index);
         if (item == null)
