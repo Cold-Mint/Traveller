@@ -270,6 +270,7 @@ public partial class ProjectileWeapon : WeaponTemplate
                 spell.ModifyProjectile(i, projectile, ref velocity);
             }
             NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
+            projectile.LookAt(velocity);
             projectile.Owner = owner;
             projectile.TargetNode = GameSceneDepend.TemporaryTargetNode;
             projectile.Velocity = velocity;

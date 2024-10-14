@@ -90,8 +90,6 @@ texture = ExtResource("6_dbg76")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_0kep0")]
 position = Vector2(227, 283)
-_initialDurability = 0
-_maxDurability = 0
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)
