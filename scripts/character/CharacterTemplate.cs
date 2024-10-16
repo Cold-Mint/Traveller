@@ -172,6 +172,13 @@ public partial class CharacterTemplate : CharacterBody2D
 
     private DamageNumberNodeSpawn? _damageNumber;
 
+    /// <summary>
+    /// <para>indestructible</para>
+    /// <para>是否为无敌的</para>
+    /// </summary>
+    [Export]
+    private bool _indestructible;
+
     [Export] public string LootListId { get; private set; } = "";
 
     private HealthBar? _healthBar;
@@ -561,6 +568,10 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </returns>
     public bool Damage(DamageTemplate damageTemplate)
     {
+        if (_indestructible)
+        {
+            return false;
+        }
         _lastDamageTime = DateTime.Now;
         _damageNumber?.Display(damageTemplate);
         CurrentHp -= damageTemplate.Damage;

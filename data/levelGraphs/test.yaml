@@ -75,7 +75,7 @@ room_node_data_list:
     title: 房间3
     description: ''
     room_template_set:
-      - res://prefab/roomTemplates/dungeon/utilityRoom.tscn
+      - res://prefab/roomTemplates/dungeon/
     tags:
     room_injection_processor_data: ''
     enter_room_event_handler_id:

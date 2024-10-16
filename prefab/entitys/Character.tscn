@@ -35,6 +35,7 @@ CanMutateAfterDeath = null
 _initialHp = null
 MaxHp = 32
 CampId = "Default"
+_indestructible = true
 LootListId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
