@@ -103,3 +103,11 @@ shape = SubResource("RectangleShape2D_kiih8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
 position = Vector2(359.5, 246.5)
 shape = SubResource("RectangleShape2D_kfmgh")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 340.0
+offset_top = 292.0
+offset_right = 442.0
+offset_bottom = 317.0
+rotation = -0.480292
+text = "ui_everywhere"

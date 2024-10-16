@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ckggihhjkgp20"
+
+[deps]
+
+files=["res://locals/SloganOnMap.zh.translation", "res://locals/SloganOnMap.en.translation", "res://locals/SloganOnMap.ja.translation"]
+
+source_file="res://locals/SloganOnMap.csv"
+dest_files=["res://locals/SloganOnMap.zh.translation", "res://locals/SloganOnMap.en.translation", "res://locals/SloganOnMap.ja.translation"]
+
+[params]
+
+compress=true
+delimiter=0
