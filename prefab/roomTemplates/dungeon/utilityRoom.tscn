@@ -87,7 +87,7 @@ script = ExtResource("3_u5h84")
 _resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn")
 
 [node name="Marker2D2" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(545, 438)
+position = Vector2(541, 297)
 script = ExtResource("3_u5h84")
 _resPathArray = PackedStringArray("res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "", "res://prefab/entitys/BlackenedAboriginalWarrior.tscn", "")
 
