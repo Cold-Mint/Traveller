@@ -325,8 +325,10 @@ public partial class Player : CharacterTemplate
     {
         Hide();
         ProcessMode = ProcessModeEnum.Disabled;
+        ProtectedItemContainer?.ClearAllItems();
         if (EventBus.GameOverEvent == null)
         {
+            LogCat.Log("game_over_event_is_empty");
             return;
         }
 

@@ -122,6 +122,12 @@ public interface IItemContainer
     /// <param name="index"></param>
     /// <returns></returns>
     bool ClearItem(int index);
+    
+    /// <summary>
+    /// <para>ClearAllItems</para>
+    /// <para>清理全部物品</para>
+    /// </summary>
+    void ClearAllItems();
 
     /// <summary>
     /// <para>Gets the item in the specified location, equivalent to <see cref="GetItem"/></para>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.map.dateBean;
 using ColdMint.scripts.map.interfaces;
@@ -154,23 +155,27 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
     {
         if (newRoomNodeData.RoomTemplateSet == null || newRoomNodeData.RoomTemplateSet.Length == 0)
         {
+            LogCat.LogWithFormat("new_room_node_data_is_incomplete", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
 
         if (parentRoomNode == null)
         {
+            LogCat.LogWithFormat("parent_room_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
 
         var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(newRoomNodeData.RoomTemplateSet);
         if (roomResArray.Length == 0)
         {
+            LogCat.LogWithFormat("room_template_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
 
         var roomSlots = parentRoomNode.RoomSlots;
         if (roomSlots == null || roomSlots.Length == 0)
         {
+            LogCat.LogWithFormat("room_slot_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
 
@@ -183,6 +188,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 newRoomNodeData.ExitRoomEventHandlerId);
             if (newRoom == null)
             {
+                LogCat.LogWithFormat("room_corresponding_to_resource_is_null", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id, roomRes);
                 continue;
             }
 
@@ -190,16 +196,22 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             //创建了一个房间，尝试使用房间的槽与现有的房间槽匹配。
             if (!IsMatch(parentRoomNode, newRoom, out var mainRoomSlot, out var newRoomSlot).Result)
             {
+                LogCat.LogWithFormat("slots_do_not_match", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
                 continue;
             }
 
             if (mainRoomSlot == null || newRoomSlot == null)
             {
+                LogCat.LogWithFormat("slot_incomplete", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
                 continue;
             }
 
             var position = await CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, false);
-            if (position == null) continue;
+            if (position == null)
+            {
+                LogCat.LogWithFormat("placement_position_is_empty", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+                continue;
+            }
             var roomPlacementData = new RoomPlacementData
             {
                 NewRoom = newRoom,
@@ -213,6 +225,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
         if (usableRoomPlacementData.Count == 0)
         {
+            LogCat.LogWithFormat("available_rooms_are_not_available", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
         else
@@ -374,6 +387,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             newRoomTileMapLayer == null || mainRoomSlot == null ||
             newRoomSlot == null)
         {
+            LogCat.Log("parameter_inconsistency", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);
             return null;
         }
 
@@ -387,6 +401,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             //If the room slot is described as null, null is returned
             //若房间槽描述为null，那么返回null
+            LogCat.Log("room_slot_position_is_empty", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);
             return null;
         }
 
@@ -445,11 +460,10 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             await Task.Delay(TimeSpan.FromMilliseconds(50));
             if (_overlapQuantity > 0)
             {
+                LogCat.Log("room_overlap", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);
                 return null;
             }
         }
-
-
         return result;
     }
 }

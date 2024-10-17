@@ -16,7 +16,8 @@ public static class LogCat
         /// </summary>
         public const string Default = "Default";
         public const string Debug = "Debug";
-        
+        public const string PatchworkRoomPlacementStrategy = "PatchworkRoomPlacementStrategy";
+
         /// <summary>
         /// <para>ItemContainerDisplay</para>
         /// <para>项目容器显示器</para>
@@ -148,7 +149,7 @@ public static class LogCat
         get => _minLogLevel;
         set => _minLogLevel = value;
     }
-    
+
 
     private static readonly StringBuilder StringBuilder = new StringBuilder();
 

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map;
+using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
 using ColdMint.scripts.map.miniMap;
@@ -92,7 +93,30 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
         MapGenerator.RoomPlacementStrategy = new PatchworkRoomPlacementStrategy();
+        EventBus.GameOverEvent += OnGameOverEvent;
         await GenerateMap();
+    }
+
+    private async void OnGameOverEvent(GameOverEvent gameOverEvent)
+    {
+        if (GameSceneDepend.WeaponContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneDepend.WeaponContainer);
+        }
+        if (GameSceneDepend.PacksackContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneDepend.PacksackContainer);
+        }
+        if (GameSceneDepend.SpellContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneDepend.SpellContainer);
+        }
+        await GenerateMap();
+    }
+
+    public override void _ExitTree()
+    {
+        EventBus.GameOverEvent -= OnGameOverEvent;
     }
 
     /// <summary>

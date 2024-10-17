@@ -112,3 +112,16 @@ log_hide_display_item,项目{0}被隐藏了。,Item {0} is hidden.,アイテム{
 log_add_display_item,添加项目{0}。,Add item {0}.,項目{0}を追加します。
 log_update_display_item,更新项目{0}。,Update item {0}.,更新項目{0}です。
 log_batch_update_data,批量更新数据开始为{0}结束为{1}.,Batch update data starts with {0} and ends with {1}.,一括更新データの開始を{0}、終了を{1}とします。
+log_new_room_node_data_is_incomplete,新房间{0}数据不全。,New room {0} data is incomplete.,新しい部屋{0}はデータが不完全です。
+log_parent_room_does_not_exist,放置房间{0}时父级房间不存在。,The parent room does not exist when room {0} is placed.,部屋{0}を置いても親部屋は存在しません。
+log_room_template_does_not_exist,放置房间{0}房间模板不存在。,Room template does not exist when placing room {1}.,部屋{0}を置いた時点では部屋テンプレートは存在しません。
+log_room_slot_does_not_exist,放置房间{0}房间槽位不存在。,Room slot does not exist when placing room {0}.,置き部屋{0}部屋スロットは存在しません。
+log_available_rooms_are_not_available,放置房间{0}时，可用房间不存在。,"When placing room {0}, the available room does not exist.",部屋{0}を置いた場合、利用可能な部屋は存在しません。
+log_room_corresponding_to_resource_is_null,放置房间{0}时，资源{1}对应的房间为null.,"When room {0} is placed, the room corresponding to resource {1} is null.",部屋{0}を置く場合、リソース{1}に対応する部屋はnullとなります。
+log_slots_do_not_match,放置房间{0}时，槽位不匹配。,"When placing room {0}, the slots do not match.",部屋{0}を置く時、溝の位置が一致しません。
+log_slot_incomplete,放置房间{0}时，槽位不完整。,The slot is incomplete when placing room {0}.,部屋{0}を置く場合、溝の位置が不完全です。
+log_placement_position_is_empty,房间{0}放置位置为空。,The room {0} position is empty.,部屋{0}を空にします。
+log_parameter_inconsistency,参数不齐。,Parameter inconsistency.,パラメーターが不揃いです。
+log_room_slot_position_is_empty,房间位置描述为空。,Room location is described as empty.,部屋の位置は空です。
+log_room_overlap,房间重叠。,The rooms overlap.,部屋が重なります。
+log_game_over_event_is_empty,游戏结束事件为空。,End of game event is empty.,ゲームオーバーでイベントは空です。

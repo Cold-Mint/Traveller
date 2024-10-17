@@ -324,7 +324,7 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             if (SupportSelect && index == _selectIndex)
             {
                 item.HideSelf();
-                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent()
+                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
                 {
                     NewIndex = index,
                     OldIndex = index,
@@ -334,6 +334,34 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
             }
         }
         return result;
+    }
+
+    public void ClearAllItems()
+    {
+        foreach (var itemDictionaryKey in _itemDictionary.Keys)
+        {
+            var item = _itemDictionary[itemDictionaryKey];
+            item.QueueFreeSelf();
+            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            {
+                NewItem = null,
+                NewIndex = itemDictionaryKey,
+                OldIndex = itemDictionaryKey,
+                OldItem = null,
+                Type = Config.ItemDataChangeEventType.Clear
+            });
+            if (SupportSelect && itemDictionaryKey == _selectIndex)
+            {
+                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
+                {
+                    NewIndex = itemDictionaryKey,
+                    OldIndex = itemDictionaryKey,
+                    NewItem = null,
+                    OldItem = null
+                });
+            }
+        }
+        _itemDictionary.Clear();
     }
 
 

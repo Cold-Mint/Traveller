@@ -581,7 +581,6 @@ public partial class CharacterTemplate : CharacterBody2D
             //Character death
             //角色死亡
             OnDie(damageTemplate);
-            ThrowAllItemOnDie();
             return true;
         }
 
@@ -660,7 +659,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     damageTemplate.Attacker.Name);
             }
         }
-
+        ThrowAllItemOnDie();
         CreateLootObject();
         QueueFree();
         return Task.CompletedTask;

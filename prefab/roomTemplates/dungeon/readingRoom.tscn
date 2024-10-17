@@ -16,7 +16,7 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(33, 35, 607, 34, 609, 1
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(639, 222)
+size = Vector2(638, 222)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kfmgh"]
 size = Vector2(579, 151.5)
@@ -76,7 +76,7 @@ visible = false
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(320.5, 112)
+position = Vector2(320, 112)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="SpawnArea" type="Area2D" parent="."]
