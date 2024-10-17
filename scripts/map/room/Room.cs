@@ -340,7 +340,7 @@ public class Room
                 _pointLight2D.Texture = AssetHolder.White25;
             }
             HideAllCharacterTemplate();
-            if (PlayerRoomVisitCount == 1 && _autoSpawn != null)
+            if (_hasSpawnedEntity && _autoSpawn != null)
             {
                 NodeUtils.ForEachNode<ISpawnMarker>(_autoSpawn, marker =>
                 {
