@@ -71,6 +71,7 @@ log_weapon_not_in_pickup_range,武器不在拾取范围内。,The weapon is not 
 log_weapon_picked_up,武器被拾取。,Weapon picked up.,武器が拾い取られました。
 log_weapon_pickup_failed,武器拾取失败。,Weapon pickup failed.,武器の拾い取りに失敗しました。
 log_enter_the_picking_range_body,进入拾取范围。,Enter the picking range.,拾い取り範囲に入ります。
+log_exit_the_picking_range_body,退出拾取范围。,Exit the picking range.,ピックアップ範囲から外します。
 log_search_for_weapon_timeout,搜索武器超时。,Search for weapon timeout.,武器の検索がタイムアウトしました。
 log_initialize_the_context,初始化上下文环境。,Initialize the context environment.,コンテキスト環境を初期化します。
 log_initialize_the_context_failed,初始化上下文环境失败。,Initialize the context environment failed.,コンテキスト環境の初期化に失敗しました。
@@ -125,3 +126,4 @@ log_parameter_inconsistency,参数不齐。,Parameter inconsistency.,パラメ�
 log_room_slot_position_is_empty,房间位置描述为空。,Room location is described as empty.,部屋の位置は空です。
 log_room_overlap,房间重叠。,The rooms overlap.,部屋が重なります。
 log_game_over_event_is_empty,游戏结束事件为空。,End of game event is empty.,ゲームオーバーでイベントは空です。
+log_cannot_resurrect_non_existent_player,不能复活不存在的玩家。,Cannot resurrect non-existent players.,存在しないプレイヤーを復活させることはできません。

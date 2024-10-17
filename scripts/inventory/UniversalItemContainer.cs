@@ -340,28 +340,8 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     {
         foreach (var itemDictionaryKey in _itemDictionary.Keys)
         {
-            var item = _itemDictionary[itemDictionaryKey];
-            item.QueueFreeSelf();
-            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
-            {
-                NewItem = null,
-                NewIndex = itemDictionaryKey,
-                OldIndex = itemDictionaryKey,
-                OldItem = null,
-                Type = Config.ItemDataChangeEventType.Clear
-            });
-            if (SupportSelect && itemDictionaryKey == _selectIndex)
-            {
-                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
-                {
-                    NewIndex = itemDictionaryKey,
-                    OldIndex = itemDictionaryKey,
-                    NewItem = null,
-                    OldItem = null
-                });
-            }
+            ClearItem(itemDictionaryKey);
         }
-        _itemDictionary.Clear();
     }
 
 

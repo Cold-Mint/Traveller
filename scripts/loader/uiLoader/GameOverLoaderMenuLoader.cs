@@ -10,7 +10,6 @@ namespace ColdMint.scripts.loader.uiLoader;
 public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
 {
     private Label? _deathInfoLabel;
-    private Button? _restartButton;
 
     public override void InitializeUi()
     {
@@ -19,23 +18,19 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
 
     public override void InitializeData()
     {
-        _restartButton = GetNodeOrNull<Button>("CenterContainer/VBoxContainer/MarginContainer2/RestartButton");
         _deathInfoLabel =
             GetNode<Label>("CenterContainer/VBoxContainer/MarginContainer/CenterContainer2/DeathInfoLabel");
         EventBus.GameOverEvent += OnGameOver;
+        EventBus.GameReplayEvent += OnGameReplayEvent;
+    }
+
+    private void OnGameReplayEvent(GameReplayEvent obj)
+    {
+        Hide();
     }
 
     public override void LoadUiActions()
     {
-        if (_restartButton != null)
-        {
-            _restartButton.Pressed += () =>
-            {
-                var replayEvent = new GameReplayEvent();
-                EventBus.GameReplayEvent?.Invoke(replayEvent);
-                Hide();
-            };
-        }
     }
 
     private void OnGameOver(GameOverEvent gameOverEvent)
@@ -53,5 +48,6 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
     {
         base._ExitTree();
         EventBus.GameOverEvent -= OnGameOver;
+        EventBus.GameReplayEvent -= OnGameReplayEvent;
     }
 }

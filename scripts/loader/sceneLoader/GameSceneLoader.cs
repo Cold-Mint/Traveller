@@ -112,6 +112,8 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             NodeUtils.DeleteAllChild(GameSceneDepend.SpellContainer);
         }
         await GenerateMap();
+        var replayEvent = new GameReplayEvent();
+        EventBus.GameReplayEvent?.Invoke(replayEvent);
     }
 
     public override void _ExitTree()

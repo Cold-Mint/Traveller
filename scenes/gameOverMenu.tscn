@@ -63,6 +63,9 @@ mouse_filter = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 150
 
-[node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer/MarginContainer2"]
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
-text = "ui_restart"
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+text = "ui_rebuild_the_world"

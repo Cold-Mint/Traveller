@@ -35,6 +35,7 @@ ui_translator,翻译,translator,翻訳
 ui_unordered_list_tip,排名不分先后,Ranking is not in order,順位は関係ありません
 ui_loading,正在加载...,Loading...,読み込み中...
 ui_spell_editor,法术编辑器,Spell editor,スペルエディター
+ui_rebuild_the_world,正在重新构建世界...,Is reconstructing the world...,世界を再構築しています…
 ui_tutorial_spellEditor,按E捡起地上的武器，\n法杖需要搭配法术使用，\n靠近工作台，\n鼠标左键使用工作台。\n鼠标左键拖动物品，\n以实现在不同的容器之间移动它们。,"Press E to pick up the weapon on the ground, \nthe wand needs to be used with the spell, \nclose to the workbench, \nthe left mouse button to use the workbench.\nDrag items with the left mouse button \nto move them between different containers.",Eを押して地面の武器を拾い上げます。\n杖は魔法と組み合わせて使います。\n作業台に近づいて、\nマウスの左ボタンで作業台を使います。\nマウスの左ボタンでモノをドラッグすると、\nさまざまな容器の間を移動できます。
 ui_tutorial_break_box,鼠标左键使用武器打破箱子->,"Use the left mouse button to \nbreak the box with the weapon->",マウスの左ボタンで箱を破ります->
 ui_tutorial_jump_onto_platform,W跳上平台，\nS从平台上跳下。,"W jumps onto the platform, \nS jumps off the platform.",Wは踊り場に、\nSは踊り場に飛び降りるのです。

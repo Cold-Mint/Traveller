@@ -31,13 +31,13 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
 
     private void GameReplayEvent(GameReplayEvent gameReplayEvent)
     {
-        if (GameSceneDepend.Player != null)
+        if (GameSceneDepend.Player == null)
         {
-            GameSceneDepend.Player.FullHpRevive();
-            GameSceneDepend.Player.GlobalPosition = GlobalPosition;
+            LogCat.LogError("cannot_resurrect_non_existent_player");
             return;
         }
-        Spawn(PlayerWaveNumber);
+        GameSceneDepend.Player.GlobalPosition = GlobalPosition;
+        GameSceneDepend.Player.FullHpRevive();
     }
 
 

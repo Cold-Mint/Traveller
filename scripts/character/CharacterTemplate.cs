@@ -276,7 +276,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _Ready()
     {
         base._Ready();
-        PickingRangeBodiesList = new List<Node>();
+        PickingRangeBodiesList = [];
 
         if (MaxHp <= 0)
         {
@@ -693,6 +693,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
+        LogCat.Log("exit_the_picking_range_body");
         PickingRangeBodiesList?.Remove(node);
     }
 
