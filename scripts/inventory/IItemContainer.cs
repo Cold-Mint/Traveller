@@ -120,8 +120,11 @@ public interface IItemContainer
     /// <para>清理物品</para>
     /// </summary>
     /// <param name="index"></param>
-    /// <returns></returns>
-    bool ClearItem(int index);
+    /// <returns>
+    ///<para>Returns the item to be cleaned, or null if the item to be cleaned cannot be found</para>
+    ///<para>返回要清理的物品，如果找不到要清理的物品则返回null</para>
+    /// </returns>
+    IItem? ClearItem(int index);
     
     /// <summary>
     /// <para>ClearAllItems</para>

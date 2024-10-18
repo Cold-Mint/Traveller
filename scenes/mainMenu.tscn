@@ -35,6 +35,7 @@ offset_top = 215.0
 offset_right = 50.5
 offset_bottom = 248.0
 grow_horizontal = 2
+disabled = true
 text = "ui_settings"
 
 [node name="levelGraphEditorButton" type="Button" parent="."]

@@ -304,43 +304,49 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
     }
 
 
-    public bool ClearItem(int index)
+    public IItem? ClearItem(int index)
     {
         if (!_itemDictionary.TryGetValue(index, out var item))
         {
-            return false;
+            return null;
         }
-        var result = _itemDictionary.Remove(index);
-        if (result)
+        if (!_itemDictionary.Remove(index))
         {
-            ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+            return null;
+        }
+        ItemDataChangeEvent?.Invoke(new ItemDataChangeEvent
+        {
+            NewItem = null,
+            NewIndex = index,
+            OldIndex = index,
+            OldItem = null,
+            Type = Config.ItemDataChangeEventType.Clear
+        });
+        if (SupportSelect && index == _selectIndex)
+        {
+            item.HideSelf();
+            SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
             {
-                NewItem = null,
                 NewIndex = index,
                 OldIndex = index,
-                OldItem = null,
-                Type = Config.ItemDataChangeEventType.Clear
+                NewItem = null,
+                OldItem = null
             });
-            if (SupportSelect && index == _selectIndex)
-            {
-                item.HideSelf();
-                SelectedItemChangeEvent?.Invoke(new SelectedItemChangeEvent
-                {
-                    NewIndex = index,
-                    OldIndex = index,
-                    NewItem = null,
-                    OldItem = null
-                });
-            }
         }
-        return result;
+        return item;
     }
 
     public void ClearAllItems()
     {
         foreach (var itemDictionaryKey in _itemDictionary.Keys)
         {
-            ClearItem(itemDictionaryKey);
+            var item = ClearItem(itemDictionaryKey);
+            if (item == null)
+            {
+                continue;
+            }
+            item.SelfItemContainer?.ClearAllItems();
+            item.QueueFreeSelf();
         }
     }
 
