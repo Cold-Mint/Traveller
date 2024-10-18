@@ -1,0 +1,173 @@
+[gd_scene load_steps=8 format=3 uid="uid://co8fnkqxrmae"]
+
+[ext_resource type="Script" path="res://scripts/loader/uiLoader/MobileGameGui.cs" id="1_ems4y"]
+[ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="1_q5x30"]
+[ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainer.tscn" id="2_j7ucs"]
+[ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="3_5uepe"]
+[ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="4_4ljyt"]
+[ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="5_imtu2"]
+[ext_resource type="Texture2D" uid="uid://cpm851cda1gv" path="res://sprites/ui/placeholder.png" id="7_tncke"]
+
+[node name="GameGuiDefault" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ems4y")
+
+[node name="FPSLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -45.0
+offset_right = 70.0
+offset_bottom = -20.0
+grow_vertical = 0
+horizontal_alignment = 2
+script = ExtResource("1_q5x30")
+
+[node name="RecreateMapButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -153.0
+offset_top = -16.0
+offset_right = -20.0
+offset_bottom = 17.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "ui_re_create_map"
+
+[node name="SeedLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = -36.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+
+[node name="MapContainer" parent="." instance=ExtResource("2_j7ucs")]
+visible = false
+layout_mode = 1
+
+[node name="HotBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+offset_left = 30.0
+offset_top = 20.0
+offset_right = 815.0
+offset_bottom = 36.0
+mouse_filter = 2
+script = ExtResource("5_imtu2")
+
+[node name="TextureRect3" type="TextureRect" parent="HotBar"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_4ljyt")
+
+[node name="HealthBarUi" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -785.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 36.0
+grow_horizontal = 0
+mouse_filter = 2
+alignment = 2
+script = ExtResource("3_5uepe")
+
+[node name="TextureRect3" type="TextureRect" parent="HealthBarUi"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_4ljyt")
+
+[node name="LeftButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 29.0
+offset_top = -144.0
+offset_right = 93.0
+offset_bottom = -80.0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_tncke")
+
+[node name="RightButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 144.0
+offset_top = -144.0
+offset_right = 208.0
+offset_bottom = -80.0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_tncke")
+
+[node name="JumpButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -118.0
+offset_top = -128.0
+offset_right = -54.0
+offset_bottom = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_tncke")
+
+[node name="PickButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -217.0
+offset_top = -131.0
+offset_right = -153.0
+offset_bottom = -67.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_tncke")
+
+[node name="ThrowButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -232.0
+offset_right = -86.0
+offset_bottom = -168.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("7_tncke")

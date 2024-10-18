@@ -1,11 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bnftvkj2cido7"]
+[gd_scene load_steps=4 format=3 uid="uid://bnftvkj2cido7"]
 
 [ext_resource type="Script" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
-[ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="2_n1yht"]
-[ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="2_owrhq"]
-[ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="2_xrm3v"]
-[ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="5_dis4v"]
-[ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainer.tscn" id="6_ljdj4"]
 [ext_resource type="PackedScene" uid="uid://bb188382q7btp" path="res://scenes/gameOverMenu.tscn" id="6_yjmrv"]
 [ext_resource type="Script" path="res://scripts/utils/UiGroup.cs" id="7_p0u6a"]
 
@@ -16,7 +11,7 @@ script = ExtResource("1_mqdgt")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="GameGui" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,73 +19,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -85.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-
-[node name="HealthBarUi" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("2_xrm3v")
-
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HealthBarUi"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("2_n1yht")
-
-[node name="HotBar" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("2_owrhq")
-
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HotBar"]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("2_n1yht")
-
-[node name="FPSLabel" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 25.0
-grow_horizontal = 0
-horizontal_alignment = 2
-script = ExtResource("5_dis4v")
-
-[node name="RecreateMapButton" type="Button" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-text = "ui_re_create_map"
-
-[node name="SeedLabel" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -45.0
-offset_top = -16.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 10
-
-[node name="MapContainer" parent="CanvasLayer/Control" instance=ExtResource("6_ljdj4")]
-layout_mode = 1
 
 [node name="DynamicUiGroup" type="Control" parent="CanvasLayer"]
 visible = false

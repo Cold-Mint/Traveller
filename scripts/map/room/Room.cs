@@ -287,7 +287,7 @@ public class Room
                 _pointLight2D.Texture = AssetHolder.White100;
             }
             GameSceneDepend.ShowMiniMap();
-            GameSceneDepend.MiniMap?.ShowRoomPreview(this);
+            GameSceneDepend.GameGuiTemplate?.MiniMap?.ShowRoomPreview(this);
             ShowAllCharacterTemplate();
         }
         else if (node is CharacterTemplate characterTemplate)

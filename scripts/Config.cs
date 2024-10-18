@@ -410,23 +410,24 @@ public static class Config
     {
         if (GetOs() == OsEnum.Android)
         {
-            return "/data/data/com.coldmint.traveler/data/test";
-        }
-        else
-        {
             if (EnableVersionIsolation())
             {
-                return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                    ProjectSettings.GetSetting("application/config/name").AsString(),
-                    ProjectSettings.GetSetting("application/config/version").AsString());
+                return Path.Join(ProjectSettings.GlobalizePath("user://"), ProjectSettings.GetSetting("application/config/version").AsString());
+
             }
-            else
-            {
-                return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                    ProjectSettings.GetSetting("application/config/name").AsString(),
-                    DefaultVersionName);
-            }
+            return Path.Join(ProjectSettings.GlobalizePath("user://"), DefaultVersionName);
         }
+        //For desktop platforms.
+        //对于桌面平台。
+        if (EnableVersionIsolation())
+        {
+            return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
+                ProjectSettings.GetSetting("application/config/name").AsString(),
+                ProjectSettings.GetSetting("application/config/version").AsString());
+        }
+        return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
+            ProjectSettings.GetSetting("application/config/name").AsString(),
+            DefaultVersionName);
     }
 
     /// <summary>

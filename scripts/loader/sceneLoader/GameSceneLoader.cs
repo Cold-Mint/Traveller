@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using ColdMint.scripts.inventory;
+using ColdMint.scripts.debug;
+using ColdMint.scripts.loader.uiLoader;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.LayoutParsingStrategy;
 using ColdMint.scripts.map.layoutStrategy;
-using ColdMint.scripts.map.miniMap;
 using ColdMint.scripts.map.RoomPlacer;
 using ColdMint.scripts.utils;
 using Godot;
@@ -17,19 +17,10 @@ namespace ColdMint.scripts.loader.sceneLoader;
 /// </summary>
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
-    private Label? _seedLabel;
 
     public override Task InitializeData()
     {
         RenderingServer.SetDefaultClearColor(Color.FromHsv(0, 0, 0));
-        //Loading the blood bar scene
-        //加载血条场景
-        var healthBarUi = GetNode<HealthBarUi>("CanvasLayer/Control/VBoxContainer/HealthBarUi");
-        GameSceneDepend.HealthBarUi = healthBarUi;
-        //Load HotBar
-        //加载HotBar
-        var hotBar = GetNode<HotBar>("CanvasLayer/Control/VBoxContainer/HotBar");
-        GameSceneDepend.HotBar = hotBar;
         //Backpack Ui container
         //背包Ui容器
         var backpackUiContainer = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
@@ -62,33 +53,45 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载可拾捡物容器
         var pickAbleContainer = GetNode<Node2D>("PickAbleContainer");
         GameSceneDepend.PickAbleContainer = pickAbleContainer;
-        //Setting up the mini map
-        //设置迷你地图
-        var miniMap = GetNode<MiniMap>("CanvasLayer/Control/MapContainer/Control/MiniMap");
-        GameSceneDepend.MiniMap = miniMap;
-        //Set the mini map animation
-        //设置迷你地图动画
-        var miniMapAnimationPlayer = GetNode<AnimationPlayer>("CanvasLayer/Control/MapContainer/MiniMapAnimationPlayer");
-        GameSceneDepend.MiniMapAnimationPlayer = miniMapAnimationPlayer;
+        InstantiateGui(Config.GetOs() == Config.OsEnum.Android ? "res://prefab/ui/gameGuiMobile.tscn" : "res://prefab/ui/gameGuiDesktop.tscn");
         return Task.CompletedTask;
+    }
+
+
+    /// <summary>
+    /// <para>Instantiate the game's GUI</para>
+    /// <para>实例化游戏的GUI</para>
+    /// </summary>
+    /// <param name="path"></param>
+    private void InstantiateGui(string path)
+    {
+        var packedScene = ResourceLoader.Load<PackedScene>(path);
+        var gameGuiTemplate = NodeUtils.InstantiatePackedScene<GameGuiTemplate>(packedScene);
+        if (gameGuiTemplate == null)
+        {
+            LogCat.LogError("game_gui_template_is_null");
+            return;
+        }
+        NodeUtils.CallDeferredAddChild(GetNode<Control>("CanvasLayer/GameGui"), gameGuiTemplate);
+        gameGuiTemplate.Ready += () =>
+        {
+            var debugMode = Config.IsDebug();
+            if (gameGuiTemplate.RecreateMapButton != null)
+            {
+                gameGuiTemplate.RecreateMapButton.Visible = debugMode;
+                gameGuiTemplate.RecreateMapButton.Pressed += () => { _ = GenerateMap(); };
+            }
+
+            if (gameGuiTemplate.SeedLabel != null)
+            {
+                gameGuiTemplate.SeedLabel.Visible = debugMode;
+            }
+        };
+        GameSceneDepend.GameGuiTemplate = gameGuiTemplate;
     }
 
     public override async Task LoadScene()
     {
-        var debugMode = Config.IsDebug();
-        var recreateMapButton = GetNodeOrNull<Button>("CanvasLayer/Control/RecreateMapButton");
-        if (recreateMapButton != null)
-        {
-            recreateMapButton.Visible = debugMode;
-            recreateMapButton.Pressed += () => { _ = GenerateMap(); };
-        }
-
-        _seedLabel = GetNodeOrNull<Label>("CanvasLayer/Control/SeedLabel");
-        if (_seedLabel != null)
-        {
-            _seedLabel.Visible = debugMode;
-        }
-
         MapGenerator.MapRoot = GetNode<Node>("MapRoot");
         MapGenerator.LayoutStrategy = new TestLayoutStrategy();
         MapGenerator.LayoutParsingStrategy = new SequenceLayoutParsingStrategy();
@@ -128,14 +131,13 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     private async Task GenerateMap()
     {
         MapGenerator.Seed = GuidUtils.GetGuid();
-        if (_seedLabel != null)
+        if (GameSceneDepend.GameGuiTemplate?.SeedLabel != null)
         {
             //If you have a seedLabel, then set the seed to it.
             //如果有seedLabel，那么将种子设置上去。
             var seedInfo = TranslationServerUtils.TranslateWithFormat("ui_seed_info", MapGenerator.Seed);
-            _seedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
+            GameSceneDepend.GameGuiTemplate.SeedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
         }
-
         await MapGenerator.GenerateMap();
     }
 }

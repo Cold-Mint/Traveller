@@ -47,10 +47,10 @@ public partial class Player : CharacterTemplate
             return;
         }
         CharacterName = TranslationServerUtils.Translate("default_player_name");
-        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default,  ReadOnlyCharacterName,
+        LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, ReadOnlyCharacterName,
             GlobalPosition);
         _parabola = GetNode<Line2D>("Parabola");
-        var healthBarUi = GameSceneDepend.HealthBarUi;
+        var healthBarUi = GameSceneDepend.GameGuiTemplate?.HealthBar;
         if (healthBarUi != null)
         {
             healthBarUi.MaxHp = MaxHp;
@@ -134,13 +134,32 @@ public partial class Player : CharacterTemplate
         UpdateCollidingWithPlatform();
         //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度
-        if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
-            velocity.Y = JumpVelocity;
+        if (GameSceneDepend.GameGuiTemplate?.JumpButton != null)
+        {
+            if (GameSceneDepend.GameGuiTemplate.JumpButton.IsPressed() && IsOnFloor())
+                velocity.Y = JumpVelocity;
+        }
+        else
+        {
+            if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
+                velocity.Y = JumpVelocity;
+        }
 
         //Moving left and right
         //左右移动
-        var axis = Input.GetAxis("ui_left", "ui_right");
-        velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
+        if (GameSceneDepend.GameGuiTemplate?.LeftButton != null && GameSceneDepend.GameGuiTemplate?.RightButton != null)
+        {
+            var left = GameSceneDepend.GameGuiTemplate.LeftButton.IsPressed() ? -1 : 0;
+            var right = GameSceneDepend.GameGuiTemplate.RightButton.IsPressed() ? 1 : 0;
+            var axis = left + right;
+            velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
+        }
+        else
+        {
+            var axis = Input.GetAxis("ui_left", "ui_right");
+            velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
+        }
+
 
 
         if (Input.IsActionJustPressed("use_item"))
@@ -158,18 +177,21 @@ public partial class Player : CharacterTemplate
         }
         //Pick up an item
         //捡起物品
-        if (Input.IsActionJustPressed("pick_up"))
+        if (GameSceneDepend.GameGuiTemplate?.PickButton != null)
         {
-            var pickAbleItem = FindTheNearestItem();
-            var success = PickItem(pickAbleItem);
-            if (success)
+            if (GameSceneDepend.GameGuiTemplate.PickButton.IsPressed())
             {
-                if (pickAbleItem != null)
-                {
-                    PickingRangeBodiesList?.Remove(pickAbleItem);
-                }
+                PressedPick();
             }
         }
+        else
+        {
+            if (Input.IsActionJustPressed("pick_up"))
+            {
+                PressedPick();
+            }
+        }
+
 
         if (Input.IsActionJustPressed("ui_down"))
         {
@@ -230,6 +252,19 @@ public partial class Player : CharacterTemplate
 
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
             CurrentItem = null;
+        }
+    }
+
+    private void PressedPick()
+    {
+        var pickAbleItem = FindTheNearestItem();
+        var success = PickItem(pickAbleItem);
+        if (success)
+        {
+            if (pickAbleItem != null)
+            {
+                PickingRangeBodiesList?.Remove(pickAbleItem);
+            }
         }
     }
 
@@ -305,7 +340,7 @@ public partial class Player : CharacterTemplate
     public override void Revive(int newHp)
     {
         base.Revive(newHp);
-        var healthBarUi = GameSceneDepend.HealthBarUi;
+        var healthBarUi = GameSceneDepend.GameGuiTemplate?.HealthBar;
         if (healthBarUi != null)
         {
             //The purpose of setting Hp to the current Hp is to cause the life bar to refresh.
@@ -345,7 +380,7 @@ public partial class Player : CharacterTemplate
     protected override void OnHit(DamageTemplate damageTemplate)
     {
         base.OnHit(damageTemplate);
-        var healthBarUi = GameSceneDepend.HealthBarUi;
+        var healthBarUi = GameSceneDepend.GameGuiTemplate?.HealthBar;
         if (healthBarUi != null)
         {
             healthBarUi.CurrentHp = CurrentHp;

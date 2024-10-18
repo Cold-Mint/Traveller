@@ -1,6 +1,5 @@
 ﻿using ColdMint.scripts.character;
-using ColdMint.scripts.inventory;
-using ColdMint.scripts.map.miniMap;
+using ColdMint.scripts.loader.uiLoader;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -12,17 +11,7 @@ namespace ColdMint.scripts;
 /// </summary>
 public static class GameSceneDepend
 {
-    /// <summary>
-    /// <para>MiniMap</para>
-    /// <para>迷你地图</para>
-    /// </summary>
-    public static MiniMap? MiniMap { get; set; }
-
-    /// <summary>
-    /// <para>MiniMapAnimationPlayer</para>
-    /// <para>迷你地图的动画节点</para>
-    /// </summary>
-    public static AnimationPlayer? MiniMapAnimationPlayer { get; set; }
+    public static GameGuiTemplate? GameGuiTemplate { get; set; }
 
     private static Player? _player;
 
@@ -36,9 +25,9 @@ public static class GameSceneDepend
         set
         {
             _player = value;
-            if (MiniMap != null)
+            if (GameGuiTemplate?.MiniMap != null)
             {
-                MiniMap.OwnerNode = _player;
+                GameGuiTemplate.MiniMap.OwnerNode = _player;
             }
         }
     }
@@ -91,18 +80,6 @@ public static class GameSceneDepend
     /// </summary>
     public static Node2D? AiCharacterContainer { get; set; }
 
-    /// <summary>
-    /// <para>HotBar</para>
-    /// <para>快捷栏</para>
-    /// </summary>
-    public static HotBar? HotBar { get; set; }
-
-
-    /// <summary>
-    /// <para>Health Bar UI</para>
-    /// <para>健康条UI</para>
-    /// </summary>
-    public static HealthBarUi? HealthBarUi { get; set; }
 
     /// <summary>
     /// <para>DynamicUiGroup</para>
@@ -135,17 +112,17 @@ public static class GameSceneDepend
     /// </summary>
     public static void ShowMiniMap()
     {
-        if (MiniMap == null)
+        if (GameGuiTemplate?.MiniMap == null)
         {
             return;
         }
-        if (MiniMap.Visible)
+        if (GameGuiTemplate.MiniMap.Visible)
         {
             return;
         }
-        MiniMapAnimationPlayer?.Play(name: "show");
+        GameGuiTemplate.MiniMapAnimationPlayer?.Play(name: "show");
     }
-    
+
 
     /// <summary>
     /// <para>HideMiniMap</para>
@@ -153,13 +130,13 @@ public static class GameSceneDepend
     /// </summary>
     public static void HideMiniMap()
     {
-        if (MiniMap == null)
+        if (GameGuiTemplate?.MiniMap == null)
         {
             return;
         }
-        if (MiniMap.Visible)
+        if (GameGuiTemplate.MiniMap.Visible)
         {
-            MiniMapAnimationPlayer?.Play(name: "hide");
+            GameGuiTemplate.MiniMapAnimationPlayer?.Play(name: "hide");
         }
     }
 }

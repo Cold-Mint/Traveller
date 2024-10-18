@@ -134,8 +134,10 @@ grow_vertical = 0
 
 [node name="MiniMap" type="NinePatchRect" parent="Control"]
 layout_mode = 1
-offset_right = 150.0
-offset_bottom = 150.0
+offset_left = 983.0
+offset_top = 480.0
+offset_right = 1133.0
+offset_bottom = 630.0
 texture = ExtResource("1_h88bi")
 patch_margin_left = 7
 patch_margin_top = 7

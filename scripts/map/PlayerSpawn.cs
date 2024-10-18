@@ -90,7 +90,7 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
         //The player's parent node must be GameSceneDepend PlayerContainer.
         //玩家的父节点必须是GameSceneDepend.PlayerContainer。
         NodeUtils.CallDeferredAddChild(GameSceneDepend.PlayerContainer, playerNode);
-        var itemContainer = GameSceneDepend.HotBar?.GetItemContainer();
+        var itemContainer = GameSceneDepend.GameGuiTemplate?.HotBar?.GetItemContainer();
         if (itemContainer == null)
         {
             //Throws an exception when the item container is empty.

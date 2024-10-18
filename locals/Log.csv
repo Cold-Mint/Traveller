@@ -131,3 +131,4 @@ log_no_audio_stream_player,没有音频播放器组件。,No audio player compon
 log_audio_stream_player_is_playing,音频播放器正在播放中。,The audio player is playing.,オーディオプレーヤーが再生中です。
 log_play_audio,播放音频BUS为{0}Stream为{1}.,BUS is {0} and Stream is {1}.,再生オーディオはBUSが{0}Streamが{1}です。
 log_load_data_from,从{0}加载数据。,Load data from {0}.,{0}からデータをロードします。
+log_game_gui_template_is_null,Gui模板是空的。,The Gui template is empty.,Guiテンプレートは空です。
