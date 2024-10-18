@@ -3,7 +3,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.contribute;
-using ColdMint.scripts.database;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
@@ -86,6 +85,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Create a game data folder
         //创建游戏数据文件夹
         var dataPath = Config.GetGameDataDirectory();
+        LogCat.LogWithFormat("load_data_from",LogCat.LogLabel.Default,dataPath);
         if (!Directory.Exists(dataPath))
         {
             Directory.CreateDirectory(dataPath);
@@ -97,7 +97,6 @@ public partial class SplashScreenLoader : UiLoaderTemplate
             Directory.CreateDirectory(databasePath);
         }
 
-        DataBaseManager.InitDataBases(databasePath);
         //Registered camp
         //注册阵营
         var defaultCamp = new Camp(Config.CampId.Default)

@@ -169,7 +169,7 @@ public static class Config
     /// <para>空变量</para>
     /// </summary>
     public static readonly Variant EmptyVariant = new();
-    
+
     /// <summary>
     /// <para>Blank string</para>
     /// <para>空白字符串</para>
@@ -408,17 +408,24 @@ public static class Config
     /// <returns></returns>
     public static string GetGameDataDirectory()
     {
-        if (EnableVersionIsolation())
+        if (GetOs() == OsEnum.Android)
         {
-            return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                ProjectSettings.GetSetting("application/config/name").AsString(),
-                ProjectSettings.GetSetting("application/config/version").AsString());
+            return "/data/data/com.coldmint.traveler/data/test";
         }
         else
         {
-            return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
-                ProjectSettings.GetSetting("application/config/name").AsString(),
-                DefaultVersionName);
+            if (EnableVersionIsolation())
+            {
+                return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
+                    ProjectSettings.GetSetting("application/config/name").AsString(),
+                    ProjectSettings.GetSetting("application/config/version").AsString());
+            }
+            else
+            {
+                return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
+                    ProjectSettings.GetSetting("application/config/name").AsString(),
+                    DefaultVersionName);
+            }
         }
     }
 
