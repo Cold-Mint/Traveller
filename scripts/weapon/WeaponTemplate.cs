@@ -1,5 +1,6 @@
 using System;
 using ColdMint.scripts.character;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.pickable;
 using Godot;
 
@@ -22,7 +23,10 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     public override void LoadResource()
     {
         base.LoadResource();
-        _audioStreamPlayer2D = GetNode<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
+        if (_audioStreamPlayer2D == null)
+        {
+            _audioStreamPlayer2D = GetNode<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
+        }
     }
 
     public override bool Use(Node2D? owner, Vector2 targetGlobalPosition)
@@ -97,7 +101,26 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
                     characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
                 }
             }
-            _audioStreamPlayer2D?.Play();
+            if (_audioStreamPlayer2D == null)
+            {
+                //No audio player
+                //没有音频播放器
+                LogCat.Log("no_audio_stream_player");
+                return true;
+            }
+
+            if (_audioStreamPlayer2D.IsPlaying())
+            {
+                //The audio is playing
+                //音频正在播放中
+                LogCat.Log("audio_stream_player_is_playing");
+                return true;
+            }
+
+            //Play audio
+            //播放音频
+            LogCat.LogWithFormat("play_audio", LogCat.LogLabel.Default, _audioStreamPlayer2D.Bus, _audioStreamPlayer2D.Stream);
+            _audioStreamPlayer2D.Play();
         }
         return result;
     }

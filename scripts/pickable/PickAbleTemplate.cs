@@ -168,18 +168,18 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     }
 
     private CollisionShape2D? _collisionShape2D;
-    
+
     /// <summary>
     /// <para>Whether the resource has been loaded</para>
     /// <para>是否已加载过资源了</para>
     /// </summary>
     private bool _loadedResource;
 
-    public sealed override void _Ready()
+    public override void _Ready()
     {
         LoadResource();
     }
-    
+
 
     public virtual void LoadResource()
     {
@@ -196,7 +196,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         _loadedResource = true;
     }
-    
+
     public override void _MouseEnter()
     {
         if (Picked)
