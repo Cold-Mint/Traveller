@@ -1,6 +1,47 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3o422sb2opuh"]
+[gd_scene load_steps=8 format=3 uid="uid://c3o422sb2opuh"]
 
 [ext_resource type="Script" path="res://scripts/loader/uiLoader/MainMenuLoader.cs" id="1_ljkri"]
+[ext_resource type="Texture2D" uid="uid://btjicmwuohm5m" path="res://sprites/mainMenu/1.png" id="2_e7tcv"]
+[ext_resource type="Texture2D" uid="uid://dtq7eoe8m0ybk" path="res://sprites/mainMenu/2.png" id="3_iw58v"]
+[ext_resource type="Texture2D" uid="uid://cgnu8slwshvb" path="res://sprites/mainMenu/3.png" id="4_j0f0y"]
+
+[sub_resource type="Animation" id="Animation_agfyt"]
+resource_name = "background"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [ExtResource("2_e7tcv"), ExtResource("3_iw58v"), ExtResource("4_j0f0y")]
+}
+
+[sub_resource type="Animation" id="Animation_fdfsj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_e7tcv")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ni18n"]
+_data = {
+"RESET": SubResource("Animation_fdfsj"),
+"background": SubResource("Animation_agfyt")
+}
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -12,6 +53,15 @@ offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ljkri")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_e7tcv")
 
 [node name="StartGameButton" type="Button" parent="."]
 layout_mode = 1
@@ -140,3 +190,11 @@ layout_mode = 2
 text = "Godot Engine"
 underline = 1
 uri = "https://godotengine.org/"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ni18n")
+}
+autoplay = "background"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

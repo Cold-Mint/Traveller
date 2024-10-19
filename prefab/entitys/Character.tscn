@@ -32,6 +32,7 @@ script = ExtResource("1_1dlls")
 _platformDetectionRayCast2DList = [NodePath("PlatformDetectionRayCast1"), NodePath("PlatformDetectionRayCast2"), NodePath("PlatformDetectionRayCast3")]
 MaxHp = 32
 CampId = "Default"
+_indestructible = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_bb8wt")
