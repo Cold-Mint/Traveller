@@ -56,31 +56,31 @@ public interface IGameGui
     /// <para>LeftButton</para>
     /// <para>左侧移动按钮</para>
     /// </summary>
-    TextureButton? LeftButton { get; }
+    TouchScreenButton? LeftButton { get; }
 
     /// <summary>
     /// <para>RightButton</para>
     /// <para>右侧移动按钮</para>
     /// </summary>
-    TextureButton? RightButton { get; }
+    TouchScreenButton? RightButton { get; }
 
 
     /// <summary>
     /// <para>Jump button</para>
     /// <para>跳跃按钮</para>
     /// </summary>
-    TextureButton? JumpButton { get; }
+    TouchScreenButton? JumpButton { get; }
 
     /// <summary>
     /// <para>Pick Button</para>
     /// <para>捡起按钮</para>
     /// </summary>
-    TextureButton? PickButton { get; }
+    TouchScreenButton? PickButton { get; }
     
     /// <summary>
     /// <para>Throw Button</para>
     /// <para>抛出按钮</para>
     /// </summary>
-    TextureButton? ThrowButton { get; }
+    RockerButton? ThrowButton { get; }
 
 }

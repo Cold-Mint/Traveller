@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://co8fnkqxrmae"]
+[gd_scene load_steps=9 format=3 uid="uid://co8fnkqxrmae"]
 
 [ext_resource type="Script" path="res://scripts/loader/uiLoader/MobileGameGui.cs" id="1_ems4y"]
 [ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="1_q5x30"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="4_4ljyt"]
 [ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="5_imtu2"]
 [ext_resource type="Texture2D" uid="uid://cpm851cda1gv" path="res://sprites/ui/placeholder.png" id="7_tncke"]
+[ext_resource type="Script" path="res://scripts/loader/RockerButton.cs" id="8_jgv6f"]
 
 [node name="GameGuiDefault" type="Control"]
 layout_mode = 3
@@ -70,7 +71,7 @@ layout_mode = 1
 offset_left = 30.0
 offset_top = 20.0
 offset_right = 815.0
-offset_bottom = 36.0
+offset_bottom = 52.0
 mouse_filter = 2
 script = ExtResource("5_imtu2")
 
@@ -98,76 +99,57 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("4_4ljyt")
 
-[node name="LeftButton" type="TextureButton" parent="."]
+[node name="MoveControl" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 29.0
-offset_top = -144.0
-offset_right = 93.0
-offset_bottom = -80.0
+offset_left = 19.0
+offset_top = -163.0
+offset_right = 303.0
+offset_bottom = -23.0
 grow_vertical = 0
-scale = Vector2(1.5, 1.5)
-texture_normal = ExtResource("7_tncke")
 
-[node name="RightButton" type="TextureButton" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 144.0
-offset_top = -144.0
-offset_right = 208.0
-offset_bottom = -80.0
-grow_vertical = 0
-scale = Vector2(1.5, 1.5)
+[node name="RightButton" type="TouchScreenButton" parent="MoveControl"]
+position = Vector2(144, 2)
+scale = Vector2(2, 2)
 texture_normal = ExtResource("7_tncke")
+action = "ui_right"
 
-[node name="JumpButton" type="TextureButton" parent="."]
+[node name="LeftButton" type="TouchScreenButton" parent="MoveControl"]
+position = Vector2(3, 6)
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_tncke")
+action = "ui_left"
+
+[node name="ActionControl" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -118.0
-offset_top = -128.0
-offset_right = -54.0
-offset_bottom = -64.0
+offset_left = -303.0
+offset_top = -233.0
+offset_bottom = -2.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(1.5, 1.5)
-texture_normal = ExtResource("7_tncke")
 
-[node name="PickButton" type="TextureButton" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -217.0
-offset_top = -131.0
-offset_right = -153.0
-offset_bottom = -67.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(1.5, 1.5)
+[node name="JumpButton" type="TouchScreenButton" parent="ActionControl"]
+position = Vector2(133, 67)
+scale = Vector2(2, 2)
 texture_normal = ExtResource("7_tncke")
+action = "ui_up"
 
-[node name="ThrowButton" type="TextureButton" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -232.0
-offset_right = -86.0
-offset_bottom = -168.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(1.5, 1.5)
+[node name="PickButton" type="TouchScreenButton" parent="ActionControl"]
+position = Vector2(134, -67)
+scale = Vector2(2, 2)
 texture_normal = ExtResource("7_tncke")
+action = "pick_up"
+
+[node name="ThrowButton" type="TouchScreenButton" parent="ActionControl"]
+position = Vector2(-1, 71)
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_tncke")
+action = "throw"
+script = ExtResource("8_jgv6f")

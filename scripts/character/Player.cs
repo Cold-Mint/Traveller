@@ -134,37 +134,18 @@ public partial class Player : CharacterTemplate
         UpdateCollidingWithPlatform();
         //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度
-        if (GameSceneDepend.GameGuiTemplate?.JumpButton != null)
-        {
-            if (GameSceneDepend.GameGuiTemplate.JumpButton.IsPressed() && IsOnFloor())
-                velocity.Y = JumpVelocity;
-        }
-        else
-        {
-            if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
-                velocity.Y = JumpVelocity;
-        }
+        if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
+            velocity.Y = JumpVelocity;
 
         //Moving left and right
         //左右移动
-        if (GameSceneDepend.GameGuiTemplate?.LeftButton != null && GameSceneDepend.GameGuiTemplate?.RightButton != null)
-        {
-            var left = GameSceneDepend.GameGuiTemplate.LeftButton.IsPressed() ? -1 : 0;
-            var right = GameSceneDepend.GameGuiTemplate.RightButton.IsPressed() ? 1 : 0;
-            var axis = left + right;
-            velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
-        }
-        else
-        {
-            var axis = Input.GetAxis("ui_left", "ui_right");
-            velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
-        }
-
+        var axis = Input.GetAxis("ui_left", "ui_right");
+        velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
 
 
         if (Input.IsActionJustPressed("use_item"))
         {
-            _canUseItem = !GameSceneDepend.IsMouseOverFurnitureGui && !GameSceneDepend.IsMouseOverItemSlotNode;
+            CanUseItem();
         }
         //Use items
         //使用物品
@@ -177,21 +158,18 @@ public partial class Player : CharacterTemplate
         }
         //Pick up an item
         //捡起物品
-        if (GameSceneDepend.GameGuiTemplate?.PickButton != null)
+        if (Input.IsActionJustPressed("pick_up"))
         {
-            if (GameSceneDepend.GameGuiTemplate.PickButton.IsPressed())
+            var pickAbleItem = FindTheNearestItem();
+            var success = PickItem(pickAbleItem);
+            if (success)
             {
-                PressedPick();
+                if (pickAbleItem != null)
+                {
+                    PickingRangeBodiesList?.Remove(pickAbleItem);
+                }
             }
         }
-        else
-        {
-            if (Input.IsActionJustPressed("pick_up"))
-            {
-                PressedPick();
-            }
-        }
-
 
         if (Input.IsActionJustPressed("ui_down"))
         {
@@ -255,17 +233,54 @@ public partial class Player : CharacterTemplate
         }
     }
 
-    private void PressedPick()
+    private void CanUseItem()
     {
-        var pickAbleItem = FindTheNearestItem();
-        var success = PickItem(pickAbleItem);
-        if (success)
+        if (GameSceneDepend.IsMouseOverFurnitureGui)
         {
-            if (pickAbleItem != null)
-            {
-                PickingRangeBodiesList?.Remove(pickAbleItem);
-            }
+            _canUseItem = false;
+            return;
         }
+        if (GameSceneDepend.IsMouseOverItemSlotNode)
+        {
+            _canUseItem = false;
+            return;
+        }
+        if (Config.GetOs() == Config.OsEnum.Android)
+        {
+            if (GameSceneDepend.GameGuiTemplate == null)
+            {
+                _canUseItem = false;
+                return;
+            }
+            if (GameSceneDepend.GameGuiTemplate.JumpButton != null && GameSceneDepend.GameGuiTemplate.JumpButton.IsPressed())
+            {
+                _canUseItem = false;
+                return;
+            }
+            if (GameSceneDepend.GameGuiTemplate.RightButton != null && GameSceneDepend.GameGuiTemplate.RightButton.IsPressed())
+            {
+                _canUseItem = false;
+                return;
+            }
+            if (GameSceneDepend.GameGuiTemplate.LeftButton != null && GameSceneDepend.GameGuiTemplate.LeftButton.IsPressed())
+            {
+                _canUseItem = false;
+                return;
+            }
+            if (GameSceneDepend.GameGuiTemplate.PickButton != null && GameSceneDepend.GameGuiTemplate.PickButton.IsPressed())
+            {
+                _canUseItem = false;
+                return;
+            }
+            if (GameSceneDepend.GameGuiTemplate.ThrowButton != null && GameSceneDepend.GameGuiTemplate.ThrowButton.IsPressed())
+            {
+                _canUseItem = false;
+                return;
+            }
+
+        }
+        _canUseItem = true;
+
     }
 
     /// <summary>
@@ -276,6 +291,10 @@ public partial class Player : CharacterTemplate
     {
         //We take the mouse position, normalize it, and then multiply it by the distance the player can throw
         //我们拿到鼠标的位置，将其归一化处理，然后乘以玩家可扔出的距离
+        if (Config.GetOs() == Config.OsEnum.Android && GameSceneDepend.GameGuiTemplate != null && GameSceneDepend.GameGuiTemplate.ThrowButton != null)
+        {
+            return GameSceneDepend.GameGuiTemplate.ThrowButton.GetOffSetPosition() * _throwingVelocity;
+        }
         return GetLocalMousePosition().Normalized() * _throwingVelocity;
     }
 

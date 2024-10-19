@@ -55,23 +55,23 @@ public partial class GameGuiTemplate : Control, IGameGui
     {
         get => _miniMapAnimationPlayer;
     }
-    public virtual TextureButton? LeftButton
+    public virtual TouchScreenButton? LeftButton
     {
         get => null;
     }
-    public virtual TextureButton? RightButton
+    public virtual TouchScreenButton? RightButton
     {
         get => null;
     }
-    public virtual TextureButton? JumpButton
+    public virtual TouchScreenButton? JumpButton
     {
         get => null;
     }
-    public virtual TextureButton? PickButton
+    public virtual TouchScreenButton? PickButton
     {
         get => null;
     }
-    public virtual TextureButton? ThrowButton
+    public virtual RockerButton? ThrowButton
     {
         get => null;
     }

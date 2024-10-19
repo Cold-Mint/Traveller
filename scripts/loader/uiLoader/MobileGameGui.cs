@@ -9,43 +9,43 @@ namespace ColdMint.scripts.loader.uiLoader;
 /// </summary>
 public partial class MobileGameGui : GameGuiTemplate
 {
-    private TextureButton? _leftButton;
-    private TextureButton? _rightButton;
-    private TextureButton? _jumpButton;
-    private TextureButton? _pickButton;
-    private TextureButton? _throwButton;
+    private TouchScreenButton? _leftButton;
+    private TouchScreenButton? _rightButton;
+    private TouchScreenButton? _jumpButton;
+    private TouchScreenButton? _pickButton;
+    private RockerButton? _throwButton;
     public override void _Ready()
     {
         base._Ready();
         ProtectedHealthBar = GetNode<HealthBarUi>("HealthBarUi");
         ProtectedHotBar = GetNode<HotBar>("HotBar");
-        _leftButton = GetNode<TextureButton>("LeftButton");
-        _rightButton = GetNode<TextureButton>("RightButton");
-        _jumpButton = GetNode<TextureButton>("JumpButton");
-        _pickButton = GetNode<TextureButton>("PickButton");
-        _throwButton = GetNode<TextureButton>("ThrowButton");
+        _leftButton = GetNode<TouchScreenButton>("MoveControl/LeftButton");
+        _rightButton = GetNode<TouchScreenButton>("MoveControl/RightButton");
+        _jumpButton = GetNode<TouchScreenButton>("ActionControl/JumpButton");
+        _pickButton = GetNode<TouchScreenButton>("ActionControl/PickButton");
+        _throwButton = GetNode<RockerButton>("ActionControl/ThrowButton");
     }
 
 
-    public override TextureButton? LeftButton
+    public override TouchScreenButton? LeftButton
     {
         get => _leftButton;
     }
-    public override TextureButton? RightButton
+    public override TouchScreenButton? RightButton
     {
         get => _rightButton;
     }
-    public override TextureButton? JumpButton
+    public override TouchScreenButton? JumpButton
     {
         get => _jumpButton;
     }
 
 
-    public override TextureButton? PickButton
+    public override TouchScreenButton? PickButton
     {
         get => _pickButton;
     }
-    public override TextureButton? ThrowButton
+    public override RockerButton? ThrowButton
     {
         get => _throwButton;
     }
