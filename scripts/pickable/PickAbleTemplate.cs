@@ -19,6 +19,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     public void ShowSelf()
     {
+        ProcessMode = ProcessModeEnum.Inherit;
         Show();
     }
 
@@ -29,6 +30,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
 
     public void HideSelf()
     {
+        ProcessMode = ProcessModeEnum.Disabled;
         Hide();
     }
 
