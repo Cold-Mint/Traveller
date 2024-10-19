@@ -16,6 +16,8 @@ public partial class Furniture : RigidBody2D
     private string? _furnitureName;
 
     private Label? _tipLabel;
+    private AudioStreamPlayer2D? _audioStreamPlayer2D;
+    private CollisionShape2D? _collisionShape2D;
 
     public override void _MouseEnter()
     {
@@ -66,6 +68,8 @@ public partial class Furniture : RigidBody2D
             _initialDurability = _maxDurability;
         }
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
+        _collisionShape2D = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+        _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         InputPickable = true;
         _durability = _initialDurability;
         SetCollisionLayerValue(Config.LayerNumber.Furniture, true);
@@ -98,10 +102,33 @@ public partial class Furniture : RigidBody2D
     /// </returns>
     public bool Damage(DamageTemplate damageTemplate)
     {
+        if (_durability <= 0)
+        {
+            //Do not damage broken furniture twice.
+            //不能对已破碎的家具二次伤害。
+            return false;
+        }
         _durability -= damageTemplate.Damage;
         if (_durability <= 0)
         {
-            QueueFree();
+            if (_audioStreamPlayer2D == null)
+            {
+                QueueFree();
+            }
+            else
+            {
+                //If there is a sound effect, we wait for the sound effect to play and then destroy the node.
+                //如果有音效，我们等待音效播放完毕后销毁节点。
+                _audioStreamPlayer2D.Finished += QueueFree;
+                _audioStreamPlayer2D.Play();
+                //Disable collisions and hide nodes in order to make the player appear destroyed.
+                //禁用碰撞，隐藏节点，以便让玩家看起来被销毁了。
+                if (_collisionShape2D != null)
+                {
+                    _collisionShape2D.Disabled = true;
+                }
+                Hide();
+            }
         }
         return true;
     }
