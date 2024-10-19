@@ -18,14 +18,14 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// <para>Fire audio playback component</para>
     /// <para>开火音效播放组件</para>
     /// </summary>
-    private AudioStreamPlayer2D? _audioStreamPlayer2D;
+    private AudioStreamPlayer2D? _fireSoundPlayer2D;
 
     public override void LoadResource()
     {
         base.LoadResource();
-        if (_audioStreamPlayer2D == null)
+        if (_fireSoundPlayer2D == null)
         {
-            _audioStreamPlayer2D = GetNode<AudioStreamPlayer2D>("Marker2D/AudioStreamPlayer2D");
+            _fireSoundPlayer2D = GetNode<AudioStreamPlayer2D>("Marker2D/FireSoundPlayer2D");
         }
     }
 
@@ -101,7 +101,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
                     characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
                 }
             }
-            if (_audioStreamPlayer2D == null)
+            if (_fireSoundPlayer2D == null)
             {
                 //No audio player
                 //没有音频播放器
@@ -109,7 +109,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
                 return true;
             }
 
-            if (_audioStreamPlayer2D.IsPlaying())
+            if (_fireSoundPlayer2D.IsPlaying())
             {
                 //The audio is playing
                 //音频正在播放中
@@ -119,8 +119,8 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
 
             //Play audio
             //播放音频
-            LogCat.LogWithFormat("play_audio", LogCat.LogLabel.Default, _audioStreamPlayer2D.Bus, _audioStreamPlayer2D.Stream);
-            _audioStreamPlayer2D.Play();
+            LogCat.LogWithFormat("play_audio", LogCat.LogLabel.Default, _fireSoundPlayer2D.Bus);
+            _fireSoundPlayer2D.Play();
         }
         return result;
     }

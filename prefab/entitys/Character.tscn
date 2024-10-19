@@ -69,3 +69,4 @@ position = Vector2(0, -47)
 script = ExtResource("3_lrmsw")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true

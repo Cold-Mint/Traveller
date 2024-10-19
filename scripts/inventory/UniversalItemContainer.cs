@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using ColdMint.scripts.map.events;
+using Godot;
 
 namespace ColdMint.scripts.inventory;
 
@@ -467,6 +468,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         {
             oldItem.HideSelf();
             oldItem.IsSelect = false;
+            if (oldItem is Node2D node2D)
+            {
+                node2D.ProcessMode = Node.ProcessModeEnum.Disabled;
+            }
         }
 
         //There is no need to broadcast placeholders when an event is invoked.
@@ -476,6 +481,10 @@ public class UniversalItemContainer(int totalCapacity) : IItemContainer
         {
             newItem.ShowSelf();
             newItem.IsSelect = true;
+            if (newItem is Node2D node2D)
+            {
+                node2D.ProcessMode = Node.ProcessModeEnum.Inherit;
+            }
         }
 
         _selectIndex = newIndex;

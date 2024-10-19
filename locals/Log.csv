@@ -129,6 +129,6 @@ log_game_over_event_is_empty,游戏结束事件为空。,End of game event is em
 log_cannot_resurrect_non_existent_player,不能复活不存在的玩家。,Cannot resurrect non-existent players.,存在しないプレイヤーを復活させることはできません。
 log_no_audio_stream_player,没有音频播放器组件。,No audio player component.,オーディオプレーヤーキットはありません。
 log_audio_stream_player_is_playing,音频播放器正在播放中。,The audio player is playing.,オーディオプレーヤーが再生中です。
-log_play_audio,播放音频BUS为{0}Stream为{1}.,BUS is {0} and Stream is {1}.,再生オーディオはBUSが{0}Streamが{1}です。
+log_play_audio,播放音频BUS为{0}.,Play audio BUS is {0}.,{0}のオーディオを再生します。
 log_load_data_from,从{0}加载数据。,Load data from {0}.,{0}からデータをロードします。
 log_game_gui_template_is_null,Gui模板是空的。,The Gui template is empty.,Guiテンプレートは空です。
