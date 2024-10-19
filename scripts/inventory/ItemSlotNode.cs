@@ -7,12 +7,12 @@ namespace ColdMint.scripts.inventory;
 /// <para>A slot in the inventory</para>
 /// <para>物品栏内的一个插槽</para>
 /// </summary>
-public partial class ItemSlotNode : MarginContainer, IItemDisplay
+public partial class ItemSlotNode : TextureButton, IItemDisplay
 {
-    private TextureRect? _backgroundTextureRect;
+    [Export]
     private TextureRect? _iconTextureRect;
+    [Export]
     private Label? _quantityLabel;
-    private Control? _control;
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
     public IItem? Item { get; private set; }
@@ -22,12 +22,21 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
     {
         _backgroundTexture = ResourceLoader.Load<Texture2D>("res://sprites/ui/ItemBarEmpty.png");
         _backgroundTextureWhenSelect = ResourceLoader.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
-        _backgroundTextureRect =
-            GetNode<TextureRect>("BackgroundTexture");
-        _iconTextureRect = GetNode<TextureRect>("BackgroundTexture/IconTextureRect");
-        _quantityLabel = GetNode<Label>("Control/QuantityLabel");
-        _control = GetNode<Control>("Control");
-        _quantityLabel.Hide();
+        Pressed += OnPressed;
+        _quantityLabel?.Hide();
+    }
+
+    /// <summary>
+    /// <para>When selecting an item slot</para>
+    /// <para>当选择物品槽位时</para>
+    /// </summary>
+    private void OnPressed()
+    {
+        if (Item == null)
+        {
+            return;
+        }
+        Item.ItemContainer?.SelectItem(Item.Index);
     }
 
     public override void _EnterTree()
@@ -201,16 +210,8 @@ public partial class ItemSlotNode : MarginContainer, IItemDisplay
 
     private void UpdateBackground(bool isSelect)
     {
-        if (_backgroundTextureRect == null)
-        {
-            return;
-        }
-
-        _backgroundTextureRect.Texture = isSelect ? _backgroundTextureWhenSelect : _backgroundTexture;
+        TextureNormal = isSelect ? _backgroundTextureWhenSelect : _backgroundTexture;
     }
-
-    public TextureRect? BackgroundTextureRect => _backgroundTextureRect;
-
 
     /// <summary>
     /// <para>Update all displays of this slot</para>

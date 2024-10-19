@@ -3,23 +3,17 @@
 [ext_resource type="Script" path="res://scripts/inventory/ItemSlotNode.cs" id="1_fbwot"]
 [ext_resource type="Texture2D" uid="uid://dmthsdg1wx318" path="res://sprites/ui/ItemBarEmpty.png" id="1_y2wyt"]
 
-[node name="ItemSlot" type="MarginContainer"]
-offset_right = 38.0
-offset_bottom = 38.0
-size_flags_vertical = 3
-mouse_filter = 0
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
+[node name="ItemSlot" type="TextureButton" node_paths=PackedStringArray("_iconTextureRect", "_quantityLabel")]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 35.0
+offset_bottom = 35.0
+texture_normal = ExtResource("1_y2wyt")
 script = ExtResource("1_fbwot")
+_iconTextureRect = NodePath("IconTextureRect")
+_quantityLabel = NodePath("Control/QuantityLabel")
 
-[node name="BackgroundTexture" type="TextureRect" parent="."]
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("1_y2wyt")
-
-[node name="IconTextureRect" type="TextureRect" parent="BackgroundTexture"]
+[node name="IconTextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,7 +28,12 @@ mouse_filter = 2
 expand_mode = 1
 
 [node name="Control" type="Control" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="QuantityLabel" type="Label" parent="Control"]
