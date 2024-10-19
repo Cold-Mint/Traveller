@@ -191,6 +191,11 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     protected List<Node>? PickingRangeBodiesList;
 
+    private AudioStreamPlayer2D? _audioStreamPlayer2D;
+
+    [Export]
+    protected AudioStream[]? DamageSounds;
+
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
 
@@ -305,6 +310,7 @@ public partial class CharacterTemplate : CharacterBody2D
         _pickingArea = GetNode<Area2D>("Area2DPickingArea");
         _damageNumber = GetNode<Marker2D>("DamageNumber") as DamageNumberNodeSpawn;
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
+        _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         if (_pickingArea != null)
         {
             //If true, the zone will detect objects or areas entering and leaving the zone.
@@ -332,6 +338,39 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             GameSceneDepend.TemporaryTargetNode = null;
         }
+    }
+
+    /// <summary>
+    /// <para>Play the specified sound effects</para>
+    /// <para>播放指定的音效</para>
+    /// </summary>
+    /// <param name="audioStream"></param>
+    protected void PlayAudioStream(AudioStream audioStream)
+    {
+        if (_audioStreamPlayer2D == null)
+        {
+            return;
+        }
+        if (_audioStreamPlayer2D.IsPlaying())
+        {
+            return;
+        }
+        _audioStreamPlayer2D.Stream = audioStream;
+        _audioStreamPlayer2D.Play();
+    }
+
+    /// <summary>
+    /// <para>PlayDamageAudio</para>
+    /// <para>播放受伤音效</para>
+    /// </summary>
+    protected void PlayDamageAudio()
+    {
+        if (DamageSounds == null || DamageSounds.Length == 0)
+        {
+            return;
+        }
+        var randomIndex = GD.Randi() % DamageSounds.Length;
+        PlayAudioStream(DamageSounds[randomIndex]);
     }
 
 
@@ -409,7 +448,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return false;
         }
-        
+
         //The item store is marked null, or the item container is null.
         //物品存放的标记为null，或者物品容器为null。
         if (ItemMarker2D == null || ItemContainer == null)
@@ -568,7 +607,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </returns>
     public bool Damage(DamageTemplate damageTemplate)
     {
-        if (_indestructible)
+        if (CurrentHp <= 0 || _indestructible)
         {
             return false;
         }
@@ -583,7 +622,7 @@ public partial class CharacterTemplate : CharacterBody2D
             OnDie(damageTemplate);
             return true;
         }
-
+        PlayDamageAudio();
         UpDataHealthBar();
         return false;
     }
@@ -650,12 +689,12 @@ public partial class CharacterTemplate : CharacterBody2D
             if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
                 !string.IsNullOrEmpty(characterTemplate.CharacterName))
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default,  CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
                     characterTemplate.CharacterName);
             }
             else
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default,  CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
                     damageTemplate.Attacker.Name);
             }
         }

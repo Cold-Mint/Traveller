@@ -93,18 +93,12 @@ position = Vector2(227, 283)
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)
-_initialDurability = 0
-_furnitureName = ""
 
 [node name="WoodenBox2" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 200)
-_initialDurability = 0
-_furnitureName = ""
 
 [node name="WoodenBox3" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 162)
-_initialDurability = 0
-_furnitureName = ""
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 

@@ -37,7 +37,7 @@ public partial class Player : CharacterTemplate
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private double _platformCollisionRecoveryTime = 0.2f;
 
-
+    [Export] private AudioStream[]? _jumpSounds;
     public override void _Ready()
     {
         base._Ready();
@@ -65,6 +65,20 @@ public partial class Player : CharacterTemplate
         {
             NodeUtils.CallDeferredAddChild(this, camera2D);
         }
+    }
+    
+    /// <summary>
+    /// <para>PlayJumpAudio</para>
+    /// <para>播放跳跃音效</para>
+    /// </summary>
+    private void PlayJumpAudio()
+    {
+        if (_jumpSounds == null || _jumpSounds.Length == 0)
+        {
+            return;
+        }
+        var randomIndex = GD.Randi() % _jumpSounds.Length;
+        PlayAudioStream(_jumpSounds[randomIndex]);
     }
 
     protected override void WhenBindItemContainer(IItemContainer? itemContainer)
@@ -135,7 +149,10 @@ public partial class Player : CharacterTemplate
         //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度
         if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
+        {
+            PlayJumpAudio();
             velocity.Y = JumpVelocity;
+        }
 
         //Moving left and right
         //左右移动

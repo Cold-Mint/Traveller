@@ -1,8 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cj65pso40syj5"]
+[gd_scene load_steps=13 format=3 uid="uid://cj65pso40syj5"]
 
 [ext_resource type="Script" path="res://scripts/character/Player.cs" id="1_1dlls"]
+[ext_resource type="AudioStream" uid="uid://d2yy7rkyyt8ve" path="res://sounds/player/damaged1.wav" id="2_af8h5"]
+[ext_resource type="AudioStream" uid="uid://bjhoxg88lttay" path="res://sounds/player/jump1.wav" id="2_b7gjc"]
 [ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_eha68"]
+[ext_resource type="AudioStream" uid="uid://dssbxxb4e11wq" path="res://sounds/player/jump2.wav" id="3_e6cuc"]
+[ext_resource type="AudioStream" uid="uid://6t8sjsbi121w" path="res://sounds/player/damaged2.wav" id="3_kosfs"]
 [ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_lrmsw"]
+[ext_resource type="AudioStream" uid="uid://cndxmnbanr8cu" path="res://sounds/player/damaged3.wav" id="4_svbgi"]
+[ext_resource type="AudioStream" uid="uid://dm15g76dst2a8" path="res://sounds/player/jump3.wav" id="4_ytj5o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
 radius = 21.0
@@ -30,9 +36,10 @@ platform_floor_layers = 4294967042
 platform_wall_layers = 128
 script = ExtResource("1_1dlls")
 _platformDetectionRayCast2DList = [NodePath("PlatformDetectionRayCast1"), NodePath("PlatformDetectionRayCast2"), NodePath("PlatformDetectionRayCast3")]
+_jumpSounds = Array[AudioStream]([ExtResource("2_b7gjc"), ExtResource("3_e6cuc"), ExtResource("4_ytj5o")])
 MaxHp = 32
 CampId = "Default"
-_indestructible = true
+DamageSounds = Array[AudioStream]([ExtResource("2_af8h5"), ExtResource("3_kosfs"), ExtResource("4_svbgi")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_bb8wt")
@@ -71,3 +78,6 @@ script = ExtResource("3_lrmsw")
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 current = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+bus = &"SoundEffect"
