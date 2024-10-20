@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://h7lvaqqlsi4t"]
 
 [ext_resource type="Script" path="res://scripts/loader/uiLoader/SpellEditorUi.cs" id="1_1pxjs"]
-[ext_resource type="PackedScene" uid="uid://d2i4udh0hho41" path="res://prefab/ui/ItemSlot.tscn" id="2_3ut57"]
+[ext_resource type="PackedScene" uid="uid://cdyfow6svey00" path="res://prefab/ui/ItemSlot.tscn" id="2_3ut57"]
 
 [node name="SpellEditorUi" type="Control"]
 layout_mode = 3
@@ -47,7 +47,8 @@ mouse_filter = 2
 
 [node name="ItemSlot" parent="." instance=ExtResource("2_3ut57")]
 layout_mode = 1
-offset_left = 34.0
+offset_left = 32.0
 offset_top = 73.0
-offset_right = 72.0
+offset_right = 70.0
 offset_bottom = 111.0
+stretch_mode = 0

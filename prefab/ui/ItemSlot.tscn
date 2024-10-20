@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2i4udh0hho41"]
+[gd_scene load_steps=3 format=3 uid="uid://cdyfow6svey00"]
 
 [ext_resource type="Script" path="res://scripts/inventory/ItemSlotNode.cs" id="1_fbwot"]
 [ext_resource type="Texture2D" uid="uid://dmthsdg1wx318" path="res://sprites/ui/ItemBarEmpty.png" id="1_y2wyt"]
@@ -9,6 +9,7 @@ offset_top = 3.0
 offset_right = 35.0
 offset_bottom = 35.0
 texture_normal = ExtResource("1_y2wyt")
+stretch_mode = 5
 script = ExtResource("1_fbwot")
 _iconTextureRect = NodePath("IconTextureRect")
 _quantityLabel = NodePath("Control/QuantityLabel")
@@ -26,6 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1

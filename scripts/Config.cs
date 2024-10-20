@@ -73,16 +73,10 @@ public static class Config
     }
 
     /// <summary>
-    /// <para>Path of the App configuration file</para>
-    /// <para>App配置文件路径</para>
+    /// <para>Minimum size of item slot on Android platform</para>
+    /// <para>物品槽在安卓平台上的最小尺寸</para>
     /// </summary>
-    public const string AppConfigPath = "res://AppConfig.yaml";
-
-    /// <summary>
-    /// <para>The percentage of speed reduced after a thrown item hits an enemy</para>
-    /// <para>抛出的物品击中敌人后减少的速度百分比</para>
-    /// </summary>
-    public const float ThrownItemsHitEnemiesReduceSpeedByPercentage = 0.5f;
+    public static readonly Vector2 ItemSlotNodeMinimumSizeInAndroid = new(48f, 48f);
 
     /// <summary>
     /// <para>Scale of the room preview view</para>

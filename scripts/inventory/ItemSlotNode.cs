@@ -24,6 +24,11 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
         _backgroundTextureWhenSelect = ResourceLoader.Load<Texture2D>("res://sprites/ui/ItemBarFocus.png");
         Pressed += OnPressed;
         _quantityLabel?.Hide();
+        if (Config.GetOs() == Config.OsEnum.Android)
+        {
+            SetCustomMinimumSize(Config.ItemSlotNodeMinimumSizeInAndroid);
+            UpdateMinimumSize();
+        }
     }
 
     /// <summary>
