@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/loader/uiLoader/MobileGameGui.cs" id="1_ems4y"]
 [ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="1_q5x30"]
-[ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainer.tscn" id="2_j7ucs"]
 [ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="3_5uepe"]
+[ext_resource type="PackedScene" uid="uid://dot57b1tbvlay" path="res://scenes/mapContainerMobile.tscn" id="3_7mb5f"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="4_4ljyt"]
 [ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="5_imtu2"]
 [ext_resource type="Texture2D" uid="uid://cpm851cda1gv" path="res://sprites/ui/placeholder.png" id="7_tncke"]
@@ -47,6 +47,9 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "ui_re_create_map"
 
+[node name="MapContainer" parent="." instance=ExtResource("3_7mb5f")]
+layout_mode = 1
+
 [node name="SeedLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 3
@@ -61,10 +64,6 @@ offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 10
-
-[node name="MapContainer" parent="." instance=ExtResource("2_j7ucs")]
-visible = false
-layout_mode = 1
 
 [node name="HotBar" type="HBoxContainer" parent="."]
 layout_mode = 1
