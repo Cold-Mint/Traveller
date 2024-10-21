@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpm851cda1gv"
-path="res://.godot/imported/placeholder.png-5b9221c9b2b0e02428c214f921844bdb.ctex"
+uid="uid://ba3hp54f40mga"
+path="res://.godot/imported/rocker_background.png-ee43b2ca2205f9e82b340a7d48ab5c23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ui/placeholder.png"
-dest_files=["res://.godot/imported/placeholder.png-5b9221c9b2b0e02428c214f921844bdb.ctex"]
+source_file="res://sprites/ui/rocker_background.png"
+dest_files=["res://.godot/imported/rocker_background.png-ee43b2ca2205f9e82b340a7d48ab5c23.ctex"]
 
 [params]
 

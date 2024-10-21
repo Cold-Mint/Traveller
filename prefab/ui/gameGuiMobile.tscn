@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dot57b1tbvlay" path="res://scenes/mapContainerMobile.tscn" id="3_7mb5f"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="4_4ljyt"]
 [ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="5_imtu2"]
-[ext_resource type="Texture2D" uid="uid://cpm851cda1gv" path="res://sprites/ui/placeholder.png" id="7_tncke"]
+[ext_resource type="Texture2D" uid="uid://ba3hp54f40mga" path="res://sprites/ui/rocker_background.png" id="7_1htsw"]
 [ext_resource type="Script" path="res://scripts/loader/RockerButton.cs" id="8_jgv6f"]
 
 [node name="GameGuiDefault" type="Control"]
@@ -112,13 +112,13 @@ grow_vertical = 0
 [node name="RightButton" type="TouchScreenButton" parent="MoveControl"]
 position = Vector2(144, 2)
 scale = Vector2(2, 2)
-texture_normal = ExtResource("7_tncke")
+texture_normal = ExtResource("7_1htsw")
 action = "ui_right"
 
 [node name="LeftButton" type="TouchScreenButton" parent="MoveControl"]
 position = Vector2(3, 6)
 scale = Vector2(2, 2)
-texture_normal = ExtResource("7_tncke")
+texture_normal = ExtResource("7_1htsw")
 action = "ui_left"
 
 [node name="ActionControl" type="Control" parent="."]
@@ -137,18 +137,18 @@ grow_vertical = 0
 [node name="JumpButton" type="TouchScreenButton" parent="ActionControl"]
 position = Vector2(133, 67)
 scale = Vector2(2, 2)
-texture_normal = ExtResource("7_tncke")
+texture_normal = ExtResource("7_1htsw")
 action = "ui_up"
 
 [node name="PickButton" type="TouchScreenButton" parent="ActionControl"]
 position = Vector2(134, -67)
 scale = Vector2(2, 2)
-texture_normal = ExtResource("7_tncke")
+texture_normal = ExtResource("7_1htsw")
 action = "pick_up"
 
 [node name="ThrowButton" type="TouchScreenButton" parent="ActionControl"]
 position = Vector2(-1, 71)
 scale = Vector2(2, 2)
-texture_normal = ExtResource("7_tncke")
+texture_normal = ExtResource("7_1htsw")
 action = "throw"
 script = ExtResource("8_jgv6f")
