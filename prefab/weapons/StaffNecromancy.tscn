@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnnn2xyayiehk"]
+[gd_scene load_steps=5 format=3 uid="uid://dnnn2xyayiehk"]
 
-[ext_resource type="Texture2D" uid="uid://wt50kx6bup51" path="res://sprites/weapon/StaffNecromancy.png" id="1_ms3us"]
 [ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w8hhv"]
 [ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="3_31iau"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
@@ -17,11 +16,11 @@ _spellList = PackedStringArray("necromancy")
 _fireSequentially = true
 FiringIntervalAsMillisecond = 350
 _recoilStrength = 5
-UniqueIcon = ExtResource("3_31iau")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)
-texture = ExtResource("1_ms3us")
+rotation = 0.785398
+texture = ExtResource("3_31iau")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(25.5, 0.375)

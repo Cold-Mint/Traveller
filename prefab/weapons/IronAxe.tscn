@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://g1jrthe4ojdd"]
 
 [ext_resource type="Script" path="res://scripts/weapon/MeleeWeapon.cs" id="1_snmy1"]
-[ext_resource type="Texture2D" uid="uid://wt50kx6bup51" path="res://sprites/weapon/StaffNecromancy.png" id="3_cm7e6"]
+[ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="2_h73gp"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_qimud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
@@ -18,7 +18,8 @@ script = ExtResource("1_snmy1")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)
-texture = ExtResource("3_cm7e6")
+rotation = 0.87451
+texture = ExtResource("2_h73gp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(25.5, 0.375)

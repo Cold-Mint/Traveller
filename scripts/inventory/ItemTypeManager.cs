@@ -10,7 +10,7 @@ namespace ColdMint.scripts.inventory;
 public static class ItemTypeManager
 {
     private static Dictionary<string, ItemType> Registry { get; } = [];
-    private static Texture2D DefaultTexture { get; } = new PlaceholderTexture2D();
+    private static readonly Texture2D DefaultTexture = new PlaceholderTexture2D();
 
 
     /// <summary>
@@ -83,7 +83,7 @@ public static class ItemTypeManager
 
         return items.ToArray();
     }
-    
+
 
     /// <summary>
     /// <para>Get the default icon of the item type for the given id</para>

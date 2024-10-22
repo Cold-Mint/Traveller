@@ -15,7 +15,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     //Do not export this field because the ID is specified within yaml.
     //不要导出此字段，因为ID是在yaml内指定的。
     public virtual string Id { get; set; } = "ID";
-    [Export] protected Texture2D? UniqueIcon { get; set; }
 
     public void ShowSelf()
     {
@@ -34,7 +33,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         Hide();
     }
 
-    public Texture2D Icon => UniqueIcon ?? ItemTypeManager.DefaultIconOf(Id);
+    public Texture2D Icon => ItemTypeManager.DefaultIconOf(Id);
 
     public new string Name
     {
