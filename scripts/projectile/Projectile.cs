@@ -6,7 +6,6 @@ using ColdMint.scripts.damage;
 using ColdMint.scripts.furniture;
 using ColdMint.scripts.pickable;
 using ColdMint.scripts.projectile.decorator;
-using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.projectile;
@@ -49,7 +48,7 @@ public partial class Projectile : CharacterBody2D
     ///<para>Indicates the number of units moved per second</para>
     ///<para>表示每秒移动的单位格数</para>
     /// </remarks>
-    [Export] 
+    [Export]
     public float Speed
     {
         get => _actualSpeed / Config.CellSize;
@@ -72,33 +71,15 @@ public partial class Projectile : CharacterBody2D
     /// <para>Can it penetrate the wall</para>
     /// <para>是否可以穿透墙壁</para>
     /// </summary>
-    [Export] private bool _ignoreWall;
-
-    /// <summary>
-    /// <para>Enable the tracking of the enemy</para>
-    /// <para>启用追踪敌人的功能</para>
-    /// </summary>
-    [Export] public bool EnableTracking;
-
-    /// <summary>
-    /// <para>The target dies and destroys the projectile at the same time</para>
-    /// <para>在目标死亡后销毁抛射体</para>
-    /// </summary>
-    [Export] public bool TargetDiesDestroyProjectile;
-
-    /// <summary>
-    /// <para>The target</para>
-    /// <para>设置目标</para>
-    /// </summary>
-    public Node2D? TargetNode { get; set; }
+    [Export] public bool IgnoreWall;
 
     private List<IProjectileDecorator>? _projectileDecorators;
 
     /// <summary>
-    /// <para>Rays used to detect walls</para>
-    /// <para>用于检测墙壁的射线</para>
+    /// <para>Supports decorators that handle physical frames</para>
+    /// <para>支持处理物理帧的装饰器</para>
     /// </summary>
-    private RayCast2D? _wallRayCast;
+    private List<IProjectileDecorator>? _physicalFrameDecorators;
 
     /// <summary>
     /// <para>Repel strength</para>
@@ -119,14 +100,6 @@ public partial class Projectile : CharacterBody2D
 
     public override void _Ready()
     {
-        if (!_ignoreWall)
-        {
-            _wallRayCast = new RayCast2D();
-            _wallRayCast.SetCollisionMaskValue(Config.LayerNumber.Wall, true);
-            _wallRayCast.SetCollisionMaskValue(Config.LayerNumber.Floor, true);
-            NodeUtils.CallDeferredAddChild(this, _wallRayCast);
-        }
-
         //If the existence time is less than or equal to 0, then it is set to exist for 10 seconds, and projectiles that exist indefinitely are prohibited
         //如果存在时间小于等于0，那么设置为存在10秒，禁止无限期存在的抛射体
         if (_life <= 0)
@@ -135,8 +108,8 @@ public partial class Projectile : CharacterBody2D
         }
 
         _destructionTime = DateTime.Now.AddMilliseconds(_life);
-        SetCollisionMaskValue(Config.LayerNumber.Wall, !_ignoreWall);
-        SetCollisionMaskValue(Config.LayerNumber.Floor, !_ignoreWall);
+        SetCollisionMaskValue(Config.LayerNumber.Wall, !IgnoreWall);
+        SetCollisionMaskValue(Config.LayerNumber.Floor, !IgnoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         SetCollisionMaskValue(Config.LayerNumber.PickAbleItem, true);
@@ -144,19 +117,6 @@ public partial class Projectile : CharacterBody2D
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-        if (TargetNode != null)
-        {
-            TargetNode.TreeExiting += () =>
-            {
-                //Clear the trace when the target is destroyed.
-                //在目标被销毁的时候清空跟踪。
-                TargetNode = null;
-                if (TargetDiesDestroyProjectile)
-                {
-                    OnTimeOut();
-                }
-            };
-        }
     }
 
     /// <summary>
@@ -171,6 +131,13 @@ public partial class Projectile : CharacterBody2D
     {
         _projectileDecorators ??= [];
         _projectileDecorators.Add(decorator);
+        if (decorator.SupportedModificationPhysicalFrame)
+        {
+            _physicalFrameDecorators ??= [];
+            _physicalFrameDecorators.Add(decorator);
+        }
+        decorator.Attach(this);
+
     }
 
     /// <summary>
@@ -184,7 +151,19 @@ public partial class Projectile : CharacterBody2D
     /// <returns></returns>
     public bool RemoveProjectileDecorator(IProjectileDecorator decorator)
     {
-        return _projectileDecorators?.Remove(decorator) ?? false;
+        if (_projectileDecorators == null)
+        {
+            return false;
+        }
+        if (_projectileDecorators.Contains(decorator))
+        {
+            decorator.Detach(this);
+        }
+        if (_physicalFrameDecorators != null)
+        {
+            _physicalFrameDecorators.Remove(decorator);
+        }
+        return _projectileDecorators.Remove(decorator);
     }
 
     /// <summary>
@@ -326,12 +305,29 @@ public partial class Projectile : CharacterBody2D
             projectileDecoratorAction(decorator);
         }
     }
+    /// <summary>
+    /// <para>Invoke Physical Frame Decorators</para>
+    /// <para>调用物理帧装饰器</para>
+    /// </summary>
+    /// <param name="projectileDecoratorAction"></param>
+    private void InvokePhysicalFrameDecorators(Action<IProjectileDecorator> projectileDecoratorAction)
+    {
+        if (_physicalFrameDecorators == null)
+        {
+            return;
+        }
+
+        foreach (var decorator in _physicalFrameDecorators)
+        {
+            projectileDecoratorAction(decorator);
+        }
+    }
 
     /// <summary>
     /// <para>When beyond the time of existence</para>
     /// <para>当超过存在时间</para>
     /// </summary>
-    private void OnTimeOut()
+    public void OnTimeOut()
     {
         QueueFree();
     }
@@ -350,62 +346,41 @@ public partial class Projectile : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         var collisionInfo = MoveAndCollide(Velocity * (float)delta);
+        InvokePhysicalFrameDecorators(decorator =>
+        {
+            decorator.PhysicsProcess(this, collisionInfo);
+        });
         if (collisionInfo == null)
         {
             //No collision.
             //没有撞到任何东西。
-            if (EnableTracking && TargetNode != null)
-            {
-                //Track the target
-                //追踪目标
-                //Gets a vector of the projectile pointing at the enemy's position.
-                //得到抛射体指向敌人位置的向量。
-                var desiredVelocity = TargetNode.GlobalPosition - GlobalPosition;
-                if (!_ignoreWall && _wallRayCast != null)
-                {
-                    _wallRayCast!.TargetPosition = desiredVelocity;
-                    if (_wallRayCast.IsColliding())
-                    {
-                        return;
-                    }
-                }
-
-                var actualDesiredVelocity = desiredVelocity.Normalized() * _actualSpeed;
-                //The weight is smaller, the circle is larger.
-                //weight越小，子弹绕的圈越大。
-                Velocity = Velocity.Lerp(actualDesiredVelocity, 0.1f);
-            }
+            return;
         }
-        else
+        //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
+        //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
+        var node = (Node2D)collisionInfo.GetCollider();
+        var canCauseHarm = CanCauseHarm(Owner, node);
+        if (!canCauseHarm)
         {
-            //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
-            //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
-            var godotObject = collisionInfo.GetCollider();
-            var node = (Node2D)godotObject;
-            var canCauseHarm = CanCauseHarm(Owner, node);
-            if (!canCauseHarm)
-            {
-                return;
-            }
-
-            //Bump into other objects.
-            //撞到其他对象。
-            if (_enableBounce)
-            {
-                Velocity = Velocity.Bounce(collisionInfo.GetNormal());
-            }
-            DoDamage(Owner, node);
-            //Please specify in the Mask who the bullet will collide with
-            //请在Mask内配置子弹会和谁碰撞
-            //When a bullet hits an object, its durability decreases
-            //子弹撞击到物体时，耐久度减少
-            _durability--;
-            if (_durability <= 0)
-            {
-                //When the durability is less than or equal to 0, destroy the bullet
-                //当耐久度小于等于0时，销毁子弹
-                QueueFree();
-            }
+            return;
+        }
+        //Bump into other objects.
+        //撞到其他对象。
+        if (_enableBounce)
+        {
+            Velocity = Velocity.Bounce(collisionInfo.GetNormal());
+        }
+        DoDamage(Owner, node);
+        //Please specify in the Mask who the bullet will collide with
+        //请在Mask内配置子弹会和谁碰撞
+        //When a bullet hits an object, its durability decreases
+        //子弹撞击到物体时，耐久度减少
+        _durability--;
+        if (_durability <= 0)
+        {
+            //When the durability is less than or equal to 0, destroy the bullet
+            //当耐久度小于等于0时，销毁子弹
+            QueueFree();
         }
     }
 }

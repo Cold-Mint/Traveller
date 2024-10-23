@@ -26,4 +26,38 @@ public interface IProjectileDecorator
     ///<para>目标</para>
     /// </param>
     void OnKillCharacter(Node2D? owner, CharacterTemplate target);
+
+    /// <summary>
+    /// <para>When a decorator is attached to a projectile (note that the same decorator can be attached to multiple projectiles.)</para>
+    /// <para>当装饰器附加到抛射体上时（注意同一个装饰器可附加到多个抛射体上。）</para>
+    /// </summary>
+    /// <param name="projectile"></param>
+    void Attach(Projectile projectile);
+
+    /// <summary>
+    /// <para>When the decorator is removed from the projectile</para>
+    /// <para>当装饰器从抛射体上移除时</para>
+    /// </summary>
+    /// <param name="projectile"></param>
+    void Detach(Projectile projectile);
+
+    /// <summary>
+    /// <para>SupportedModificationPhysicalFrame</para>
+    /// <para>支持修改物理帧吗</para>
+    /// </summary>
+    bool SupportedModificationPhysicalFrame { get; }
+
+    /// <summary>
+    /// <para>Each physical frame is processed</para>
+    /// <para>处理每个物理帧</para>
+    /// </summary>
+    /// <param name="projectile">
+    ///<para>The current physical frame for which projectile?</para>
+    ///<para>目前为哪个抛射体的物理帧？</para>
+    /// </param>
+    /// <param name="collisionInfo">
+    ///<para>collisionInfo</para>
+    ///<para>碰撞信息</para>
+    /// </param>
+    void PhysicsProcess(Projectile projectile, KinematicCollision2D? collisionInfo);
 }

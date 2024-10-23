@@ -53,4 +53,23 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
         node2D.GlobalPosition = target.GlobalPosition;
         NodeUtils.CallDeferredAddChild(container, node2D);
     }
+
+    public void Attach(Projectile projectile)
+    {
+
+    }
+
+    public void Detach(Projectile projectile)
+    {
+
+    }
+    public bool SupportedModificationPhysicalFrame
+    {
+        get => false;
+    }
+
+    public void PhysicsProcess(Projectile projectile, KinematicCollision2D? collisionInfo)
+    {
+
+    }
 }
