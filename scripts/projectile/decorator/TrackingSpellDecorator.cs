@@ -76,7 +76,7 @@ public class TrackingSpellDecorator : IProjectileDecorator
             var desiredVelocity = TargetNode.GlobalPosition - projectile.GlobalPosition;
             if (_walRaycastCache.TryGetValue(projectile, out var rayCast2D))
             {
-                rayCast2D.TargetPosition = desiredVelocity;
+                rayCast2D.TargetPosition = desiredVelocity.Rotated(-projectile.Rotation);
                 if (rayCast2D.IsColliding())
                 {
                     return;
