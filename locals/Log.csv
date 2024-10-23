@@ -132,3 +132,4 @@ log_audio_stream_player_is_playing,音频播放器正在播放中。,The audio p
 log_play_audio,播放音频BUS为{0}.,Play audio BUS is {0}.,{0}のオーディオを再生します。
 log_load_data_from,从{0}加载数据。,Load data from {0}.,{0}からデータをロードします。
 log_game_gui_template_is_null,Gui模板是空的。,The Gui template is empty.,Guiテンプレートは空です。
+log_can_not_fire_from_safe_distance,不能在安全距离内开火。,You can't fire from a safe distance.,安全な距離で発砲はできません

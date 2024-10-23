@@ -196,6 +196,12 @@ public partial class Projectile : CharacterBody2D
     /// <returns></returns>
     private bool CanCauseHarm(Node2D? owner, Node2D target)
     {
+        //Projectiles are not allowed to directly harm the owner.
+        //不允许子弹直接伤害主人。
+        if (owner == target)
+        {
+            return false;
+        }
         //We must know who the owner of the bullet is in order to determine whether it should cause damage or not
         //我们必须知道子弹的主人是谁，才能判断是否应该造成伤害
         if (owner == null)
@@ -372,13 +378,6 @@ public partial class Projectile : CharacterBody2D
         }
         else
         {
-            //Bump into other objects.
-            //撞到其他对象。
-            if (_enableBounce)
-            {
-                Velocity = Velocity.Bounce(collisionInfo.GetNormal());
-            }
-
             //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
             //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
             var godotObject = collisionInfo.GetCollider();
@@ -389,6 +388,12 @@ public partial class Projectile : CharacterBody2D
                 return;
             }
 
+            //Bump into other objects.
+            //撞到其他对象。
+            if (_enableBounce)
+            {
+                Velocity = Velocity.Bounce(collisionInfo.GetNormal());
+            }
             DoDamage(Owner, node);
             //Please specify in the Mask who the bullet will collide with
             //请在Mask内配置子弹会和谁碰撞

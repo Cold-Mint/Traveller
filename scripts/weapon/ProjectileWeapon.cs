@@ -48,12 +48,22 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// </summary>
     public int NumberOfProjectiles { get; set; } = 1;
 
-    private readonly List<ISpell> _spells = new();
+    private readonly List<ISpell> _spells = [];
     /// <summary>
     /// <para>Saves the position of a spell with projectile generation</para>
     /// <para>保存具有抛射体生成能力的法术位置</para>
     /// </summary>
-    private readonly List<int> _spellProjectileIndexes = new();
+    private readonly List<int> _spellProjectileIndexes = [];
+
+    /// <summary>
+    /// <para>safe Distance</para>
+    /// <para>安全距离</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>When the distance from the enemy position to the weapon is less than or equal to the safe distance, then stop the fire. (The purpose of the safe distance is to prevent the projectile from firing at the player himself.)</para>
+    ///<para>当敌人位置到武器的距离小于等于安全距离了，那么阻止发射。（设置安全距离的目的是为了防止抛射体对着玩家自身发射。）</para>
+    /// </remarks>
+    private float _safeDistance;
 
     /// <summary>
     /// <para>Whether to fire spells in sequence</para>
@@ -126,6 +136,10 @@ public partial class ProjectileWeapon : WeaponTemplate
     {
         base.LoadResource();
         _marker2D = GetNode<Marker2D>("Marker2D");
+        if (_marker2D != null)
+        {
+            _safeDistance = _marker2D.Position.LengthSquared();
+        }
         if (SelfItemContainer == null)
         {
             SelfItemContainer = new UniversalItemContainer(_numberSlots);
@@ -220,6 +234,12 @@ public partial class ProjectileWeapon : WeaponTemplate
 
     protected override bool DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
+        var enemyDistance = (enemyGlobalPosition - GlobalPosition).LengthSquared();
+        if (enemyDistance <= _safeDistance)
+        {
+            LogCat.LogWarning("can_not_fire_from_safe_distance");
+            return false;
+        }
         if (owner == null)
         {
             LogCat.LogError("owner_is_null");
