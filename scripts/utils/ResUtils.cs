@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using ColdMint.scripts.debug;
+using Godot;
+using Environment = System.Environment;
 
 namespace ColdMint.scripts.utils;
 
@@ -57,6 +60,41 @@ public static class ResUtils
 
         var index = path.LastIndexOf(Suffix, StringComparison.Ordinal);
         return index > -1 ? path[..index] : path;
+    }
+
+    /// <summary>
+    /// <para>ScanResDirectory</para>
+    /// <para>扫描资源目录</para>
+    /// </summary>
+    /// <param name="resDirectoryPath"></param>
+    /// <param name="action"></param>
+    public static void ScanResDirectory(string resDirectoryPath,Action<string> action)
+    {
+        var dirAccess = DirAccess.Open(resDirectoryPath);
+        var error = DirAccess.GetOpenError();
+        if (error is not Error.Ok)
+        {
+            LogCat.LogErrorWithFormat("open_directory_error", LogCat.LogLabel.Default, resDirectoryPath,
+                error.ToString());
+            return;
+        }
+        //找到文件
+        //find files
+        var files = dirAccess.GetFiles();
+        if (files == null)
+        {
+            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, 0);
+            return;
+        }
+        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, files.Length);
+        foreach (var file in files)
+        {
+            if (string.IsNullOrEmpty(file))
+            {
+                continue;
+            }
+            action.Invoke($"{resDirectoryPath}/{file}");
+        }
     }
 
     /// <summary>

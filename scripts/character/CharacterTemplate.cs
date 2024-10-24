@@ -635,26 +635,9 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         var lootData = LootListManager.GenerateLootData(LootListId);
         var finalGlobalPosition = GlobalPosition;
-        GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
+        LootListManager.GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
     }
 
-    /// <summary>
-    /// <para>GenerateLootObjects</para>
-    /// <para>生成战利品对象</para>
-    /// </summary>
-    /// <param name="parentNode"></param>
-    /// <param name="lootData"></param>
-    /// <param name="position"></param>
-    public void GenerateLootObjects(Node parentNode,
-        IEnumerable<LootDatum> lootData,
-        Vector2 position)
-    {
-        foreach (var lootDatum in lootData)
-        {
-            var (id, amount) = lootDatum.Value;
-            ItemTypeManager.CreateItems(id, amount, position, parentNode);
-        }
-    }
 
     /// <summary>
     /// <para>Add power to the character</para>

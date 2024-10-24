@@ -13,14 +13,6 @@ namespace ColdMint.scripts.inventory;
 public static class ItemTypeRegister
 {
     /// <summary>
-    /// <para>Register items here</para>
-    /// <para>在这里注册物品</para>
-    /// </summary>
-    public static void StaticRegister()
-    {
-    }
-
-    /// <summary>
     /// <para>Register items from yaml file</para>
     /// <para>从文件注册物品</para>
     /// </summary>
@@ -30,44 +22,22 @@ public static class ItemTypeRegister
         //初始化文件目录
         //initialize file dir
         const string itemRegsDirPath = "res://data/itemRegs";
-        var itemRegsDir = DirAccess.Open(itemRegsDirPath);
-        var error = DirAccess.GetOpenError();
-        if (error is not Error.Ok)
-        {
-            LogCat.LogErrorWithFormat("error_when_open_item_regs_dir", LogCat.LogLabel.Default, itemRegsDirPath,
-                error.ToString());
-            return;
-        }
-
-        //找到文件
-        //find files
-        var files = itemRegsDir.GetFiles();
-        if (files == null)
-        {
-            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, 0);
-            return;
-        }
-
-        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, files.Length);
+        var count = 0;
         //将文件解析为项目类型信息
         //parse files to item type infos
-        var count = 0;
-        foreach (var file in files)
+        ResUtils.ScanResDirectory(itemRegsDirPath, s =>
         {
-            var list = ParseFile($"{itemRegsDirPath}/{file}");
+            var list = ParseFile(s);
             if (list == null)
             {
-                continue;
+                return;
             }
-
             foreach (var itemTypeInfo in list)
             {
                 RegisterTypeInfo(itemTypeInfo);
             }
-
             count++;
-        }
-
+        });
         LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, count);
     }
 

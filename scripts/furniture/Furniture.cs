@@ -1,4 +1,5 @@
 using ColdMint.scripts.damage;
+using ColdMint.scripts.loot;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -14,6 +15,9 @@ public partial class Furniture : RigidBody2D
     [Export] private int _maxDurability;
     [Export]
     private string? _furnitureName;
+
+    [Export]
+    private string? _lootId;
 
     private Label? _tipLabel;
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
@@ -92,6 +96,31 @@ public partial class Furniture : RigidBody2D
     }
 
     /// <summary>
+    /// <para>OnDestroy</para>
+    /// <para>当家具被破坏时</para>
+    /// </summary>
+    private void OnDestroy()
+    {
+        GenerateLoot();
+        QueueFree();
+    }
+
+    /// <summary>
+    /// <para>Loot is generated when furniture is destroyed</para>
+    /// <para>家具被破坏时生成战利品</para>
+    /// </summary>
+    private void GenerateLoot()
+    {
+        if (string.IsNullOrEmpty(_lootId))
+        {
+            return;
+        }
+        var lootData = LootListManager.GenerateLootData(_lootId);
+        var finalGlobalPosition = GetGlobalPosition();
+        LootListManager.GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
+    }
+
+    /// <summary>
     /// <para>This method is called when furniture is damaged</para>
     /// <para>当家具损害时调用此方法</para>
     /// </summary>
@@ -113,13 +142,13 @@ public partial class Furniture : RigidBody2D
         {
             if (_audioStreamPlayer2D == null)
             {
-                QueueFree();
+                OnDestroy();
             }
             else
             {
                 //If there is a sound effect, we wait for the sound effect to play and then destroy the node.
                 //如果有音效，我们等待音效播放完毕后销毁节点。
-                _audioStreamPlayer2D.Finished += QueueFree;
+                _audioStreamPlayer2D.Finished += OnDestroy;
                 _audioStreamPlayer2D.Play();
                 //Disable collisions and hide nodes in order to make the player appear destroyed.
                 //禁用碰撞，隐藏节点，以便让玩家看起来被销毁了。

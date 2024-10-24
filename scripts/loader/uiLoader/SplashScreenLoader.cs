@@ -114,9 +114,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Register ItemTypes from file
         //从文件注册物品类型
         ItemTypeRegister.RegisterFromFile();
-        //Hardcoded ItemTypes Register
-        //硬编码注册物品类型
-        ItemTypeRegister.StaticRegister();
+        LootRegister.RegisterFromFile();
         //静态注册掉落表
         LootRegister.StaticRegister();
         //Load mod

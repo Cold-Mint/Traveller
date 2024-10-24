@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using ColdMint.scripts.inventory;
+using Godot;
 
 namespace ColdMint.scripts.loot;
 
@@ -43,5 +45,23 @@ public static class LootListManager
     {
         if (!LootListDictionary.TryGetValue(id, out var list)) return [];
         return list.GenerateLootData();
+    }
+    
+    /// <summary>
+    /// <para>GenerateLootObjects</para>
+    /// <para>生成战利品对象</para>
+    /// </summary>
+    /// <param name="parentNode"></param>
+    /// <param name="lootData"></param>
+    /// <param name="position"></param>
+    public static void GenerateLootObjects(Node parentNode,
+        IEnumerable<LootDatum> lootData,
+        Vector2 position)
+    {
+        foreach (var lootDatum in lootData)
+        {
+            var (id, amount) = lootDatum.Value;
+            ItemTypeManager.CreateItems(id, amount, position, parentNode);
+        }
     }
 }

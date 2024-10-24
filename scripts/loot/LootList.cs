@@ -12,7 +12,7 @@ namespace ColdMint.scripts.loot;
 public readonly struct LootList(string id, IList<LootGroup> groups)
 {
     public string Id { get; } = id;
-    private IList<LootGroup> Groups { get; } = groups;
+    public IList<LootGroup> Groups { get; } = groups;
 
     private static Random Random => RandomUtils.Instance;
 
@@ -25,7 +25,7 @@ public readonly struct LootList(string id, IList<LootGroup> groups)
     {
         if (Groups is [])
         {
-            LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default,  Id);
+            LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default, Id);
             return [];
         }
 
