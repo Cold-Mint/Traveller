@@ -16,11 +16,23 @@ public static class LootRegister
     /// </summary>
     public static void RegisterFromFile()
     {
+        LogCat.Log("start_loot_register_from_file");
         const string lootPath = "res://data/loots";
+        var count = 0;
         ResUtils.ScanResDirectory(lootPath, s =>
         {
-            //TODO:实现战利品表的加载。
+            var lootList = ParseFile(s);
+            if (lootList == null)
+            {
+                return;
+            }
+            foreach (var list in lootList)
+            {
+                LootListManager.RegisterLootList(list);
+            }
+            count++;
         });
+        LogCat.LogWithFormat("found_loots" ,LogCat.LogLabel.Default, count);
     }
 
     private static List<LootList>? ParseFile(string filePath)
@@ -32,28 +44,5 @@ public static class LootRegister
         var lootLists = YamlSerialization.Deserialize<List<LootList>>(yamlString);
         yamlFile.Close();
         return lootLists;
-    }
-
-    /// <summary>
-    /// <para>Register loots hardcoded here</para>
-    /// <para>在这里硬编码地注册掉落表</para>
-    /// </summary>
-    public static void StaticRegister()
-    {
-        //Register the test using the loot table
-        //注册测试使用的战利品表
-        if (Config.IsDebug())
-        {
-            List<LootGroup> lootGroups =
-            [
-                new LootGroup(0.8f,
-                [
-                    new LootEntry("staff_necromancy"),
-                ]),
-                new LootGroup(1, [new LootEntry("portable_backpacks")])
-            ];
-            var testLootList = new LootList(Config.LootListId.Test, lootGroups);
-            LootListManager.RegisterLootList(testLootList);
-        }
     }
 }

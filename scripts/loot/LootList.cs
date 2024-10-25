@@ -9,10 +9,12 @@ namespace ColdMint.scripts.loot;
 /// <para>Loot list</para>
 /// <para>战利品表</para>
 /// </summary>
-public readonly struct LootList(string id, IList<LootGroup> groups)
+public class LootList
 {
-    public string Id { get; } = id;
-    public IList<LootGroup> Groups { get; } = groups;
+
+    public string? Id { get; set; }
+
+    public IList<LootGroup>? Groups { get; set; }
 
     private static Random Random => RandomUtils.Instance;
 
@@ -23,6 +25,10 @@ public readonly struct LootList(string id, IList<LootGroup> groups)
     /// <returns></returns>
     public LootDatum[] GenerateLootData()
     {
+        if (Id == null || Groups == null)
+        {
+            return [];
+        }
         if (Groups is [])
         {
             LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default, Id);
