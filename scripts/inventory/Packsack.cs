@@ -28,7 +28,7 @@ public partial class Packsack : PickAbleTemplate
         {
             if (control is PacksackUi packsackUi)
             {
-                packsackUi.Title = Name;
+                packsackUi.Title = ItemName;
                 packsackUi.ItemContainer = SelfItemContainer;
             }
         });

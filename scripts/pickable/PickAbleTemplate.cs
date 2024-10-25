@@ -213,7 +213,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         }
 
         _tipLabel.Visible = true;
-        _tipLabel.Text = Name;
+        _tipLabel.Text = ItemName;
         //Vertical Centering Tip
         //垂直居中提示
         var oldPosition = _tipLabel.Position;

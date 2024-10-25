@@ -116,7 +116,7 @@ public partial class Furniture : RigidBody2D
             return;
         }
         var lootData = LootListManager.GenerateLootData(_lootId);
-        var finalGlobalPosition = GetGlobalPosition();
+        var finalGlobalPosition = GlobalPosition - new Vector2(0, Config.CellSize * 2);
         LootListManager.GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
     }
 
