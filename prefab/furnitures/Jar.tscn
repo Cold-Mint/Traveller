@@ -11,7 +11,9 @@ size = Vector2(12, 15)
 collision_layer = 256
 collision_mask = 160
 script = ExtResource("1_r8l3h")
+_initialDurability = null
 _maxDurability = 1
+_furnitureName = null
 _lootId = "jar"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

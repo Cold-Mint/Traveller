@@ -40,7 +40,8 @@ CanMutateAfterDeath = false
 _initialHp = null
 MaxHp = 50
 CampId = "Mazoku"
-LootListId = "test"
+_indestructible = null
+_lootId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

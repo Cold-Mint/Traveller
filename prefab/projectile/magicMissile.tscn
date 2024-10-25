@@ -12,10 +12,12 @@ collision_mask = 0
 script = ExtResource("1_cp6hg")
 _life = 5000
 _durability = 1.0
-_maxDamage = 7
-_minDamage = 3
+_maxDamage = 6
+_minDamage = 2
 _damageType = 2
 Speed = 15.0
+_enableBounce = null
+IgnoreWall = null
 _repelStrength = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

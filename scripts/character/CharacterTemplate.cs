@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.heal;
 using ColdMint.scripts.health;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
@@ -179,7 +180,8 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export]
     private bool _indestructible;
 
-    [Export] public string LootListId { get; private set; } = "";
+    [Export] 
+    private string? _lootId;
 
     private HealthBar? _healthBar;
     private Label? _tipLabel;
@@ -423,6 +425,12 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (node is PickAbleTemplate pickAbleTemplate)
         {
+            if (pickAbleTemplate.EntityCollisionMode != Config.EntityCollisionMode.None)
+            {
+                //If the item is configured with contact mode, it cannot be picked up.
+                //如果物品配置了接触模式，那么不能被捡起。
+                return false;
+            }
             //Does not contain items that have been picked up.
             //不包含已被捡起的物品。
             return !pickAbleTemplate.Picked;
@@ -594,6 +602,40 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     /// <summary>
+    /// <para>Heal</para>
+    /// <para>治疗角色</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Note: When a character dies, healing does not directly bring them back to life. Call method <see cref="Revive"/> to revive the character before applying healing.</para>
+    ///<para>注意：当角色死亡，治疗并不能使其直接复活。请调用<see cref="Revive"/>方法复活角色后再施加治疗。</para>
+    /// </remarks>
+    /// <param name="heal">
+    ///<para>heal</para>
+    ///<para>治疗量</para>
+    /// </param>
+    /// <returns></returns>
+    public bool Heal(Heal heal)
+    {
+        if (CurrentHp <= 0 || _indestructible)
+        {
+            //If the character is dead or invincible, It cannot be healed.
+            //如果角色已死亡或者本身是无敌的，那么不能治疗。
+            return false;
+        }
+        var nextHp = Math.Min(CurrentHp + heal.HealAmount, MaxHp);
+        var actualHealAmount = nextHp - CurrentHp;
+        if (actualHealAmount == 0)
+        {
+            return false;
+        }
+        CurrentHp = nextHp;
+        _damageNumber?.DisplayHeal(heal, actualHealAmount);
+        UpDataHealthBar();
+        OnHeal(heal);
+        return true;
+    }
+
+    /// <summary>
     /// <para>Deal damage to the character</para>
     /// <para>对角色造成伤害</para>
     /// </summary>
@@ -612,7 +654,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
         _lastDamageTime = DateTime.Now;
-        _damageNumber?.Display(damageTemplate);
+        _damageNumber?.DisplayDamage(damageTemplate);
         CurrentHp -= damageTemplate.Damage;
         OnHit(damageTemplate);
         if (CurrentHp <= 0)
@@ -633,7 +675,11 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     protected void CreateLootObject()
     {
-        var lootData = LootListManager.GenerateLootData(LootListId);
+        if (string.IsNullOrEmpty(_lootId))
+        {
+            return;
+        }
+        var lootData = LootListManager.GenerateLootData(_lootId);
         var finalGlobalPosition = GlobalPosition;
         LootListManager.GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
     }
@@ -656,6 +702,11 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected virtual void OnHit(DamageTemplate damageTemplate)
     {
+    }
+
+    protected virtual void OnHeal(Heal heal)
+    {
+        
     }
 
     /// <summary>

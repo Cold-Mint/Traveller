@@ -515,7 +515,6 @@ public static class Config
     /// </summary>
     public const int NormalDamageTextSize = 22;
 
-
     /// <summary>
     /// <para>Horizontal speed of damage numbers</para>
     /// <para>伤害数字的水平速度</para>

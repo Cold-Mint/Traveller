@@ -1,3 +1,4 @@
+using ColdMint.scripts.heal;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -29,6 +30,12 @@ public partial class DamageNumberNodeSpawn : Marker2D
     /// <para>physical Gradient</para>
     /// </summary>
     private Gradient? _physicalGradient;
+
+    /// <summary>
+    /// <para>health Color</para>
+    /// <para>治疗颜色</para>
+    /// </summary>
+    private Color _healthColor;
 
     /// <summary>
     /// <para>魔法渐变色</para>
@@ -76,6 +83,63 @@ public partial class DamageNumberNodeSpawn : Marker2D
         //默认行为
         _defaultGradient.SetColor(0, new Color("#ff8787"));
         _defaultGradient.SetColor(1, new Color("#fa5252"));
+        _healthColor = Colors.Green;
+    }
+
+
+    /// <summary>
+    /// <para>DisplayHeal</para>
+    /// <para>显示治疗量</para>
+    /// </summary>
+    /// <param name="heal"></param>
+    /// <param name="actualHealAmount">
+    ///<para>actualHealAmount</para>
+    ///<para>实际治疗量</para>
+    /// </param>
+    /// <remarks>
+    ///<para>For example, if the expected amount of healing is 100 and the player actually has 20 left, the actual amount of healing is 20.</para>
+    ///<para>例如：预期的治疗量为100，实际上玩家还有20就满生命了，那么实际治疗量为20。</para>
+    /// </remarks>
+    public void DisplayHeal(Heal heal, int actualHealAmount)
+    {
+        if (_rootNode == null || _damageNumberPackedScene == null)
+        {
+            return;
+        }
+
+        var damageNumber = NodeUtils.InstantiatePackedScene<DamageNumber>(_damageNumberPackedScene);
+        if (damageNumber == null)
+        {
+            return;
+        }
+
+        if (_rootNode == null)
+        {
+            damageNumber.QueueFree();
+            return;
+        }
+        NodeUtils.CallDeferredAddChild(_rootNode, damageNumber);
+        damageNumber.Position = GlobalPosition;
+        if (heal.MoveLeft)
+        {
+            damageNumber.SetVelocity(_negativeVector);
+        }
+        else
+        {
+            damageNumber.SetVelocity(_positiveVector);
+        }
+        damageNumber.SetVelocity(_negativeVector);
+        var damageLabel = damageNumber.GetNode<Label>("Label");
+        if (damageLabel == null)
+        {
+            return;
+        }
+        damageLabel.Text = actualHealAmount.ToString();
+        var labelSettings = new LabelSettings();
+        labelSettings.FontSize = Config.NormalDamageTextSize;
+        labelSettings.FontColor = _healthColor;
+        damageLabel.LabelSettings = labelSettings;
+        damageLabel.Position = Vector2.Zero;
     }
 
 
@@ -84,7 +148,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
     /// <para>显示伤害</para>
     /// </summary>
     /// <param name="damageTemplate"></param>
-    public void Display(DamageTemplate damageTemplate)
+    public void DisplayDamage(DamageTemplate damageTemplate)
     {
         if (_rootNode == null || _damageNumberPackedScene == null)
         {

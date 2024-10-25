@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.heal;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.utils;
@@ -412,6 +413,15 @@ public partial class Player : CharacterTemplate
         EventBus.GameOverEvent.Invoke(gameOverEvent);
     }
 
+    protected override void OnHeal(Heal heal)
+    {
+        base.OnHeal(heal);
+        var healthBarUi = GameSceneDepend.GameGuiTemplate?.HealthBar;
+        if (healthBarUi != null)
+        {
+            healthBarUi.CurrentHp = CurrentHp;
+        }
+    }
 
     protected override void OnHit(DamageTemplate damageTemplate)
     {

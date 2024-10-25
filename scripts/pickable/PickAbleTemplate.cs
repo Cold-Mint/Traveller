@@ -70,6 +70,11 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// </summary>
     [Export]
     private int _entityCollisionMode = Config.EntityCollisionMode.None;
+    
+    public int EntityCollisionMode
+    {
+        get => _entityCollisionMode;
+    }
 
     /// <summary>
     /// <para>Whether the item is currently picked up</para>
