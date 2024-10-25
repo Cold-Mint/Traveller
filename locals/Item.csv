@@ -20,4 +20,3 @@ item_magic_missile_desc,轻快的法术。,A light spell.,軽快な術です。
 item_tracking_spell,追踪法术,Tracking spell,追跡術です
 item_tracking_spell_desc,使发射的子弹追踪敌人,Let the fired bullets track the enemy,発射した弾丸で敵を追跡させます
 item_heart,红心,heart,心
-item_heart_desc,在玩家碰到红心时恢复健康值。,Restores health when the player touches heart.,プレイヤーがハートに触れた時に回復します。

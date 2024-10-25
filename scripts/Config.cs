@@ -33,7 +33,7 @@ public static class Config
         /// </summary>
         public const int Hard = 2;
     }
-    
+
     public static class EntityCollisionMode
     {
         /// <summary>
@@ -41,13 +41,13 @@ public static class Config
         /// <para>不会与玩家或生物发生碰撞</para>
         /// </summary>
         public const int None = 0;
-        
+
         /// <summary>
         /// <para>Can only collide with players</para>
         /// <para>仅和玩家能够产生碰撞</para>
         /// </summary>
         public const int OnlyPlayers = 1;
-        
+
         /// <summary>
         /// <para>Ability to collide with players and creatures</para>
         /// <para>能够和玩家还有生物产生碰撞</para>
@@ -587,6 +587,15 @@ public static class Config
         /// </summary>
         public const int WeaponDamageArea = 10;
         public const int Barrier = 11;
+        /// <summary>
+        /// <para>NonPickupItem</para>
+        /// <para>不能被捡起的物品</para>
+        /// </summary>
+        /// <remarks>
+        ///<para>For example: A heart that restores health after being touched.</para>
+        ///<para>例如：触碰后会恢复健康值的红心。</para>
+        /// </remarks>
+        public const int NonPickupItem = 12;
     }
 
     /// <summary>

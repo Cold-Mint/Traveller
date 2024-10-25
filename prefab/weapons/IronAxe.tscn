@@ -19,7 +19,6 @@ _maxDamage = null
 _minDamage = null
 FiringIntervalAsMillisecond = null
 _recoilStrength = null
-_entityCollisionMode = null
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)

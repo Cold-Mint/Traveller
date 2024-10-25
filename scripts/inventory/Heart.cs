@@ -5,7 +5,7 @@ using Godot;
 
 namespace ColdMint.scripts.inventory;
 
-public partial class Heart : PickAbleTemplate
+public partial class Heart : NonPickupItem
 {
 
     /// <summary>

@@ -179,6 +179,7 @@ locale/translations=PackedStringArray("res://locals/DeathInfo.en.translation", "
 2d_physics/layer_9="Furniture"
 2d_physics/layer_10="WeaponDamageArea"
 2d_physics/layer_11="Barrier"
+2d_physics/layer_12="NonPickupItem"
 
 [physics]
 

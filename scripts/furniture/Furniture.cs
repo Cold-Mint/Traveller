@@ -34,14 +34,7 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
-        _tipLabel.Visible = true;
-        _tipLabel.Text = translation;
-        //Vertical Centering Tip
-        //垂直居中提示
-        var oldPosition = _tipLabel.Position;
-        oldPosition.X = -_tipLabel.Size.X / 2;
-        _tipLabel.Rotation = -Rotation;
-        _tipLabel.Position = oldPosition;
+        TipLabelUtils.ShowTip(0, _tipLabel, translation);
     }
 
     public override void _MouseExit()
@@ -50,8 +43,7 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
-
-        _tipLabel.Visible = false;
+        TipLabelUtils.HideTip(_tipLabel);
     }
 
     /// <summary>

@@ -180,7 +180,7 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export]
     private bool _indestructible;
 
-    [Export] 
+    [Export]
     private string? _lootId;
 
     private HealthBar? _healthBar;
@@ -388,24 +388,19 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
-        if (_tipLabel != null)
+        if (_tipLabel != null && !string.IsNullOrEmpty(CharacterName))
         {
-            _tipLabel.Visible = true;
-            _tipLabel.Text = CharacterName;
-            //Vertical Centering Tip
-            //垂直居中提示
-            var oldPosition = _tipLabel.Position;
-            oldPosition.X = -_tipLabel.Size.X / 2;
-            _tipLabel.Position = oldPosition;
+            TipLabelUtils.ShowTip(0, _tipLabel, CharacterName);
         }
     }
 
     public override void _MouseExit()
     {
-        if (_tipLabel != null)
+        if (_tipLabel == null)
         {
-            _tipLabel.Visible = false;
+            return;
         }
+        TipLabelUtils.HideTip(_tipLabel);
     }
 
     /// <summary>
@@ -425,12 +420,6 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (node is PickAbleTemplate pickAbleTemplate)
         {
-            if (pickAbleTemplate.EntityCollisionMode != Config.EntityCollisionMode.None)
-            {
-                //If the item is configured with contact mode, it cannot be picked up.
-                //如果物品配置了接触模式，那么不能被捡起。
-                return false;
-            }
             //Does not contain items that have been picked up.
             //不包含已被捡起的物品。
             return !pickAbleTemplate.Picked;
@@ -706,7 +695,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected virtual void OnHeal(Heal heal)
     {
-        
+
     }
 
     /// <summary>
