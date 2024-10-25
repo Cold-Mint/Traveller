@@ -8,3 +8,9 @@
   scene_path: res://prefab/items/resignationCertificate.tscn
   icon_path: res://sprites/projectile/resignationCertificate.png
   max_stack_value: 1
+#Restore the red heart to life
+#恢复生命的红心
+- id: heart
+  scene_path: res://prefab/items/heart.tscn
+  icon_path: res://sprites/ui/HeartFull.png
+  max_stack_value: 1

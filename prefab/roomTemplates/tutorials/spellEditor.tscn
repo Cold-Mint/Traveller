@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=13 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="1_q04qt"]
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_5bnvh"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_0kep0"]
 [ext_resource type="Texture2D" uid="uid://cdjmfqp854utu" path="res://sprites/tutorials/spellEditor.png" id="6_dbg76"]
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
+[ext_resource type="PackedScene" uid="uid://nbqjjnom2f5e" path="res://prefab/furnitures/Jar.tscn" id="8_prvl3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -128,3 +129,6 @@ shape = SubResource("RectangleShape2D_kiih8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
 position = Vector2(405, 178)
 shape = SubResource("RectangleShape2D_u54ac")
+
+[node name="Jar" parent="." instance=ExtResource("8_prvl3")]
+position = Vector2(560, 297)

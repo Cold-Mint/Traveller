@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=4 uid="uid://c57cc1tyreybb"]
+[gd_scene load_steps=11 format=4 uid="uid://c57cc1tyreybb"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="1_rn2om"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="2_1ctsj"]
 [ext_resource type="Script" path="res://scripts/map/AiCharacterSpawn.cs" id="3_u5h84"]
+[ext_resource type="PackedScene" uid="uid://nbqjjnom2f5e" path="res://prefab/furnitures/Jar.tscn" id="4_qdje2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o85u0"]
 size = Vector2(20, 48)
@@ -109,3 +110,9 @@ shape = SubResource("RectangleShape2D_kiih8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
 position = Vector2(359.5, 246.5)
 shape = SubResource("RectangleShape2D_kfmgh")
+
+[node name="Jar" parent="." instance=ExtResource("4_qdje2")]
+position = Vector2(54, 75)
+
+[node name="Jar2" parent="." instance=ExtResource("4_qdje2")]
+position = Vector2(76, 75)

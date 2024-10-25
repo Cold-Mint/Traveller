@@ -8,18 +8,6 @@ namespace ColdMint.scripts;
 
 public static class Config
 {
-    /// <summary>
-    /// <para>Loot table ID</para>
-    /// <para>战利品表ID</para>
-    /// </summary>
-    public static class LootListId
-    {
-        /// <summary>
-        /// <para>A trophy table for testing</para>
-        /// <para>测试用的战利品表</para>
-        /// </summary>
-        public const string Test = "test";
-    }
 
     /// <summary>
     /// <para>Difficulty</para>
@@ -44,6 +32,27 @@ public static class Config
         /// <para>困难模式</para>
         /// </summary>
         public const int Hard = 2;
+    }
+    
+    public static class EntityCollisionMode
+    {
+        /// <summary>
+        /// <para>There will be no collisions with players or creatures</para>
+        /// <para>不会与玩家或生物发生碰撞</para>
+        /// </summary>
+        public const int None = 0;
+        
+        /// <summary>
+        /// <para>Can only collide with players</para>
+        /// <para>仅和玩家能够产生碰撞</para>
+        /// </summary>
+        public const int OnlyPlayers = 1;
+        
+        /// <summary>
+        /// <para>Ability to collide with players and creatures</para>
+        /// <para>能够和玩家还有生物产生碰撞</para>
+        /// </summary>
+        public const int PlayersAndEntity = 2;
     }
 
 

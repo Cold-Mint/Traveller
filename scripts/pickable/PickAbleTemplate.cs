@@ -1,4 +1,5 @@
 ﻿using System;
+using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using Godot;
@@ -64,6 +65,13 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public int Quantity { get; set; } = 1;
 
     /// <summary>
+    /// <para>EntityCollisionMode</para>
+    /// <para>实体碰撞模式</para>
+    /// </summary>
+    [Export]
+    private int _entityCollisionMode = Config.EntityCollisionMode.None;
+
+    /// <summary>
     /// <para>Whether the item is currently picked up</para>
     /// <para>当前物品是否被捡起了</para>
     /// </summary>
@@ -105,6 +113,60 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     {
 
     }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        if (_entityCollisionMode == Config.EntityCollisionMode.None)
+        {
+            return;
+        }
+        var collisionInfo = MoveAndCollide(Vector2.Zero, testOnly: true);
+        if (collisionInfo == null)
+        {
+            return;
+        }
+        var node = (Node2D)collisionInfo.GetCollider();
+        if (_entityCollisionMode == Config.EntityCollisionMode.OnlyPlayers)
+        {
+            if (node is Player player)
+            {
+                OnTouchPlayer(player);
+            }
+        }
+        else if (_entityCollisionMode == Config.EntityCollisionMode.PlayersAndEntity)
+        {
+            if (node is Player player)
+            {
+                OnTouchPlayer(player);
+            }
+            else if (node is CharacterTemplate characterTemplate)
+            {
+                OnTouchCharacterTemplate(characterTemplate);
+            }
+        }
+    }
+
+    /// <summary>
+    /// <para>When this pickable touches the player</para>
+    /// <para>当此可拾捡物碰到玩家时</para>
+    /// </summary>
+    /// <param name="player"></param>
+    protected virtual void OnTouchPlayer(Player player)
+    {
+
+    }
+
+    /// <summary>
+    /// <para>When this pickable touches a character (a creature other than the player, such as a computer-controlled character)</para>
+    /// <para>当此可拾捡物碰到角色时（除了玩家以外的生物，例如由电脑控制的角色）</para>
+    /// </summary>
+    /// <param name="player"></param>
+    protected virtual void OnTouchCharacterTemplate(CharacterTemplate player)
+    {
+
+    }
+
 
     public IItem? CreateItem(int number)
     {
@@ -197,6 +259,15 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
+        if (_entityCollisionMode == Config.EntityCollisionMode.OnlyPlayers)
+        {
+            SetCollisionMaskValue(Config.LayerNumber.Player, true);
+        }
+        else if (_entityCollisionMode == Config.EntityCollisionMode.PlayersAndEntity)
+        {
+            SetCollisionMaskValue(Config.LayerNumber.Player, true);
+            SetCollisionMaskValue(Config.LayerNumber.Mob, true);
+        }
         _loadedResource = true;
     }
 

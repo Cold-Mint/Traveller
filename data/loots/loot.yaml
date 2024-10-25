@@ -14,3 +14,13 @@
           min_quantity: 1
           max_quantity: 1
           weight: 1
+#jar
+#罐子
+- id: jar
+  groups:
+    - chance: 1
+      entries:
+        - item_id: heart
+          min_quantity: 1
+          max_quantity: 1
+          weight: 1
