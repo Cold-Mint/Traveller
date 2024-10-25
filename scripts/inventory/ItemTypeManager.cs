@@ -10,8 +10,6 @@ namespace ColdMint.scripts.inventory;
 public static class ItemTypeManager
 {
     private static Dictionary<string, ItemType> Registry { get; } = [];
-    private static readonly Texture2D DefaultTexture = new PlaceholderTexture2D();
-
 
     /// <summary>
     /// <para>Register an item type.</para>
@@ -86,15 +84,22 @@ public static class ItemTypeManager
 
 
     /// <summary>
-    /// <para>Get the default icon of the item type for the given id</para>
-    /// <para>获取指定物品id的默认图标</para>
+    /// <para>Obtain the icon based on the ID</para>
+    /// <para>根据ID获取对应的图标</para>
     /// </summary>
-    /// <returns>
-    /// <para>Default icon of the item id if it exists. Else, return a <see cref="PlaceholderTexture2D"/></para>
-    /// <para>当前物品id的默认图标，若无则返回一个<see cref="PlaceholderTexture2D"/></para>
-    /// </returns>
-    public static Texture2D DefaultIconOf(string id) =>
-        Registry.TryGetValue(id, out var itemType)
-            ? itemType.Icon ?? DefaultTexture
-            : DefaultTexture;
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static Texture2D? GetIconOf(string? id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return null;
+        }
+        if (Registry.TryGetValue(id, out var itemType))
+        {
+            return itemType.Icon;
+        }
+        return null;
+    }
+
 }

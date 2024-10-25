@@ -12,9 +12,12 @@ namespace ColdMint.scripts.loot;
 public class LootList
 {
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Id { get; set; }
 
     public IList<LootGroup>? Groups { get; set; }
+    // ReSharper restore UnusedAutoPropertyAccessor.Global
+
 
     private static Random Random => RandomUtils.Instance;
 

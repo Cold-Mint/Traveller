@@ -247,14 +247,14 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             if (debugText != null)
             {
                 TooltipText = string.Format(debugText, Item.Id,
-                    TranslationServerUtils.Translate(Item.Name),
+                    TranslationServerUtils.Translate(Item.ItemName),
                     Item.Quantity, Item.MaxQuantity, Item.GetType().Name,
                     TranslationServerUtils.Translate(Item.Description));
             }
         }
         else
         {
-            TooltipText = TranslationServerUtils.Translate(Item.Name) + "\n" +
+            TooltipText = TranslationServerUtils.Translate(Item.ItemName) + "\n" +
                           TranslationServerUtils.Translate(Item.Description);
         }
     }

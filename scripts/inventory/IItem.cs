@@ -13,7 +13,7 @@ public interface IItem
     /// <para>ID of current item</para>
     /// <para>当前物品的ID</para>
     /// </summary>
-    string Id { get; set; }
+    string? Id { get; set; }
     
     /// <summary>
     /// <para>ShowSelf</para>
@@ -37,13 +37,13 @@ public interface IItem
     /// <para>Icon of current item</para>
     /// <para>当前项目的图标</para>
     /// </summary>
-    Texture2D Icon { get; }
+    Texture2D? Icon { get; }
 
     /// <summary>
     /// <para>Display name of current item</para>
     /// <para>显示当前Item的名称</para>
     /// </summary>
-    string Name { get; }
+    string? ItemName { get; }
 
     /// <summary>
     /// <para>Description of current item, which may show in inventory</para>

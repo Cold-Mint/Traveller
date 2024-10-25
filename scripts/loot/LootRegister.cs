@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ColdMint.scripts.debug;
-using ColdMint.scripts.inventory;
 using ColdMint.scripts.serialization;
 using ColdMint.scripts.utils;
 using Godot;

@@ -9,7 +9,7 @@ namespace ColdMint.scripts.inventory;
 public class PlaceholderItem : IItem
 {
     public int Index { get; set; }
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     public void ShowSelf()
     {
@@ -26,8 +26,8 @@ public class PlaceholderItem : IItem
 
     }
 
-    public Texture2D Icon { get; }
-    public string Name { get; }
+    public Texture2D? Icon { get; set; }
+    public string? ItemName { get; set; }
     public string? Description { get; } = null;
     public int Quantity { get; set; } = 1;
     public int MaxQuantity { get; } = 1;
