@@ -1,4 +1,5 @@
 using ColdMint.scripts.character;
+using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -11,8 +12,10 @@ namespace ColdMint.scripts.pickable;
 /// <remarks>
 ///<para>These items perform certain events when the player touches them.</para>
 ///<para>这类物品在玩家触碰到它们时执行某些事件。</para>
+/// <para>For items that cannot be picked up, although the item interface is implemented, it cannot be picked up by the player.</para>
+/// <para>对于不可拾起的物品来说，虽然实现了物品接口，但是其不能被玩家捡起。</para>
 /// </remarks>
-public partial class NonPickupItem : RigidBody2D
+public partial class NonPickupItem : RigidBody2D, IItem
 {
 
     /// <summary>
@@ -125,6 +128,53 @@ public partial class NonPickupItem : RigidBody2D
     /// </summary>
     /// <param name="player"></param>
     protected virtual void OnTouchCharacterTemplate(CharacterTemplate player)
+    {
+
+    }
+    public int Index { get; set; }
+    public string? Id { get; set; }
+
+    public void ShowSelf()
+    {
+
+    }
+
+    public void QueueFreeSelf()
+    {
+
+    }
+
+    public void HideSelf()
+    {
+
+    }
+
+    public Texture2D? Icon { get; }
+    public string? ItemName { get; }
+    public string? Description { get; }
+    public int Quantity { get; set; }
+    public int MaxQuantity { get; }
+    public int ItemType { get; }
+    public bool IsSelect { get; set; }
+    public IItemContainer? ItemContainer { get; set; }
+    public IItemContainer? SelfItemContainer { get; set; }
+
+    public int MergeableItemCount(IItem other, int unallocatedQuantity)
+    {
+        return 0;
+    }
+
+    public IItem? CreateItem(int number)
+    {
+        return null;
+    }
+
+    public bool Use(Node2D? owner, Vector2 targetGlobalPosition)
+    {
+        return false;
+    }
+
+    public void OnThrow(Vector2 velocity)
     {
 
     }
