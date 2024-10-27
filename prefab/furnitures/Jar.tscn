@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://nbqjjnom2f5e"]
 
-[ext_resource type="Script" path="res://scripts/furniture/Barrier.cs" id="1_r8l3h"]
+[ext_resource type="Script" path="res://scripts/furniture/ProjectileBarrier.cs" id="1_ck3di"]
 [ext_resource type="Texture2D" uid="uid://byorej4y7go4" path="res://sprites/furnitures/Jar.png" id="2_xiqc7"]
 [ext_resource type="AudioStream" uid="uid://brxt157po0gmi" path="res://sounds/wooden_box_broken.wav" id="3_ebm2m"]
 
@@ -10,10 +10,10 @@ size = Vector2(12, 15)
 [node name="Jar" type="RigidBody2D"]
 collision_layer = 256
 collision_mask = 160
-script = ExtResource("1_r8l3h")
-_initialDurability = null
+script = ExtResource("1_ck3di")
+_initialDurability = 1
 _maxDurability = 1
-_furnitureName = null
+_furnitureName = "ui_jar"
 _lootId = "jar"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -26,3 +26,10 @@ texture = ExtResource("2_xiqc7")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_ebm2m")
 bus = &"SoundEffect"
+
+[node name="TipLabel" type="Label" parent="."]
+offset_left = -15.0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 45.0
+horizontal_alignment = 1

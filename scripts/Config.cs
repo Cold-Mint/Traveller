@@ -596,6 +596,11 @@ public static class Config
         ///<para>例如：触碰后会恢复健康值的红心。</para>
         /// </remarks>
         public const int NonPickupItem = 12;
+        /// <summary>
+        /// <para>ProjectileBarrier</para>
+        /// <para>抛射体障碍</para>
+        /// </summary>
+        public const int ProjectileBarrier = 13;
     }
 
     /// <summary>

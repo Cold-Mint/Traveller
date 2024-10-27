@@ -108,12 +108,14 @@ public partial class Projectile : CharacterBody2D
         }
 
         _destructionTime = DateTime.Now.AddMilliseconds(_life);
+        SetCollisionLayerValue(Config.LayerNumber.Projectile, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, !IgnoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Floor, !IgnoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         SetCollisionMaskValue(Config.LayerNumber.PickAbleItem, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
+        SetCollisionMaskValue(Config.LayerNumber.ProjectileBarrier, true);
         //Platform collision layer is not allowed to collide
         //平台碰撞层不可碰撞
         SetCollisionMaskValue(Config.LayerNumber.Platform, false);
