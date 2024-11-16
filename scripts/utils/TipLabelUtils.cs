@@ -1,3 +1,4 @@
+using ColdMint.scripts.debug;
 using Godot;
 
 namespace ColdMint.scripts.utils;
@@ -24,12 +25,13 @@ public static class TipLabelUtils
     {
         tipLabel.Visible = true;
         tipLabel.Text = tip;
+        tipLabel.ResetSize();
         //Vertical Centering Tip
         //垂直居中提示
-        var oldPosition = tipLabel.Position;
-        oldPosition.X = -tipLabel.Size.X / 2;
+        var newPosition = tipLabel.Position;
+        newPosition.X = -tipLabel.Size.X / 2;
         tipLabel.Rotation = rotation;
-        tipLabel.Position = oldPosition;
+        tipLabel.Position = newPosition;
     }
 
     /// <summary>
