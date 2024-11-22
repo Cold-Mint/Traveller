@@ -13,17 +13,10 @@ namespace ColdMint.scripts.weapon;
 public partial class MeleeWeapon : WeaponTemplate
 {
 
-    /// <summary>
-    /// <para>The damage area of the weapon</para>
-    /// <para>武器的伤害区域</para>
-    /// </summary>
-    private Area2D? _weaponDamageArea;
-
     [Export]
     private int _maxDamage = 1;
     [Export]
     private int _minDamage = 1;
-    private DamageTemplate? _damageTemplate;
 
     private readonly List<CharacterTemplate> _characterTemplates =
     [
@@ -32,19 +25,6 @@ public partial class MeleeWeapon : WeaponTemplate
     public override void LoadResource()
     {
         base.LoadResource();
-        _weaponDamageArea = GetNode<Area2D>("WeaponDamageArea");
-        _weaponDamageArea.InputPickable = false;
-        _weaponDamageArea.SetCollisionMaskValue(Config.LayerNumber.Player, true);
-        _weaponDamageArea.SetCollisionMaskValue(Config.LayerNumber.Mob, true);
-        _weaponDamageArea.Monitoring = true;
-        _weaponDamageArea.BodyEntered += OnBodyEntered;
-        _weaponDamageArea.BodyExited += OnBodyExited;
-        _weaponDamageArea.AreaEntered += AreaEntered;
-        _weaponDamageArea.AreaExited += AreaExited;
-        _damageTemplate = new Damage();
-        _damageTemplate.MaxDamage = _maxDamage;
-        _damageTemplate.MinDamage = _minDamage;
-        _damageTemplate.Type = Config.DamageType.Physical;
     }
 
     private void AreaExited(Node2D node2D)
@@ -87,14 +67,6 @@ public partial class MeleeWeapon : WeaponTemplate
 
     protected override bool DoFire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
-        if (_weaponDamageArea == null)
-        {
-            return false;
-        }
-        if (_damageTemplate == null)
-        {
-            return false;
-        }
         if (owner == null)
         {
             LogCat.LogError("owner_is_null", LogCat.LogLabel.MeleeWeapon);
@@ -105,10 +77,10 @@ public partial class MeleeWeapon : WeaponTemplate
         {
             return false;
         }
-        foreach (var characterTemplate in _characterTemplates)
-        {
-            characterTemplate.Damage(_damageTemplate);
-        }
+        // foreach (var characterTemplate in _characterTemplates)
+        // {
+        //     characterTemplate.Damage(_damageTemplate);
+        // }
         return true;
     }
 }

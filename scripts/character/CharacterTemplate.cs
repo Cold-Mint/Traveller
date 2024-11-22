@@ -628,7 +628,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Deal damage to the character</para>
     /// <para>对角色造成伤害</para>
     /// </summary>
-    /// <param name="damageTemplate">
+    /// <param name="damage">
     ///<para>Damage template</para>
     ///<para>伤害模板</para>
     /// </param>
@@ -636,21 +636,21 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>Return whether the character is dead</para>
     ///<para>返回本次伤害是否导致角色死亡。</para>
     /// </returns>
-    public bool Damage(DamageTemplate damageTemplate)
+    public bool Damage(IDamage damage)
     {
         if (CurrentHp <= 0 || _indestructible)
         {
             return false;
         }
         _lastDamageTime = DateTime.Now;
-        _damageNumber?.DisplayDamage(damageTemplate);
-        CurrentHp -= damageTemplate.Damage;
-        OnHit(damageTemplate);
+        _damageNumber?.DisplayDamage(damage);
+        CurrentHp -= damage.Damage;
+        OnHit(damage);
         if (CurrentHp <= 0)
         {
             //Character death
             //角色死亡
-            OnDie(damageTemplate);
+            OnDie(damage);
             return true;
         }
         PlayDamageAudio();
@@ -689,7 +689,7 @@ public partial class CharacterTemplate : CharacterBody2D
         _additionalForce = force;
     }
 
-    protected virtual void OnHit(DamageTemplate damageTemplate)
+    protected virtual void OnHit(IDamage damage)
     {
     }
 
@@ -703,13 +703,13 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>处理角色死亡的事件</para>
     /// </summary>
     /// <param name="damageTemplate"></param>
-    protected virtual Task OnDie(DamageTemplate damageTemplate)
+    protected virtual Task OnDie(IDamage damage)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
-        if (damageTemplate.Attacker != null && !string.IsNullOrEmpty(CharacterName))
+        if (damage.Attacker != null && !string.IsNullOrEmpty(CharacterName))
         {
-            if (damageTemplate.Attacker is CharacterTemplate characterTemplate &&
+            if (damage.Attacker is CharacterTemplate characterTemplate &&
                 !string.IsNullOrEmpty(characterTemplate.CharacterName))
             {
                 LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
@@ -718,7 +718,7 @@ public partial class CharacterTemplate : CharacterBody2D
             else
             {
                 LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
-                    damageTemplate.Attacker.Name);
+                    damage.Attacker.Name);
             }
         }
         ThrowAllItemOnDie();

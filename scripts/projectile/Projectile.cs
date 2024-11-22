@@ -238,7 +238,7 @@ public partial class Projectile : CharacterBody2D
         {
             //Allow damage to be caused
             //允许造成伤害
-            var damage = new Damage
+            var damage = new RangeDamage
             {
                 Attacker = owner,
                 MaxDamage = _maxDamage,
@@ -277,7 +277,7 @@ public partial class Projectile : CharacterBody2D
         }
         else if (target is Furniture furniture)
         {
-            var damage = new Damage
+            var damage = new RangeDamage
             {
                 Attacker = owner,
                 MaxDamage = _maxDamage,

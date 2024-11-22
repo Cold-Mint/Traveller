@@ -147,8 +147,8 @@ public partial class DamageNumberNodeSpawn : Marker2D
     /// <para>Show damage</para>
     /// <para>显示伤害</para>
     /// </summary>
-    /// <param name="damageTemplate"></param>
-    public void DisplayDamage(DamageTemplate damageTemplate)
+    /// <param name="damage"></param>
+    public void DisplayDamage(IDamage damage)
     {
         if (_rootNode == null || _damageNumberPackedScene == null)
         {
@@ -168,7 +168,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
         }
         NodeUtils.CallDeferredAddChild(_rootNode, damageNumber);
         damageNumber.Position = GlobalPosition;
-        if (damageTemplate.MoveLeft)
+        if (damage.MoveLeft)
         {
             damageNumber.SetVelocity(_negativeVector);
         }
@@ -183,16 +183,16 @@ public partial class DamageNumberNodeSpawn : Marker2D
             return;
         }
 
-        damageLabel.Text = damageTemplate.Damage.ToString();
+        damageLabel.Text = damage.Damage.ToString();
         var labelSettings = new LabelSettings();
-        var offset = damageTemplate.Damage / (float)damageTemplate.MaxDamage;
-        var gradient = GetDamageColorByType(damageTemplate.Type);
-        if (gradient != null)
+        var gradient = GetDamageColorByType(damage.Type);
+        if (gradient != null && damage is RangeDamage rangeDamage)
         {
+            var offset = damage.Damage / (float)rangeDamage.MaxDamage;
             labelSettings.FontColor = gradient.Sample(offset);
         }
 
-        if (damageTemplate.IsCriticalStrike)
+        if (damage.IsCriticalStrike)
         {
             labelSettings.FontSize = Config.CritDamageTextSize;
         }

@@ -392,8 +392,8 @@ public partial class Player : CharacterTemplate
     /// <para>When the player dies</para>
     /// <para>当玩家死亡的时候</para>
     /// </summary>
-    /// <param name="damageTemplate"></param>
-    protected override async Task OnDie(DamageTemplate damageTemplate)
+    /// <param name="damage"></param>
+    protected override async Task OnDie(IDamage damage)
     {
         Hide();
         ProcessMode = ProcessModeEnum.Disabled;
@@ -405,9 +405,9 @@ public partial class Player : CharacterTemplate
         }
 
         var gameOverEvent = new GameOverEvent();
-        if (damageTemplate.Attacker != null)
+        if (damage.Attacker != null)
         {
-            gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damageTemplate.Attacker);
+            gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damage.Attacker);
         }
 
         EventBus.GameOverEvent.Invoke(gameOverEvent);
@@ -423,9 +423,9 @@ public partial class Player : CharacterTemplate
         }
     }
 
-    protected override void OnHit(DamageTemplate damageTemplate)
+    protected override void OnHit(IDamage damage)
     {
-        base.OnHit(damageTemplate);
+        base.OnHit(damage);
         var healthBarUi = GameSceneDepend.GameGuiTemplate?.HealthBar;
         if (healthBarUi != null)
         {

@@ -11,7 +11,7 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ResignationCertificate : WeaponTemplate
 {
-    private readonly Damage _damage = new()
+    private readonly RangeDamage _damage = new()
     {
         MaxDamage = 1,
         MinDamage = 1,

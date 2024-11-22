@@ -116,12 +116,12 @@ public partial class Furniture : RigidBody2D
     /// <para>This method is called when furniture is damaged</para>
     /// <para>当家具损害时调用此方法</para>
     /// </summary>
-    /// <param name="damageTemplate"></param>
+    /// <param name="damage"></param>
     /// <returns>
     ///<para>Return whether the damage completely destroyed the furniture</para>
     ///<para>返回本次伤害是否彻底破坏了家具</para>
     /// </returns>
-    public bool Damage(DamageTemplate damageTemplate)
+    public bool Damage(IDamage damage)
     {
         if (_durability <= 0)
         {
@@ -129,7 +129,7 @@ public partial class Furniture : RigidBody2D
             //不能对已破碎的家具二次伤害。
             return false;
         }
-        _durability -= damageTemplate.Damage;
+        _durability -= damage.Damage;
         if (_durability <= 0)
         {
             if (_audioStreamPlayer2D == null)
