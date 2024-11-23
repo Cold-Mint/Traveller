@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.damage;
@@ -17,6 +19,15 @@ public partial class DamageArea : Area2D
     private readonly List<CharacterTemplate> _characterTemplates = [];
     private CollisionShape2D? _collisionShape2D;
     /// <summary>
+    /// <para>residualUse</para>
+    /// <para>剩余使用次数</para>
+    /// </summary>
+    ///<remarks>
+    ///<para>When the remaining number of uses is greater than 0, the damage area will pay damage to the creatures entering the area.</para>
+    ///<para>当剩余使用次数时大于0时，伤害区域会对进入范围的生物结算伤害。</para>
+    /// </remarks>
+    private int _residualUse;
+    /// <summary>
     /// <para>Whether damage is calculated based on the midpoint of the shape.</para>
     /// <para>是否基于形状的中点计算伤害。</para>
     /// </summary>
@@ -31,6 +42,29 @@ public partial class DamageArea : Area2D
     /// </summary>
     private bool _damageOnContact;
 
+    private long _intervalAsMillisecond = 100;
+
+    [Export]
+    protected long IntervalAsMillisecond
+    {
+        get => _intervalAsMillisecond;
+        set
+        {
+            _intervalAsMillisecond = value;
+            _hitInterval = TimeSpan.FromMilliseconds(_intervalAsMillisecond);
+        }
+    }
+
+    public CharacterTemplate? OwnerCharacter { get; set; }
+
+    private DateTime? _lastHitTime;
+
+    /// <summary>
+    /// <para>hit Interval</para>
+    /// <para>伤害间隔</para>
+    /// </summary>
+    private TimeSpan _hitInterval;
+
     public override void _Ready()
     {
         base._Ready();
@@ -41,6 +75,16 @@ public partial class DamageArea : Area2D
         Monitoring = true;
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
+    }
+
+    /// <summary>
+    /// <para>Add the remaining times</para>
+    /// <para>添加剩余使用次数</para>
+    /// </summary>
+    /// <param name="number"></param>
+    public void AddResidualUse(int number)
+    {
+        _residualUse += number;
     }
 
     /// <summary>
@@ -131,16 +175,27 @@ public partial class DamageArea : Area2D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (_collisionShape2D == null || _rangeDamage == null)
+        if (_residualUse <= 0 || OwnerCharacter == null || _collisionShape2D == null || _rangeDamage == null)
         {
             return;
         }
+        var nowTime = DateTime.Now;
+        if (_lastHitTime != null && nowTime - _lastHitTime < _hitInterval)
+        {
+            return;
+        }
+        _residualUse--;
+        _lastHitTime = nowTime;
         if (_collisionShape2D.Shape is CircleShape2D circleShape2D)
         {
             //CircleShape2D
             //圆形
             foreach (var characterTemplate in _characterTemplates)
             {
+                if (!DamageUtils.CanCauseHarm(OwnerCharacter, characterTemplate))
+                {
+                    continue;
+                }
                 var distance = characterTemplate.GlobalPosition.DistanceTo(_collisionShape2D.GlobalPosition);
                 if (distance > circleShape2D.Radius)
                 {
@@ -180,6 +235,10 @@ public partial class DamageArea : Area2D
             //矩形形状2D
             foreach (var characterTemplate in _characterTemplates)
             {
+                if (!DamageUtils.CanCauseHarm(OwnerCharacter, characterTemplate))
+                {
+                    continue;
+                }
                 var rectangleShapeRect = rectangleShape2D.GetRect();
                 var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
                 //Determines whether a coordinate is contained within the rectangle.
