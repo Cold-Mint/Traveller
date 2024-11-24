@@ -50,7 +50,26 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <para>Owner</para>
     /// <para>主人</para>
     /// </summary>
-    public new Node2D? Owner { get; set; }
+    public Node2D? OwnerNode
+    {
+        get => _ownerNode;
+        set
+        {
+            _ownerNode = value;
+            OnOwnerNodeChanged(_ownerNode);
+        }
+    }
+    private Node2D? _ownerNode;
+
+    /// <summary>
+    /// <para>onOwnerNodeChanged</para>
+    /// <para>当主人节点改变后</para>
+    /// </summary>
+    /// <param name="node2D"></param>
+    protected virtual void OnOwnerNodeChanged(Node2D? node2D)
+    {
+
+    }
 
     public string Description
     {

@@ -26,11 +26,21 @@ public class RangeDamage : IDamage
     public void CreateDamage()
     {
         _damage = GD.RandRange(MinDamage, MaxDamage);
-        _isCriticalStrike = GD.RandRange(1, 100) <= CriticalStrikeProbability;
+        _isCriticalStrike = GetNewCriticalStrikeStatus();
         if (_isCriticalStrike)
         {
             _damage = (int)Math.Round(_damage * Config.CriticalHitMultiplier);
         }
+    }
+
+    /// <summary>
+    /// <para>Get a new critical damage status based on the critical damage probability</para>
+    /// <para>跟据伤害的暴击概率，获取新的暴击伤害状态</para>
+    /// </summary>
+    /// <returns></returns>
+    public bool GetNewCriticalStrikeStatus()
+    {
+        return GD.RandRange(1, 100) <= CriticalStrikeProbability;
     }
 
     /// <summary>

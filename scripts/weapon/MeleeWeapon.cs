@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using Godot;
@@ -13,55 +11,36 @@ namespace ColdMint.scripts.weapon;
 public partial class MeleeWeapon : WeaponTemplate
 {
 
+    private DamageArea? _damageArea;
     [Export]
-    private int _maxDamage = 1;
+    private int _minDamage;
+
     [Export]
-    private int _minDamage = 1;
-
-    private readonly List<CharacterTemplate> _characterTemplates =
-    [
-    ];
-
+    private int _maxDamage;
+    [Export]
+    private int _damageType = Config.DamageType.Physical;
+    [Export]
+    private int _criticalStrikeProbability;
     public override void LoadResource()
     {
         base.LoadResource();
-    }
-
-    private void AreaExited(Node2D node2D)
-    {
-        LogCat.Log("AreaExited" + node2D.Name, LogCat.LogLabel.MeleeWeapon);
-
-    }
-
-    private void AreaEntered(Node2D node2D)
-    {
-        LogCat.Log("AreaEntered" + node2D.Name, LogCat.LogLabel.MeleeWeapon);
-
-    }
-    /// <summary>
-    /// <para>OnBodyEntered</para>
-    /// <para>当敌人进入攻击范围</para>
-    /// </summary>
-    private void OnBodyEntered(Node2D node2D)
-    {
-        LogCat.Log("OnBodyEntered" + node2D.Name, LogCat.LogLabel.MeleeWeapon);
-        if (node2D is CharacterTemplate characterTemplate)
+        _damageArea = GetNode<DamageArea>("WeaponDamageArea");
+        _damageArea.OwnerNode = OwnerNode;
+        _damageArea.SetDamage(new RangeDamage
         {
-            _characterTemplates.Add(characterTemplate);
-        }
+            MinDamage = _minDamage,
+            MaxDamage = _maxDamage,
+            Type = _damageType,
+            CriticalStrikeProbability = _criticalStrikeProbability
+        });
     }
 
-    /// <summary>
-    /// <para>When the enemy is out of range</para>
-    /// <para>当敌人离开攻击范围</para>
-    /// </summary>
-    /// <param name="node"></param>
-    private void OnBodyExited(Node node)
+    protected override void OnOwnerNodeChanged(Node2D? node2D)
     {
-        LogCat.Log("OnBodyExited" + node.Name, LogCat.LogLabel.MeleeWeapon);
-        if (node is CharacterTemplate characterTemplate)
+        base.OnOwnerNodeChanged(node2D);
+        if (_damageArea != null)
         {
-            _characterTemplates.Remove(characterTemplate);
+            _damageArea.OwnerNode = node2D;
         }
     }
 
@@ -72,15 +51,11 @@ public partial class MeleeWeapon : WeaponTemplate
             LogCat.LogError("owner_is_null", LogCat.LogLabel.MeleeWeapon);
             return false;
         }
-
-        if (_characterTemplates.Count == 0)
+        if (_damageArea == null)
         {
             return false;
         }
-        // foreach (var characterTemplate in _characterTemplates)
-        // {
-        //     characterTemplate.Damage(_damageTemplate);
-        // }
+        _damageArea.AddResidualUse(1);
         return true;
     }
 }

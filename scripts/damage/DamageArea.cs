@@ -42,28 +42,19 @@ public partial class DamageArea : Area2D
     /// </summary>
     private bool _damageOnContact;
 
-    private long _intervalAsMillisecond = 100;
-
-    [Export]
-    protected long IntervalAsMillisecond
+    private Node2D? _ownerNode;
+    public Node2D? OwnerNode
     {
-        get => _intervalAsMillisecond;
+        get => _ownerNode;
         set
         {
-            _intervalAsMillisecond = value;
-            _hitInterval = TimeSpan.FromMilliseconds(_intervalAsMillisecond);
+            if (_rangeDamage != null)
+            {
+                _rangeDamage.Attacker = value;
+            }
+            _ownerNode = value;
         }
     }
-
-    public CharacterTemplate? OwnerCharacter { get; set; }
-
-    private DateTime? _lastHitTime;
-
-    /// <summary>
-    /// <para>hit Interval</para>
-    /// <para>伤害间隔</para>
-    /// </summary>
-    private TimeSpan _hitInterval;
 
     public override void _Ready()
     {
@@ -100,6 +91,7 @@ public partial class DamageArea : Area2D
         _rangeDamage = rangeDamage;
         if (rangeDamage != null)
         {
+            rangeDamage.Attacker = _ownerNode;
             _damageRange = rangeDamage.MaxDamage - rangeDamage.MinDamage;
         }
     }
@@ -148,7 +140,8 @@ public partial class DamageArea : Area2D
         return new FixedDamage(damage)
         {
             Type = _rangeDamage.Type,
-            Attacker = this
+            Attacker = this,
+            IsCriticalStrike = _rangeDamage.GetNewCriticalStrikeStatus()
         };
     }
 
@@ -168,6 +161,7 @@ public partial class DamageArea : Area2D
             MinDamage = _rangeDamage.MinDamage,
             MaxDamage = _rangeDamage.MaxDamage,
             Type = _rangeDamage.Type,
+            CriticalStrikeProbability = _rangeDamage.CriticalStrikeProbability,
             Attacker = this
         };
     }
@@ -175,29 +169,24 @@ public partial class DamageArea : Area2D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (_residualUse <= 0 || OwnerCharacter == null || _collisionShape2D == null || _rangeDamage == null)
-        {
-            return;
-        }
-        var nowTime = DateTime.Now;
-        if (_lastHitTime != null && nowTime - _lastHitTime < _hitInterval)
+        if (_residualUse <= 0 || OwnerNode == null || _collisionShape2D == null || _rangeDamage == null)
         {
             return;
         }
         _residualUse--;
-        _lastHitTime = nowTime;
         if (_collisionShape2D.Shape is CircleShape2D circleShape2D)
         {
             //CircleShape2D
             //圆形
+            var radius = (float)Math.Pow(circleShape2D.Radius, 2);
             foreach (var characterTemplate in _characterTemplates)
             {
-                if (!DamageUtils.CanCauseHarm(OwnerCharacter, characterTemplate))
+                if (!DamageUtils.CanCauseHarm(OwnerNode, characterTemplate))
                 {
                     continue;
                 }
-                var distance = characterTemplate.GlobalPosition.DistanceTo(_collisionShape2D.GlobalPosition);
-                if (distance > circleShape2D.Radius)
+                var distance = characterTemplate.GlobalPosition.DistanceSquaredTo(_collisionShape2D.GlobalPosition);
+                if (distance > radius)
                 {
                     //The creature or player is outside the shape.
                     //生物或玩家在形状外围。
@@ -216,13 +205,13 @@ public partial class DamageArea : Area2D
                 float percent;
                 if (_isDamageCenterBased)
                 {
-                    percent = 1 - distance / circleShape2D.Radius;
+                    percent = 1 - distance / radius;
                 }
                 else
                 {
-                    percent = distance / circleShape2D.Radius;
+                    percent = distance / radius;
                 }
-                var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_rangeDamage.MaxDamage - _rangeDamage.MinDamage * percent));
+                var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
                 if (percentFixedDamage != null)
                 {
                     characterTemplate.Damage(percentFixedDamage);
@@ -233,14 +222,14 @@ public partial class DamageArea : Area2D
         {
             //Rectangular shape 2D
             //矩形形状2D
+            var rectangleShapeRect = rectangleShape2D.GetRect();
+            var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
             foreach (var characterTemplate in _characterTemplates)
             {
-                if (!DamageUtils.CanCauseHarm(OwnerCharacter, characterTemplate))
+                if (!DamageUtils.CanCauseHarm(OwnerNode, characterTemplate))
                 {
                     continue;
                 }
-                var rectangleShapeRect = rectangleShape2D.GetRect();
-                var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
                 //Determines whether a coordinate is contained within the rectangle.
                 //判断某个坐标是否包含在矩形内。
                 if (rect.HasPoint(characterTemplate.GlobalPosition))

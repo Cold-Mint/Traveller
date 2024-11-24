@@ -476,7 +476,7 @@ public partial class CharacterTemplate : CharacterBody2D
         if (pickAbleItemNode2D is PickAbleTemplate pickAbleTemplate)
         {
             pickAbleTemplate.LoadResource();
-            pickAbleTemplate.Owner = this;
+            pickAbleTemplate.OwnerNode = this;
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.Freeze = true;
             pickAbleTemplate.DisabledCollisionShape2D();
@@ -871,7 +871,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     return;
                 }
                 pickAbleTemplate.LoadResource();
-                pickAbleTemplate.Owner = this;
+                pickAbleTemplate.OwnerNode = this;
                 pickAbleTemplate.Picked = false;
                 //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
                 //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。

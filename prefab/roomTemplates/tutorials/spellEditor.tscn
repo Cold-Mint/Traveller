@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=13 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="1_q04qt"]
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_5bnvh"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://cdjmfqp854utu" path="res://sprites/tutorials/spellEditor.png" id="6_dbg76"]
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
 [ext_resource type="PackedScene" uid="uid://nbqjjnom2f5e" path="res://prefab/furnitures/Jar.tscn" id="8_prvl3"]
-[ext_resource type="Script" path="res://scripts/damage/DamageArea.cs" id="9_1f4rv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -24,9 +23,6 @@ size = Vector2(758, 342)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u54ac"]
 size = Vector2(658, 284)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_fns5p"]
-radius = 80.4984
 
 [node name="spellEditor" type="Node2D"]
 
@@ -124,6 +120,11 @@ position = Vector2(134, 248)
 script = ExtResource("4_6ihp7")
 _itemIdList = PackedStringArray("beginner_staff")
 
+[node name="iron_axe" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(490, 248)
+script = ExtResource("4_6ihp7")
+_itemIdList = PackedStringArray("iron_axe")
+
 [node name="magic_missile" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(100, 250)
 script = ExtResource("4_6ihp7")
@@ -148,10 +149,3 @@ shape = SubResource("RectangleShape2D_u54ac")
 
 [node name="Jar" parent="." instance=ExtResource("8_prvl3")]
 position = Vector2(560, 297)
-
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(395, 240)
-script = ExtResource("9_1f4rv")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_fns5p")
