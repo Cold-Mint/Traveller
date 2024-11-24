@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
+using ColdMint.scripts.furniture;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -17,6 +18,7 @@ public partial class DamageArea : Area2D
     private RangeDamage? _rangeDamage;
     private int _damageRange;
     private readonly List<CharacterTemplate> _characterTemplates = [];
+    private readonly List<Barrier> _barriers = [];
     private CollisionShape2D? _collisionShape2D;
     /// <summary>
     /// <para>residualUse</para>
@@ -63,6 +65,7 @@ public partial class DamageArea : Area2D
         InputPickable = false;
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
+        SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         Monitoring = true;
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
@@ -107,6 +110,10 @@ public partial class DamageArea : Area2D
         {
             _characterTemplates.Remove(characterTemplate);
         }
+        if (body is Barrier barrier)
+        {
+            _barriers.Remove(barrier);
+        }
     }
 
     /// <summary>
@@ -119,6 +126,10 @@ public partial class DamageArea : Area2D
         if (body is CharacterTemplate characterTemplate)
         {
             _characterTemplates.Add(characterTemplate);
+        }
+        if (body is Barrier barrier)
+        {
+            _barriers.Add(barrier);
         }
     }
 
@@ -166,6 +177,85 @@ public partial class DamageArea : Area2D
         };
     }
 
+    private void CircleShape2D<T>(float radius, T node2D, Action<IDamage, T> doDamageAction) where T : Node2D
+    {
+        if (_rangeDamage == null)
+        {
+            return;
+        }
+        if (!DamageUtils.CanCauseHarm(OwnerNode, node2D))
+        {
+            return;
+        }
+        var distance = node2D.GlobalPosition.DistanceSquaredTo(node2D.GlobalPosition);
+        if (distance > radius)
+        {
+            //The creature or player is outside the shape.
+            //生物或玩家在形状外围。
+            if (_damageOnContact)
+            {
+                //If contact can cause injury.
+                //如果接触后即可造成伤害。
+                var minFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage);
+                if (minFixedDamage != null)
+                {
+                    doDamageAction.Invoke(minFixedDamage, node2D);
+                }
+            }
+            return;
+        }
+        float percent;
+        if (_isDamageCenterBased)
+        {
+            percent = 1 - distance / radius;
+        }
+        else
+        {
+            percent = distance / radius;
+        }
+        var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
+        if (percentFixedDamage != null)
+        {
+            doDamageAction.Invoke(percentFixedDamage, node2D);
+        }
+    }
+
+    private void RectangleShape2D<T>(Rect2 rect2, T node2D, Action<IDamage, T> doDamageAction) where T : Node2D
+    {
+        if (_rangeDamage == null)
+        {
+            return;
+        }
+        if (!DamageUtils.CanCauseHarm(OwnerNode, node2D))
+        {
+            return;
+        }
+        //Determines whether a coordinate is contained within the rectangle.
+        //判断某个坐标是否包含在矩形内。
+        if (rect2.HasPoint(node2D.GlobalPosition))
+        {
+            //The coordinates of the creature are inside the rectangle.
+            //生物的坐标在矩形内。
+            var rangeDamage = CreateRangeDamage();
+            if (rangeDamage != null)
+            {
+                rangeDamage.CreateDamage();
+                doDamageAction.Invoke(rangeDamage, node2D);
+            }
+        }
+        else
+        {
+            if (_damageOnContact)
+            {
+                var minFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage);
+                if (minFixedDamage != null)
+                {
+                    doDamageAction.Invoke(minFixedDamage, node2D);
+                }
+            }
+        }
+    }
+
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -181,41 +271,17 @@ public partial class DamageArea : Area2D
             var radius = (float)Math.Pow(circleShape2D.Radius, 2);
             foreach (var characterTemplate in _characterTemplates)
             {
-                if (!DamageUtils.CanCauseHarm(OwnerNode, characterTemplate))
+                CircleShape2D(radius, characterTemplate, (damage, template) =>
                 {
-                    continue;
-                }
-                var distance = characterTemplate.GlobalPosition.DistanceSquaredTo(_collisionShape2D.GlobalPosition);
-                if (distance > radius)
+                    template.Damage(damage);
+                });
+            }
+            foreach (var barrier in _barriers)
+            {
+                CircleShape2D(radius, barrier, (damage, barrier1) =>
                 {
-                    //The creature or player is outside the shape.
-                    //生物或玩家在形状外围。
-                    if (_damageOnContact)
-                    {
-                        //If contact can cause injury.
-                        //如果接触后即可造成伤害。
-                        var minFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage);
-                        if (minFixedDamage != null)
-                        {
-                            characterTemplate.Damage(minFixedDamage);
-                        }
-                    }
-                    continue;
-                }
-                float percent;
-                if (_isDamageCenterBased)
-                {
-                    percent = 1 - distance / radius;
-                }
-                else
-                {
-                    percent = distance / radius;
-                }
-                var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
-                if (percentFixedDamage != null)
-                {
-                    characterTemplate.Damage(percentFixedDamage);
-                }
+                    barrier1.Damage(damage);
+                });
             }
         }
         else if (_collisionShape2D.Shape is RectangleShape2D rectangleShape2D)
@@ -226,34 +292,17 @@ public partial class DamageArea : Area2D
             var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
             foreach (var characterTemplate in _characterTemplates)
             {
-                if (!DamageUtils.CanCauseHarm(OwnerNode, characterTemplate))
+                RectangleShape2D(rect, characterTemplate, (damage, template) =>
                 {
-                    continue;
-                }
-                //Determines whether a coordinate is contained within the rectangle.
-                //判断某个坐标是否包含在矩形内。
-                if (rect.HasPoint(characterTemplate.GlobalPosition))
+                    template.Damage(damage);
+                });
+            }
+            foreach (var barrier in _barriers)
+            {
+                RectangleShape2D(rect, barrier, (damage, barrier1) =>
                 {
-                    //The coordinates of the creature are inside the rectangle.
-                    //生物的坐标在矩形内。
-                    var rangeDamage = CreateRangeDamage();
-                    if (rangeDamage != null)
-                    {
-                        rangeDamage.CreateDamage();
-                        characterTemplate.Damage(rangeDamage);
-                    }
-                }
-                else
-                {
-                    if (_damageOnContact)
-                    {
-                        var minFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage);
-                        if (minFixedDamage != null)
-                        {
-                            characterTemplate.Damage(minFixedDamage);
-                        }
-                    }
-                }
+                    barrier1.Damage(damage);
+                });
             }
         }
         else
