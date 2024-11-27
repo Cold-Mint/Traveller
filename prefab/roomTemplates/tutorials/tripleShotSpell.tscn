@@ -90,63 +90,33 @@ text = "ui_tutorial_combine_more_powerful_spells"
 
 [node name="WoodenBox" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(711, 179)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox4" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(676, 179)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox5" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(676, 144)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox6" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(675, 102)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox7" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(641, 180)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox8" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(640, 142)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox9" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(640, 101)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox2" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(712, 138)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox3" parent="." instance=ExtResource("4_60glh")]
 position = Vector2(711, 98)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_ll4ng")]
 position = Vector2(473, 285)
-_initialDurability = 0
-_maxDurability = 0
-_lootId = ""
 
 [node name="TripleShotSpell" type="Sprite2D" parent="."]
 position = Vector2(637, 85)

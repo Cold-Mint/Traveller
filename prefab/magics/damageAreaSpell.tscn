@@ -1,18 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://m3tkjcbrrhfj"]
+[gd_scene load_steps=5 format=3 uid="uid://chsgo38qjvipx"]
 
-[ext_resource type="Script" path="res://scripts/spell/NodeSpawnOnKillCharacterSpell.cs" id="1_gg5rs"]
-[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_83n3c"]
-[ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_thtsv"]
+[ext_resource type="Script" path="res://scripts/spell/DamageAreaSell.cs" id="1_nsoar"]
+[ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_bsnaa"]
+[ext_resource type="Texture2D" uid="uid://dhgbij2ifphar" path="res://sprites/projectile/trackingSpell.png" id="3_u5vc5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
 
-[node name="curse" type="RigidBody2D"]
+[node name="trackingSpell" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
-script = ExtResource("1_gg5rs")
-_packedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
+script = ExtResource("1_nsoar")
+PackedScenePath = "res://prefab/damageArea.tscn"
+MinDamage = 15
+MaxDamage = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
@@ -22,7 +24,7 @@ shape = SubResource("RectangleShape2D_i3lbq")
 position = Vector2(65, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Marker2D"]
-stream = ExtResource("2_83n3c")
+stream = ExtResource("2_bsnaa")
 bus = &"SoundEffect"
 
 [node name="TipLabel" type="Label" parent="."]
@@ -33,5 +35,5 @@ offset_bottom = 48.0
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]
 
-[node name="X3" type="Sprite2D" parent="."]
-texture = ExtResource("3_thtsv")
+[node name="TrackingSpell" type="Sprite2D" parent="."]
+texture = ExtResource("3_u5vc5")

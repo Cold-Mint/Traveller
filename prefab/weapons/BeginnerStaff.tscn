@@ -12,7 +12,6 @@ collision_layer = 8
 collision_mask = 34
 script = ExtResource("1_w4b6p")
 _numberSlots = 5
-_spellList = null
 _fireSequentially = true
 FiringIntervalAsMillisecond = 280
 _recoilStrength = 5

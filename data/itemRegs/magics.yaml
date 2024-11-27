@@ -24,3 +24,7 @@
   scene_path: res://prefab/magics/trackingSpell.tscn
   icon_path: res://sprites/projectile/trackingSpell.png
   max_stack_value: 1
+- id: damage_area_spell
+  scene_path: res://prefab/magics/damageAreaSpell.tscn
+  icon_path: res://sprites/projectile/trackingSpell.png
+  max_stack_value: 1

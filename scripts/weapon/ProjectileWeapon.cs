@@ -291,7 +291,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             }
             NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
             projectile.LookAt(velocity);
-            projectile.Owner = owner;
+            projectile.OwnerNode = OwnerNode;
             projectile.Velocity = velocity;
             projectile.Position = _marker2D.GlobalPosition;
         }

@@ -11,10 +11,7 @@ size = Vector2(32, 32)
 collision_layer = 256
 collision_mask = 160
 script = ExtResource("1_hfnuj")
-_initialDurability = null
 _maxDurability = 1
-_furnitureName = null
-_lootId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vx4tg")

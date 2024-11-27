@@ -91,27 +91,15 @@ texture = ExtResource("6_dbg76")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_0kep0")]
 position = Vector2(227, 283)
-_initialDurability = 0
-_maxDurability = 0
-_lootId = ""
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox2" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 200)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="WoodenBox3" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 162)
-_initialDurability = 0
-_furnitureName = ""
-_lootId = ""
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 
@@ -134,6 +122,11 @@ _itemIdList = PackedStringArray("magic_missile")
 position = Vector2(156, 245)
 script = ExtResource("4_6ihp7")
 _itemIdList = PackedStringArray("tracking_spell")
+
+[node name="damage_area_spell" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(284, 187)
+script = ExtResource("4_6ihp7")
+_itemIdList = PackedStringArray("damage_area_spell")
 
 [node name="RoomArea" type="Area2D" parent="."]
 

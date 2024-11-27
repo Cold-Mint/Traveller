@@ -95,7 +95,7 @@ public partial class Projectile : CharacterBody2D
     /// <para>The master of the weapon</para>
     /// <para>武器的主人</para>
     /// </summary>
-    public new Node2D? Owner { get; set; }
+    public Node2D? OwnerNode { get; set; }
 
 
     public override void _Ready()
@@ -303,7 +303,7 @@ public partial class Projectile : CharacterBody2D
         //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
         //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
         var node = (Node2D)collisionInfo.GetCollider();
-        var canCauseHarm = DamageUtils.CanCauseHarm(Owner, node);
+        var canCauseHarm = DamageUtils.CanCauseHarm(OwnerNode, node);
         if (!canCauseHarm)
         {
             return;
@@ -314,7 +314,7 @@ public partial class Projectile : CharacterBody2D
         {
             Velocity = Velocity.Bounce(collisionInfo.GetNormal());
         }
-        DoDamage(Owner, node);
+        DoDamage(OwnerNode, node);
         //Please specify in the Mask who the bullet will collide with
         //请在Mask内配置子弹会和谁碰撞
         //When a bullet hits an object, its durability decreases

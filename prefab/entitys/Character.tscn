@@ -37,13 +37,8 @@ platform_wall_layers = 128
 script = ExtResource("1_1dlls")
 _platformDetectionRayCast2DList = [NodePath("PlatformDetectionRayCast1"), NodePath("PlatformDetectionRayCast2"), NodePath("PlatformDetectionRayCast3")]
 _jumpSounds = Array[AudioStream]([ExtResource("2_b7gjc"), ExtResource("3_e6cuc"), ExtResource("4_ytj5o")])
-CharacterName = null
-CanMutateAfterDeath = null
-_initialHp = null
 MaxHp = 32
 CampId = "Default"
-_indestructible = null
-_lootId = null
 DamageSounds = Array[AudioStream]([ExtResource("2_af8h5"), ExtResource("3_kosfs"), ExtResource("4_svbgi")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
