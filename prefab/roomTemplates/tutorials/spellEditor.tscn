@@ -108,11 +108,6 @@ position = Vector2(134, 248)
 script = ExtResource("4_6ihp7")
 _itemIdList = PackedStringArray("beginner_staff")
 
-[node name="iron_axe" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(490, 248)
-script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("iron_axe")
-
 [node name="magic_missile" type="Marker2D" parent="AutoSpawn"]
 position = Vector2(100, 250)
 script = ExtResource("4_6ihp7")

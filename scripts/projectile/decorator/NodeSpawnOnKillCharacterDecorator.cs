@@ -10,11 +10,21 @@ namespace ColdMint.scripts.projectile.decorator;
 /// </summary>
 public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
 {
+    private string? _packedScenePath;
+
     /// <summary>
     /// <para>PackedScenePath</para>
     /// <para>要实例化的场景路径</para>
     /// </summary>
-    public string? PackedScenePath { get; set; }
+    public string? PackedScenePath
+    {
+        get => _packedScenePath;
+        set
+        {
+            _packedScenePath = value;
+            LoadPackScene();
+        }
+    }
 
     /// <summary>
     /// <para>DefaultParentNode</para>
@@ -30,16 +40,11 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
 
     private PackedScene? _packedScene;
 
-    public NodeSpawnOnKillCharacterDecorator()
-    {
-        LoadPackScene();
-    }
-
     /// <summary>
     /// <para>LoadPackScene</para>
     /// <para>加载打包的场景</para>
     /// </summary>
-    public void LoadPackScene()
+    private void LoadPackScene()
     {
         if (string.IsNullOrEmpty(PackedScenePath))
         {

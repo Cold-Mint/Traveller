@@ -12,27 +12,31 @@ namespace ColdMint.scripts.projectile.decorator;
 /// </summary>
 public class DamageAreaDecorator : IProjectileDecorator
 {
-    public string? PackedScenePath { get; set; }
+    private string? _packedScenePath;
+    public string? PackedScenePath
+    {
+        get => _packedScenePath;
+        set
+        {
+            _packedScenePath = value;
+            LoadPackScene();
+        }
+    }
     private PackedScene? _packedScene;
     public RangeDamage? RangeDamage { get; set; }
     private readonly Dictionary<Projectile, DamageArea> _damageAreaCache = new();
-
-    public DamageAreaDecorator()
-    {
-        LoadPackScene();
-    }
 
     /// <summary>
     /// <para>LoadPackScene</para>
     /// <para>加载打包的场景</para>
     /// </summary>
-    public void LoadPackScene()
+    private void LoadPackScene()
     {
-        if (string.IsNullOrEmpty(PackedScenePath))
+        if (string.IsNullOrEmpty(_packedScenePath))
         {
             return;
         }
-        _packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
+        _packedScene = ResourceLoader.Load<PackedScene>(_packedScenePath);
     }
 
     public void OnKillCharacter(Node2D? owner, CharacterTemplate target)
@@ -51,6 +55,7 @@ public class DamageAreaDecorator : IProjectileDecorator
         {
             return;
         }
+        damageArea.OwnerNode = projectile.OwnerNode;
         damageArea.SetDamage(RangeDamage);
         NodeUtils.CallDeferredAddChild(projectile, damageArea);
         _damageAreaCache.Add(projectile, damageArea);
@@ -67,7 +72,7 @@ public class DamageAreaDecorator : IProjectileDecorator
 
     public bool SupportedModificationPhysicalFrame
     {
-        get => false;
+        get => true;
     }
 
     public void PhysicsProcess(Projectile projectile, KinematicCollision2D? collisionInfo)

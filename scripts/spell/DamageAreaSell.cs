@@ -29,16 +29,15 @@ public partial class DamageAreaSell : SpellPickAble
         base.LoadResource();
         if (_damageAreaDecorator == null)
         {
-            var ranageDamage = new RangeDamage
-            {
-                MaxDamage = MaxDamage,
-                MinDamage = MinDamage,
-                Type = _damageType,
-                Attacker = OwnerNode
-            };
             _damageAreaDecorator = new DamageAreaDecorator
             {
-                RangeDamage = ranageDamage,
+                RangeDamage = new RangeDamage
+                {
+                    MaxDamage = MaxDamage,
+                    MinDamage = MinDamage,
+                    Type = _damageType,
+                    Attacker = OwnerNode
+                },
                 PackedScenePath = PackedScenePath
             };
         }

@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/damage/DamageArea.cs" id="1_w8uol"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jkpeh"]
+radius = 64.0
 
 [node name="DamageArea" type="Area2D"]
 script = ExtResource("1_w8uol")

@@ -283,6 +283,9 @@ public partial class ProjectileWeapon : WeaponTemplate
                 RestoreWeapon(spellScope);
                 return false;
             }
+            //Be sure to set the master node before modifying the projectile.
+            //一定要在修改抛射体前设置主人节点。
+            projectile.OwnerNode = OwnerNode;
             var velocity = _marker2D.GlobalPosition.DirectionTo(enemyGlobalPosition) * projectile.ActualSpeed;
             for (var s = spellScope[0]; s <= spellScope[1]; s++)
             {
@@ -291,7 +294,6 @@ public partial class ProjectileWeapon : WeaponTemplate
             }
             NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
             projectile.LookAt(velocity);
-            projectile.OwnerNode = OwnerNode;
             projectile.Velocity = velocity;
             projectile.Position = _marker2D.GlobalPosition;
         }
