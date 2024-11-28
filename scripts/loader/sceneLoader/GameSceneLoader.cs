@@ -21,10 +21,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     public override Task InitializeData()
     {
         RenderingServer.SetDefaultClearColor(Color.FromHsv(0, 0, 0));
-        //Backpack Ui container
-        //背包Ui容器
-        var backpackUiContainer = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
-        GameSceneDepend.DynamicUiGroup = backpackUiContainer;
+        //Load DynamicUiGroup
+        //加载动态Ui容器
+        var dynamicUiGroup = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
+        GameSceneDepend.DynamicUiGroup = dynamicUiGroup;
         //Loaded weapon container
         //加载武器容器
         var weaponContainer = GetNode<Node2D>("WeaponContainer");
@@ -49,6 +49,10 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载玩家容器
         var playerContainer = GetNode<Node2D>("PlayerContainer");
         GameSceneDepend.PlayerContainer = playerContainer;
+        //load the dynamicDamageAreaContainer
+        //加载动态伤害区域容器
+        var dynamicDamageAreaContainer = GetNode<Node2D>("DynamicDamageAreaContainer");
+        GameSceneDepend.DynamicDamageAreaContainer = dynamicDamageAreaContainer;
         //Load the pickable container
         //加载可拾捡物容器
         var pickAbleContainer = GetNode<Node2D>("PickAbleContainer");

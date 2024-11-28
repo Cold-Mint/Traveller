@@ -50,5 +50,7 @@ visible = false
 
 [node name="PacksackContainer" type="Node2D" parent="."]
 
+[node name="DynamicDamageAreaContainer" type="Node2D" parent="."]
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)

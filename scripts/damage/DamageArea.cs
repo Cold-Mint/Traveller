@@ -21,6 +21,15 @@ public partial class DamageArea : Area2D
     private readonly List<Barrier> _barriers = [];
     private CollisionShape2D? _collisionShape2D;
     /// <summary>
+    /// <para>Whether it is a one-time injury area</para>
+    /// <para>是否为一次性的伤害区域</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>When the remaining number of times is 0, the device automatically destroys</para>
+    ///<para>剩余次数为0时，自动销毁</para>
+    /// </remarks>
+    public bool OneShot { get; set; }
+    /// <summary>
     /// <para>residualUse</para>
     /// <para>剩余使用次数</para>
     /// </summary>
@@ -308,6 +317,12 @@ public partial class DamageArea : Area2D
         else
         {
             LogCat.LogError("invalid_damage_shape");
+        }
+        //Determine whether to destroy.
+        //判断是否销毁。
+        if (OneShot && _residualUse <= 0)
+        {
+            QueueFree();
         }
     }
 }

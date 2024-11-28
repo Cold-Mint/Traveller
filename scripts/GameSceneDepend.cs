@@ -79,6 +79,16 @@ public static class GameSceneDepend
     /// <para>AICharacter角色</para>
     /// </summary>
     public static Node2D? AiCharacterContainer { get; set; }
+    
+    /// <summary>
+    /// <para>DynamicDamageAreaContainer</para>
+    /// <para>动态生成的伤害区域容器</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Used to store dynamically generated damage areas, which are usually generated temporarily.</para>
+    ///<para>用于存放动态生成的伤害区域，他们通常是临时产生的。</para>
+    /// </remarks>
+    public static Node2D? DynamicDamageAreaContainer { get; set; }
 
 
     /// <summary>

@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -24,7 +24,6 @@ public class DamageAreaDecorator : IProjectileDecorator
     }
     private PackedScene? _packedScene;
     public RangeDamage? RangeDamage { get; set; }
-    private readonly Dictionary<Projectile, DamageArea> _damageAreaCache = new();
 
     /// <summary>
     /// <para>LoadPackScene</para>
@@ -46,28 +45,10 @@ public class DamageAreaDecorator : IProjectileDecorator
 
     public void Attach(Projectile projectile)
     {
-        if (_packedScene == null || RangeDamage == null)
-        {
-            return;
-        }
-        var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(_packedScene);
-        if (damageArea == null)
-        {
-            return;
-        }
-        damageArea.OwnerNode = projectile.OwnerNode;
-        damageArea.SetDamage(RangeDamage);
-        NodeUtils.CallDeferredAddChild(projectile, damageArea);
-        _damageAreaCache.Add(projectile, damageArea);
     }
 
     public void Detach(Projectile projectile)
     {
-        if (_damageAreaCache.TryGetValue(projectile, out var area2D))
-        {
-            area2D.QueueFree();
-            _damageAreaCache.Remove(projectile);
-        }
     }
 
     public bool SupportedModificationPhysicalFrame
@@ -77,13 +58,22 @@ public class DamageAreaDecorator : IProjectileDecorator
 
     public void PhysicsProcess(Projectile projectile, KinematicCollision2D? collisionInfo)
     {
-        if (collisionInfo == null)
+        if (collisionInfo == null || _packedScene == null || RangeDamage == null || GameSceneDepend.DynamicDamageAreaContainer == null)
+        {
+            // LogCat.Log("collisionInfo " + (collisionInfo == null) + " || _packedScene" + (_packedScene == null) + " || RangeDamage" + (RangeDamage == null) + " || GameSceneDepend.DynamicDamageAreaContainer " + (GameSceneDepend.DynamicDamageAreaContainer == null));
+            return;
+        }
+        var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(_packedScene);
+        if (damageArea == null)
         {
             return;
         }
-        if (_damageAreaCache.TryGetValue(projectile, out var damageArea))
-        {
-            damageArea.AddResidualUse(1);
-        }
+        //TODO：更新伤害区域的列表，以便其能够正确的计算伤害。
+        damageArea.OwnerNode = projectile.OwnerNode;
+        damageArea.SetDamage(RangeDamage);
+        damageArea.GlobalPosition = ((Node2D)collisionInfo.GetCollider()).GlobalPosition;
+        damageArea.OneShot = true;
+        damageArea.AddResidualUse(1);
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.DynamicDamageAreaContainer, damageArea);
     }
 }
