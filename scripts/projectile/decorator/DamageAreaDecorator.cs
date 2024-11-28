@@ -13,9 +13,27 @@ namespace ColdMint.scripts.projectile.decorator;
 public class DamageAreaDecorator : IProjectileDecorator
 {
     public string? PackedScenePath { get; set; }
+    private PackedScene? _packedScene;
     public RangeDamage? RangeDamage { get; set; }
     private readonly Dictionary<Projectile, DamageArea> _damageAreaCache = new();
 
+    public DamageAreaDecorator()
+    {
+        LoadPackScene();
+    }
+
+    /// <summary>
+    /// <para>LoadPackScene</para>
+    /// <para>加载打包的场景</para>
+    /// </summary>
+    public void LoadPackScene()
+    {
+        if (string.IsNullOrEmpty(PackedScenePath))
+        {
+            return;
+        }
+        _packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
+    }
 
     public void OnKillCharacter(Node2D? owner, CharacterTemplate target)
     {
@@ -24,16 +42,11 @@ public class DamageAreaDecorator : IProjectileDecorator
 
     public void Attach(Projectile projectile)
     {
-        if (PackedScenePath == null || RangeDamage == null)
+        if (_packedScene == null || RangeDamage == null)
         {
             return;
         }
-        var packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
-        if (packedScene == null)
-        {
-            return;
-        }
-        var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(packedScene);
+        var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(_packedScene);
         if (damageArea == null)
         {
             return;

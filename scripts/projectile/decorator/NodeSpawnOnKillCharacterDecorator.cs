@@ -28,6 +28,26 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
     /// </summary>
     public float Chance { get; set; } = 1f;
 
+    private PackedScene? _packedScene;
+
+    public NodeSpawnOnKillCharacterDecorator()
+    {
+        LoadPackScene();
+    }
+
+    /// <summary>
+    /// <para>LoadPackScene</para>
+    /// <para>加载打包的场景</para>
+    /// </summary>
+    public void LoadPackScene()
+    {
+        if (string.IsNullOrEmpty(PackedScenePath))
+        {
+            return;
+        }
+        _packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
+    }
+
     public void OnKillCharacter(Node2D? owner, CharacterTemplate target)
     {
         if (RandomUtils.Instance.NextSingle() > Chance)
@@ -37,13 +57,11 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
             return;
         }
 
-        if (PackedScenePath == null || DefaultParentNode == null || !target.CanMutateAfterDeath)
+        if (_packedScene == null || DefaultParentNode == null || !target.CanMutateAfterDeath)
         {
             return;
         }
-
-        var packedScene = ResourceLoader.Load<PackedScene>(PackedScenePath);
-        var node2D = NodeUtils.InstantiatePackedScene<Node2D>(packedScene);
+        var node2D = NodeUtils.InstantiatePackedScene<Node2D>(_packedScene);
         if (node2D == null)
         {
             return;
