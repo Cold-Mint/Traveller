@@ -215,18 +215,21 @@ public class Room
                 //The maximum wave number should be the maximum wave number produced by living organisms.For now, the player's condition for the next step is to kill all enemies.
                 //最大波数应该是生物生成的最大波数。就目前而言，玩家进入下一步的条件是杀死所有敌人。
                 _maxWaveNumber = Math.Max(_maxWaveNumber, marker.GetMaxWaveNumber());
-                _spawnedCharacter.Add(characterTemplate);
-                characterTemplate.TreeExited += () =>
+                if (characterTemplate.RequiredForWaveAdvance)
                 {
-                    _spawnedCharacter.Remove(characterTemplate);
-                    if (_spawnedCharacter.Count == 0)
+                    _spawnedCharacter.Add(characterTemplate);
+                    characterTemplate.TreeExited += () =>
                     {
-                        //All the creatures they summoned are dead.
-                        //召唤的生物全死了。
-                        _currentWaveNumber++;
-                        AddTimer(SpawnEnemyWave);
-                    }
-                };
+                        _spawnedCharacter.Remove(characterTemplate);
+                        if (_spawnedCharacter.Count == 0)
+                        {
+                            //All the creatures they summoned are dead.
+                            //召唤的生物全死了。
+                            _currentWaveNumber++;
+                            AddTimer(SpawnEnemyWave);
+                        }
+                    };
+                }
             }
             return false;
         });

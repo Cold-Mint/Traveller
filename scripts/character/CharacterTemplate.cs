@@ -82,6 +82,17 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export]
     public bool CanMutateAfterDeath { get; set; } = true;
 
+    /// <summary>
+    /// <para>Required For Wave Advance</para>
+    /// <para>每波怪物必须的</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>If it is set to true, then killing the creature is necessary to move on to the next Wave (i.e. "Required For Wave Advance"); If set to false, the player can advance to the next wave without killing the creature.</para>
+    ///<para>如果设置为true，那么杀死这个生物是进入下一波的必要条件（即“Required For Wave Advance”）；如果设置为false，则玩家不杀死这个生物也能进入下一波。</para>
+    /// </remarks>
+    [Export]
+    public bool RequiredForWaveAdvance { get; set; } = true;
+
     protected IItemContainer? ProtectedItemContainer;
 
     //Item containers are used to store items.
@@ -306,11 +317,14 @@ public partial class CharacterTemplate : CharacterBody2D
             _healthBar.MaxValue = MaxHp;
         }
 
-        ItemMarker2D = GetNode<Marker2D>("ItemMarker2D");
-        _itemMarkerOriginalX = ItemMarker2D.Position.X;
+        ItemMarker2D = GetNodeOrNull<Marker2D>("ItemMarker2D");
+        if (ItemMarker2D != null)
+        {
+            _itemMarkerOriginalX = ItemMarker2D.Position.X;
+        }
         _animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _pickingArea = GetNode<Area2D>("Area2DPickingArea");
-        _damageNumber = GetNode<Marker2D>("DamageNumber") as DamageNumberNodeSpawn;
+        _pickingArea = GetNodeOrNull<Area2D>("Area2DPickingArea");
+        _damageNumber = GetNode<DamageNumberNodeSpawn>("DamageNumber");
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         if (_pickingArea != null)
@@ -643,6 +657,7 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
         _lastDamageTime = DateTime.Now;
+        LogCat.Log("空的吗" + (_damageNumber == null));
         _damageNumber?.DisplayDamage(damage);
         CurrentHp -= damage.Damage;
         OnHit(damage);

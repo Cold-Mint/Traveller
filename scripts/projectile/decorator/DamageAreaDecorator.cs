@@ -60,7 +60,6 @@ public class DamageAreaDecorator : IProjectileDecorator
     {
         if (collisionInfo == null || _packedScene == null || RangeDamage == null || GameSceneDepend.DynamicDamageAreaContainer == null)
         {
-            // LogCat.Log("collisionInfo " + (collisionInfo == null) + " || _packedScene" + (_packedScene == null) + " || RangeDamage" + (RangeDamage == null) + " || GameSceneDepend.DynamicDamageAreaContainer " + (GameSceneDepend.DynamicDamageAreaContainer == null));
             return;
         }
         var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(_packedScene);
@@ -68,12 +67,14 @@ public class DamageAreaDecorator : IProjectileDecorator
         {
             return;
         }
-        //TODO：更新伤害区域的列表，以便其能够正确的计算伤害。
         damageArea.OwnerNode = projectile.OwnerNode;
         damageArea.SetDamage(RangeDamage);
         damageArea.GlobalPosition = ((Node2D)collisionInfo.GetCollider()).GlobalPosition;
         damageArea.OneShot = true;
-        damageArea.AddResidualUse(1);
         NodeUtils.CallDeferredAddChild(GameSceneDepend.DynamicDamageAreaContainer, damageArea);
+        damageArea.Ready += async () =>
+        {
+            await damageArea.AddResidualUseAsync(1,3);
+        };
     }
 }

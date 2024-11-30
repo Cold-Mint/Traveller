@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.furniture;
@@ -81,13 +82,38 @@ public partial class DamageArea : Area2D
     }
 
     /// <summary>
+    /// <para>Delayed Add Adds the usage times</para>
+    /// <para>延迟添加使用次数</para>
+    /// </summary>
+    /// <param name="additions">
+    /// ///<para>Number of additions</para>
+    /// ///<para>要添加的次数</para>
+    /// </param>
+    /// <param name="framesToWait">
+    /// ///<para>How many frames do we need to wait?</para>
+    /// ///<para>需要等待的帧数</para>
+    /// </param>
+    public async Task AddResidualUseAsync(int additions, int framesToWait = 1)
+    {
+        for (var i = 0; i < framesToWait; i++)
+        {
+            await ToSignal(GetTree(), "process_frame");
+        }
+        AddResidualUse(additions);
+    }
+
+
+    /// <summary>
     /// <para>Add the remaining times</para>
     /// <para>添加剩余使用次数</para>
     /// </summary>
-    /// <param name="number"></param>
-    public void AddResidualUse(int number)
+    /// <param name="additions">
+    ///<para>Number of additions</para>
+    ///<para>添加的数量</para>
+    /// </param>
+    public void AddResidualUse(int additions)
     {
-        _residualUse += number;
+        _residualUse += additions;
     }
 
     /// <summary>
@@ -223,6 +249,7 @@ public partial class DamageArea : Area2D
             percent = distance / radius;
         }
         var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
+        LogCat.Log("固定伤害为" + percentFixedDamage?.Damage + "范围伤害最小值为" + _rangeDamage.MinDamage + "伤害范围为" + _damageRange + "最大伤害为" + _rangeDamage.MaxDamage + "范围为" + percent);
         if (percentFixedDamage != null)
         {
             doDamageAction.Invoke(percentFixedDamage, node2D);

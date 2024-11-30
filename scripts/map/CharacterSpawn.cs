@@ -9,7 +9,7 @@ namespace ColdMint.scripts.map;
 /// <para>Ai character generation point</para>
 /// <para>Ai角色生成点</para>
 /// </summary>
-public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
+public partial class CharacterSpawn : Marker2D, ISpawnMarker
 {
     [Export] private string[]? _resPathArray;
 
@@ -37,15 +37,15 @@ public partial class AiCharacterSpawn : Marker2D, ISpawnMarker
         {
             return null;
         }
-        var aiCharacter = NodeUtils.InstantiatePackedScene<AiCharacter>(packedScene);
-        if (aiCharacter == null)
+        var characterTemplate = NodeUtils.InstantiatePackedScene<CharacterTemplate>(packedScene);
+        if (characterTemplate == null)
         {
             return null;
         }
 
-        NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, aiCharacter);
-        aiCharacter.GlobalPosition = GlobalPosition;
-        return aiCharacter;
+        NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, characterTemplate);
+        characterTemplate.GlobalPosition = GlobalPosition;
+        return characterTemplate;
     }
 
     public int GetMaxWaveNumber()
