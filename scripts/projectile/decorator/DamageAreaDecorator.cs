@@ -1,6 +1,5 @@
 using ColdMint.scripts.character;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -62,6 +61,15 @@ public class DamageAreaDecorator : IProjectileDecorator
         {
             return;
         }
+        var collisionNode = (Node2D)collisionInfo.GetCollider();
+        if (collisionNode == null)
+        {
+            return;
+        }
+        if (collisionNode == projectile.OwnerNode)
+        {
+            return;
+        }
         var damageArea = NodeUtils.InstantiatePackedScene<DamageArea>(_packedScene);
         if (damageArea == null)
         {
@@ -69,12 +77,12 @@ public class DamageAreaDecorator : IProjectileDecorator
         }
         damageArea.OwnerNode = projectile.OwnerNode;
         damageArea.SetDamage(RangeDamage);
-        damageArea.GlobalPosition = ((Node2D)collisionInfo.GetCollider()).GlobalPosition;
+        damageArea.GlobalPosition = collisionNode.GlobalPosition;
         damageArea.OneShot = true;
         NodeUtils.CallDeferredAddChild(GameSceneDepend.DynamicDamageAreaContainer, damageArea);
         damageArea.Ready += async () =>
         {
-            await damageArea.AddResidualUseAsync(1,3);
+            await damageArea.AddResidualUseAsync(1, 3);
         };
     }
 }

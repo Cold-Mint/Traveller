@@ -249,7 +249,6 @@ public partial class DamageArea : Area2D
             percent = distance / radius;
         }
         var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
-        LogCat.Log("固定伤害为" + percentFixedDamage?.Damage + "范围伤害最小值为" + _rangeDamage.MinDamage + "伤害范围为" + _damageRange + "最大伤害为" + _rangeDamage.MaxDamage + "范围为" + percent);
         if (percentFixedDamage != null)
         {
             doDamageAction.Invoke(percentFixedDamage, node2D);

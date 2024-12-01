@@ -1,19 +1,18 @@
 [gd_scene load_steps=7 format=3 uid="uid://cjaydudg7fv5h"]
 
 [ext_resource type="Script" path="res://scripts/character/PunchBag.cs" id="1_nl23k"]
-[ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_uqq8d"]
+[ext_resource type="Texture2D" uid="uid://c8ywypti13aog" path="res://sprites/PunchBag.png" id="2_wn4n7"]
 [ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_4gj24"]
 [ext_resource type="PackedScene" uid="uid://sqqfrmikmk5v" path="res://prefab/ui/HealthBar.tscn" id="4_3l2mi"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
-radius = 20.0
-height = 52.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbk47"]
+size = Vector2(27, 50)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qumby"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_uqq8d")
+"texture": ExtResource("2_wn4n7")
 }],
 "loop": true,
 "name": &"default",
@@ -27,10 +26,15 @@ script = ExtResource("1_nl23k")
 CharacterName = "character_punch_bag"
 CanMutateAfterDeath = false
 RequiredForWaveAdvance = false
+_initialHp = null
+MaxHp = null
+CampId = null
+_indestructible = null
+_lootId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
-shape = SubResource("CapsuleShape2D_bb8wt")
+position = Vector2(-0.5, 7)
+shape = SubResource("RectangleShape2D_hbk47")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_qumby")

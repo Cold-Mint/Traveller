@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
@@ -146,7 +147,11 @@ public partial class ProjectileWeapon : WeaponTemplate
             SelfItemContainer.AllowAddingItemByType(Config.ItemType.Spell);
             //Reload pre-made spells.
             //装填预制的法术。
-            if (_spellList is not { Length: > 0 }) return;
+            if (_spellList is not { Length: > 0 })
+            {
+                throw new ArgumentException(TranslationServerUtils.TranslateWithFormat("log_spell_list_is_null", Id ?? "null"));
+            }
+            var supportOutOfBox = false;
             foreach (var spellId in _spellList)
             {
                 if (string.IsNullOrEmpty(spellId))
@@ -161,10 +166,20 @@ public partial class ProjectileWeapon : WeaponTemplate
                 //The spell is stored in memory and has not yet been loaded into the node tree. So we call the InvokeLoadResource method to initialize the resource.
                 //法术保存在内存中，尚未加载到节点树。所以我们调用InvokeLoadResource方法来初始化资源。
                 spell.LoadResource();
+                if (!supportOutOfBox && spell.GetProjectile() != null)
+                {
+                    supportOutOfBox = true;
+                }
                 if (SelfItemContainer.CanAddItem(item))
                 {
                     SelfItemContainer.AddItem(item);
                 }
+            }
+            if (!supportOutOfBox)
+            {
+                //Long-range weapons must be used out of the box.
+                //远程武器必须开箱即用
+                throw new InvalidOperationException(TranslationServerUtils.TranslateWithFormat("log_weapon_must_be_used_out_of_the_box", Id ?? "null"));
             }
             UpdateSpellCache();
         }

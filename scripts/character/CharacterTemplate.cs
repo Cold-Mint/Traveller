@@ -657,7 +657,6 @@ public partial class CharacterTemplate : CharacterBody2D
             return false;
         }
         _lastDamageTime = DateTime.Now;
-        LogCat.Log("空的吗" + (_damageNumber == null));
         _damageNumber?.DisplayDamage(damage);
         CurrentHp -= damage.Damage;
         OnHit(damage);

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=13 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="Script" path="res://scripts/map/PlayerSpawn.cs" id="1_q04qt"]
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_5bnvh"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://cdjmfqp854utu" path="res://sprites/tutorials/spellEditor.png" id="6_dbg76"]
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
 [ext_resource type="PackedScene" uid="uid://nbqjjnom2f5e" path="res://prefab/furnitures/Jar.tscn" id="8_prvl3"]
-[ext_resource type="Script" path="res://scripts/map/CharacterSpawn.cs" id="8_vwney"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -108,26 +107,6 @@ position = Vector2(715, 162)
 position = Vector2(134, 248)
 script = ExtResource("4_6ihp7")
 _itemIdList = PackedStringArray("beginner_staff")
-
-[node name="magic_missile" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(100, 250)
-script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("magic_missile")
-
-[node name="tracking_spell" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(156, 245)
-script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("tracking_spell")
-
-[node name="damage_area_spell" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(319, 245)
-script = ExtResource("4_6ihp7")
-_itemIdList = PackedStringArray("damage_area_spell")
-
-[node name="punch_bag" type="Marker2D" parent="AutoSpawn"]
-position = Vector2(403, 245)
-script = ExtResource("8_vwney")
-_resPathArray = PackedStringArray("res://prefab/entitys/PunchBag.tscn")
 
 [node name="RoomArea" type="Area2D" parent="."]
 

@@ -136,3 +136,5 @@ log_game_gui_template_is_null,Gui模板是空的。,The Gui template is empty.,G
 log_can_not_fire_from_safe_distance,不能在安全距离内开火。,You can't fire from a safe distance.,安全な距離で発砲はできません
 log_open_directory_error,尝试打开目录{0}时发生错误，错误代码：{1}。,An error occurred while trying to open directory {0} with error code {1}.,ディレクトリ{0}を開こうとするとエラーが発生します。エラーコード:{1}です。
 log_invalid_damage_shape,伤害区域仅支持使用RectangleShape2D或CircleShape2D来表示。,Damage areas can only be represented using RectangleShape2D or CircleShape2D.,ダメージエリアはRectangleShape2DまたはCircleShape2Dでの表示にのみ対応しています。
+log_spell_list_is_null,ID为{0}的抛射体武器，缺少必要的法术列表。,"Projectile weapon with ID {0}, missing the list of necessary spells.",ID{0}の射出体武器は、必要なスペルリストが欠落しています。
+log_weapon_must_be_used_out_of_the_box,ID为{0}的抛射体武器，必须包含一个可提供抛射体的法术。,Projectile weapons with ID {0} must contain a spell that provides projectile.,ID{0}の射出体武器には、射出体を提供するスペルが含まれている必要があります。
