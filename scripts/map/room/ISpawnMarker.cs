@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 namespace ColdMint.scripts.map.room;
@@ -20,7 +21,7 @@ public interface ISpawnMarker
     ///<para>Return the result of the generation. If null is returned, the generation fails.</para>
     ///<para>返回生成结果，为null则生成失败。</para>
     /// </remarks>
-    Node2D? Spawn(int waveNumber);
+    Task<Node2D[]?> Spawn(int waveNumber);
 
     /// <summary>
     /// <para>GetMaxWaveNumber</para>

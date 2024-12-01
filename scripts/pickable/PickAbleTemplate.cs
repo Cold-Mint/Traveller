@@ -1,4 +1,5 @@
 ﻿using System;
+using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
 using Godot;
@@ -184,11 +185,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     {
         return false;
     }
-
-    public virtual void OnThrow(Vector2 velocity)
-    {
-
-    }
+    public Action<Vector2>? OnThrow { get; set; }
+    public Action<CharacterTemplate>? OnPickUp { get; set; }
 
     private CollisionShape2D? _collisionShape2D;
 

@@ -1,3 +1,5 @@
+using System;
+using ColdMint.scripts.character;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -54,8 +56,6 @@ public class PlaceholderItem : IItem
     {
         return false;
     }
-
-    public void OnThrow(Vector2 velocity)
-    {
-    }
+    public Action<Vector2>? OnThrow { get; set; }
+    public Action<CharacterTemplate>? OnPickUp { get; set; }
 }

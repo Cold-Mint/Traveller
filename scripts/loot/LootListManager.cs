@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.inventory;
 using Godot;
 
@@ -57,14 +58,26 @@ public static class LootListManager
     /// <param name="parentNode"></param>
     /// <param name="lootData"></param>
     /// <param name="position"></param>
-    public static void GenerateLootObjects(Node parentNode,
+    public static async Task<T[]?> GenerateLootObjects<T>(Node parentNode,
         IEnumerable<LootDatum> lootData,
         Vector2 position)
     {
+        List<T> result = [];
         foreach (var lootDatum in lootData)
         {
             var (id, amount) = lootDatum.Value;
-            ItemTypeManager.CreateItems(id, amount, position, parentNode);
+            var itemArray = ItemTypeManager.CreateItems(id, amount, position, parentNode);
+            if (itemArray != null)
+            {
+                foreach (var item in itemArray)
+                {
+                    if (item is T t)
+                    {
+                        result.Add(t);
+                    }
+                }
+            }
         }
+        return await Task.FromResult(result.ToArray());
     }
 }

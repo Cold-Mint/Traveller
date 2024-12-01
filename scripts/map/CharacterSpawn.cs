@@ -1,4 +1,5 @@
-﻿using ColdMint.scripts.character;
+﻿using System.Threading.Tasks;
+using ColdMint.scripts.character;
 using ColdMint.scripts.map.room;
 using ColdMint.scripts.utils;
 using Godot;
@@ -13,7 +14,7 @@ public partial class CharacterSpawn : Marker2D, ISpawnMarker
 {
     [Export] private string[]? _resPathArray;
 
-    public Node2D? Spawn(int waveNumber)
+    public async Task<Node2D[]?> Spawn(int waveNumber)
     {
         if (GameSceneDepend.AiCharacterContainer == null)
         {
@@ -45,7 +46,10 @@ public partial class CharacterSpawn : Marker2D, ISpawnMarker
 
         NodeUtils.CallDeferredAddChild(GameSceneDepend.AiCharacterContainer, characterTemplate);
         characterTemplate.GlobalPosition = GlobalPosition;
-        return characterTemplate;
+        return await Task.FromResult(new[]
+        {
+            characterTemplate
+        });
     }
 
     public int GetMaxWaveNumber()

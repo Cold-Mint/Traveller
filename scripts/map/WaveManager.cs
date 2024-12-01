@@ -63,32 +63,38 @@ public class WaveManager
             //Complete all waves.
             //完成所有的波次。
             OnWaveComplete?.Invoke();
-      
             return;
         }
-        NodeUtils.ForEachNode<ISpawnMarker>(autoSpawn, marker =>
+        NodeUtils.ForEachNodeWithAsyncCallBack<ISpawnMarker>(autoSpawn, async marker =>
         {
-            var node2D = marker.Spawn(_currentWaveNumber);
-            if (node2D is CharacterTemplate characterTemplate)
+            var node2DList = await marker.Spawn(_currentWaveNumber);
+            if (node2DList == null || node2DList.Length == 0)
             {
-                //The maximum wave number should be the maximum wave number produced by living organisms.For now, the player's condition for the next step is to kill all enemies.
-                //最大波数应该是生物生成的最大波数。就目前而言，玩家进入下一步的条件是杀死所有敌人。
-                _maxWaveNumber = Math.Max(_maxWaveNumber, marker.GetMaxWaveNumber());
-                if (characterTemplate.RequiredForWaveAdvance)
+                return false;
+            }
+            foreach (var node2D in node2DList)
+            {
+                if (node2D is CharacterTemplate characterTemplate)
                 {
-                    _spawnedCharacter.Add(characterTemplate);
-                    characterTemplate.TreeExited += async () =>
+                    //The maximum wave number should be the maximum wave number produced by living organisms.For now, the player's condition for the next step is to kill all enemies.
+                    //最大波数应该是生物生成的最大波数。就目前而言，玩家进入下一步的条件是杀死所有敌人。
+                    _maxWaveNumber = Math.Max(_maxWaveNumber, marker.GetMaxWaveNumber());
+                    if (characterTemplate.RequiredForWaveAdvance)
                     {
-                        _spawnedCharacter.Remove(characterTemplate);
-                        if (_spawnedCharacter.Count == 0)
+                        _spawnedCharacter.Add(characterTemplate);
+                        characterTemplate.TreeExited += async () =>
                         {
-                            //All the creatures they summoned are dead.
-                            //召唤的生物全死了。
-                            _currentWaveNumber++;
-                            await Task.Delay(Delay);
-                            SpawnEnemyWave(autoSpawn);
-                        }
-                    };
+                            _spawnedCharacter.Remove(characterTemplate);
+                            if (_spawnedCharacter.Count == 0)
+                            {
+                                //All the creatures they summoned are dead.
+                                //召唤的生物全死了。
+                                _currentWaveNumber++;
+                                await Task.Delay(Delay);
+                                SpawnEnemyWave(autoSpawn);
+                            }
+                        };
+                    }
                 }
             }
             return false;
@@ -98,5 +104,6 @@ public class WaveManager
             OnWaveStart?.Invoke();
         }
     }
+
 
 }

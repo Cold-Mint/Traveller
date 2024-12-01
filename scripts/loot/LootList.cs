@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 
@@ -17,9 +16,6 @@ public class LootList
 
     public IList<LootGroup>? Groups { get; set; }
     // ReSharper restore UnusedAutoPropertyAccessor.Global
-
-
-    private static Random Random => RandomUtils.Instance;
 
     /// <summary>
     /// <para>GenerateLootData</para>
@@ -43,7 +39,7 @@ public class LootList
         {
             //If the random number is greater than the generation probability, skip the current loop.
             //如果随机数大于生成概率，则跳过当前循环。
-            var rd = Random.NextDouble();
+            var rd = RandomUtils.Instance.NextDouble();
             if (rd > group.Chance) continue;
 
             //We generate a loot data for each loot entry.

@@ -676,15 +676,20 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Create Loot Object</para>
     /// <para>创建战利品对象</para>
     /// </summary>
-    protected void CreateLootObject()
+    protected async void CreateLootObject()
     {
-        if (string.IsNullOrEmpty(_lootId))
+        try
         {
-            return;
+            if (string.IsNullOrEmpty(_lootId))
+            {
+                return;
+            }
+            await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
         }
-        var lootData = LootListManager.GenerateLootData(_lootId);
-        var finalGlobalPosition = GlobalPosition;
-        LootListManager.GenerateLootObjects(GetParent(), lootData, finalGlobalPosition);
+        catch (Exception e)
+        {
+            LogCat.WhenCaughtException(e);
+        }
     }
 
 
@@ -716,7 +721,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Handle the event of character death</para>
     /// <para>处理角色死亡的事件</para>
     /// </summary>
-    /// <param name="damageTemplate"></param>
+    /// <param name="damage"></param>
     protected virtual Task OnDie(IDamage damage)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
@@ -869,7 +874,7 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Remove the item from the item container
         //从物品容器内取出物品
-        originalItem.OnThrow(velocity);
+        originalItem.OnThrow?.Invoke(velocity);
         var item = originalItem.CreateItem(1);
         if (item is not Node2D node2D)
         {

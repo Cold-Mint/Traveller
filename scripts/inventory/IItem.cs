@@ -1,4 +1,6 @@
-﻿using Godot;
+﻿using System;
+using ColdMint.scripts.character;
+using Godot;
 
 namespace ColdMint.scripts.inventory;
 
@@ -14,7 +16,7 @@ public interface IItem
     /// <para>当前物品的ID</para>
     /// </summary>
     string? Id { get; set; }
-    
+
     /// <summary>
     /// <para>ShowSelf</para>
     /// <para>显示自身</para>
@@ -26,7 +28,7 @@ public interface IItem
     /// <para>销毁自身</para>
     /// </summary>
     void QueueFreeSelf();
-    
+
     /// <summary>
     /// <para>HideSelf</para>
     /// <para>隐藏自身</para>
@@ -62,7 +64,7 @@ public interface IItem
     /// <para>最大物品数量</para>
     /// </summary>
     int MaxQuantity { get; }
-    
+
     /// <summary>
     /// <para>ItemType</para>
     /// <para>获取物品类型</para>
@@ -74,13 +76,13 @@ public interface IItem
     /// <para>是否选中</para>
     /// </summary>
     bool IsSelect { get; set; }
-    
+
     /// <summary>
     /// <para>The container in which the item is located</para>
     /// <para>物品所在的物品容器</para>
     /// </summary>
     IItemContainer? ItemContainer { get; set; }
-    
+
     /// <summary>
     /// <para>Its own container of items</para>
     /// <para>自身的物品容器</para>
@@ -89,7 +91,7 @@ public interface IItem
     /// <para>Returns a non-null value if the item itself can hold other items</para>
     /// <para>物品本身可容纳其他物品，则返回非空值</para>
     /// </remarks>
-    public IItemContainer? SelfItemContainer { get; set; }
+    IItemContainer? SelfItemContainer { get; set; }
 
     /// <summary>
     /// <para>Calculate how many items can be merged with other items</para>
@@ -136,6 +138,11 @@ public interface IItem
     /// <para>When the item is thrown</para>
     /// <para>当物品被抛出时</para>
     /// </summary>
-    /// <param name="velocity"></param>
-    void OnThrow(Vector2 velocity);
+    Action<Vector2>? OnThrow { get; set; }
+
+    /// <summary>
+    /// <para>When the item is picked up</para>
+    /// <para>当物品被捡起时</para>
+    /// </summary>
+    Action<CharacterTemplate>? OnPickUp { get; set; }
 }

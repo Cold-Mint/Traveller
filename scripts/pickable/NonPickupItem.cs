@@ -1,3 +1,4 @@
+using System;
 using ColdMint.scripts.character;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.utils;
@@ -173,9 +174,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
     {
         return false;
     }
+    public Action<Vector2>? OnThrow { get; set; }
+    public Action<CharacterTemplate>? OnPickUp { get; set; }
 
-    public void OnThrow(Vector2 velocity)
-    {
-
-    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
@@ -41,18 +42,24 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
     }
 
 
-    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    private async void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
-        //After the map is generated, create the player instance.
-        //当地图生成完成后，创建玩家实例。
-        if (GameSceneDepend.Player != null)
+        try
         {
-            //An existing player instance will not be created.
-            //已经存在玩家实例，不再创建。
-            return;
+            //After the map is generated, create the player instance.
+            //当地图生成完成后，创建玩家实例。
+            if (GameSceneDepend.Player != null)
+            {
+                //An existing player instance will not be created.
+                //已经存在玩家实例，不再创建。
+                return;
+            }
+            await Spawn(PlayerWaveNumber);
         }
-
-        Spawn(PlayerWaveNumber);
+        catch (Exception e)
+        {
+            LogCat.WhenCaughtException(e);
+        }
     }
 
     public override void _ExitTree()
@@ -62,8 +69,7 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
         EventBus.GameReplayEvent -= GameReplayEvent;
     }
 
-
-    public Node2D? Spawn(int waveNumber)
+    public async Task<Node2D[]?> Spawn(int waveNumber)
     {
         if (waveNumber != PlayerWaveNumber)
         {
@@ -101,7 +107,10 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
         playerNode.ItemContainer = itemContainer;
         GameSceneDepend.Player = playerNode;
         playerNode.GlobalPosition = GlobalPosition;
-        return playerNode;
+        return await Task.FromResult(new[]
+        {
+            playerNode
+        });
     }
 
     public int GetMaxWaveNumber()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ColdMint.scripts.character;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.pickable;
@@ -150,6 +151,38 @@ public static class NodeUtils
             {
                 break;
             }
+        }
+    }
+    /// <summary>
+    /// <para>ForEachNodeWithAsyncCallBack</para>
+    /// <para>带有异步回调的遍历节点方法</para>
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="func"></param>
+    /// <typeparam name="T"></typeparam>
+    public static async void ForEachNodeWithAsyncCallBack<T>(Node parent, Func<T, Task<bool>> func) where T : class
+    {
+        try
+        {
+            var count = parent.GetChildCount();
+            if (count <= 0)
+            {
+                return;
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var node = parent.GetChild(i);
+                if (node is not T t) continue;
+                if (await func.Invoke(t))
+                {
+                    break;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LogCat.WhenCaughtException(e);
         }
     }
 

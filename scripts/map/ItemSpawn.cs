@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.map.room;
@@ -11,46 +12,50 @@ namespace ColdMint.scripts.map;
 /// </summary>
 public partial class ItemSpawn : Marker2D, ISpawnMarker
 {
-	[Export] private string[]? _itemIdList;
+    [Export] private string[]? _itemIdList;
 
-	public Node2D? Spawn(int waveNumber)
-	{
-		if (_itemIdList == null)
-		{
-			return null;
-		}
 
-		if (waveNumber < 0 || waveNumber >= _itemIdList.Length)
-		{
-			return null;
-		}
-		var itemId = _itemIdList[waveNumber];
-		if (string.IsNullOrEmpty(itemId))
-		{
-			return null;
-		}
-		var item = ItemTypeManager.CreateItem(itemId, this);
-		LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, itemId, item == null);
-		if (item is not Node2D node2D)
-		{
-			return null;
-		}
-		node2D.GlobalPosition = GlobalPosition;
-		return node2D;
-	}
+    public async Task<Node2D[]?> Spawn(int waveNumber)
+    {
+        if (_itemIdList == null)
+        {
+            return null;
+        }
 
-	public int GetMaxWaveNumber()
-	{
-		return _itemIdList?.Length ?? 0;
-	}
+        if (waveNumber < 0 || waveNumber >= _itemIdList.Length)
+        {
+            return null;
+        }
+        var itemId = _itemIdList[waveNumber];
+        if (string.IsNullOrEmpty(itemId))
+        {
+            return null;
+        }
+        var item = ItemTypeManager.CreateItem(itemId, this);
+        LogCat.LogWithFormat("generated_item_is_empty", LogCat.LogLabel.ItemSpawn, itemId, item == null);
+        if (item is not Node2D node2D)
+        {
+            return null;
+        }
+        node2D.GlobalPosition = GlobalPosition;
+        return await Task.FromResult(new[]
+        {
+            node2D
+        });
+    }
 
-	public bool CanQueueFree()
-	{
-		return true;
-	}
+    public int GetMaxWaveNumber()
+    {
+        return _itemIdList?.Length ?? 0;
+    }
 
-	public void DoQueueFree()
-	{
-		QueueFree();
-	}
+    public bool CanQueueFree()
+    {
+        return true;
+    }
+
+    public void DoQueueFree()
+    {
+        QueueFree();
+    }
 }
