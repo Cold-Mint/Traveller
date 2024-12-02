@@ -494,6 +494,7 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.Picked = true;
             pickAbleTemplate.Freeze = true;
             pickAbleTemplate.DisabledCollisionShape2D();
+            pickAbleTemplate.OnPickUp?.Invoke(this);
         }
 
         if (pickAbleItemNode2D is ProjectileWeapon projectileWeapon)
@@ -874,12 +875,12 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //Remove the item from the item container
         //从物品容器内取出物品
-        originalItem.OnThrow?.Invoke(velocity);
         var item = originalItem.CreateItem(1);
         if (item is not Node2D node2D)
         {
             return;
         }
+        originalItem.OnThrow?.Invoke(node2D, velocity);
         item.ItemContainer = null;
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
         switch (item)

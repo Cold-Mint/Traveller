@@ -28,7 +28,7 @@ public class LootList
         {
             return [];
         }
-        if (Groups is [])
+        if (Groups.Count == 0)
         {
             LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default, Id);
             return [];

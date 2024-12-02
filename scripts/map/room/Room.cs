@@ -361,7 +361,6 @@ public class Room
         {
             return;
         }
-        _waveManager.SpawnEnemyWave(_autoSpawn);
         _waveManager.OnWaveStart += async void () =>
         {
             try
@@ -380,6 +379,7 @@ public class Room
             ClearAllMatchedBarriers();
             GameSceneDepend.ShowMiniMap();
         };
+        _waveManager.SpawnEnemyWave(_autoSpawn);
         _waveManager.HasSpawnedEntity = true;
     }
 

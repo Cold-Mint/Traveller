@@ -185,7 +185,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     {
         return false;
     }
-    public Action<Vector2>? OnThrow { get; set; }
+    public Action<Node2D, Vector2>? OnThrow { get; set; }
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 
     private CollisionShape2D? _collisionShape2D;

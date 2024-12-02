@@ -138,7 +138,11 @@ public interface IItem
     /// <para>When the item is thrown</para>
     /// <para>当物品被抛出时</para>
     /// </summary>
-    Action<Vector2>? OnThrow { get; set; }
+    /// <remarks>
+    ///<para>The first parameter, Node2D, represents a new instance of this item.</para>
+    ///<para>第一个参数Node2D表示此物品的新实例。</para>
+    /// </remarks>
+    Action<Node2D, Vector2>? OnThrow { get; set; }
 
     /// <summary>
     /// <para>When the item is picked up</para>

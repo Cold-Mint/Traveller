@@ -56,6 +56,6 @@ public class PlaceholderItem : IItem
     {
         return false;
     }
-    public Action<Vector2>? OnThrow { get; set; }
+    public Action<Node2D, Vector2>? OnThrow { get; set; }
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 }

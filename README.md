@@ -8,15 +8,6 @@ Mint's new game.
 
 A pixel cross-platform roguelite game.
 
-## Recent Development progress
-
-| Task                                     | status      |
-|------------------------------------------|-------------|
-| Randomly generated map                   | complete    |
-| loot                                     | complete    |
-| Support still out of the knapsack system | complete    |
-| Add AI agents to creatures               | In progress |
-
 ## Screenshot
 
 Game scene

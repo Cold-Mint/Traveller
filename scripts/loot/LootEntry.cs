@@ -51,6 +51,11 @@ public readonly record struct LootGroup(float Chance, IEnumerable<LootEntry> Ent
 {
     private int WeightSum { get; } = Entries.Sum(entry => entry.Weight);
 
+    /// <summary>
+    /// <para>In the loot group, select an entry at random</para>
+    /// <para>在战利品分组内，随机选择一个条目。</para>
+    /// </summary>
+    /// <returns></returns>
     public LootDatum GenerateLootData()
     {
         var random = RandomUtils.Instance;

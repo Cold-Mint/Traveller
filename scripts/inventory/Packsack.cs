@@ -54,21 +54,15 @@ public partial class Packsack : PickAbleTemplate
             SelfItemContainer = universalItemContainer;
             SelfItemContainer.SupportSelect = false;
         }
-        OnThrow += OnThrowPacksack;
+        OnThrow += (_, _) =>
+        {
+            GameSceneDepend.DynamicUiGroup?.HideControl(Path);
+        };
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
         {
             var packedScene = ResourceLoader.Load<PackedScene>(Path);
             return NodeUtils.InstantiatePackedScene<PacksackUi>(packedScene);
         });
     }
-
-    /// <summary>
-    /// <para>When throwing out the backpack</para>
-    /// <para>当扔出背包</para>
-    /// </summary>
-    /// <param name="obj"></param>
-    private void OnThrowPacksack(Vector2 obj)
-    {
-        GameSceneDepend.DynamicUiGroup?.HideControl(Path);
-    }
+    
 }
