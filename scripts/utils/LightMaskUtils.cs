@@ -58,14 +58,11 @@ public static class LightMaskUtils
         while (indexInPowIntArray > -1)
         {
             result.Insert(0, indexInPowIntArray);
-            if (afterParsingTheValue != null)
+            if (afterParsingTheValue != null && afterParsingTheValue.Invoke(indexInPowIntArray))
             {
-                if (afterParsingTheValue.Invoke(indexInPowIntArray))
-                {
-                    //If it needs to be stopped, then the result is returned directly.
-                    //如果需要停止，那么直接返回结果。
-                    return result.ToArray();
-                }
+                //If it needs to be stopped, then the result is returned directly.
+                //如果需要停止，那么直接返回结果。
+                return result.ToArray();
             }
 
             maskValue -= PowInts[indexInPowIntArray];
@@ -103,7 +100,7 @@ public static class LightMaskUtils
     /// <returns></returns>
     public static int AddIndexToMaskValue(int maskValue, int index)
     {
-        if (ContainsMaskValue(maskValue,index))
+        if (ContainsMaskValue(maskValue, index))
         {
             return maskValue;
         }

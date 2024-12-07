@@ -332,12 +332,9 @@ public sealed partial class AiCharacter : CharacterTemplate
     /// <param name="node"></param>
     private void EnterTheScoutArea(Node node)
     {
-        if (node is WeaponTemplate weaponTemplate)
+        if (node is WeaponTemplate weaponTemplate && CanPickItem(weaponTemplate))
         {
-            if (CanPickItem(weaponTemplate))
-            {
-                _weaponInTheScoutRange?.Add(weaponTemplate);
-            }
+            _weaponInTheScoutRange?.Add(weaponTemplate);
         }
 
         CanCauseHarmNode(node, (canCause, characterTemplate) =>

@@ -266,14 +266,11 @@ public static class MapGenerator
 
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
             Room? parentRoomNode = null;
-            if (nextParentNodeId != null)
+            if (nextParentNodeId != null && roomDictionary.TryGetValue(nextParentNodeId, out var value))
             {
                 //If the new room has the parent's ID, then we pass the parent's room into the compute function.
                 //如果新房间有父节点的ID，那么我们将父节点的房间传入到计算函数内。
-                if (roomDictionary.TryGetValue(nextParentNodeId, out var value))
-                {
-                    parentRoomNode = value;
-                }
+                parentRoomNode = value;
             }
 
             var roomPlacementData =
@@ -282,7 +279,7 @@ public static class MapGenerator
             if (roomPlacementData == null)
             {
                 LogCat.LogWithFormat("failed_to_calculate_the_room_location", LogCat.LogLabel.Default,
-                     roomNodeData.Id);
+                    roomNodeData.Id);
                 continue;
             }
 
@@ -368,19 +365,19 @@ public static class MapGenerator
 
         if (dictionary.ContainsKey(roomNodeDataId))
         {
-            LogCat.LogWithFormat("place_existing_rooms", LogCat.LogLabel.Default,  roomNodeDataId);
+            LogCat.LogWithFormat("place_existing_rooms", LogCat.LogLabel.Default, roomNodeDataId);
             return false;
         }
 
         if (!await _roomPlacementStrategy.PlaceRoom(_mapRoot, roomPlacementData))
         {
-            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.LogLabel.Default, 
+            LogCat.LogWarningWithFormat("room_placement_failed", LogCat.LogLabel.Default,
                 roomNodeDataId);
             return false;
         }
 
         dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
-        LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default,  roomNodeDataId,
+        LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, roomNodeDataId,
             roomPlacementData.Position.ToString());
         return true;
     }

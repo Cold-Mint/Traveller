@@ -67,7 +67,7 @@ public partial class Player : CharacterTemplate
             NodeUtils.CallDeferredAddChild(this, camera2D);
         }
     }
-    
+
     /// <summary>
     /// <para>PlayJumpAudio</para>
     /// <para>播放跳跃音效</para>
@@ -167,12 +167,9 @@ public partial class Player : CharacterTemplate
         }
         //Use items
         //使用物品
-        if (Input.IsActionPressed("use_item"))
+        if (Input.IsActionPressed("use_item") && _canUseItem)
         {
-            if (_canUseItem)
-            {
-                UseItem(GetGlobalMousePosition());
-            }
+            UseItem(GetGlobalMousePosition());
         }
         //Pick up an item
         //捡起物品
@@ -180,33 +177,27 @@ public partial class Player : CharacterTemplate
         {
             var pickAbleItem = FindTheNearestItem();
             var success = PickItem(pickAbleItem);
-            if (success)
+            if (success && pickAbleItem != null)
             {
-                if (pickAbleItem != null)
-                {
-                    PickingRangeBodiesList?.Remove(pickAbleItem);
-                }
+                PickingRangeBodiesList?.Remove(pickAbleItem);
             }
         }
 
-        if (Input.IsActionJustPressed("ui_down"))
+        if (Input.IsActionJustPressed("ui_down") && _collidingWithPlatform)
         {
-            if (_collidingWithPlatform)
+            //When the character stands on the platform and presses the ui_down key, we cancel the collision between the character and the platform
+            //当角色站在平台上按下 ui_down 键时，我们取消角色与平台的碰撞
+            var timer = new Timer();
+            AddChild(timer);
+            timer.WaitTime = _platformCollisionRecoveryTime;
+            timer.OneShot = true;
+            timer.Start();
+            timer.Timeout += () =>
             {
-                //When the character stands on the platform and presses the ui_down key, we cancel the collision between the character and the platform
-                //当角色站在平台上按下 ui_down 键时，我们取消角色与平台的碰撞
-                var timer = new Timer();
-                AddChild(timer);
-                timer.WaitTime = _platformCollisionRecoveryTime;
-                timer.OneShot = true;
-                timer.Start();
-                timer.Timeout += () =>
-                {
-                    SetCollisionMaskValue(Config.LayerNumber.Platform, true);
-                    timer.QueueFree();
-                };
-                SetCollisionMaskValue(Config.LayerNumber.Platform, false);
-            }
+                SetCollisionMaskValue(Config.LayerNumber.Platform, true);
+                timer.QueueFree();
+            };
+            SetCollisionMaskValue(Config.LayerNumber.Platform, false);
         }
 
 

@@ -94,12 +94,9 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
         var result = DoFire(owner, enemyGlobalPosition);
         if (result)
         {
-            if (owner is CharacterTemplate characterTemplate)
+            if (owner is CharacterTemplate characterTemplate && _recoilStrength != 0)
             {
-                if (_recoilStrength != 0)
-                {
-                    characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
-                }
+                characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
             }
             if (_fireSoundPlayer2D == null)
             {
