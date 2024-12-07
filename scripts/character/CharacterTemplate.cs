@@ -899,6 +899,8 @@ public partial class CharacterTemplate : CharacterBody2D
                 pickAbleTemplate.EnabledCollisionShape2D();
                 pickAbleTemplate.Freeze = false;
                 break;
+            default:
+                throw new InvalidOperationException("Unsupported item type encountered when processing item.");
         }
 
         node2D.ProcessMode = ProcessModeEnum.Inherit;
@@ -913,6 +915,8 @@ public partial class CharacterTemplate : CharacterBody2D
             case RigidBody2D rigidBody2D:
                 rigidBody2D.LinearVelocity = velocity;
                 break;
+            default:
+                throw new InvalidOperationException("Unsupported node type encountered when applying force.");
         }
 
         ProtectedItemContainer?.RemoveItem(index, 1);

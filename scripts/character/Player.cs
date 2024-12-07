@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.deathInfo;
@@ -322,30 +323,31 @@ public partial class Player : CharacterTemplate
         }
 
         var axis = Input.GetAxis("ui_left", "ui_right");
-        switch (axis)
+        const float epsilon = 0.0001f;
+
+        if (Math.Abs(axis + 1) < epsilon)
         {
-            case -1:
-                //Minus 1, we move to the left
-                //-1，向左移动
-                FacingLeft = true;
-                if (ItemMarker2D != null)
-                {
-                    itemMarker2DPosition.X = -ReadOnlyItemMarkerOriginalX;
-                }
+            //Minus 1, we move to the left
+            //-1，向左移动
+            FacingLeft = true;
+            if (ItemMarker2D != null)
+            {
+                itemMarker2DPosition.X = -ReadOnlyItemMarkerOriginalX;
+            }
 
-                Flip();
-                break;
-            case 1:
-                //1, move to the right
-                //1，向右移动
-                FacingLeft = false;
-                if (ItemMarker2D != null)
-                {
-                    itemMarker2DPosition.X = ReadOnlyItemMarkerOriginalX;
-                }
+            Flip();
+        }
+        else if (Math.Abs(axis - 1) < epsilon)
+        {
+            //1, move to the right
+            //1，向右移动
+            FacingLeft = false;
+            if (ItemMarker2D != null)
+            {
+                itemMarker2DPosition.X = ReadOnlyItemMarkerOriginalX;
+            }
 
-                Flip();
-                break;
+            Flip();
         }
 
         if (ItemMarker2D != null)

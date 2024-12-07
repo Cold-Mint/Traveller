@@ -75,6 +75,8 @@ public class
                 configData.StartTime = $"{nowYear}/{nowMonth}/{now.Day} {now.Hour}:{configData.StartTime}";
                 configData.EndTime = $"{nowYear}/{nowMonth}/{now.Day} {now.Hour}:{configData.EndTime}";
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(configData), "Invalid DateSpecifiesLevel specified.");
         }
         return Task.FromResult(TimeUtils.IsBetweenTimeSpan(now, configData.StartTime, configData.EndTime));
     }

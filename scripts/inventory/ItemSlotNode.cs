@@ -68,14 +68,10 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
 
     public override Variant _GetDragData(Vector2 atPosition)
     {
-        switch (Item)
+        if (Item is null or PlaceholderItem)
         {
-            case null:
-                return Config.EmptyVariant;
-            case PlaceholderItem:
-                return Config.EmptyVariant;
+            return Config.EmptyVariant;
         }
-
         if (_iconTextureRect == null)
         {
             return Config.EmptyVariant;

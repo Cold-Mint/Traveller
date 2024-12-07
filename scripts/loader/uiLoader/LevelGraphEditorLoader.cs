@@ -564,6 +564,8 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                         case "to_port":
                             connectionData.ToPort = dictionary[variant].AsInt32();
                             break;
+                        default:
+                            throw new InvalidOperationException($"Unexpected key: {typeStr}");
                     }
                 }
 
