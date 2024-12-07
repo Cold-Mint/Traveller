@@ -58,7 +58,7 @@ public static class LightMaskUtils
         while (indexInPowIntArray > -1)
         {
             result.Insert(0, indexInPowIntArray);
-            if (afterParsingTheValue != null && afterParsingTheValue.Invoke(indexInPowIntArray))
+            if (afterParsingTheValue?.Invoke(indexInPowIntArray) == true)
             {
                 //If it needs to be stopped, then the result is returned directly.
                 //如果需要停止，那么直接返回结果。
