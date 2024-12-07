@@ -181,7 +181,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (_displaysTheSuggestedInputTime != null && DateTime.Now > _displaysTheSuggestedInputTime)
+        if (_displaysTheSuggestedInputTime != null && DateTime.UtcNow > _displaysTheSuggestedInputTime)
         {
             //Performs the actual input field text change event.
             //执行实际的输入框文本改变事件。
@@ -202,7 +202,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                 //Higher frequency events are executed last time.
                 //频率较高的事件中，执行最后一次。
                 _displaysTheSuggestedInputTime =
-                    DateTime.Now.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
+                    DateTime.UtcNow.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
             };
         }
 

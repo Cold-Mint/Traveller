@@ -42,7 +42,7 @@ public class
             configData.DateSpecifiesLevel = 0;
         }
 
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
         var nowYear = now.Year;
         var nowMonth = now.Month;
         switch (configData.DateSpecifiesLevel)

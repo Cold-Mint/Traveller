@@ -46,7 +46,7 @@ public partial class MainMenuLoader : UiLoaderTemplate
         _sloganLabel = GetNode<Label>("CenterContainer2/SloganLabel");
         _copyrightBuilder = new StringBuilder();
         _copyrightBuilder.Append('\u00a9');
-        var currentYear = DateTime.Now.Year;
+        var currentYear = DateTime.UtcNow.Year;
         _copyrightBuilder.Append(Config.CreationYear);
         if (currentYear != Config.CreationYear)
         {

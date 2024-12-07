@@ -43,7 +43,7 @@ public class LookForWeaponProcessor : StateProcessorTemplate
     /// </summary>
     private void UpdateEndTime()
     {
-        _endTime = DateTime.Now + RecoveryTimeSpan;
+        _endTime = DateTime.UtcNow + RecoveryTimeSpan;
     }
 
     protected override void OnExecute(StateContext context, Node owner)
@@ -56,7 +56,7 @@ public class LookForWeaponProcessor : StateProcessorTemplate
 
         if (_targetWeapon == null)
         {
-            if (DateTime.Now > _endTime)
+            if (DateTime.UtcNow > _endTime)
             {
                 //The search for the weapon ran out of time
                 //寻找武器时超时

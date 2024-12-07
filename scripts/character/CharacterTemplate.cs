@@ -546,7 +546,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //如果上次受到伤害的时间与当前时间的时间差大于健康条显示时间，则隐藏健康条
         if (_healthBar is { Visible: true })
         {
-            var timeSpan = DateTime.Now - _lastDamageTime;
+            var timeSpan = DateTime.UtcNow - _lastDamageTime;
             if (timeSpan > Config.HealthBarDisplaysTime)
             {
                 _healthBar.Hide();
@@ -657,7 +657,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return false;
         }
-        _lastDamageTime = DateTime.Now;
+        _lastDamageTime = DateTime.UtcNow;
         _damageNumber?.DisplayDamage(damage);
         CurrentHp -= damage.Damage;
         OnHit(damage);

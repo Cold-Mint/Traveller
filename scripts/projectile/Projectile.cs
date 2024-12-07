@@ -107,7 +107,7 @@ public partial class Projectile : CharacterBody2D
             _life = 10000;
         }
 
-        _destructionTime = DateTime.Now.AddMilliseconds(_life);
+        _destructionTime = DateTime.UtcNow.AddMilliseconds(_life);
         SetCollisionLayerValue(Config.LayerNumber.Projectile, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, !IgnoreWall);
         SetCollisionMaskValue(Config.LayerNumber.Floor, !IgnoreWall);
@@ -280,7 +280,7 @@ public partial class Projectile : CharacterBody2D
     {
         //If the existence time is exceeded, the projectile is destroyed
         //如果超过了存在时间，那么销毁抛射体
-        if (DateTime.Now >= _destructionTime)
+        if (DateTime.UtcNow >= _destructionTime)
         {
             OnTimeOut();
         }

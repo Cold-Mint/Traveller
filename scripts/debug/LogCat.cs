@@ -230,7 +230,7 @@ public static class LogCat
                 break;
         }
 
-        StringBuilder.Append(DateTime.Now.ToString(" (K)yyyy-MM-d hh:mm:ss.fff "));
+        StringBuilder.Append(DateTime.UtcNow.ToString(" (K)yyyy-MM-d hh:mm:ss.fff "));
         StringBuilder.Append(label);
         StringBuilder.Append(" :");
         var key = $"log_{message}";

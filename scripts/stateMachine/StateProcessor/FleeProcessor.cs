@@ -36,11 +36,11 @@ public class FleeProcessor : StateProcessorTemplate
             //没有敌人了
             if (_endTime == null)
             {
-                _endTime = DateTime.Now + RecoveryTimeSpan;
+                _endTime = DateTime.UtcNow + RecoveryTimeSpan;
                 return;
             }
 
-            if (DateTime.Now > _endTime)
+            if (DateTime.UtcNow > _endTime)
             {
                 //Recovery time, end status.
                 //恢复时间，结束状态。

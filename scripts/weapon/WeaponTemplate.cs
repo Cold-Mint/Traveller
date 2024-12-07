@@ -83,7 +83,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     /// </remarks>
     public bool Fire(Node2D? owner, Vector2 enemyGlobalPosition)
     {
-        var nowTime = DateTime.Now;
+        var nowTime = DateTime.UtcNow;
         //If the present time minus the time of the last fire is less than the interval between fires, it means that the fire cannot be fired yet.
         //如果现在时间减去上次开火时间小于开火间隔，说明还不能开火。
         if (_lastFiringTime != null && nowTime - _lastFiringTime < _firingInterval)

@@ -37,10 +37,10 @@ public class AttackStateProcessor : StateProcessorTemplate
     /// <para>Time of next attack</para>
     /// <para>下次攻击时间</para>
     /// </summary>
-    private DateTime _nextAttackTime = DateTime.Now;
+    private DateTime _nextAttackTime = DateTime.UtcNow;
     protected override void OnExecute(StateContext context, Node owner)
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
         if (now < _nextAttackTime)
         {
             return;
