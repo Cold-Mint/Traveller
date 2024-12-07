@@ -20,7 +20,7 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
     /// <para>The player's generated wave count</para>
     /// <para>玩家的生成波数</para>
     /// </summary>
-    private static readonly int PlayerWaveNumber = 1;
+    private const int PlayerWaveNumber = 1;
 
     public override void _Ready()
     {

@@ -90,7 +90,7 @@ public static class ContributorDataManager
     /// </summary>
     public static void RegisterAllContributorData()
     {
-        if (_contributorTypeDictionary!= null)
+        if (_contributorTypeDictionary != null)
         {
             return;
         }
@@ -134,9 +134,9 @@ public static class ContributorDataManager
             return;
         }
 
-        if (_contributorTypeDictionary.ContainsKey(contributorType))
+        if (_contributorTypeDictionary.TryGetValue(contributorType, out var value))
         {
-            _contributorTypeDictionary[contributorType].Add(contributorData);
+            value.Add(contributorData);
         }
         else
         {

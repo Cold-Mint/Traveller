@@ -177,7 +177,7 @@ public static class Config
     /// <para>Blank string</para>
     /// <para>空白字符串</para>
     /// </summary>
-    public static readonly string? EmptyString = null;
+    public const string? EmptyString = null;
 
 
     /// <summary>

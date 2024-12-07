@@ -54,11 +54,6 @@ public static class ExplorerUtils
                 };
                 Process.Start(startInfoAndroid);
                 break;
-            case Config.OsEnum.Unknown:
-            case Config.OsEnum.Macos:
-            case Config.OsEnum.Ios:
-            case Config.OsEnum.Web:
-            case Config.OsEnum.Editor:
             default:
                 throw new ArgumentOutOfRangeException();
         }

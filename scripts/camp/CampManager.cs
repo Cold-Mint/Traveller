@@ -69,7 +69,7 @@ public static class CampManager
 
         //A camp ID that the attacker considers friendly
         //攻击者认为友好的阵营ID
-        var friendlyCampIdArray = attacker.FriendlyCampIdArray;
+        var friendlyCampIdArray = attacker.GetFriendlyCampIdArray();
         var targetId = target.Id;
         if (friendlyCampIdArray.Length > 0)
         {

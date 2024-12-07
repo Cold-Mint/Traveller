@@ -52,5 +52,8 @@ public class Camp
     /// <para>Gets the camp ID that is friendly to this camp</para>
     /// <para>获取与此阵营友好的阵营ID</para>
     /// </summary>
-    public string[] FriendlyCampIdArray => _friendlyCampIdList.ToArray();
+    public string[] GetFriendlyCampIdArray()
+    {
+        return _friendlyCampIdList.ToArray();
+    }
 }
