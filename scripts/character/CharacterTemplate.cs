@@ -883,26 +883,21 @@ public partial class CharacterTemplate : CharacterBody2D
         originalItem.OnThrow?.Invoke(node2D, velocity);
         item.ItemContainer = null;
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
-        switch (item)
+        if (item is PickAbleTemplate pickAbleTemplate)
         {
-            case PickAbleTemplate pickAbleTemplate:
-                if (GameSceneDepend.WeaponContainer == null)
-                {
-                    return;
-                }
-                pickAbleTemplate.LoadResource();
-                pickAbleTemplate.OwnerNode = this;
-                pickAbleTemplate.Picked = false;
-                //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
-                //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
-                pickAbleTemplate.LinearVelocity = Vector2.Zero;
-                pickAbleTemplate.EnabledCollisionShape2D();
-                pickAbleTemplate.Freeze = false;
-                break;
-            default:
-                throw new InvalidOperationException("Unsupported item type encountered when processing item.");
+            if (GameSceneDepend.WeaponContainer == null)
+            {
+                return;
+            }
+            pickAbleTemplate.LoadResource();
+            pickAbleTemplate.OwnerNode = this;
+            pickAbleTemplate.Picked = false;
+            //Setting an initial speed of 0 for items here prevents the problem of throwing items too fast.
+            //在这里给物品设置一个为0的初始速度，可防止扔出物品时速度过快的问题。
+            pickAbleTemplate.LinearVelocity = Vector2.Zero;
+            pickAbleTemplate.EnabledCollisionShape2D();
+            pickAbleTemplate.Freeze = false;
         }
-
         node2D.ProcessMode = ProcessModeEnum.Inherit;
         node2D.Show();
         //We apply force to objects.
