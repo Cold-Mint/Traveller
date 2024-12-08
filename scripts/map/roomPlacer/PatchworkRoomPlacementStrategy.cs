@@ -228,12 +228,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             LogCat.LogWithFormat("available_rooms_are_not_available", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
-        else
-        {
-            var index = randomNumberGenerator.Randi() % usableRoomPlacementData.Count;
-            var roomPlacementData = usableRoomPlacementData[(int)index];
-            return roomPlacementData;
-        }
+        var index = randomNumberGenerator.Randi() % usableRoomPlacementData.Count;
+        return usableRoomPlacementData[(int)index];
     }
 
     public Task<RoomPlacementData?> CalculatePlacementDataForStartingRoom(RandomNumberGenerator randomNumberGenerator,

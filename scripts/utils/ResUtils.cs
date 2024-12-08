@@ -120,9 +120,6 @@ public static class ResUtils
             var index = path.LastIndexOf(Suffix, StringComparison.Ordinal);
             return index > -1 ? path : path + Suffix;
         }
-        else
-        {
-            return path;
-        }
+        return path;
     }
 }

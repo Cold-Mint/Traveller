@@ -95,10 +95,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             }
             return _lastUsedProjectileMagicIndex;
         }
-        else
-        {
-            return RandomUtils.Instance.Next(0, _spellProjectileIndexes.Count);
-        }
+        return RandomUtils.Instance.Next(0, _spellProjectileIndexes.Count);
     }
 
     /// <summary>

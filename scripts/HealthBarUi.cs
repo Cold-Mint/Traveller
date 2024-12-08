@@ -129,23 +129,19 @@ public partial class HealthBarUi : HBoxContainer
         {
             return _heartEmpty;
         }
-
         if (percent <= 0.25f)
         {
             return _heartQuarter;
         }
-        else if (percent <= 0.5f)
+        if (percent <= 0.5f)
         {
             return _heartHalf;
         }
-        else if (percent <= 0.75f)
+        if (percent <= 0.75f)
         {
             return _heartThreeFourths;
         }
-        else
-        {
-            return _heartFull;
-        }
+        return _heartFull;
     }
 
 
