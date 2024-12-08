@@ -83,7 +83,7 @@ public class ModLoader
     {
         if (_assemblyLoadContext == null)
         {
-            throw new NullReferenceException("assemblyLoadContext is null.");
+            throw new InvalidOperationException("assemblyLoadContext is null.");
         }
 
         //Load the dll.
@@ -265,7 +265,7 @@ public class ModLoader
             ModManifest.CreateModManifestFromPath(modManifestPath);
         if (modManifest == null)
         {
-            throw new NullReferenceException("mod manifest is null:" + modManifestPath);
+            throw new InvalidOperationException("mod manifest is null:" + modManifestPath);
         }
 
         var pckList = modManifest.PckList;

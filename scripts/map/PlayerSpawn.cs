@@ -94,7 +94,7 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
         {
             //Throws an exception when the item container is empty.
             //当物品容器为空时，抛出异常。
-            throw new NullReferenceException(TranslationServerUtils.Translate("log_item_container_is_null"));
+            throw new InvalidOperationException(TranslationServerUtils.Translate("log_item_container_is_null"));
         }
 
         playerNode.ItemContainer = itemContainer;
