@@ -134,7 +134,7 @@ public static class MapGenerator
     /// <para>Generating a map</para>
     /// <para>生成地图</para>
     /// </summary>
-    public static async Task GenerateMap()
+    public static async Task GenerateMapAsync()
     {
         if (_running)
         {
@@ -200,7 +200,7 @@ public static class MapGenerator
             return;
         }
 
-        var placeSuccess = await PlaceRoomAndAddRecord(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary);
+        var placeSuccess = await PlaceRoomAndAddRecordAsync(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary);
         if (!placeSuccess)
         {
             LogCat.LogError("start_room_placement_failed");
@@ -283,7 +283,7 @@ public static class MapGenerator
                 continue;
             }
 
-            if (await PlaceRoomAndAddRecord(roomNodeData.Id, roomPlacementData, roomDictionary))
+            if (await PlaceRoomAndAddRecordAsync(roomNodeData.Id, roomPlacementData, roomDictionary))
             {
                 MarkRoomSlot(roomPlacementData);
             }
@@ -355,7 +355,7 @@ public static class MapGenerator
     /// <param name="roomPlacementData"></param>
     /// <param name="dictionary"></param>
     /// <returns></returns>
-    private static async Task<bool> PlaceRoomAndAddRecord(string roomNodeDataId,
+    private static async Task<bool> PlaceRoomAndAddRecordAsync(string roomNodeDataId,
         RoomPlacementData roomPlacementData, Dictionary<string, Room> dictionary)
     {
         //The input parameters are incomplete.

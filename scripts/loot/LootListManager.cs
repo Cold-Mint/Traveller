@@ -58,7 +58,7 @@ public static class LootListManager
     /// <param name="parentNode"></param>
     /// <param name="lootData"></param>
     /// <param name="position"></param>
-    public static async Task<T[]?> GenerateLootObjects<T>(Node parentNode,
+    public static async Task<T[]?> GenerateLootObjectsAsync<T>(Node parentNode,
         IEnumerable<LootDatum> lootData,
         Vector2 position)
     {

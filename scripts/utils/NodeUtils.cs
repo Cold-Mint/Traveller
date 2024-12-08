@@ -160,7 +160,7 @@ public static class NodeUtils
     /// <param name="parent"></param>
     /// <param name="func"></param>
     /// <typeparam name="T"></typeparam>
-    public static async Task ForEachNodeWithAsyncCallBack<T>(Node parent, Func<T, Task<bool>> func) where T : class
+    public static async Task ForEachNodeAsync<T>(Node parent, Func<T, Task<bool>> func) where T : class
     {
         var count = parent.GetChildCount();
         if (count <= 0)

@@ -340,7 +340,7 @@ public class Room
             _spawnArea2D.SetCollisionMaskValue(Config.LayerNumber.Player, true);
             _spawnArea2D.BodyEntered += async body =>
             {
-                await OnEnterSpawnArea(body);
+                await OnEnterSpawnAreaAsync(body);
             };
         }
         _collisionShape2D = _roomArea2D.GetChild<CollisionShape2D>(0);
@@ -354,7 +354,7 @@ public class Room
         _autoSpawn = rootNode.GetNodeOrNull<Node2D>("AutoSpawn");
     }
 
-    private async Task OnEnterSpawnArea(Node2D body)
+    private async Task OnEnterSpawnAreaAsync(Node2D body)
     {
         if (_waveManager.HasSpawnedEntity)
         {
@@ -382,7 +382,7 @@ public class Room
             ClearAllMatchedBarriers();
             GameSceneDepend.ShowMiniMap();
         };
-        await _waveManager.SpawnEnemyWave(_autoSpawn);
+        await _waveManager.SpawnEnemyWaveAsync(_autoSpawn);
         _waveManager.HasSpawnedEntity = true;
     }
 

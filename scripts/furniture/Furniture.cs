@@ -109,7 +109,7 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
-        LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition - new Vector2(0, Config.CellSize * 2)).GetAwaiter().OnCompleted(onCompleted);
+        LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition - new Vector2(0, Config.CellSize * 2)).GetAwaiter().OnCompleted(onCompleted);
     }
 
     /// <summary>

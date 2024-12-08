@@ -57,7 +57,7 @@ public static class DeathInfoGenerator
         }
         foreach (var deathInfoHandler in _deathInfoHandlers)
         {
-            var deathInfo = await deathInfoHandler.GenerateDeathInfo(victimName, killerName, victim, killer);
+            var deathInfo = await deathInfoHandler.GenerateDeathInfoAsync(victimName, killerName, victim, killer);
             if (!string.IsNullOrEmpty(deathInfo))
             {
                 return deathInfo;

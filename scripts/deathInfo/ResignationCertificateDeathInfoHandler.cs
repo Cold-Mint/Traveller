@@ -6,9 +6,9 @@ using Godot;
 
 namespace ColdMint.scripts.deathInfo;
 
-public class ResignationCertificateDeathInfoHandler: IDeathInfoHandler
+public class ResignationCertificateDeathInfoHandler : IDeathInfoHandler
 {
-    public Task<string?> GenerateDeathInfo(string victimName, string killerName, Player victim, Node killer)
+    public Task<string?> GenerateDeathInfoAsync(string victimName, string killerName, Player victim, Node killer)
     {
         if (killer is ResignationCertificate)
         {

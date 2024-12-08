@@ -142,6 +142,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             var seedInfo = TranslationServerUtils.TranslateWithFormat("ui_seed_info", MapGenerator.Seed);
             GameSceneDepend.GameGuiTemplate.SeedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
         }
-        await MapGenerator.GenerateMap();
+        await MapGenerator.GenerateMapAsync();
     }
 }

@@ -31,5 +31,5 @@ public interface IDeathInfoHandler
     /// <para>杀手</para>
     /// </param>
     /// <returns></returns>
-    public Task<string?> GenerateDeathInfo(string victimName, string killerName, Player victim, Node killer);
+    public Task<string?> GenerateDeathInfoAsync(string victimName, string killerName, Player victim, Node killer);
 }

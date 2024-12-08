@@ -665,7 +665,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             //Character death
             //角色死亡
-            OnDie(damage);
+            OnDie(damage).Start();
             return true;
         }
         PlayDamageAudio();
@@ -683,7 +683,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
-        await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
+        await LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
     }
 
 
@@ -716,7 +716,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>处理角色死亡的事件</para>
     /// </summary>
     /// <param name="damage"></param>
-    protected virtual async Task OnDie(IDamage damage)
+    protected async virtual Task OnDie(IDamage damage)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息

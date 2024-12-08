@@ -26,7 +26,7 @@ public partial class LootSpawn : Marker2D, ISpawnMarker
         {
             return null;
         }
-        return await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(lootId), GlobalPosition);
+        return await LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(lootId), GlobalPosition);
     }
 
     public int GetMaxWaveNumber()

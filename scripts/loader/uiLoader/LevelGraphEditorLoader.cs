@@ -620,7 +620,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         }
 
         var levelGraphEditorSaveData =
-            await YamlSerialization.ReadYamlFileToObj<LevelGraphEditorSaveData>(filePath);
+            await YamlSerialization.ReadYamlFileToObjAsync<LevelGraphEditorSaveData>(filePath);
         if (levelGraphEditorSaveData == null)
         {
             //Deserialization failed.

@@ -14,12 +14,12 @@ public class SelfDeathInfoHandler : IDeathInfoHandler
     private const string Prefix = "death_info_self_";
     private const int Length = 2;
 
-    public Task<string?> GenerateDeathInfo(string victimName, string killerName, Player victim, Node killer)
+
+    public Task<string?> GenerateDeathInfoAsync(string victimName, string killerName, Player victim, Node killer)
     {
         if (victim != killer) return Task.FromResult<string?>(null);
         var index = GD.Randi() % Length + 1;
         return Task.FromResult(
             TranslationServerUtils.TranslateWithFormat(Prefix + index, victimName, killerName));
-
     }
 }

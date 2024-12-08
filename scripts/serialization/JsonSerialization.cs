@@ -38,7 +38,7 @@ public static class JsonSerialization
     /// <param name="path"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> ReadJsonFileToObj<T>(string path)
+    public static async Task<T?> ReadJsonFileToObjAsync<T>(string path)
     {
         await using var openStream = File.OpenRead(path);
         return await JsonSerializer.DeserializeAsync<T>(openStream, Options);
@@ -67,7 +67,7 @@ public static class JsonSerialization
         return JsonSerializer.Deserialize<T>(json, Options);
     }
 
-    public static async Task<T?> ReadJsonFileToObj<T>(Stream openStream)
+    public static async Task<T?> ReadJsonFileToObjAsync<T>(Stream openStream)
     {
         return await JsonSerializer.DeserializeAsync<T>(openStream, Options);
     }

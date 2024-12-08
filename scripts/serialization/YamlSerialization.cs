@@ -26,7 +26,7 @@ public static class YamlSerialization
     /// <param name="path"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> ReadYamlFileToObj<T>(string path)
+    public static async Task<T?> ReadYamlFileToObjAsync<T>(string path)
     {
         await using var openStream = File.OpenRead(path);
         var yaml = await new StreamReader(openStream).ReadToEndAsync();
