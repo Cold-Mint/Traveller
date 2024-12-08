@@ -43,7 +43,7 @@ public static class DeathInfoGenerator
     /// <param name="victim"></param>
     /// <param name="killer"></param>
     /// <returns></returns>
-    public static async Task<string> GenerateDeathInfo(Player victim, Node killer)
+    public static async Task<string> GenerateDeathInfoAsync(Player victim, Node killer)
     {
         var victimName = victim.ReadOnlyCharacterName ?? victim.Name;
         string killerName = killer.Name;

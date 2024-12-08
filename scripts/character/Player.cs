@@ -400,7 +400,7 @@ public partial class Player : CharacterTemplate
         var gameOverEvent = new GameOverEvent();
         if (damage.Attacker != null)
         {
-            gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damage.Attacker);
+            gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfoAsync(this, damage.Attacker);
         }
 
         await EventBus.GameOverEvent.Invoke(gameOverEvent);
