@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.loot;
@@ -95,28 +96,20 @@ public partial class Furniture : RigidBody2D
     /// </summary>
     private void OnDestroy()
     {
-        GenerateLoot();
-        QueueFree();
+        GenerateLoot(QueueFree);
     }
 
     /// <summary>
     /// <para>Loot is generated when furniture is destroyed</para>
     /// <para>家具被破坏时生成战利品</para>
     /// </summary>
-    private async void GenerateLoot()
+    private void GenerateLoot(Action onCompleted)
     {
-        try
+        if (string.IsNullOrEmpty(_lootId))
         {
-            if (string.IsNullOrEmpty(_lootId))
-            {
-                return;
-            }
-            await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition - new Vector2(0, Config.CellSize * 2));
+            return;
         }
-        catch (Exception e)
-        {
-            LogCat.WhenCaughtException(e);
-        }
+        LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition - new Vector2(0, Config.CellSize * 2)).GetAwaiter().OnCompleted(onCompleted);
     }
 
     /// <summary>

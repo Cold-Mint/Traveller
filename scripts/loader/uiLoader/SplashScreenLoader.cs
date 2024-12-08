@@ -42,16 +42,19 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         {
             _loadingLabel.Modulate = Colors.White;
             _nameLabel.Modulate = Colors.White;
-            AnimationFinished(_startup);
+            Task.FromResult(AnimationFinished(_startup));
         }
         else
         {
             _animationPlayer.Play(_startup);
-            _animationPlayer.AnimationFinished += AnimationFinished;
+            _animationPlayer.AnimationFinished += async name =>
+            {
+                await AnimationFinished(name);
+            };
         }
     }
 
-    private async void AnimationFinished(StringName name)
+    private async Task AnimationFinished(StringName name)
     {
         await LoadingGlobalData();
         if (_mainMenuScene == null)
@@ -85,7 +88,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Create a game data folder
         //创建游戏数据文件夹
         var dataPath = Config.GetGameDataDirectory();
-        LogCat.LogWithFormat("load_data_from",LogCat.LogLabel.Default,dataPath);
+        LogCat.LogWithFormat("load_data_from", LogCat.LogLabel.Default, dataPath);
         if (!Directory.Exists(dataPath))
         {
             Directory.CreateDirectory(dataPath);

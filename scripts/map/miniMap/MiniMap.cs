@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map.events;
 using ColdMint.scripts.map.preview;
@@ -78,7 +79,7 @@ public partial class MiniMap : NinePatchRect
     /// <para>地图生成器放置房间完成后</para>
     /// </summary>
     /// <param name="mapGenerationCompleteEvent"></param>
-    private void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    private async Task MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
         if (mapGenerationCompleteEvent.RoomDictionary == null)
         {
@@ -101,6 +102,7 @@ public partial class MiniMap : NinePatchRect
                 _roomToRoomPreviews[roomDictionaryValue] = textureRect;
             }
         }
+        await Task.CompletedTask;
     }
 
 

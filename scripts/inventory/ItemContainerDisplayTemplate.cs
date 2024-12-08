@@ -11,7 +11,7 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     protected readonly List<IItemDisplay> ItemDisplayList = [];
     private IItemContainer? _itemContainer;
 
-    public async void BindItemContainer(IItemContainer? itemContainer)
+    public async Task BindItemContainer(IItemContainer? itemContainer)
     {
         if (_itemContainer == itemContainer)
         {

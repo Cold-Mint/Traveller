@@ -67,7 +67,7 @@ public class WaveManager
     /// <para>Spawn a wave of entities</para>
     /// <para>生成一波实体</para>
     /// </summary>
-    public void SpawnEnemyWave(Node? autoSpawn)
+    public async Task SpawnEnemyWave(Node? autoSpawn)
     {
         if (autoSpawn == null)
         {
@@ -80,7 +80,7 @@ public class WaveManager
             OnWaveComplete?.Invoke();
             return;
         }
-        NodeUtils.ForEachNodeWithAsyncCallBack<ISpawnMarker>(autoSpawn, async marker =>
+        await NodeUtils.ForEachNodeWithAsyncCallBack<ISpawnMarker>(autoSpawn, async marker =>
         {
             var node2DList = await marker.Spawn(_currentWaveNumber);
             if (node2DList == null || node2DList.Length == 0)
@@ -106,7 +106,7 @@ public class WaveManager
                                 //召唤的生物全死了。
                                 _currentWaveNumber++;
                                 await Task.Delay(Delay);
-                                SpawnEnemyWave(autoSpawn);
+                                await SpawnEnemyWave(autoSpawn);
                             }
                         };
                     }

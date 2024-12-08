@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColdMint.scripts.map.events;
 using Godot;
 
@@ -33,15 +34,16 @@ public partial class GameOverLoaderMenuLoader : UiLoaderTemplate
     {
     }
 
-    private void OnGameOver(GameOverEvent gameOverEvent)
+    private Task OnGameOver(GameOverEvent gameOverEvent)
     {
         if (_deathInfoLabel == null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         Show();
         _deathInfoLabel.Text = gameOverEvent.DeathInfo;
+        return Task.CompletedTask;
     }
 
     public override void _ExitTree()

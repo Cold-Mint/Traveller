@@ -677,20 +677,13 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Create Loot Object</para>
     /// <para>创建战利品对象</para>
     /// </summary>
-    protected async void CreateLootObject()
+    private async Task CreateLootObject()
     {
-        try
+        if (string.IsNullOrEmpty(_lootId))
         {
-            if (string.IsNullOrEmpty(_lootId))
-            {
-                return;
-            }
-            await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
+            return;
         }
-        catch (Exception e)
-        {
-            LogCat.WhenCaughtException(e);
-        }
+        await LootListManager.GenerateLootObjects<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
     }
 
 
@@ -723,7 +716,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>处理角色死亡的事件</para>
     /// </summary>
     /// <param name="damage"></param>
-    protected virtual Task OnDie(IDamage damage)
+    protected virtual async Task OnDie(IDamage damage)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
@@ -742,9 +735,8 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
         ThrowAllItemOnDie();
-        CreateLootObject();
+        await CreateLootObject();
         QueueFree();
-        return Task.CompletedTask;
     }
 
     /// <summary>

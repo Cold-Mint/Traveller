@@ -42,24 +42,17 @@ public partial class PlayerSpawn : Marker2D, ISpawnMarker
     }
 
 
-    private async void MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
+    private async Task MapGenerationCompleteEvent(MapGenerationCompleteEvent mapGenerationCompleteEvent)
     {
-        try
+        //After the map is generated, create the player instance.
+        //当地图生成完成后，创建玩家实例。
+        if (GameSceneDepend.Player != null)
         {
-            //After the map is generated, create the player instance.
-            //当地图生成完成后，创建玩家实例。
-            if (GameSceneDepend.Player != null)
-            {
-                //An existing player instance will not be created.
-                //已经存在玩家实例，不再创建。
-                return;
-            }
-            await Spawn(PlayerWaveNumber);
+            //An existing player instance will not be created.
+            //已经存在玩家实例，不再创建。
+            return;
         }
-        catch (Exception e)
-        {
-            LogCat.WhenCaughtException(e);
-        }
+        await Spawn(PlayerWaveNumber);
     }
 
     public override void _ExitTree()

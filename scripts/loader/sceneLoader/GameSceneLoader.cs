@@ -104,7 +104,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         await GenerateMap();
     }
 
-    private async void OnGameOverEvent(GameOverEvent gameOverEvent)
+    private async Task OnGameOverEvent(GameOverEvent gameOverEvent)
     {
         if (GameSceneDepend.WeaponContainer != null)
         {

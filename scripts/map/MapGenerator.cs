@@ -307,7 +307,10 @@ public static class MapGenerator
             RandomNumberGenerator = randomNumberGenerator,
             RoomDictionary = roomDictionary
         };
-        EventBus.MapGenerationCompleteEvent?.Invoke(eventObj);
+        if (EventBus.MapGenerationCompleteEvent != null)
+        {
+            await EventBus.MapGenerationCompleteEvent(eventObj);
+        }
     }
 
 

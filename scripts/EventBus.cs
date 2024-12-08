@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ColdMint.scripts.map.events;
 
 namespace ColdMint.scripts;
@@ -13,7 +14,7 @@ public static class EventBus
     /// <para>Game Over Event</para>
     /// <para>游戏结束事件</para>
     /// </summary>
-    public static Action<GameOverEvent>? GameOverEvent;
+    public static Func<GameOverEvent, Task>? GameOverEvent;
 
     /// <summary>
     /// <para>Events when the game is replayed</para>
@@ -31,5 +32,5 @@ public static class EventBus
     /// <para>Map generation completion event</para>
     /// <para>地图生成完成事件</para>
     /// </summary>
-    public static Action<MapGenerationCompleteEvent>? MapGenerationCompleteEvent;
+    public static Func<MapGenerationCompleteEvent, Task>? MapGenerationCompleteEvent;
 }

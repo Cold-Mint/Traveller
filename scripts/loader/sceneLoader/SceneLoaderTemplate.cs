@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using ColdMint.scripts.debug;
 using Godot;
 
 namespace ColdMint.scripts.loader.sceneLoader;
@@ -11,8 +13,15 @@ public partial class SceneLoaderTemplate : Node2D, ISceneLoaderContract
 {
     public sealed override async void _Ready()
     {
-        await InitializeData();
-        await LoadScene();
+        try
+        {
+            await InitializeData();
+            await LoadScene();
+        }
+        catch (Exception e)
+        {
+            LogCat.WhenCaughtException(e);
+        }
     }
 
 

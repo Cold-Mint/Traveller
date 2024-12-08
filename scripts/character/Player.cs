@@ -403,7 +403,7 @@ public partial class Player : CharacterTemplate
             gameOverEvent.DeathInfo = await DeathInfoGenerator.GenerateDeathInfo(this, damage.Attacker);
         }
 
-        EventBus.GameOverEvent.Invoke(gameOverEvent);
+        await EventBus.GameOverEvent.Invoke(gameOverEvent);
     }
 
     protected override void OnHeal(Heal heal)

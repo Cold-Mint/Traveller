@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ColdMint.scripts.inventory;
 
@@ -9,5 +10,5 @@ public interface IItemContainerDisplay : IEnumerable<IItemDisplay>
     /// <para>为物品容器显示器绑定物品容器</para>
     /// </summary>
     /// <param name="itemContainer"></param>
-    void BindItemContainer(IItemContainer? itemContainer);
+    Task BindItemContainer(IItemContainer? itemContainer);
 }
