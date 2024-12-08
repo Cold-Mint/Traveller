@@ -11,10 +11,7 @@ public partial class SceneLoaderTemplate : Node2D, ISceneLoaderContract
 {
     public sealed override void _Ready()
     {
-        InitializeData().GetAwaiter().OnCompleted(() =>
-        {
-            LoadScene();
-        });
+        InitializeData().GetAwaiter().OnCompleted(() => LoadScene());
     }
 
 
