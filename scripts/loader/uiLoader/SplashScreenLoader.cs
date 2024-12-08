@@ -23,7 +23,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
     private Label? _loadingLabel;
     private PackedScene? _mainMenuScene;
     private AnimationPlayer? _animationPlayer;
-    private string _startup = "startup";
+    private const string Startup = "startup";
     private Label? _nameLabel;
 
     public override void InitializeData()
@@ -42,11 +42,11 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         {
             _loadingLabel.Modulate = Colors.White;
             _nameLabel.Modulate = Colors.White;
-            Task.FromResult(AnimationFinished(_startup));
+            Task.FromResult(AnimationFinished(Startup));
         }
         else
         {
-            _animationPlayer.Play(_startup);
+            _animationPlayer.Play(Startup);
             _animationPlayer.AnimationFinished += async name =>
             {
                 await AnimationFinished(name);

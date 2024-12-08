@@ -28,7 +28,7 @@ public partial class Player : CharacterTemplate
     [Export] private RayCast2D[]? _platformDetectionRayCast2DList;
 
     //抛出物品的飞行速度
-    private float _throwingVelocity = Config.CellSize * 13;
+    private readonly float _throwingVelocity = Config.CellSize * 13;
 
     //射线是否与平台碰撞
     private bool _collidingWithPlatform;
@@ -37,7 +37,7 @@ public partial class Player : CharacterTemplate
 
     //How long does it take for the character to recover from a collision with the platform after jumping off the platform (in seconds)
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
-    private double _platformCollisionRecoveryTime = 0.2f;
+    private readonly double _platformCollisionRecoveryTime = 0.2f;
 
     [Export] private AudioStream[]? _jumpSounds;
     public override void _Ready()
@@ -138,7 +138,7 @@ public partial class Player : CharacterTemplate
         _collidingWithPlatform = false;
     }
 
-    protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    protected override void HookPhysicsProcess(double delta, ref Vector2 velocity)
     {
         UpdateCollidingWithPlatform();
         //If the character is on the ground, give an upward velocity when the jump button is pressed

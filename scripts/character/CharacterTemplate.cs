@@ -57,17 +57,7 @@ public partial class CharacterTemplate : CharacterBody2D
     public float SpeedScale
     {
         get => ProtectedSpeedScale;
-        set
-        {
-            if (value > 1)
-            {
-                ProtectedSpeedScale = 1;
-            }
-            else
-            {
-                ProtectedSpeedScale = value;
-            }
-        }
+        set => ProtectedSpeedScale = value > 1 ? 1 : value;
     }
 
     protected const float JumpVelocity = -240;
@@ -928,7 +918,7 @@ public partial class CharacterTemplate : CharacterBody2D
         var velocity = Velocity;
         // The ref keyword passes its pointer to the following method so that it can be modified in the method.
         // ref关键字将其指针传递给下面的方法，以便在方法中修改它。
-        HookPhysicsProcess(ref velocity, delta);
+        HookPhysicsProcess(delta, ref velocity);
         // Add the gravity.
         //增加重力。
         if (!IsOnFloor())
@@ -957,7 +947,7 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
 
-    protected virtual void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    protected virtual void HookPhysicsProcess(double delta, ref Vector2 velocity)
     {
         //The cost of applying force in the X direction.
         //对X方向施加力消耗。

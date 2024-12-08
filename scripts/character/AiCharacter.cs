@@ -314,7 +314,7 @@ public sealed partial class AiCharacter : CharacterTemplate
         return _enemyInTheAttackRange[0];
     }
 
-    protected override void HookPhysicsProcess(ref Vector2 velocity, double delta)
+    protected override void HookPhysicsProcess(double delta, ref Vector2 velocity)
     {
         StateMachine?.Execute();
         if (NavigationAgent2D != null && IsOnFloor())

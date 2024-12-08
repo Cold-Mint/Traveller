@@ -50,7 +50,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// <para>Offset to append when a new node is created.</para>
     /// <para>创建新节点时追加的偏移量。</para>
     /// </summary>
-    private Vector2 _positionOffset = new(100, 100);
+    private readonly Vector2 _positionOffset = new(100, 100);
 
     /// <summary>
     /// <para>Is the press event of an active button saved?</para>

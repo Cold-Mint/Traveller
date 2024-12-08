@@ -41,7 +41,7 @@ public class Room
     /// </summary>
     private Node2D? _autoSpawn;
 
-    private WaveManager _waveManager = new WaveManager();
+    private readonly WaveManager _waveManager = new();
 
     /// <summary>
     /// <para>The number of times the player visits the room</para>

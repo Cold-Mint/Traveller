@@ -12,7 +12,7 @@ namespace ColdMint.scripts.weapon;
 /// </summary>
 public abstract partial class WeaponTemplate : PickAbleTemplate
 {
-    private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+    private readonly float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     /// <summary>
     /// <para>Fire audio playback component</para>
