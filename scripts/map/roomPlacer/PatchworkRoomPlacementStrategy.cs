@@ -140,9 +140,11 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
         if (navigationLink2DStartPosition != null && navigationLink2DEndPosition != null)
         {
-            var navigationLink2D = new NavigationLink2D();
-            navigationLink2D.StartPosition = navigationLink2DStartPosition.Value;
-            navigationLink2D.EndPosition = navigationLink2DEndPosition.Value;
+            var navigationLink2D = new NavigationLink2D
+            {
+                StartPosition = navigationLink2DStartPosition.Value,
+                EndPosition = navigationLink2DEndPosition.Value
+            };
             mapRoot.AddChild(navigationLink2D);
         }
 

@@ -180,8 +180,10 @@ public static class MapGenerator
         //Save the dictionary, put the ID in the room data, corresponding to the successful placement of the room.
         //保存字典，将房间数据内的ID，对应放置成功的房间。
         var roomDictionary = new Dictionary<string, Room>();
-        var randomNumberGenerator = new RandomNumberGenerator();
-        randomNumberGenerator.Seed = _seed;
+        var randomNumberGenerator = new RandomNumberGenerator
+        {
+            Seed = _seed
+        };
         var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {

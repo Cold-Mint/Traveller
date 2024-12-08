@@ -135,9 +135,11 @@ public partial class DamageNumberNodeSpawn : Marker2D
             return;
         }
         damageLabel.Text = actualHealAmount.ToString();
-        var labelSettings = new LabelSettings();
-        labelSettings.FontSize = Config.NormalDamageTextSize;
-        labelSettings.FontColor = _healthColor;
+        var labelSettings = new LabelSettings
+        {
+            FontSize = Config.NormalDamageTextSize,
+            FontColor = _healthColor,
+        };
         damageLabel.LabelSettings = labelSettings;
         damageLabel.Position = Vector2.Zero;
     }
@@ -191,16 +193,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
             var offset = damage.Damage / (float)rangeDamage.MaxDamage;
             labelSettings.FontColor = gradient.Sample(offset);
         }
-
-        if (damage.IsCriticalStrike)
-        {
-            labelSettings.FontSize = Config.CritDamageTextSize;
-        }
-        else
-        {
-            labelSettings.FontSize = Config.NormalDamageTextSize;
-        }
-
+        labelSettings.FontSize = damage.IsCriticalStrike ? Config.CritDamageTextSize : Config.NormalDamageTextSize;
         damageLabel.LabelSettings = labelSettings;
         damageLabel.Position = Vector2.Zero;
     }

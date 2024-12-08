@@ -590,17 +590,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
     /// <returns></returns>
     private string FileNameToActualName(string fileName)
     {
-        string actualName;
-        if (fileName.EndsWith(".yaml"))
-        {
-            actualName = fileName;
-        }
-        else
-        {
-            actualName = fileName + ".yaml";
-        }
-
-        return actualName;
+        return fileName.EndsWith(".yaml") ? fileName : fileName + ".yaml";
     }
 
 

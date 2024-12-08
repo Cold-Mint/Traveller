@@ -150,10 +150,12 @@ public partial class MiniMap : NinePatchRect
             return null;
         }
 
-        var textureRect = new TextureRect();
-        textureRect.Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale);
-        textureRect.Texture = image;
-        textureRect.Position = _miniMapMidpointCoordinate + position.Value;
+        var textureRect = new TextureRect
+        {
+            Scale = new Vector2(Config.RoomPreviewScale, Config.RoomPreviewScale),
+            Texture = image,
+            Position = _miniMapMidpointCoordinate + position.Value
+        };
         textureRect.Hide();
         NodeUtils.CallDeferredAddChild(_roomPreviewContainer, textureRect);
         return textureRect;

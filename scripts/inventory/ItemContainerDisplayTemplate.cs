@@ -130,19 +130,8 @@ public abstract class ItemContainerDisplayTemplate : IItemContainerDisplay
     {
         LogCat.LogWithFormat("update_display_item", LogCat.LogLabel.ItemContainerDisplay, index);
         var itemDisplay = ItemDisplayList[index];
-        var item = itemContainer.GetItem(index);
-        if (item == null)
-        {
-            item = itemContainer.GetPlaceHolderItem(index);
-        }
-        if (itemContainer.SupportSelect)
-        {
-            item.IsSelect = index == itemContainer.GetSelectIndex();
-        }
-        else
-        {
-            item.IsSelect = false;
-        }
+        var item = itemContainer.GetItem(index) ?? itemContainer.GetPlaceHolderItem(index);
+        item.IsSelect = itemContainer.SupportSelect && index == itemContainer.GetSelectIndex();
         itemDisplay.Update(item);
         itemDisplay.ShowSelf();
     }

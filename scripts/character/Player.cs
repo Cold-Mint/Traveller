@@ -109,14 +109,7 @@ public partial class Player : CharacterTemplate
     private void SelectedItemChangeEvent(SelectedItemChangeEvent selectedItemChangeEvent)
     {
         var item = selectedItemChangeEvent.NewItem;
-        if (item is Node2D node2D)
-        {
-            CurrentItem = node2D;
-        }
-        else
-        {
-            CurrentItem = null;
-        }
+        CurrentItem = item as Node2D;
     }
 
     public override void _MouseEnter()

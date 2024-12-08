@@ -69,14 +69,7 @@ public partial class MultipleFireSpell : SpellPickAble
     public override void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity)
     {
         base.ModifyProjectile(index, projectile, ref velocity);
-        if (RandomAngle)
-        {
-            velocity = velocity.Rotated(_initialRadian + _maxRadian * RandomUtils.Instance.NextSingle());
-        }
-        else
-        {
-            velocity = velocity.Rotated(_initialRadian + UnitRadian * index);
-        }
+        velocity = RandomAngle ? velocity.Rotated(_initialRadian + _maxRadian * RandomUtils.Instance.NextSingle()) : velocity.Rotated(_initialRadian + UnitRadian * index);
     }
 
 }

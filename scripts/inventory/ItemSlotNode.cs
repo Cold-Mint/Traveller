@@ -77,11 +77,13 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             return Config.EmptyVariant;
         }
 
-        var textureRect = new TextureRect();
-        textureRect.ExpandMode = _iconTextureRect.ExpandMode;
-        textureRect.Size = _iconTextureRect.Size;
-        textureRect.Texture = _iconTextureRect.Texture;
-        textureRect.ZIndex = Config.ZIndexManager.FloatingIcon;
+        var textureRect = new TextureRect
+        {
+            ExpandMode = _iconTextureRect.ExpandMode,
+            Size = _iconTextureRect.Size,
+            Texture = _iconTextureRect.Texture,
+            ZIndex = Config.ZIndexManager.FloatingIcon
+        };
         SetDragPreview(textureRect);
         return Variant.CreateFrom(this);
     }

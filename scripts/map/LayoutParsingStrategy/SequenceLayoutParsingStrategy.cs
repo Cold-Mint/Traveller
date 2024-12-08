@@ -19,7 +19,7 @@ namespace ColdMint.scripts.map.LayoutParsingStrategy;
 public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
 {
     private LevelGraphEditorSaveData? _levelGraphEditorSaveData;
-    
+
     /// <summary>
     /// <para>Check whether data Settings are valid</para>
     /// <para>设置数据时，是否检查合法了</para>
@@ -50,16 +50,8 @@ public class SequenceLayoutParsingStrategy : ILayoutParsingStrategy
         _checkLegality = false;
         _index = -1;
         _levelGraphEditorSaveData = levelGraphEditorSaveData;
-        if (_levelGraphEditorSaveData.ConnectionDataList == null ||
-            _levelGraphEditorSaveData.ConnectionDataList.Count == 0)
-        {
-            _maxIndex = 0;
-        }
-        else
-        {
-            _maxIndex = _levelGraphEditorSaveData.ConnectionDataList.Count;
-        }
-
+        _maxIndex = _levelGraphEditorSaveData.ConnectionDataList == null ||
+                    _levelGraphEditorSaveData.ConnectionDataList.Count == 0 ? 0 : _levelGraphEditorSaveData.ConnectionDataList.Count;
         _roomNodeDataDictionary.Clear();
         foreach (var roomNodeData in _levelGraphEditorSaveData.RoomNodeDataList)
         {

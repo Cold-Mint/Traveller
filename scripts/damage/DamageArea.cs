@@ -239,15 +239,7 @@ public partial class DamageArea : Area2D
             }
             return;
         }
-        float percent;
-        if (_isDamageCenterBased)
-        {
-            percent = 1 - distance / radius;
-        }
-        else
-        {
-            percent = distance / radius;
-        }
+        var percent = _isDamageCenterBased ? 1 - distance / radius : distance / radius;
         var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
         if (percentFixedDamage != null)
         {

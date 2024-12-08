@@ -151,16 +151,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             duplicate.QueueFree();
             return null;
         }
-
-        if (number < 0)
-        {
-            newItem.Quantity = Quantity;
-        }
-        else
-        {
-            newItem.Quantity = Math.Min(Quantity, number);
-        }
-
+        newItem.Quantity = number < 0 ? Quantity : Math.Min(Quantity, number);
         return newItem;
     }
 

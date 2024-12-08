@@ -23,7 +23,7 @@ public static class HashCodeUtils
         //关闭溢出检查，以提高性能
         unchecked
         {
-            return str.Aggregate(2166136261, (current, c) => (current ^ c) * 16777619);
+            return str.Aggregate(2_166_136_261, (current, c) => (current ^ c) * 16_777_619);
         }
     }
 }
