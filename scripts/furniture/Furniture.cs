@@ -14,13 +14,13 @@ namespace ColdMint.scripts.furniture;
 /// </summary>
 public partial class Furniture : RigidBody2D
 {
-    [Export] private int _initialDurability;
-    [Export] private int _maxDurability;
+    [Export] private int _initialDurability; // skipcq:CS-R1137
+    [Export] private int _maxDurability; // skipcq:CS-R1137
     [Export]
-    private string? _furnitureName;
+    private string? _furnitureName; // skipcq:CS-R1137
 
     [Export]
-    private string? _lootId;
+    private string? _lootId; // skipcq:CS-R1137
 
     private Label? _tipLabel;
     private AudioStreamPlayer2D? _audioStreamPlayer2D;

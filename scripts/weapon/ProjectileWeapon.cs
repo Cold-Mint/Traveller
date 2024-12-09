@@ -41,7 +41,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     ///<para>为了使武器开箱即用，您需要在这里配置预制的法术。</para>
     /// </remarks>
     [Export]
-    private string[]? _spellList;
+    private string[]? _spellList; //skipcq:CS-R1137
 
     /// <summary>
     /// <para>How many projectiles are generated per fire</para>
@@ -71,7 +71,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>是否按顺序发射法术</para>
     /// </summary>
     [Export]
-    private bool _fireSequentially;
+    private bool _fireSequentially; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>The index used the last time a spell was cast</para>

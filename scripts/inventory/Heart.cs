@@ -13,7 +13,7 @@ public partial class Heart : NonPickupItem
 	/// <para>恢复量</para>
 	/// </summary>
 	[Export]
-	private int _healAmount;
+	private int _healAmount; // skipcq:CS-R1137
 
 	protected override void OnTouchPlayer(Player player)
 	{

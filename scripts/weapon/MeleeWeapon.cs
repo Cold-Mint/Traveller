@@ -13,14 +13,14 @@ public partial class MeleeWeapon : WeaponTemplate
 
     private DamageArea? _damageArea;
     [Export]
-    private int _minDamage;
+    private int _minDamage; // skipcq:CS-R1137
 
     [Export]
-    private int _maxDamage;
+    private int _maxDamage; // skipcq:CS-R1137
     [Export]
-    private int _damageType = Config.DamageType.Physical;
+    private int _damageType = Config.DamageType.Physical; // skipcq:CS-R1137
     [Export]
-    private int _criticalStrikeProbability;
+    private int _criticalStrikeProbability; // skipcq:CS-R1137
     public override void LoadResource()
     {
         base.LoadResource();

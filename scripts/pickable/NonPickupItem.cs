@@ -24,10 +24,10 @@ public partial class NonPickupItem : RigidBody2D, IItem
     /// <para>实体碰撞模式</para>
     /// </summary>
     [Export]
-    private int _entityCollisionMode = Config.EntityCollisionMode.None;
+    private int _entityCollisionMode = Config.EntityCollisionMode.None; //skipcq:CS-R1137
 
     [Export]
-    private string? _itemName;
+    private string? _itemName; //skipcq:CS-R1137
 
     private Label? _tipLabel;
 

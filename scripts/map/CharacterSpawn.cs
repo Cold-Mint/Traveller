@@ -12,7 +12,7 @@ namespace ColdMint.scripts.map;
 /// </summary>
 public partial class CharacterSpawn : Marker2D, ISpawnMarker
 {
-    [Export] private string[]? _resPathArray;
+    [Export] private string[]? _resPathArray; // skipcq:CS-R1137
 
     public async Task<Node2D[]?> Spawn(int waveNumber)
     {
