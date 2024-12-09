@@ -80,9 +80,6 @@ public class DamageAreaDecorator : IProjectileDecorator
         damageArea.GlobalPosition = collisionNode.GlobalPosition;
         damageArea.OneShot = true;
         NodeUtils.CallDeferredAddChild(GameSceneDepend.DynamicDamageAreaContainer, damageArea);
-        damageArea.Ready += async () =>
-        {
-            await damageArea.AddResidualUseAsync(1, 3);
-        };
+        damageArea.Ready += async () => await damageArea.AddResidualUseAsync(1, 3);
     }
 }

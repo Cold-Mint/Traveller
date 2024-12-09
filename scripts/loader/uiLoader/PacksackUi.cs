@@ -97,10 +97,7 @@ public partial class PacksackUi : UiLoaderTemplate
     {
         if (_exitButton != null)
         {
-            _exitButton.Pressed += () =>
-            {
-                GameSceneDepend.DynamicUiGroup?.HideControl(this);
-            };
+            _exitButton.Pressed += () => GameSceneDepend.DynamicUiGroup?.HideControl(this);
         }
     }
 }

@@ -45,10 +45,7 @@ public class TrackingSpellDecorator : IProjectileDecorator
         }
         if (TargetNode != null)
         {
-            TargetNode.TreeExiting += () =>
-            {
-                TargetNode = null;
-            };
+            TargetNode.TreeExiting += () => TargetNode = null;
         }
     }
 

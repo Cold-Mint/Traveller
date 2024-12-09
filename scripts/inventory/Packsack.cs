@@ -54,15 +54,12 @@ public partial class Packsack : PickAbleTemplate
             SelfItemContainer = universalItemContainer;
             SelfItemContainer.SupportSelect = false;
         }
-        OnThrow += (_, _) =>
-        {
-            GameSceneDepend.DynamicUiGroup?.HideControl(Path);
-        };
+        OnThrow += (_, _) => GameSceneDepend.DynamicUiGroup?.HideControl(Path);
         GameSceneDepend.DynamicUiGroup?.RegisterControl(Path, () =>
         {
             var packedScene = ResourceLoader.Load<PackedScene>(Path);
             return NodeUtils.InstantiatePackedScene<PacksackUi>(packedScene);
         });
     }
-    
+
 }

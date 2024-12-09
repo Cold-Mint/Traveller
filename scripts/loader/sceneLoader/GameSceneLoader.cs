@@ -83,7 +83,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             if (gameGuiTemplate.RecreateMapButton != null)
             {
                 gameGuiTemplate.RecreateMapButton.Visible = debugMode;
-                gameGuiTemplate.RecreateMapButton.Pressed += () => { _ = GenerateMap(); };
+                gameGuiTemplate.RecreateMapButton.Pressed += () => _ = GenerateMap();
             }
 
             if (gameGuiTemplate.SeedLabel != null)

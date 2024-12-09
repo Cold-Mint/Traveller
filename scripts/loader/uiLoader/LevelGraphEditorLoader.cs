@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.levelGraphEditor;
 using ColdMint.scripts.nodeBinding;
 using ColdMint.scripts.serialization;
@@ -197,37 +196,25 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
         base.LoadUiActions();
         if (_nodeBinding.RoomTemplateCollectionTextEdit != null)
         {
-            _nodeBinding.RoomTemplateCollectionTextEdit.TextChanged += () =>
-            {
-                //Add anti-shake treatment.
-                //添加防抖处理。
-                //Higher frequency events are executed last time.
-                //频率较高的事件中，执行最后一次。
-                _displaysTheSuggestedInputTime =
-                    DateTime.UtcNow.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
-            };
+            //Add anti-shake treatment.
+            //添加防抖处理。
+            //Higher frequency events are executed last time.
+            //频率较高的事件中，执行最后一次。
+            _nodeBinding.RoomTemplateCollectionTextEdit.TextChanged += () => _displaysTheSuggestedInputTime =
+                DateTime.UtcNow.Add(TimeSpan.FromMilliseconds(Config.TextChangesBuffetingDuration));
         }
 
         if (_nodeBinding.GraphEdit != null)
         {
-            _nodeBinding.GraphEdit.NodeSelected += node => { _selectedNodes.Add(node); };
-            _nodeBinding.GraphEdit.NodeDeselected += node => { _selectedNodes.Remove(node); };
-            _nodeBinding.GraphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) =>
-            {
-                _nodeBinding.GraphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
-            };
-            _nodeBinding.GraphEdit.DisconnectionRequest += (fromNode, fromPort, toNode, toPort) =>
-            {
-                _nodeBinding.GraphEdit.DisconnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
-            };
+            _nodeBinding.GraphEdit.NodeSelected += node => _selectedNodes.Add(node);
+            _nodeBinding.GraphEdit.NodeDeselected += node => _selectedNodes.Remove(node);
+            _nodeBinding.GraphEdit.ConnectionRequest += (fromNode, fromPort, toNode, toPort) => _nodeBinding.GraphEdit.ConnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
+            _nodeBinding.GraphEdit.DisconnectionRequest += (fromNode, fromPort, toNode, toPort) => _nodeBinding.GraphEdit.DisconnectNode(fromNode, (int)fromPort, toNode, (int)toPort);
         }
 
         if (_nodeBinding.OpenExportFolderButton != null)
         {
-            _nodeBinding.OpenExportFolderButton.Pressed += () =>
-            {
-                ExplorerUtils.OpenFolder(Config.GetLevelGraphExportDirectory());
-            };
+            _nodeBinding.OpenExportFolderButton.Pressed += () => ExplorerUtils.OpenFolder(Config.GetLevelGraphExportDirectory());
         }
 
         if (_nodeBinding.DeleteSelectedNodeButton != null)

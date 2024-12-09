@@ -61,7 +61,7 @@ public partial class UiGroup : Control
             return null;
         }
         control.Hide();
-        control.TreeExited += () => { OnTreeExited(key, control); };
+        control.TreeExited += () => OnTreeExited(key, control);
         NodeUtils.CallDeferredAddChild(this, control);
         _instantiatedControl.Add(key, control);
         return control;

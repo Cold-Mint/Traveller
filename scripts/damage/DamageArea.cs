@@ -300,17 +300,11 @@ public partial class DamageArea : Area2D
             var radius = (float)Math.Pow(circleShape2D.Radius, 2);
             foreach (var characterTemplate in _characterTemplates)
             {
-                CircleShape2D(radius, characterTemplate, (damage, template) =>
-                {
-                    template.Damage(damage);
-                });
+                CircleShape2D(radius, characterTemplate, (damage, template) => template.Damage(damage));
             }
             foreach (var barrier in _barriers)
             {
-                CircleShape2D(radius, barrier, (damage, barrier1) =>
-                {
-                    barrier1.Damage(damage);
-                });
+                CircleShape2D(radius, barrier, (damage, barrier1) => barrier1.Damage(damage));
             }
         }
         else if (_collisionShape2D.Shape is RectangleShape2D rectangleShape2D)
@@ -321,17 +315,11 @@ public partial class DamageArea : Area2D
             var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
             foreach (var characterTemplate in _characterTemplates)
             {
-                RectangleShape2D(rect, characterTemplate, (damage, template) =>
-                {
-                    template.Damage(damage);
-                });
+                RectangleShape2D(rect, characterTemplate, (damage, template) => template.Damage(damage));
             }
             foreach (var barrier in _barriers)
             {
-                RectangleShape2D(rect, barrier, (damage, barrier1) =>
-                {
-                    barrier1.Damage(damage);
-                });
+                RectangleShape2D(rect, barrier, (damage, barrier1) => barrier1.Damage(damage));
             }
         }
         else
