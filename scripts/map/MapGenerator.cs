@@ -152,177 +152,192 @@ public static class MapGenerator
     /// </summary>
     public static async Task GenerateMapAsync()
     {
-        if (_running)
-        {
-            LogCat.LogWarning("map_generator_is_running");
-            return;
-        }
-
-        if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
-            _mapRoot == null)
-        {
-            LogCat.LogError("map_generator_missing_parameters");
-            return;
-        }
-        //Start generating maps
-        //开始生成地图
-        _running = true;
+        if (!CanStartGeneration()) return;
         EventBus.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         CleanupPreviousMapEntities();
-        if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
-        {
-            LogCat.LogError("room_placement_strategy_terminates_map_generation");
-            _running = false;
-            return;
-        }
-
-        //Get the layout data
-        //拿到布局图数据
+        if (!await InitializeGeneration()) return;
+        if (_layoutStrategy == null || _layoutParsingStrategy == null) return;
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
-        if (levelGraphEditorSaveData?.RoomNodeDataList == null ||
-            levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
-        {
-            LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
-            _running = false;
-            return;
-        }
-
+        if (levelGraphEditorSaveData == null || !IsValidLayoutData(levelGraphEditorSaveData)) return;
         _layoutParsingStrategy.SetLevelGraph(levelGraphEditorSaveData);
-        //Save the dictionary, put the ID in the room data, corresponding to the successful placement of the room.
-        //保存字典，将房间数据内的ID，对应放置成功的房间。
         var roomDictionary = new Dictionary<string, Room>();
         var randomNumberGenerator = new RandomNumberGenerator
         {
             Seed = _seed
         };
+        if (!await ProcessStartingRoom(randomNumberGenerator, roomDictionary)) return;
+        while (await _layoutParsingStrategy.HasNext())
+        {
+            await ProcessNextRoom(randomNumberGenerator, roomDictionary);
+        }
+        FinalizeMapGeneration(roomDictionary, randomNumberGenerator);
+    }
+
+    /// <summary>
+    /// <para>CanStartGeneration</para>
+    /// <para>是否可以开始生成</para>
+    /// </summary>
+    /// <returns></returns>
+    private static bool CanStartGeneration()
+    {
+        if (_running)
+        {
+            LogCat.LogWarning("map_generator_is_running");
+            return false;
+        }
+        if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null || _mapRoot == null)
+        {
+            LogCat.LogError("map_generator_missing_parameters");
+            return false;
+        }
+        _running = true;
+        return true;
+    }
+
+    /// <summary>
+    /// <para>Initialize Generation</para>
+    /// <para>初始化生成器</para>
+    /// </summary>
+    /// <returns></returns>
+    private static async Task<bool> InitializeGeneration()
+    {
+        if (_roomPlacementStrategy == null || _mapRoot == null)
+        {
+            return false;
+        }
+        if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
+        {
+            LogCat.LogError("room_placement_strategy_terminates_map_generation");
+            _running = false;
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// <para>IsValidLayoutData</para>
+    /// <para>是否有效的布局数据</para>
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    private static bool IsValidLayoutData(LevelGraphEditorSaveData? data)
+    {
+        if (data?.RoomNodeDataList == null || data.RoomNodeDataList.Count == 0)
+        {
+            LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
+            _running = false;
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// <para>Process Starting Room</para>
+    /// <para>处理起始房间</para>
+    /// </summary>
+    /// <param name="randomNumberGenerator"></param>
+    /// <param name="roomDictionary"></param>
+    /// <returns></returns>
+    private static async Task<bool> ProcessStartingRoom(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
+    {
+        if (_layoutParsingStrategy == null || _roomPlacementStrategy == null) return false;
         var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {
             LogCat.LogError("map_generator_has_no_starting_room_data");
             _running = false;
-            return;
+            return false;
         }
 
-        var startingRoomPlacementData =
-            await _roomPlacementStrategy.CalculatePlacementDataForStartingRoom(randomNumberGenerator,
-                startRoomNodeData);
-        if (startingRoomPlacementData == null)
-        {
-            LogCat.LogError("start_room_placement_information_returns_empty");
-            _running = false;
-            return;
-        }
-
-        var placeSuccess = await PlaceRoomAndAddRecordAsync(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary);
-        if (!placeSuccess)
+        var startingRoomPlacementData = await _roomPlacementStrategy.CalculatePlacementDataForStartingRoom(
+            randomNumberGenerator, startRoomNodeData);
+        if (startingRoomPlacementData == null ||
+            !await PlaceRoomAndAddRecordAsync(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary))
         {
             LogCat.LogError("start_room_placement_failed");
             _running = false;
+            return false;
+        }
+        return true;
+    }
+
+    private static async Task ProcessNextRoom(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
+    {
+        if (_layoutParsingStrategy == null || _roomPlacementStrategy == null)
+        {
+            return;
+        }
+        var roomNodeData = await _layoutParsingStrategy.Next();
+        if (roomNodeData == null || string.IsNullOrEmpty(roomNodeData.Id))
+        {
+            LogCat.LogWarning("room_data_missing");
             return;
         }
 
-        while (await _layoutParsingStrategy.HasNext())
+        if (await CanPlaceRoom(randomNumberGenerator, roomNodeData.RoomInjectionProcessorData))
         {
-            //When a new room needs to be placed
-            //当有新的房间需要放置时
-            var roomNodeData = await _layoutParsingStrategy.Next();
-            if (roomNodeData == null || string.IsNullOrEmpty(roomNodeData.Id))
-            {
-                LogCat.LogWarning("room_data_missing");
-                continue;
-            }
-
-            var roomInjectionProcessorData = roomNodeData.RoomInjectionProcessorData;
-            //Whether room can be placed
-            //是否可放置房间
-            var canBePlaced = true;
-            if (_roomInjectionProcessorsDictionary != null && !string.IsNullOrEmpty(roomInjectionProcessorData))
-            {
-                var roomInjectionProcessorDataArray =
-                    YamlSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
-                if (roomInjectionProcessorDataArray is { Length: > 0 })
-                {
-                    foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
-                    {
-                        if (string.IsNullOrEmpty(injectionProcessorData.Id) ||
-                            string.IsNullOrEmpty(injectionProcessorData.Config))
-                        {
-                            //The data is incomplete, and the injectionProcessorData is ignored.
-                            //数据不全，忽略injectionProcessorData。
-                            continue;
-                        }
-
-                        if (!_roomInjectionProcessorsDictionary.TryGetValue(injectionProcessorData.Id,
-                                out var roomInjectionProcessor))
-                        {
-                            //If the room injection processor cannot be found, a print error occurs.
-                            //如果找不到房间注入处理器，那么打印错误。
-                            LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist",
-                                LogCat.LogLabel.Default, injectionProcessorData.Id);
-                            continue;
-                        }
-
-                        if (await roomInjectionProcessor.CanBePlaced(randomNumberGenerator,
-                                injectionProcessorData.Config)) continue;
-                        //If the room cannot be placed, then out of the loop.
-                        //如果此房间不能被放置，那么跳出循环。
-                        canBePlaced = false;
-                        break;
-                    }
-                }
-            }
-
-            if (!canBePlaced)
-            {
-                continue;
-            }
-
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
             Room? parentRoomNode = null;
-            if (nextParentNodeId != null && roomDictionary.TryGetValue(nextParentNodeId, out var value))
+            if (!string.IsNullOrEmpty(nextParentNodeId) && roomDictionary.TryGetValue(nextParentNodeId, out var value))
             {
-                //If the new room has the parent's ID, then we pass the parent's room into the compute function.
-                //如果新房间有父节点的ID，那么我们将父节点的房间传入到计算函数内。
                 parentRoomNode = value;
             }
 
-            var roomPlacementData =
-                await _roomPlacementStrategy.CalculateNewRoomPlacementData(randomNumberGenerator, parentRoomNode,
-                    roomNodeData);
-            if (roomPlacementData == null)
-            {
-                LogCat.LogWithFormat("failed_to_calculate_the_room_location", LogCat.LogLabel.Default,
-                    roomNodeData.Id);
-                continue;
-            }
-
-            if (await PlaceRoomAndAddRecordAsync(roomNodeData.Id, roomPlacementData, roomDictionary))
+            var roomPlacementData = await _roomPlacementStrategy.CalculateNewRoomPlacementData(randomNumberGenerator, parentRoomNode, roomNodeData);
+            if (roomPlacementData != null && await PlaceRoomAndAddRecordAsync(roomNodeData.Id, roomPlacementData, roomDictionary))
             {
                 MarkRoomSlot(roomPlacementData);
             }
-        }
-
-        //Place barriers
-        //放置屏障
-        foreach (var roomDictionaryValue in roomDictionary.Values)
-        {
-            PlaceBarrier(roomDictionaryValue);
-        }
-
-        //All rooms have been placed.
-        //所有房间已放置完毕。
-        await _roomPlacementStrategy.GeneratedComplete(_mapRoot);
-        _running = false;
-        //Invoke the map generation completion event
-        //调用地图生成完成事件
-        if (EventBus.MapGenerationCompleteEvent != null)
-        {
-            await EventBus.MapGenerationCompleteEvent(new MapGenerationCompleteEvent
+            else
             {
-                RandomNumberGenerator = randomNumberGenerator,
-                RoomDictionary = roomDictionary
-            });
+                LogCat.LogWithFormat("failed_to_calculate_the_room_location", LogCat.LogLabel.Default, roomNodeData.Id);
+            }
         }
+    }
+
+    private static async Task<bool> CanPlaceRoom(RandomNumberGenerator randomNumberGenerator, string? roomInjectionProcessorData)
+    {
+        if (_roomInjectionProcessorsDictionary != null && !string.IsNullOrEmpty(roomInjectionProcessorData))
+        {
+            var roomInjectionProcessorDataArray = YamlSerialization.Deserialize<RoomInjectionProcessorData[]>(roomInjectionProcessorData);
+            if (roomInjectionProcessorDataArray is { Length: > 0 })
+            {
+                foreach (var injectionProcessorData in roomInjectionProcessorDataArray)
+                {
+                    if (string.IsNullOrEmpty(injectionProcessorData.Id) || string.IsNullOrEmpty(injectionProcessorData.Config))
+                        continue;
+
+                    if (!_roomInjectionProcessorsDictionary.TryGetValue(injectionProcessorData.Id, out var roomInjectionProcessor))
+                    {
+                        LogCat.LogErrorWithFormat("room_injection_processor_does_not_exist", LogCat.LogLabel.Default, injectionProcessorData.Id);
+                        continue;
+                    }
+                    if (!await roomInjectionProcessor.CanBePlaced(randomNumberGenerator, injectionProcessorData.Config))
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void FinalizeMapGeneration(Dictionary<string, Room> roomDictionary, RandomNumberGenerator randomNumberGenerator)
+    {
+        foreach (var room in roomDictionary.Values)
+        {
+            PlaceBarrier(room);
+        }
+
+        if (_roomPlacementStrategy != null && _mapRoot != null)
+        {
+            _roomPlacementStrategy.GeneratedComplete(_mapRoot);
+        }
+        _running = false;
+
+        EventBus.MapGenerationCompleteEvent?.Invoke(new MapGenerationCompleteEvent
+        {
+            RandomNumberGenerator = randomNumberGenerator,
+            RoomDictionary = roomDictionary
+        });
     }
 
 
