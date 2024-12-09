@@ -47,12 +47,14 @@ public partial class DamageArea : Area2D
     /// <para>Take the circular damage area as an example: if the radius is 50 and the distance from the creature to the midpoint is 45, then the damage received is 45/50=0.9,1-0.9=0.1. This is based on a midpoint calculation. Otherwise based on edge computing. The damage is 45/50=0.9.</para>
     /// <para>以圆形伤害区域为例：半径为50,生物到中点的距离为45,那么收到的伤害为45/50=0.9,1-0.9=0.1。这是基于中点计算的结果。否则基于边缘计算。伤害为45/50=0.9。</para>
     /// </remarks>
-    private bool _isDamageCenterBased = true;
+    [Export]
+    private bool _isDamageCenterBased = true; // skipcq:CS-R1137
     /// <summary>
     /// <para>Damage is caused when it comes into contact with the damaged area(Even if the creature is out of shape)</para>
     /// <para>当接触到伤害区域后便可造成伤害(即使生物在形状外)</para>
     /// </summary>
-    private bool _damageOnContact;
+    [Export]
+    private bool _damageOnContact; // skipcq:CS-R1137
 
     private Node2D? _ownerNode;
     public Node2D? OwnerNode

@@ -25,7 +25,7 @@ public partial class Player : CharacterTemplate
     private Line2D? _parabola;
 
     //用于检测玩家是否站在平台上的射线
-    [Export] private RayCast2D[]? _platformDetectionRayCast2DList;
+    [Export] private RayCast2D[]? _platformDetectionRayCast2DList; // skipcq:CS-R1137
 
     //抛出物品的飞行速度
     private readonly float _throwingVelocity = Config.CellSize * 13;
@@ -39,7 +39,7 @@ public partial class Player : CharacterTemplate
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private readonly double _platformCollisionRecoveryTime = 0.2f;
 
-    [Export] private AudioStream[]? _jumpSounds;
+    [Export] private AudioStream[]? _jumpSounds; // skipcq:CS-R1137
     public override void _Ready()
     {
         base._Ready();

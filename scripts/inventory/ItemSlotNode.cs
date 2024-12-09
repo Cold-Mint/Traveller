@@ -10,9 +10,9 @@ namespace ColdMint.scripts.inventory;
 public partial class ItemSlotNode : TextureButton, IItemDisplay
 {
     [Export]
-    private TextureRect? _iconTextureRect;
+    private TextureRect? _iconTextureRect; // skipcq:CS-R1137
     [Export]
-    private Label? _quantityLabel;
+    private Label? _quantityLabel; // skipcq:CS-R1137
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
     public IItem? Item { get; private set; }

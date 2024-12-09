@@ -151,7 +151,7 @@ public static class LogCat
     }
 
 
-    private static readonly StringBuilder StringBuilder = new StringBuilder();
+    private static readonly StringBuilder StringBuilder = new();
 
     /// <summary>
     /// <para>Disabled log label</para>

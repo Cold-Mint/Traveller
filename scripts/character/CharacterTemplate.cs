@@ -179,10 +179,10 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>是否为无敌的</para>
     /// </summary>
     [Export]
-    private bool _indestructible;
+    private bool _indestructible; // skipcq:CS-R1137
 
     [Export]
-    private string? _lootId;
+    private string? _lootId; // skipcq:CS-R1137
 
     private HealthBar? _healthBar;
     private Label? _tipLabel;

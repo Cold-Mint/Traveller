@@ -65,7 +65,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
     ///<para>When the weapon is fired, how much recoil is applied to the user, in units: the number of cells, and the X direction of the force is automatically inferred.</para>
     ///<para>武器开火，要对使用者施加多大的后坐力，单位：格数，力的X方向是自动推断的。</para>
     /// </remarks>
-    [Export] private long _recoilStrength;
+    [Export] private long _recoilStrength; //skipcq:CS-R1137
 
     /// <summary>
     /// <para>Discharge of the weapon</para>
