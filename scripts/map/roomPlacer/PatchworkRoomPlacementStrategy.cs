@@ -454,7 +454,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             //Calculate the offset of the shape.
             //计算形状的偏移量。
             _measuringCollisionShape2D.Position = newRoom.RoomCollisionShape2D.Shape.GetRect().Size / 2;
-            await TaskUtils.WaitForFrames(_measuringArea2D);
+            await TaskUtils.WaitForFramesAsync(_measuringArea2D);
             if (_overlapQuantity > 0)
             {
                 LogCat.Log("room_overlap", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);

@@ -97,7 +97,7 @@ public partial class DamageArea : Area2D
     /// </param>
     public async Task AddResidualUseAsync(int additions, int framesToWait = 1)
     {
-        await TaskUtils.WaitForFrames(this, framesToWait);
+        await TaskUtils.WaitForFramesAsync(this, framesToWait);
         AddResidualUse(additions);
     }
 

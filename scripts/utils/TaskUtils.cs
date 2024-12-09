@@ -17,7 +17,7 @@ public static class TaskUtils
     ///<para>How many frames to wait for</para>
     ///<para>需要等待多少帧</para>
     /// </param>
-    public static async Task WaitForFrames(Node node, int framesToWait = 1)
+    public static async Task WaitForFramesAsync(Node node, int framesToWait = 1)
     {
         for (var i = 0; i < framesToWait; i++)
         {
