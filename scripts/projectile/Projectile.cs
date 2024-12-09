@@ -20,17 +20,17 @@ public partial class Projectile : CharacterBody2D
     /// <para>life(ms)</para>
     /// <para>子弹的存在时间(毫秒)</para>
     /// </summary>
-    [Export] private long _life;
+    [Export] private long _life; // skipcq:CS-R1137
 
     //The durability of the projectile
     //抛射体的耐久度
     //When the projectile hits the object, the durability will be reduced, and when the durability is less than or equal to 0, the projectile will be destroyed
     //当抛射体撞击到物体时，会减少耐久度，当耐久度小于等于0时，销毁抛射体
-    [Export] private double _durability;
+    [Export] private double _durability; // skipcq:CS-R1137
 
-    [Export] private int _maxDamage;
-    [Export] private int _minDamage;
-    [Export] private int _damageType;
+    [Export] private int _maxDamage; // skipcq:CS-R1137
+    [Export] private int _minDamage; // skipcq:CS-R1137
+    [Export] private int _damageType; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>After this time destroy the projectile</para>
@@ -65,13 +65,13 @@ public partial class Projectile : CharacterBody2D
     /// <para>Whether it bounces back after hitting an enemy or a wall</para>
     /// <para>是否撞到敌人或墙壁后反弹</para>
     /// </summary>
-    [Export] private bool _enableBounce;
+    [Export] private bool _enableBounce; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>Can it penetrate the wall</para>
     /// <para>是否可以穿透墙壁</para>
     /// </summary>
-    [Export] public bool IgnoreWall;
+    [Export] public bool IgnoreWall; // skipcq:CS-R1137
 
     private List<IProjectileDecorator>? _projectileDecorators;
 

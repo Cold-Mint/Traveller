@@ -30,7 +30,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>远程武器的槽位数量</para>
     /// </summary>
     [Export]
-    private int _numberSlots;
+    private int _numberSlots; //skipcq:CS-R1137
 
     /// <summary>
     /// <para>SpellList</para>

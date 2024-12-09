@@ -11,7 +11,7 @@ namespace ColdMint.scripts.spell;
 public partial class NodeSpawnOnKillCharacterSpell : SpellPickAble
 {
     [Export]
-    private string? _packedScenePath;
+    private string? _packedScenePath; // skipcq:CS-R1137
     private NodeSpawnOnKillCharacterDecorator? _nodeSpawnOnKillCharacterDecorator;
 
     public override void LoadResource()
