@@ -131,6 +131,22 @@ public static class MapGenerator
     }
 
     /// <summary>
+    /// <para>Clean up creatures and rooms from previous maps.</para>
+    /// <para>清理先前地图上的生物和房间。</para>
+    /// </summary>
+    private static void CleanupPreviousMapEntities()
+    {
+        if (GameSceneDepend.AiCharacterContainer != null)
+        {
+            NodeUtils.DeleteAllChild(GameSceneDepend.AiCharacterContainer);
+        }
+        if (_mapRoot != null)
+        {
+            NodeUtils.DeleteAllChild(_mapRoot);
+        }
+    }
+
+    /// <summary>
     /// <para>Generating a map</para>
     /// <para>生成地图</para>
     /// </summary>
@@ -142,22 +158,17 @@ public static class MapGenerator
             return;
         }
 
-        _running = true;
-        EventBus.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         if (_layoutStrategy == null || _roomPlacementStrategy == null || _layoutParsingStrategy == null ||
             _mapRoot == null)
         {
             LogCat.LogError("map_generator_missing_parameters");
-            _running = false;
             return;
         }
-
-        if (GameSceneDepend.AiCharacterContainer != null)
-        {
-            NodeUtils.DeleteAllChild(GameSceneDepend.AiCharacterContainer);
-        }
-
-        NodeUtils.DeleteAllChild(_mapRoot);
+        //Start generating maps
+        //开始生成地图
+        _running = true;
+        EventBus.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
+        CleanupPreviousMapEntities();
         if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
         {
             LogCat.LogError("room_placement_strategy_terminates_map_generation");
@@ -168,7 +179,7 @@ public static class MapGenerator
         //Get the layout data
         //拿到布局图数据
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
-        if (levelGraphEditorSaveData == null || levelGraphEditorSaveData.RoomNodeDataList == null ||
+        if (levelGraphEditorSaveData?.RoomNodeDataList == null ||
             levelGraphEditorSaveData.RoomNodeDataList.Count == 0)
         {
             LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
@@ -304,14 +315,13 @@ public static class MapGenerator
         _running = false;
         //Invoke the map generation completion event
         //调用地图生成完成事件
-        var eventObj = new MapGenerationCompleteEvent
-        {
-            RandomNumberGenerator = randomNumberGenerator,
-            RoomDictionary = roomDictionary
-        };
         if (EventBus.MapGenerationCompleteEvent != null)
         {
-            await EventBus.MapGenerationCompleteEvent(eventObj);
+            await EventBus.MapGenerationCompleteEvent(new MapGenerationCompleteEvent
+            {
+                RandomNumberGenerator = randomNumberGenerator,
+                RoomDictionary = roomDictionary
+            });
         }
     }
 
