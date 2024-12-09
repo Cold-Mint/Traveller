@@ -89,7 +89,7 @@ public partial class Projectile : CharacterBody2D
     ///<para>Must be greater than 0, the unit is in format.</para>
     ///<para>必须大于0,单位为格式。</para>
     /// </remarks>
-    [Export] private float _repelStrength;
+    [Export] private float _repelStrength; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>The master of the weapon</para>
