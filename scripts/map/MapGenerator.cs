@@ -155,7 +155,7 @@ public static class MapGenerator
         if (!CanStartGeneration()) return;
         EventBus.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         CleanupPreviousMapEntities();
-        if (!await InitializeGeneration()) return;
+        if (!await InitializeGenerationAsync()) return;
         if (_layoutStrategy == null || _layoutParsingStrategy == null) return;
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
         if (levelGraphEditorSaveData == null || !IsValidLayoutData(levelGraphEditorSaveData)) return;
@@ -165,10 +165,10 @@ public static class MapGenerator
         {
             Seed = _seed
         };
-        if (!await ProcessStartingRoom(randomNumberGenerator, roomDictionary)) return;
+        if (!await ProcessStartingRoomAsync(randomNumberGenerator, roomDictionary)) return;
         while (await _layoutParsingStrategy.HasNext())
         {
-            await ProcessNextRoom(randomNumberGenerator, roomDictionary);
+            await ProcessNextRoomAsync(randomNumberGenerator, roomDictionary);
         }
         FinalizeMapGeneration(roomDictionary, randomNumberGenerator);
     }
@@ -199,7 +199,7 @@ public static class MapGenerator
     /// <para>初始化生成器</para>
     /// </summary>
     /// <returns></returns>
-    private static async Task<bool> InitializeGeneration()
+    private static async Task<bool> InitializeGenerationAsync()
     {
         if (_roomPlacementStrategy == null || _mapRoot == null)
         {
@@ -238,7 +238,7 @@ public static class MapGenerator
     /// <param name="randomNumberGenerator"></param>
     /// <param name="roomDictionary"></param>
     /// <returns></returns>
-    private static async Task<bool> ProcessStartingRoom(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
+    private static async Task<bool> ProcessStartingRoomAsync(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
     {
         if (_layoutParsingStrategy == null || _roomPlacementStrategy == null) return false;
         var startRoomNodeData = await _layoutParsingStrategy.GetStartRoomNodeData();
@@ -261,7 +261,13 @@ public static class MapGenerator
         return true;
     }
 
-    private static async Task ProcessNextRoom(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
+    /// <summary>
+    /// <para>Take care of the next room</para>
+    /// <para>处理下一个房间</para>
+    /// </summary>
+    /// <param name="randomNumberGenerator"></param>
+    /// <param name="roomDictionary"></param>
+    private static async Task ProcessNextRoomAsync(RandomNumberGenerator randomNumberGenerator, Dictionary<string, Room> roomDictionary)
     {
         if (_layoutParsingStrategy == null || _roomPlacementStrategy == null)
         {
@@ -274,7 +280,7 @@ public static class MapGenerator
             return;
         }
 
-        if (await CanPlaceRoom(randomNumberGenerator, roomNodeData.RoomInjectionProcessorData))
+        if (await CanPlaceRoomAsync(randomNumberGenerator, roomNodeData.RoomInjectionProcessorData))
         {
             var nextParentNodeId = await _layoutParsingStrategy.GetNextParentNodeId();
             Room? parentRoomNode = null;
@@ -295,7 +301,14 @@ public static class MapGenerator
         }
     }
 
-    private static async Task<bool> CanPlaceRoom(RandomNumberGenerator randomNumberGenerator, string? roomInjectionProcessorData)
+    /// <summary>
+    /// <para>CanPlaceRoom</para>
+    /// <para>是否可以放置房间</para>
+    /// </summary>
+    /// <param name="randomNumberGenerator"></param>
+    /// <param name="roomInjectionProcessorData"></param>
+    /// <returns></returns>
+    private static async Task<bool> CanPlaceRoomAsync(RandomNumberGenerator randomNumberGenerator, string? roomInjectionProcessorData)
     {
         if (_roomInjectionProcessorsDictionary != null && !string.IsNullOrEmpty(roomInjectionProcessorData))
         {
