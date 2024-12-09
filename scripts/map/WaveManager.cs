@@ -33,7 +33,7 @@ public class WaveManager
     /// <para>根据物品查找对应的生成标记。</para>
     /// </summary>
     private readonly Dictionary<IItem, ISpawnMarker> _itemSpawnMarker = new();
-    private readonly Dictionary<IItem, Action<CharacterTemplate>> onPickUpDictionary = new();
+    private readonly Dictionary<IItem, Action<CharacterTemplate>> _onPickUpDictionary = new();
 
     /// <summary>
     /// <para>hasSpawnedEntity</para>
@@ -127,17 +127,17 @@ public class WaveManager
                             var temporarilyMark = _itemSpawnMarker[otherItem];
                             if (goalMark == temporarilyMark)
                             {
-                                otherItem.OnPickUp -= onPickUpDictionary[otherItem];
+                                otherItem.OnPickUp -= _onPickUpDictionary[otherItem];
                                 continue;
                             }
                             //The mark is not the same as the mark on the item picked up by the creature.
                             //标记与生物捡起的物品标记不是同一个。
                             otherItem.QueueFreeSelf();
                         }
-                        item.OnPickUp -= onPickUpDictionary[item];
+                        item.OnPickUp -= _onPickUpDictionary[item];
                     };
                     item.OnPickUp += onPickUp;
-                    onPickUpDictionary[item] = onPickUp;
+                    _onPickUpDictionary[item] = onPickUp;
                 }
             }
             return false;

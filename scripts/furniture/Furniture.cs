@@ -1,7 +1,5 @@
 using System;
-using System.Threading.Tasks;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.loot;
 using ColdMint.scripts.utils;
 using Godot;
