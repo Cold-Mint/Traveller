@@ -151,7 +151,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             return;
         }
 
-        if (Item.SelfItemContainer != null && Item.SelfItemContainer.CanAddItem(sourceItem))
+        if (Item.SelfItemContainer?.CanAddItem(sourceItem) == true)
         {
             //Use items and place them on the container.
             //用物品，在物品容器上放置。
@@ -172,7 +172,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             return;
         }
 
-        if (sourceItem.SelfItemContainer != null && sourceItem.SelfItemContainer.CanAddItem(Item))
+        if (sourceItem.SelfItemContainer?.CanAddItem(Item) == true)
         {
             //Use containers and place on top of items.
             //用容器物品，在物品上放置。

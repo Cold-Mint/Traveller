@@ -253,7 +253,7 @@ public partial class LevelGraphEditorLoader : UiLoaderTemplate
                         continue;
                     }
 
-                    if (roomNode.RoomNodeData != null && roomNode.RoomNodeData.HasTag(Config.RoomDataTag.StartingRoom))
+                    if (roomNode.RoomNodeData?.HasTag(Config.RoomDataTag.StartingRoom) == true)
                     {
                         //The node with the start room label was deleted.
                         //删除了带有起始房间标签的节点。

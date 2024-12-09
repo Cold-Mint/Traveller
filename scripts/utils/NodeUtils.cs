@@ -215,7 +215,7 @@ public static class NodeUtils
                 continue;
             }
 
-            if (filter != null && filter.Invoke(node2D))
+            if (filter?.Invoke(node2D) == true)
             {
                 //If there is a filter, and the filter returns true, then the next.
                 //如果有过滤器，且过滤器返回true，那么下一个。

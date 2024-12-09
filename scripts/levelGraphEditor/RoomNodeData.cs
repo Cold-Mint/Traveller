@@ -34,6 +34,6 @@ public class RoomNodeData
     /// <returns></returns>
     public bool HasTag(string tag)
     {
-        return Tags != null && Tags.Any(t => t == tag);
+        return Tags?.Any(t => t == tag) == true;
     }
 }

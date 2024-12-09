@@ -255,27 +255,27 @@ public partial class Player : CharacterTemplate
                 _canUseItem = false;
                 return;
             }
-            if (GameSceneDepend.GameGuiTemplate.JumpButton != null && GameSceneDepend.GameGuiTemplate.JumpButton.IsPressed())
+            if (GameSceneDepend.GameGuiTemplate.JumpButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
-            if (GameSceneDepend.GameGuiTemplate.RightButton != null && GameSceneDepend.GameGuiTemplate.RightButton.IsPressed())
+            if (GameSceneDepend.GameGuiTemplate.RightButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
-            if (GameSceneDepend.GameGuiTemplate.LeftButton != null && GameSceneDepend.GameGuiTemplate.LeftButton.IsPressed())
+            if (GameSceneDepend.GameGuiTemplate.LeftButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
-            if (GameSceneDepend.GameGuiTemplate.PickButton != null && GameSceneDepend.GameGuiTemplate.PickButton.IsPressed())
+            if (GameSceneDepend.GameGuiTemplate.PickButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
-            if (GameSceneDepend.GameGuiTemplate.ThrowButton != null && GameSceneDepend.GameGuiTemplate.ThrowButton.IsPressed())
+            if (GameSceneDepend.GameGuiTemplate.ThrowButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;

@@ -30,7 +30,12 @@ public static class RoomEventManager
     {
         var id = enterRoomEventHandler.GetId();
         if (_enterRoomEventHandlers != null) return _enterRoomEventHandlers.TryAdd(id, enterRoomEventHandler);
-        _enterRoomEventHandlers = new Dictionary<string, IEnterRoomEventHandler> { { id, enterRoomEventHandler } };
+        _enterRoomEventHandlers = new Dictionary<string, IEnterRoomEventHandler>
+        {
+            {
+                id, enterRoomEventHandler
+            }
+        };
         return true;
     }
 
@@ -42,11 +47,11 @@ public static class RoomEventManager
     /// <returns></returns>
     public static IEnterRoomEventHandler? GetEnterRoomEventHandler(string id)
     {
-        return _enterRoomEventHandlers != null && _enterRoomEventHandlers.TryGetValue(id, out var enterRoomEventHandler)
+        return _enterRoomEventHandlers?.TryGetValue(id, out var enterRoomEventHandler) == true
             ? enterRoomEventHandler
             : null;
     }
-    
+
     /// <summary>
     /// <para>Unregister the room entry event</para>
     /// <para>取消注册进入房间事件</para>
@@ -55,9 +60,9 @@ public static class RoomEventManager
     /// <returns></returns>
     public static bool UnRegisterEnterRoomEventHandler(string id)
     {
-        return _enterRoomEventHandlers != null && _enterRoomEventHandlers.Remove(id);
+        return _enterRoomEventHandlers?.Remove(id) == true;
     }
-    
+
     /// <summary>
     /// <para>Unregister for exit room events</para>
     /// <para>取消注册退出房间事件</para>
@@ -66,7 +71,7 @@ public static class RoomEventManager
     /// <returns></returns>
     public static bool UnRegisterExitRoomEventHandler(string id)
     {
-        return _exitRoomEventHandlers != null && _exitRoomEventHandlers.Remove(id);
+        return _exitRoomEventHandlers?.Remove(id) == true;
     }
 
     /// <summary>
@@ -77,7 +82,7 @@ public static class RoomEventManager
     /// <returns></returns>
     public static IExitRoomEventHandler? GetExitRoomEventHandler(string id)
     {
-        return _exitRoomEventHandlers != null && _exitRoomEventHandlers.TryGetValue(id, out var exitRoomEventHandler)
+        return _exitRoomEventHandlers?.TryGetValue(id, out var exitRoomEventHandler) == true
             ? exitRoomEventHandler
             : null;
     }
@@ -92,7 +97,12 @@ public static class RoomEventManager
     {
         var id = exitRoomEventHandler.GetId();
         if (_exitRoomEventHandlers != null) return _exitRoomEventHandlers.TryAdd(id, exitRoomEventHandler);
-        _exitRoomEventHandlers = new Dictionary<string, IExitRoomEventHandler> { { id, exitRoomEventHandler } };
+        _exitRoomEventHandlers = new Dictionary<string, IExitRoomEventHandler>
+        {
+            {
+                id, exitRoomEventHandler
+            }
+        };
         return true;
     }
 }
