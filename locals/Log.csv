@@ -138,3 +138,4 @@ log_open_directory_error,尝试打开目录{0}时发生错误，错误代码：{
 log_invalid_damage_shape,伤害区域仅支持使用RectangleShape2D或CircleShape2D来表示。,Damage areas can only be represented using RectangleShape2D or CircleShape2D.,ダメージエリアはRectangleShape2DまたはCircleShape2Dでの表示にのみ対応しています。
 log_spell_list_is_null,ID为{0}的抛射体武器，缺少必要的法术列表。,"Projectile weapon with ID {0}, missing the list of necessary spells.",ID{0}の射出体武器は、必要なスペルリストが欠落しています。
 log_weapon_must_be_used_out_of_the_box,ID为{0}的抛射体武器，必须包含一个可提供抛射体的法术。,Projectile weapons with ID {0} must contain a spell that provides projectile.,ID{0}の射出体武器には、射出体を提供するスペルが含まれている必要があります。
+log_map_generator_error,生成地图时出错，错误代码为{0}。,Generating map with error code {0},マップ作成時エラー、エラーコードは{0}です。

@@ -34,6 +34,46 @@ public static class Config
         public const int Hard = 2;
     }
 
+
+    public static class MapGeneratorStopCode
+    {
+        /// <summary>
+        /// <para>Normal end</para>
+        /// <para>正常结束</para>
+        /// </summary>
+        public const int Normal = 0;
+
+        /// <summary>
+        /// <para>Map Generator is prohibited from creating new generation tasks because the parameters are incomplete or working.</para>
+        /// <para>地图生成器因为参数不全或者正在工作中，被禁止了新的生成任务。</para>
+        /// </summary>
+        public const int BePrevented = 1;
+
+        /// <summary>
+        /// <para>An error occurred while initializing the map generator.</para>
+        /// <para>初始化地图生成器时出现了错误。</para>
+        /// </summary>
+        public const int InitializationFailure = 2;
+
+        /// <summary>
+        /// <para>Parameter incompleteness detected at run time</para>
+        /// <para>运行时检测到参数不全</para>
+        /// </summary>
+        public const int ParameterIncompletenessDetected = 3;
+
+        /// <summary>
+        /// <para>The level map is not available</para>
+        /// <para>关卡图不可用</para>
+        /// </summary>
+        public const int LevelGraphIsNotAvailable = 4;
+
+        /// <summary>
+        /// <para>Initial room placement failed</para>
+        /// <para>初始房间放置失败</para>
+        /// </summary>
+        public const int InitialRoomPlacementFailed = 5;
+    }
+
     public static class EntityCollisionMode
     {
         /// <summary>

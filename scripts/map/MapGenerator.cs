@@ -152,20 +152,41 @@ public static class MapGenerator
     /// </summary>
     public static async Task GenerateMapAsync()
     {
-        if (!CanStartGeneration()) return;
+        if (!CanStartGeneration())
+        {
+            StopMapGeneration(Config.MapGeneratorStopCode.BePrevented);
+            return;
+        }
+        _running = true;
         EventBus.MapGenerationStartEvent?.Invoke(new MapGenerationStartEvent());
         CleanupPreviousMapEntities();
-        if (!await InitializeGenerationAsync()) return;
-        if (_layoutStrategy == null || _layoutParsingStrategy == null) return;
+        if (!await InitializeGenerationAsync())
+        {
+            StopMapGeneration(Config.MapGeneratorStopCode.InitializationFailure);
+            return;
+        }
+        if (_layoutStrategy == null || _layoutParsingStrategy == null)
+        {
+            StopMapGeneration(Config.MapGeneratorStopCode.ParameterIncompletenessDetected);
+            return;
+        }
         var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
-        if (levelGraphEditorSaveData == null || !IsValidLayoutData(levelGraphEditorSaveData)) return;
+        if (levelGraphEditorSaveData == null || !IsValidLayoutData(levelGraphEditorSaveData))
+        {
+            StopMapGeneration(Config.MapGeneratorStopCode.LevelGraphIsNotAvailable);
+            return;
+        }
         _layoutParsingStrategy.SetLevelGraph(levelGraphEditorSaveData);
         var roomDictionary = new Dictionary<string, Room>();
         var randomNumberGenerator = new RandomNumberGenerator
         {
             Seed = _seed
         };
-        if (!await ProcessStartingRoomAsync(randomNumberGenerator, roomDictionary)) return;
+        if (!await ProcessStartingRoomAsync(randomNumberGenerator, roomDictionary))
+        {
+            StopMapGeneration(Config.MapGeneratorStopCode.InitialRoomPlacementFailed);
+            return;
+        }
         while (await _layoutParsingStrategy.HasNext())
         {
             await ProcessNextRoomAsync(randomNumberGenerator, roomDictionary);
@@ -190,7 +211,6 @@ public static class MapGenerator
             LogCat.LogError("map_generator_missing_parameters");
             return false;
         }
-        _running = true;
         return true;
     }
 
@@ -208,7 +228,6 @@ public static class MapGenerator
         if (!await _roomPlacementStrategy.StartGeneration(_mapRoot))
         {
             LogCat.LogError("room_placement_strategy_terminates_map_generation");
-            _running = false;
             return false;
         }
         return true;
@@ -225,7 +244,6 @@ public static class MapGenerator
         if (data?.RoomNodeDataList == null || data.RoomNodeDataList.Count == 0)
         {
             LogCat.LogError("map_generator_attempts_to_parse_empty_layout_diagrams");
-            _running = false;
             return false;
         }
         return true;
@@ -245,7 +263,6 @@ public static class MapGenerator
         if (startRoomNodeData == null || string.IsNullOrEmpty(startRoomNodeData.Id))
         {
             LogCat.LogError("map_generator_has_no_starting_room_data");
-            _running = false;
             return false;
         }
 
@@ -255,7 +272,6 @@ public static class MapGenerator
             !await PlaceRoomAndAddRecordAsync(startRoomNodeData.Id, startingRoomPlacementData, roomDictionary))
         {
             LogCat.LogError("start_room_placement_failed");
-            _running = false;
             return false;
         }
         return true;
@@ -333,19 +349,36 @@ public static class MapGenerator
         return true;
     }
 
+    /// <summary>
+    /// <para>Stop map generation</para>
+    /// <para>停止地图生成</para>
+    /// </summary>
+    private static void StopMapGeneration(int code)
+    {
+        if (code != Config.MapGeneratorStopCode.Normal)
+        {
+            LogCat.LogErrorWithFormat("map_generator_error", LogCat.LogLabel.Default, code);
+        }
+        _running = false;
+    }
+
+    /// <summary>
+    /// <para>FinalizeMapGeneration</para>
+    /// <para>完成地图生成</para>
+    /// </summary>
+    /// <param name="roomDictionary"></param>
+    /// <param name="randomNumberGenerator"></param>
     private static void FinalizeMapGeneration(Dictionary<string, Room> roomDictionary, RandomNumberGenerator randomNumberGenerator)
     {
         foreach (var room in roomDictionary.Values)
         {
             PlaceBarrier(room);
         }
-
         if (_roomPlacementStrategy != null && _mapRoot != null)
         {
             _roomPlacementStrategy.GeneratedComplete(_mapRoot);
         }
-        _running = false;
-
+        StopMapGeneration(Config.MapGeneratorStopCode.Normal);
         EventBus.MapGenerationCompleteEvent?.Invoke(new MapGenerationCompleteEvent
         {
             RandomNumberGenerator = randomNumberGenerator,
