@@ -13,7 +13,7 @@ public class CameraCommand : ICommand
             return false;
         }
 
-        var type = args[1].ToLower();
+        var type = args[1].ToLowerInvariant();
         if (type == "free")
         {
             //Camera free field of view

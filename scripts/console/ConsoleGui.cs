@@ -1,4 +1,3 @@
-using ColdMint.scripts.console.commands;
 using ColdMint.scripts.debug;
 using Godot;
 
@@ -67,7 +66,7 @@ public partial class ConsoleGui : Control
         _commandEdit.Text = "";
         _commandEdit.Editable = false;
         _submitButton.Disabled = true;
-        await CommandExecutor.ExecuteCommand(code);
+        await CommandExecutor.ExecuteCommandAsync(code);
         _submitButton.Disabled = false;
         _commandEdit.Editable = true;
     }

@@ -12,7 +12,7 @@ namespace ColdMint.scripts.console;
 /// </remarks>
 public class CommandManager
 {
-    private static Dictionary<string, ICommand> _commands = new();
+    private static readonly Dictionary<string, ICommand> Commands = new();
 
     /// <summary>
     /// <para>RegisterCommand</para>
@@ -25,7 +25,7 @@ public class CommandManager
     /// <returns></returns>
     public static bool RegisterCommand(ICommand command)
     {
-        return _commands.TryAdd(command.Name, command);
+        return Commands.TryAdd(command.Name, command);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class CommandManager
     /// <returns></returns>
     public static bool UnregisterCommand(ICommand command)
     {
-        return _commands.Remove(command.Name);
+        return Commands.Remove(command.Name);
     }
 
     /// <summary>
@@ -50,6 +50,6 @@ public class CommandManager
     /// <returns></returns>
     public static ICommand? GetCommand(string name)
     {
-        return _commands.GetValueOrDefault(name);
+        return Commands.GetValueOrDefault(name);
     }
 }

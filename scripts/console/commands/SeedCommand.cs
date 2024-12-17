@@ -19,7 +19,7 @@ public class SeedCommand : ICommand
             return Task.FromResult(false);
         }
 
-        var type = args[1].ToLower();
+        var type = args[1].ToLowerInvariant();
         if (type == "echo")
         {
             ConsoleGui.Echo(MapGenerator.Seed);

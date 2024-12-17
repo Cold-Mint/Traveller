@@ -18,7 +18,7 @@ public class MapCommand : ICommand
             return false;
         }
 
-        var type = args[1].ToLower();
+        var type = args[1].ToLowerInvariant();
         if (type == "recreate")
         {
             await MapGenerator.GenerateMapAsync();

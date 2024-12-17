@@ -18,7 +18,7 @@ public class CommandExecutor
     ///<para>Returns whether the execution was successful</para>
     ///<para>返回是否执行成功</para>
     /// </returns>
-    public static async Task<bool> ExecuteCommand(string commandString)
+    public static async Task<bool> ExecuteCommandAsync(string commandString)
     {
         LogCat.LogWithFormat("command_execution", LogCat.LogLabel.CommandExecutor, commandString);
         if (string.IsNullOrEmpty(commandString))
