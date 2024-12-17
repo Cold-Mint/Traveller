@@ -77,20 +77,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             return;
         }
         NodeUtils.CallDeferredAddChild(GetNode<Control>("CanvasLayer/GameGui"), gameGuiTemplate);
-        gameGuiTemplate.Ready += () =>
-        {
-            var debugMode = Config.IsDebug();
-            if (gameGuiTemplate.RecreateMapButton != null)
-            {
-                gameGuiTemplate.RecreateMapButton.Visible = debugMode;
-                gameGuiTemplate.RecreateMapButton.Pressed += () => _ = GenerateMap();
-            }
-
-            if (gameGuiTemplate.SeedLabel != null)
-            {
-                gameGuiTemplate.SeedLabel.Visible = debugMode;
-            }
-        };
         GameSceneDepend.GameGuiTemplate = gameGuiTemplate;
     }
 
@@ -135,13 +121,6 @@ public partial class GameSceneLoader : SceneLoaderTemplate
     private async Task GenerateMap()
     {
         MapGenerator.Seed = GuidUtils.GetGuid();
-        if (GameSceneDepend.GameGuiTemplate?.SeedLabel != null)
-        {
-            //If you have a seedLabel, then set the seed to it.
-            //如果有seedLabel，那么将种子设置上去。
-            var seedInfo = TranslationServerUtils.TranslateWithFormat("ui_seed_info", MapGenerator.Seed);
-            GameSceneDepend.GameGuiTemplate.SeedLabel.Text = seedInfo ?? $"Seed: {MapGenerator.Seed}";
-        }
         await MapGenerator.GenerateMapAsync();
     }
 }

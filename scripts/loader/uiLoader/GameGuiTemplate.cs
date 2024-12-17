@@ -11,8 +11,6 @@ namespace ColdMint.scripts.loader.uiLoader;
 public partial class GameGuiTemplate : Control, IGameGui
 {
     private Label? _fpsLabel;
-    private Button? _recreateMapButton;
-    private Label? _seedLabel;
     private MiniMap? _miniMap;
     protected HealthBarUi? ProtectedHealthBar;
     protected HotBar? ProtectedHotBar;
@@ -21,8 +19,6 @@ public partial class GameGuiTemplate : Control, IGameGui
     {
         base._Ready();
         _fpsLabel = GetNode<Label>("FPSLabel");
-        _recreateMapButton = GetNode<Button>("RecreateMapButton");
-        _seedLabel = GetNode<Label>("SeedLabel");
         _miniMap = GetNode<MiniMap>("MapContainer/Control/MiniMap");
         _miniMapAnimationPlayer = GetNode<AnimationPlayer>("MapContainer/MiniMapAnimationPlayer");
     }
@@ -30,14 +26,6 @@ public partial class GameGuiTemplate : Control, IGameGui
     public Label? FpsLabel
     {
         get => _fpsLabel;
-    }
-    public Button? RecreateMapButton
-    {
-        get => _recreateMapButton;
-    }
-    public Label? SeedLabel
-    {
-        get => _seedLabel;
     }
     public MiniMap? MiniMap
     {

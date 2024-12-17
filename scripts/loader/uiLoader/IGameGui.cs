@@ -17,18 +17,6 @@ public interface IGameGui
     Label? FpsLabel { get; }
 
     /// <summary>
-    /// <para>RecreateMapButton</para>
-    /// <para>获取重新创建地图的按钮</para>
-    /// </summary>
-    Button? RecreateMapButton { get; }
-
-    /// <summary>
-    /// <para>SeedLabel</para>
-    /// <para>种子标签</para>
-    /// </summary>
-    Label? SeedLabel { get; }
-
-    /// <summary>
     /// <para>MiniMap</para>
     /// <para>获取迷你地图</para>
     /// </summary>

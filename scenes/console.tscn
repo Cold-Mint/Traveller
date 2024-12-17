@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj3jn46e4k0wd"]
+
+[ext_resource type="Script" path="res://scripts/console/ConsoleGui.cs" id="1_gsp3x"]
+
+[node name="Console" type="Control" node_paths=PackedStringArray("_submitButton", "_commandEdit")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gsp3x")
+_submitButton = NodePath("SubmitButton")
+_commandEdit = NodePath("LineEdit")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -48.0
+offset_right = -149.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "ui_enter_command"
+
+[node name="SubmitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -60.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "ui_send"

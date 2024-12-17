@@ -36,38 +36,8 @@ grow_vertical = 0
 horizontal_alignment = 2
 script = ExtResource("1_q5x30")
 
-[node name="RecreateMapButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -153.0
-offset_top = -16.0
-offset_right = -20.0
-offset_bottom = 17.0
-grow_horizontal = 0
-grow_vertical = 2
-text = "ui_re_create_map"
-
 [node name="MapContainer" parent="." instance=ExtResource("3_7mb5f")]
 layout_mode = 1
-
-[node name="SeedLabel" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -65.0
-offset_top = -36.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 10
 
 [node name="HotBar" type="HBoxContainer" parent="."]
 layout_mode = 1

@@ -8,7 +8,6 @@ namespace ColdMint.scripts;
 
 public static class Config
 {
-
     /// <summary>
     /// <para>Difficulty</para>
     /// <para>游戏难度</para>
@@ -34,6 +33,22 @@ public static class Config
         public const int Hard = 2;
     }
 
+
+    public static class CommandNames
+    {
+        /// <summary>
+        /// <para>Map</para>
+        /// <para>地图相关命令</para>
+        /// </summary>
+        public const string Map = "map";
+
+        /// <summary>
+        /// <para>Seed</para>
+        /// <para>查看世界种子</para>
+        /// </summary>
+        public const string Seed = "seed";
+        public const string Camera = "camera";
+    }
 
     public static class MapGeneratorStopCode
     {
@@ -251,11 +266,13 @@ public static class Config
         /// <para>未知的</para>
         /// </summary>
         public const int Unknown = 0;
+
         /// <summary>
         /// <para>Placeholder</para>
         /// <para>占位符</para>
         /// </summary>
         public const int Placeholder = 1;
+
         /// <summary>
         /// <para>Packsack</para>
         /// <para>背包</para>
@@ -324,11 +341,13 @@ public static class Config
         /// <para>添加</para>
         /// </summary>
         Add,
+
         /// <summary>
         /// <para>Quantity Added</para>
         /// <para>物品数量增加</para>
         /// </summary>
         QuantityAdded,
+
         /// <summary>
         /// <para>remove</para>
         /// <para>移除</para>
@@ -340,6 +359,7 @@ public static class Config
         /// <para>被替换</para>
         /// </summary>
         Replace,
+
         /// <summary>
         /// <para>Clear</para>
         /// <para>被清空</para>
@@ -455,11 +475,13 @@ public static class Config
         {
             if (EnableVersionIsolation())
             {
-                return Path.Join(ProjectSettings.GlobalizePath("user://"), ProjectSettings.GetSetting("application/config/version").AsString());
-
+                return Path.Join(ProjectSettings.GlobalizePath("user://"),
+                    ProjectSettings.GetSetting("application/config/version").AsString());
             }
+
             return Path.Join(ProjectSettings.GlobalizePath("user://"), DefaultVersionName);
         }
+
         //For desktop platforms.
         //对于桌面平台。
         if (EnableVersionIsolation())
@@ -468,6 +490,7 @@ public static class Config
                 ProjectSettings.GetSetting("application/config/name").AsString(),
                 ProjectSettings.GetSetting("application/config/version").AsString());
         }
+
         return Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName,
             ProjectSettings.GetSetting("application/config/name").AsString(),
             DefaultVersionName);
@@ -597,36 +620,45 @@ public static class Config
     public static class LayerNumber
     {
         public const int RoomArea = 1;
+
         /// <summary>
         /// <para>Floor</para>
         /// <para>地板</para>
         /// </summary>
         public const int Floor = 2;
+
         public const int Player = 3;
         public const int PickAbleItem = 4;
         public const int Projectile = 5;
+
         /// <summary>
         /// <para>Platform</para>
         /// <para>平台</para>
         /// </summary>
         public const int Platform = 6;
+
         public const int Mob = 7;
+
         /// <summary>
         /// <para>Wall</para>
         /// <para>墙壁</para>
         /// </summary>
         public const int Wall = 8;
+
         /// <summary>
         /// <para>Furniture</para>
         /// <para>家具</para>
         /// </summary>
         public const int Furniture = 9;
+
         /// <summary>
         /// <para>WeaponDamageArea</para>
         /// <para>武器伤害区域</para>
         /// </summary>
         public const int WeaponDamageArea = 10;
+
         public const int Barrier = 11;
+
         /// <summary>
         /// <para>NonPickupItem</para>
         /// <para>不能被捡起的物品</para>
@@ -636,6 +668,7 @@ public static class Config
         ///<para>例如：触碰后会恢复健康值的红心。</para>
         /// </remarks>
         public const int NonPickupItem = 12;
+
         /// <summary>
         /// <para>ProjectileBarrier</para>
         /// <para>抛射体障碍</para>

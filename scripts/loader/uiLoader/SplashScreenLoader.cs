@@ -2,6 +2,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using ColdMint.scripts.camp;
+using ColdMint.scripts.console;
+using ColdMint.scripts.console.commands;
 using ColdMint.scripts.contribute;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
@@ -76,6 +78,11 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //Disable all logs in the release version.
         //在发行版禁用所有日志。
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
+        //RegisterCommand
+        //注册命令
+        CommandManager.RegisterCommand(new MapCommand());
+        CommandManager.RegisterCommand(new SeedCommand());
+        CommandManager.RegisterCommand(new CameraCommand());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());

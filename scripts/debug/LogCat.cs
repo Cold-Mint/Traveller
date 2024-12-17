@@ -15,6 +15,7 @@ public static class LogCat
         /// <para>默认的日志标签</para>
         /// </summary>
         public const string Default = "Default";
+
         public const string Debug = "Debug";
         public const string PatchworkRoomPlacementStrategy = "PatchworkRoomPlacementStrategy";
 
@@ -65,12 +66,12 @@ public static class LogCat
         /// <para>气泡标记</para>
         /// </summary>
         public const string BubbleMarker = "BubbleMarker";
-
+        
         /// <summary>
-        /// <para>LogCollector</para>
-        /// <para>日志收集器</para>
+        /// <para>CommandExecutor</para>
+        /// <para>命令执行器</para>
         /// </summary>
-        public const string LogCollector = "LogCollector";
+        public const string CommandExecutor = "CommandExecutor";
 
         /// <summary>
         /// <para>Mod Loader</para>
@@ -316,7 +317,8 @@ public static class LogCat
 
     public static void LogWarningWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args), label);
+        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args),
+            label);
     }
 
     /// <summary>

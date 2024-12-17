@@ -19,7 +19,6 @@ ui_cancel,取消,Cancel,キャンセル
 ui_load,加载,Load,ロード
 ui_delete_selected_node,删除选中的节点,Delete selected node,選択されたノードを削除します
 ui_re_create_map,重新创建地图,Re-create map,地図を再作成します
-ui_seed_info,种子：{0},Seed: {0},シード:{0}
 ui_tags,标签,Tags,と呼ぶ
 ui_room_injection_processor,房间注入处理器,Room injection processor,部屋注入処理器
 ui_game_over_title,游戏结束！,Game Over!,ゲームオーバー!
@@ -41,3 +40,5 @@ ui_tutorial_spellEditor,按E捡起地上的武器，\n法杖需要搭配法术�
 ui_tutorial_break_box,鼠标左键使用武器打破箱子->,"Use the left mouse button to \nbreak the box with the weapon->",マウスの左ボタンで箱を破ります->
 ui_tutorial_jump_onto_platform,W跳上平台，\nS从平台上跳下。,"W jumps onto the platform, \nS jumps off the platform.",Wは踊り場に、\nSは踊り場に飛び降りるのです。
 ui_tutorial_combine_more_powerful_spells,组合更强力的法术->,Combine more powerful spells->,より強力な術を組み合わせます->
+ui_send,发送,Send,送信
+ui_enter_command,请输入命令。,Please enter the command.,コマンドの入力をお願いします。

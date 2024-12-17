@@ -17,11 +17,6 @@ config/features=PackedStringArray("4.3", "C#", "Mobile")
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
-[display]
-
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
-
 [dotnet]
 
 project/assembly_name="ColdMint.Traveler"
@@ -155,6 +150,11 @@ hotbar_previous={
 push={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":70,"physical_keycode":0,"key_label":0,"unicode":102,"location":0,"echo":false,"script":null)
+]
+}
+console={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":96,"physical_keycode":0,"key_label":0,"unicode":96,"location":0,"echo":false,"script":null)
 ]
 }
 

@@ -39,7 +39,19 @@ public partial class Player : CharacterTemplate
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private readonly double _platformCollisionRecoveryTime = 0.2f;
 
+    private Camera2D? _camera2D;
+
+    /// <summary>
+    /// <para>Get a camera mounted on the player</para>
+    /// <para>获取挂载在玩家身上的相机</para>
+    /// </summary>
+    public Camera2D? Camera2D
+    {
+        get => _camera2D;
+    }
+
     [Export] private AudioStream[]? _jumpSounds; // skipcq:CS-R1137
+
     public override void _Ready()
     {
         base._Ready();
@@ -48,6 +60,7 @@ public partial class Player : CharacterTemplate
             LogCat.LogError("no_platform_detection_raycast_found");
             return;
         }
+
         CharacterName = TranslationServerUtils.Translate("default_player_name");
         LogCat.LogWithFormat("player_spawn_debug", LogCat.LogLabel.Default, ReadOnlyCharacterName,
             GlobalPosition);
@@ -62,10 +75,10 @@ public partial class Player : CharacterTemplate
         //Mount the camera.
         //挂载相机。
         var mainCameraPackedScene = ResourceLoader.Load<PackedScene>("res://prefab/MainCamera.tscn");
-        var camera2D = NodeUtils.InstantiatePackedScene<Camera2D>(mainCameraPackedScene);
-        if (camera2D != null)
+        _camera2D = NodeUtils.InstantiatePackedScene<Camera2D>(mainCameraPackedScene);
+        if (_camera2D != null)
         {
-            NodeUtils.CallDeferredAddChild(this, camera2D);
+            NodeUtils.CallDeferredAddChild(this, _camera2D);
         }
     }
 
@@ -79,6 +92,7 @@ public partial class Player : CharacterTemplate
         {
             return;
         }
+
         var randomIndex = GD.Randi() % _jumpSounds.Length;
         PlayAudioStream(_jumpSounds[randomIndex]);
     }
@@ -135,6 +149,7 @@ public partial class Player : CharacterTemplate
             _collidingWithPlatform = true;
             return;
         }
+
         _collidingWithPlatform = false;
     }
 
@@ -159,12 +174,14 @@ public partial class Player : CharacterTemplate
         {
             CanUseItem();
         }
+
         //Use items
         //使用物品
         if (Input.IsActionPressed("use_item") && _canUseItem)
         {
             UseItem(GetGlobalMousePosition());
         }
+
         //Pick up an item
         //捡起物品
         if (Input.IsActionJustPressed("pick_up"))
@@ -243,11 +260,13 @@ public partial class Player : CharacterTemplate
             _canUseItem = false;
             return;
         }
+
         if (GameSceneDepend.IsMouseOverItemSlotNode)
         {
             _canUseItem = false;
             return;
         }
+
         if (Config.GetOs() == Config.OsEnum.Android)
         {
             if (GameSceneDepend.GameGuiTemplate == null)
@@ -255,35 +274,39 @@ public partial class Player : CharacterTemplate
                 _canUseItem = false;
                 return;
             }
+
             if (GameSceneDepend.GameGuiTemplate.JumpButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
+
             if (GameSceneDepend.GameGuiTemplate.RightButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
+
             if (GameSceneDepend.GameGuiTemplate.LeftButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
+
             if (GameSceneDepend.GameGuiTemplate.PickButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
+
             if (GameSceneDepend.GameGuiTemplate.ThrowButton?.IsPressed() == true)
             {
                 _canUseItem = false;
                 return;
             }
-
         }
-        _canUseItem = true;
 
+        _canUseItem = true;
     }
 
     /// <summary>
@@ -294,10 +317,12 @@ public partial class Player : CharacterTemplate
     {
         //We take the mouse position, normalize it, and then multiply it by the distance the player can throw
         //我们拿到鼠标的位置，将其归一化处理，然后乘以玩家可扔出的距离
-        if (Config.GetOs() == Config.OsEnum.Android && GameSceneDepend.GameGuiTemplate != null && GameSceneDepend.GameGuiTemplate.ThrowButton != null)
+        if (Config.GetOs() == Config.OsEnum.Android && GameSceneDepend.GameGuiTemplate != null &&
+            GameSceneDepend.GameGuiTemplate.ThrowButton != null)
         {
             return GameSceneDepend.GameGuiTemplate.ThrowButton.GetOffSetPosition() * _throwingVelocity;
         }
+
         return GetLocalMousePosition().Normalized() * _throwingVelocity;
     }
 
@@ -370,6 +395,7 @@ public partial class Player : CharacterTemplate
             //将Hp设置为当前Hp的目的是，使生命条刷新。
             healthBarUi.CurrentHp = CurrentHp;
         }
+
         ProcessMode = ProcessModeEnum.Inherit;
         Show();
     }

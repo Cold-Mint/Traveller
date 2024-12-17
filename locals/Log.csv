@@ -139,3 +139,6 @@ log_invalid_damage_shape,伤害区域仅支持使用RectangleShape2D或CircleSha
 log_spell_list_is_null,ID为{0}的抛射体武器，缺少必要的法术列表。,"Projectile weapon with ID {0}, missing the list of necessary spells.",ID{0}の射出体武器は、必要なスペルリストが欠落しています。
 log_weapon_must_be_used_out_of_the_box,ID为{0}的抛射体武器，必须包含一个可提供抛射体的法术。,Projectile weapons with ID {0} must contain a spell that provides projectile.,ID{0}の射出体武器には、射出体を提供するスペルが含まれている必要があります。
 log_map_generator_error,生成地图时出错，错误代码为{0}。,Generating map with error code {0},マップ作成時エラー、エラーコードは{0}です。
+log_command_executed_success,命令{0}执行成功。,Command {0} is executed successfully.,コマンド{0}実行成功です。
+log_command_executed_failure,命令{0}执行失败。,Command {0} failed to be executed.,コマンド{0}の実行失敗です。
+log_command_execution,开始执行命令{0}。,Start executing the {0} command.,コマンド{0}を実行します。
