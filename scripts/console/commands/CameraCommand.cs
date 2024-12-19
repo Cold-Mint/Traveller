@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Godot;
 
 namespace ColdMint.scripts.console.commands;
 
 public class CameraCommand : ICommand
 {
     public string Name => Config.CommandNames.Camera;
+
     public async Task<bool> Execute(string[] args)
     {
         if (args.Length < 2)
@@ -14,7 +14,7 @@ public class CameraCommand : ICommand
         }
 
         var type = args[1].ToLowerInvariant();
-        if (type == "free")
+        if (type is "f" or "free")
         {
             //Camera free field of view
             //相机自由视野
@@ -23,7 +23,8 @@ public class CameraCommand : ICommand
             {
                 return false;
             }
-            camera2D.Position+= new Vector2(0,100);
+
+            camera2D.FreeVision = !camera2D.FreeVision;
             return true;
         }
 

@@ -28,6 +28,21 @@ public partial class HotBar : HBoxContainer
     public override void _Process(double delta)
     {
         base._Process(delta);
+        if (GameSceneDepend.Player == null)
+        {
+            return;
+        }
+
+        if (GameSceneDepend.Player.Camera2D == null)
+        {
+            return;
+        }
+
+        if (GameSceneDepend.Player.Camera2D.FreeVision)
+        {
+            return;
+        }
+
         if (Input.IsActionJustPressed("hotbar_next"))
         {
             //Mouse wheel down

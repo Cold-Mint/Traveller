@@ -156,27 +156,31 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
     {
         if (newRoomNodeData.RoomTemplateSet == null || newRoomNodeData.RoomTemplateSet.Length == 0)
         {
-            LogCat.LogWithFormat("new_room_node_data_is_incomplete", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+            LogCat.LogWithFormat("new_room_node_data_is_incomplete",
+                label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
 
         if (parentRoomNode == null)
         {
-            LogCat.LogWithFormat("parent_room_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+            LogCat.LogWithFormat("parent_room_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy,
+                newRoomNodeData.Id);
             return null;
         }
 
         var roomResArray = RoomFactory.RoomTemplateSetToRoomRes(newRoomNodeData.RoomTemplateSet);
         if (roomResArray.Length == 0)
         {
-            LogCat.LogWithFormat("room_template_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+            LogCat.LogWithFormat("room_template_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy,
+                newRoomNodeData.Id);
             return null;
         }
 
         var roomSlots = parentRoomNode.RoomSlots;
         if (roomSlots == null || roomSlots.Length == 0)
         {
-            LogCat.LogWithFormat("room_slot_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+            LogCat.LogWithFormat("room_slot_does_not_exist", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy,
+                newRoomNodeData.Id);
             return null;
         }
 
@@ -189,7 +193,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 newRoomNodeData.ExitRoomEventHandlerId);
             if (newRoom == null)
             {
-                LogCat.LogWithFormat("room_corresponding_to_resource_is_null", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id, roomRes);
+                LogCat.LogWithFormat("room_corresponding_to_resource_is_null",
+                    label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id, roomRes);
                 continue;
             }
 
@@ -197,22 +202,26 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             //创建了一个房间，尝试使用房间的槽与现有的房间槽匹配。
             if (!IsMatch(parentRoomNode, newRoom, out var mainRoomSlot, out var newRoomSlot).Result)
             {
-                LogCat.LogWithFormat("slots_do_not_match", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+                LogCat.LogWithFormat("slots_do_not_match", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy,
+                    newRoomNodeData.Id);
                 continue;
             }
 
             if (mainRoomSlot == null || newRoomSlot == null)
             {
-                LogCat.LogWithFormat("slot_incomplete", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+                LogCat.LogWithFormat("slot_incomplete", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy,
+                    newRoomNodeData.Id);
                 continue;
             }
 
             var position = await CalculatedPosition(parentRoomNode, newRoom, mainRoomSlot, newRoomSlot, false);
             if (position == null)
             {
-                LogCat.LogWithFormat("placement_position_is_empty", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+                LogCat.LogWithFormat("placement_position_is_empty",
+                    label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
                 continue;
             }
+
             var roomPlacementData = new RoomPlacementData
             {
                 NewRoom = newRoom,
@@ -226,9 +235,11 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 
         if (usableRoomPlacementData.Count == 0)
         {
-            LogCat.LogWithFormat("available_rooms_are_not_available", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
+            LogCat.LogWithFormat("available_rooms_are_not_available",
+                label: LogCat.LogLabel.PatchworkRoomPlacementStrategy, newRoomNodeData.Id);
             return null;
         }
+
         var index = randomNumberGenerator.Randi() % usableRoomPlacementData.Count;
         return usableRoomPlacementData[(int)index];
     }
@@ -454,7 +465,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             //Calculate the offset of the shape.
             //计算形状的偏移量。
             _measuringCollisionShape2D.Position = newRoom.RoomCollisionShape2D.Shape.GetRect().Size / 2;
-            await TaskUtils.WaitForFramesAsync(_measuringArea2D);
+            await Task.Delay(15);
             if (_overlapQuantity > 0)
             {
                 LogCat.Log("room_overlap", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);

@@ -1,15 +1,10 @@
 ﻿using System.Threading.Tasks;
-using ColdMint.scripts.map;
 
 namespace ColdMint.scripts.console.commands;
 
-/// <summary>
-/// <para>MapCommand</para>
-/// <para>地图相关命令</para>
-/// </summary>
-public class MapCommand : ICommand
+public class FogCommand : ICommand
 {
-    public string Name => Config.CommandNames.Map;
+    public string Name => Config.CommandNames.Fog;
 
     public async Task<bool> Execute(string[] args)
     {
@@ -19,9 +14,15 @@ public class MapCommand : ICommand
         }
 
         var type = args[1].ToLowerInvariant();
-        if (type is "rec" or "recreate")
+        if (type is "v" or "visible")
         {
-            await MapGenerator.GenerateMapAsync();
+            var fog = GameSceneDepend.Fog;
+            if (fog == null)
+            {
+                return false;
+            }
+
+            fog.Visible = !fog.Visible;
             return true;
         }
 

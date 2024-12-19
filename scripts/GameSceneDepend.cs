@@ -39,6 +39,12 @@ public static class GameSceneDepend
     public static Node2D? TemporaryTargetNode { get; set; }
 
     /// <summary>
+    /// <para>Fog</para>
+    /// <para>战争迷雾</para>
+    /// </summary>
+    public static CanvasModulate? Fog { get; set; }
+
+    /// <summary>
     /// <para>ProjectileContainer</para>
     /// <para>抛射体容器</para>
     /// </summary>
@@ -79,7 +85,7 @@ public static class GameSceneDepend
     /// <para>AICharacter角色</para>
     /// </summary>
     public static Node2D? AiCharacterContainer { get; set; }
-    
+
     /// <summary>
     /// <para>DynamicDamageAreaContainer</para>
     /// <para>动态生成的伤害区域容器</para>
@@ -126,10 +132,12 @@ public static class GameSceneDepend
         {
             return;
         }
+
         if (GameGuiTemplate.MiniMap.Visible)
         {
             return;
         }
+
         GameGuiTemplate.MiniMapAnimationPlayer?.Play(name: "show");
     }
 
@@ -144,6 +152,7 @@ public static class GameSceneDepend
         {
             return;
         }
+
         if (GameGuiTemplate.MiniMap.Visible)
         {
             GameGuiTemplate.MiniMapAnimationPlayer?.Play(name: "hide");

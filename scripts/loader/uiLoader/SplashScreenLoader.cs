@@ -83,6 +83,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         CommandManager.RegisterCommand(new MapCommand());
         CommandManager.RegisterCommand(new SeedCommand());
         CommandManager.RegisterCommand(new CameraCommand());
+        CommandManager.RegisterCommand(new FogCommand());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());

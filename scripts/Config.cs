@@ -47,7 +47,9 @@ public static class Config
         /// <para>查看世界种子</para>
         /// </summary>
         public const string Seed = "seed";
+
         public const string Camera = "camera";
+        public const string Fog = "fog";
     }
 
     public static class MapGeneratorStopCode

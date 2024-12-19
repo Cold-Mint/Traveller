@@ -56,5 +56,5 @@ visible = false
 
 [node name="DynamicDamageAreaContainer" type="Node2D" parent="."]
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="Fog" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)

@@ -39,13 +39,13 @@ public partial class Player : CharacterTemplate
     //角色从平台上跳下后，多少时间后恢复与平台的碰撞（单位：秒）
     private readonly double _platformCollisionRecoveryTime = 0.2f;
 
-    private Camera2D? _camera2D;
+    private GameCamera2D? _camera2D;
 
     /// <summary>
     /// <para>Get a camera mounted on the player</para>
     /// <para>获取挂载在玩家身上的相机</para>
     /// </summary>
-    public Camera2D? Camera2D
+    public GameCamera2D? Camera2D
     {
         get => _camera2D;
     }
@@ -75,7 +75,7 @@ public partial class Player : CharacterTemplate
         //Mount the camera.
         //挂载相机。
         var mainCameraPackedScene = ResourceLoader.Load<PackedScene>("res://prefab/MainCamera.tscn");
-        _camera2D = NodeUtils.InstantiatePackedScene<Camera2D>(mainCameraPackedScene);
+        _camera2D = NodeUtils.InstantiatePackedScene<GameCamera2D>(mainCameraPackedScene);
         if (_camera2D != null)
         {
             NodeUtils.CallDeferredAddChild(this, _camera2D);
@@ -155,6 +155,11 @@ public partial class Player : CharacterTemplate
 
     protected override void HookPhysicsProcess(double delta, ref Vector2 velocity)
     {
+        if (_camera2D is { FreeVision: true })
+        {
+            return;
+        }
+
         UpdateCollidingWithPlatform();
         //If the character is on the ground, give an upward velocity when the jump button is pressed
         //如果角色正在地面上，按下跳跃键时，给予一个向上的速度

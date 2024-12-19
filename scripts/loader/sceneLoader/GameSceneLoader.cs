@@ -17,7 +17,6 @@ namespace ColdMint.scripts.loader.sceneLoader;
 /// </summary>
 public partial class GameSceneLoader : SceneLoaderTemplate
 {
-
     public override Task InitializeData()
     {
         RenderingServer.SetDefaultClearColor(Color.FromHsv(0, 0, 0));
@@ -57,7 +56,13 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         //加载可拾捡物容器
         var pickAbleContainer = GetNode<Node2D>("PickAbleContainer");
         GameSceneDepend.PickAbleContainer = pickAbleContainer;
-        InstantiateGui(Config.GetOs() == Config.OsEnum.Android ? "res://prefab/ui/gameGuiMobile.tscn" : "res://prefab/ui/gameGuiDesktop.tscn");
+        //Load Fog of War
+        //加载战争迷雾
+        var fog = GetNode<CanvasModulate>("Fog");
+        GameSceneDepend.Fog = fog;
+        InstantiateGui(Config.GetOs() == Config.OsEnum.Android
+            ? "res://prefab/ui/gameGuiMobile.tscn"
+            : "res://prefab/ui/gameGuiDesktop.tscn");
         return Task.CompletedTask;
     }
 
@@ -76,6 +81,7 @@ public partial class GameSceneLoader : SceneLoaderTemplate
             LogCat.LogError("game_gui_template_is_null");
             return;
         }
+
         NodeUtils.CallDeferredAddChild(GetNode<Control>("CanvasLayer/GameGui"), gameGuiTemplate);
         GameSceneDepend.GameGuiTemplate = gameGuiTemplate;
     }
@@ -96,14 +102,17 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         {
             NodeUtils.DeleteAllChild(GameSceneDepend.WeaponContainer);
         }
+
         if (GameSceneDepend.PacksackContainer != null)
         {
             NodeUtils.DeleteAllChild(GameSceneDepend.PacksackContainer);
         }
+
         if (GameSceneDepend.SpellContainer != null)
         {
             NodeUtils.DeleteAllChild(GameSceneDepend.SpellContainer);
         }
+
         await GenerateMap();
         var replayEvent = new GameReplayEvent();
         EventBus.GameReplayEvent?.Invoke(replayEvent);
