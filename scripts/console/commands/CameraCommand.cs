@@ -6,6 +6,11 @@ public class CameraCommand : ICommand
 {
     public string Name => Config.CommandNames.Camera;
 
+    public string[][] Suggest =>
+    [
+        ["free"]
+    ];
+
     public async Task<bool> Execute(string[] args)
     {
         if (args.Length < 2)

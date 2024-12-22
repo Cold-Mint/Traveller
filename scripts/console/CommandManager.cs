@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console;
 
@@ -13,6 +14,7 @@ namespace ColdMint.scripts.console;
 public class CommandManager
 {
     private static readonly Dictionary<string, ICommand> Commands = new();
+    private static readonly List<string> CommandKeys = [];
 
     /// <summary>
     /// <para>RegisterCommand</para>
@@ -25,7 +27,25 @@ public class CommandManager
     /// <returns></returns>
     public static bool RegisterCommand(ICommand command)
     {
-        return Commands.TryAdd(command.Name, command);
+        var lowerName = command.Name.ToLowerInvariant();
+        var result = Commands.TryAdd(lowerName, command);
+        if (result)
+        {
+            CommandKeys.Add(lowerName);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// <para>GetSuggest</para>
+    /// <para>获取建议</para>
+    /// </summary>
+    /// <param name="commandName"></param>
+    /// <returns></returns>
+    public static string[] GetSuggest(string commandName)
+    {
+        return SuggestUtils.ScreeningSuggestion(CommandKeys, commandName);
     }
 
     /// <summary>
@@ -39,7 +59,14 @@ public class CommandManager
     /// <returns></returns>
     public static bool UnregisterCommand(ICommand command)
     {
-        return Commands.Remove(command.Name);
+        var lowerName = command.Name.ToLowerInvariant();
+        var result = CommandKeys.Remove(lowerName);
+        if (result)
+        {
+            CommandKeys.Remove(lowerName);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -50,6 +77,7 @@ public class CommandManager
     /// <returns></returns>
     public static ICommand? GetCommand(string name)
     {
-        return Commands.GetValueOrDefault(name);
+        var lowerName = name.ToLowerInvariant();
+        return string.IsNullOrEmpty(lowerName) ? null : Commands.GetValueOrDefault(lowerName);
     }
 }

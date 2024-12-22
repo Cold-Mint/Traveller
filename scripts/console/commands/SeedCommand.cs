@@ -11,6 +11,7 @@ namespace ColdMint.scripts.console.commands;
 public class SeedCommand : ICommand
 {
     public string Name => Config.CommandNames.Seed;
+    public string[][] Suggest => [["get", "recreate", "set"]];
 
     public Task<bool> Execute(string[] args)
     {
@@ -23,7 +24,7 @@ public class SeedCommand : ICommand
         switch (type)
         {
             case "g" or "get":
-                ConsoleGui.Echo(MapGenerator.Seed);
+                ConsoleGui.Instance?.Echo(MapGenerator.Seed);
                 return Task.FromResult(true);
             case "rec" or "recreate":
                 MapGenerator.Seed = GuidUtils.GetGuid();

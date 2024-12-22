@@ -10,6 +10,7 @@ namespace ColdMint.scripts.console.commands;
 public class MapCommand : ICommand
 {
     public string Name => Config.CommandNames.Map;
+    public string[][] Suggest => [["recreate"]];
 
     public async Task<bool> Execute(string[] args)
     {

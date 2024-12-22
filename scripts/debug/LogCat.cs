@@ -66,7 +66,7 @@ public static class LogCat
         /// <para>气泡标记</para>
         /// </summary>
         public const string BubbleMarker = "BubbleMarker";
-        
+
         /// <summary>
         /// <para>CommandExecutor</para>
         /// <para>命令执行器</para>
@@ -252,9 +252,11 @@ public static class LogCat
     /// </param>
     /// <param name="label">
     /// </param>
-    public static void Log(string message, string label = LogLabel.Default)
+    public static string Log(string message, string label = LogLabel.Default)
     {
-        PrintLog(InfoLogLevel, HandleMessage(InfoLogLevel, message, label).ToString(), label);
+        var concreteLog = HandleMessage(InfoLogLevel, message, label).ToString();
+        PrintLog(InfoLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
     private static void PrintLog(int level, string concreteLog, string label)
@@ -294,31 +296,40 @@ public static class LogCat
     /// <para>这个消息支持本地化输出，假设已存在翻译key，Hello = 你好，传入Hello则会输出你好。</para>
     /// </param>
     /// <param name="label"></param>
-    public static void LogError(string message, string label = LogLabel.Default)
+    public static string LogError(string message, string label = LogLabel.Default)
     {
-        PrintLog(ErrorLogLevel, HandleMessage(ErrorLogLevel, message, label).ToString(), label);
+        var concreteLog = HandleMessage(ErrorLogLevel, message, label).ToString();
+        PrintLog(ErrorLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
-    public static void LogWarning(string message, string label = LogLabel.Default)
+    public static string LogWarning(string message, string label = LogLabel.Default)
     {
-        PrintLog(WarningLogLevel, HandleMessage(WarningLogLevel, message, label).ToString(), label);
+        var concreteLog = HandleMessage(WarningLogLevel, message, label).ToString();
+        PrintLog(WarningLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
-    public static void LogErrorWithFormat(string message, string label, params object?[] args)
+    public static string LogErrorWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(ErrorLogLevel, string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args), label);
+        var concreteLog = string.Format(HandleMessage(ErrorLogLevel, message, label).ToString(), args);
+        PrintLog(ErrorLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
 
-    public static void LogWithFormat(string message, string label, params object?[] args)
+    public static string LogWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(InfoLogLevel, string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args), label);
+        var concreteLog = string.Format(HandleMessage(InfoLogLevel, message, label).ToString(), args);
+        PrintLog(InfoLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
-    public static void LogWarningWithFormat(string message, string label, params object?[] args)
+    public static string LogWarningWithFormat(string message, string label, params object?[] args)
     {
-        PrintLog(WarningLogLevel, string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args),
-            label);
+        var concreteLog = string.Format(HandleMessage(WarningLogLevel, message, label).ToString(), args);
+        PrintLog(WarningLogLevel, concreteLog, label);
+        return concreteLog;
     }
 
     /// <summary>

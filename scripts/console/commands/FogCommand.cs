@@ -5,6 +5,7 @@ namespace ColdMint.scripts.console.commands;
 public class FogCommand : ICommand
 {
     public string Name => Config.CommandNames.Fog;
+    public string[][] Suggest => [["visible"]];
 
     public async Task<bool> Execute(string[] args)
     {
