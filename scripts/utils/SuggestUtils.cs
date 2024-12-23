@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ColdMint.scripts.console;
 
 namespace ColdMint.scripts.utils;
 
@@ -23,33 +24,33 @@ public static class SuggestUtils
     ///<para>启用BbCode</para>
     /// </param>
     /// <returns></returns>
-    public static string[] ScreeningSuggestion(IEnumerable<string> allSuggest, string? keyword,
+    public static InputSuggestion[] ScreeningSuggestion(IEnumerable<string> allSuggest, string? keyword,
         bool enableBbCode = true)
     {
+        List<InputSuggestion> result = [];
         if (string.IsNullOrEmpty(keyword))
         {
-            return allSuggest.ToArray();
+            result.AddRange(allSuggest.Select(se => new InputSuggestion(se, se)));
+            return result.ToArray();
         }
 
         var lowerKeyword = keyword.ToLowerInvariant();
-        List<string> result = [];
+
         foreach (var suggest in allSuggest)
         {
             var lowerSuggest = suggest.ToLowerInvariant();
             if (lowerSuggest.StartsWith(lowerKeyword))
             {
-                result.Insert(0, enableBbCode ? RenderKeyword(suggest, keyword) : suggest);
+                result.Insert(0, new InputSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
                 continue;
             }
 
             if (lowerSuggest.Contains(lowerKeyword))
             {
-                result.Add(enableBbCode ? RenderKeyword(suggest, keyword) : suggest);
+                result.Add(new InputSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
             }
         }
 
-        // LogCat.Log("关键字" + keyword + "列表为" + YamlSerialization.Serialize(allSuggest) + "建议为" +
-                   // YamlSerialization.Serialize(result));
         return result.ToArray();
     }
 
@@ -73,10 +74,10 @@ public static class SuggestUtils
         var endIndex = startIndex + keyword.Length;
         if (endIndex > suggest.Length)
         {
-            return suggest[..startIndex] + "[color=green]" + suggest[startIndex..] + "[/color]";
+            return suggest[..startIndex] + "[color=aqua]" + suggest[startIndex..] + "[/color]";
         }
 
-        return suggest[..startIndex] + "[color=green]" + suggest.Substring(startIndex, endIndex) + "[/color]" +
+        return suggest[..startIndex] + "[color=aqua]" + suggest.Substring(startIndex, keyword.Length) + "[/color]" +
                suggest[endIndex..];
     }
 }

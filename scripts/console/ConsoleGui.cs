@@ -21,6 +21,8 @@ public partial class ConsoleGui : Control
 
     [Export] private VBoxContainer? _suggestedContainer;
 
+    [Export] private PackedScene? _itemSuggestLabel;
+
     public static ConsoleGui? Instance { get; private set; }
 
     private DateTime _checkTextChange;
@@ -30,6 +32,7 @@ public partial class ConsoleGui : Control
     {
         base._Ready();
         Instance = this;
+
         if (_submitButton != null)
         {
             _submitButton.Pressed += Pressed;
@@ -119,6 +122,7 @@ public partial class ConsoleGui : Control
             if (level > maxLevel)
             {
                 LogCat.LogWithFormat("too_many_level_requested", LogCat.LogLabel.Default, level, maxLevel);
+                ClearSuggestList();
                 return;
             }
 
@@ -129,25 +133,44 @@ public partial class ConsoleGui : Control
     }
 
     /// <summary>
+    /// <para>ClearSuggestList</para>
+    /// <para>清理建议列表</para>
+    /// </summary>
+    private void ClearSuggestList()
+    {
+        if (_suggestedContainer != null)
+        {
+            NodeUtils.DeleteAllChild(_suggestedContainer);
+        }
+    }
+
+    /// <summary>
     /// <para>ShowSuggestList</para>
     /// <para>显示建议列表</para>
     /// </summary>
     /// <param name="suggestionList"></param>
-    private void ShowSuggestList(IEnumerable<string> suggestionList)
+    private void ShowSuggestList(IEnumerable<InputSuggestion> suggestionList)
     {
-        if (_suggestedContainer == null)
+        if (_suggestedContainer == null || _itemSuggestLabel == null || _commandEdit == null)
         {
             return;
         }
 
-        NodeUtils.DeleteAllChild(_suggestedContainer);
+        ClearSuggestList();
         foreach (var suggest in suggestionList)
         {
-            var richTextLabel = new RichTextLabel();
-            richTextLabel.BbcodeEnabled = true;
-            richTextLabel.FitContent = true;
-            richTextLabel.Text = suggest;
-            NodeUtils.CallDeferredAddChild(_suggestedContainer, richTextLabel);
+            var itemSuggestLabel = NodeUtils.InstantiatePackedScene<ItemSuggestLabel>(_itemSuggestLabel);
+            if (itemSuggestLabel == null)
+            {
+                continue;
+            }
+
+            itemSuggestLabel.LineEdit = _commandEdit;
+            itemSuggestLabel.BbcodeEnabled = true;
+            itemSuggestLabel.FitContent = true;
+            itemSuggestLabel.SuggestValue = suggest;
+            itemSuggestLabel.Text = suggest.DisplayText;
+            NodeUtils.CallDeferredAddChild(_suggestedContainer, itemSuggestLabel);
         }
     }
 
@@ -174,6 +197,7 @@ public partial class ConsoleGui : Control
         }
 
         _commandEdit.Text = "";
+        _commandEdit.EmitSignal("text_changed", "");
         _commandEdit.Editable = false;
         _submitButton.Disabled = true;
         await CommandExecutor.ExecuteCommandAsync(code);

@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8xj04i5pdk7m"]
+
+[ext_resource type="Script" path="res://scripts/console/ItemSuggestLabel.cs" id="1_i60w2"]
+
+[node name="ItemSuggestLabel" type="RichTextLabel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "3232323233232323232323232332333"
+fit_content = true
+scroll_active = false
+script = ExtResource("1_i60w2")
