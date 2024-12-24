@@ -21,27 +21,30 @@ public class SeedCommand : ICommand
         }
 
         var type = args[1].ToLowerInvariant();
-        switch (type)
+        if (type == Suggest[0][0])
         {
-            case "g" or "get":
-                ConsoleGui.Instance?.Echo(MapGenerator.Seed);
-                return Task.FromResult(true);
-            case "rec" or "recreate":
-                MapGenerator.Seed = GuidUtils.GetGuid();
-                return Task.FromResult(true);
-            case "s" or "set" when args.Length == 3:
-            {
-                var value = args[2].ToLowerInvariant();
-                if (string.IsNullOrEmpty(value))
-                {
-                    return Task.FromResult(false);
-                }
-
-                MapGenerator.Seed = value;
-                return Task.FromResult(true);
-            }
-            default:
-                return Task.FromResult(false);
+            ConsoleGui.Instance?.Echo(MapGenerator.Seed);
+            return Task.FromResult(true);
         }
+
+        if (type == Suggest[0][1])
+        {
+            MapGenerator.Seed = GuidUtils.GetGuid();
+            return Task.FromResult(true);
+        }
+
+        if (type == Suggest[0][2])
+        {
+            var value = args[2].ToLowerInvariant();
+            if (string.IsNullOrEmpty(value))
+            {
+                return Task.FromResult(false);
+            }
+
+            MapGenerator.Seed = value;
+            return Task.FromResult(true);
+        }
+
+        return Task.FromResult(false);
     }
 }

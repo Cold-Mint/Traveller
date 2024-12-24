@@ -21,6 +21,11 @@ namespace ColdMint.scripts.map.RoomPlacer;
 public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
 {
     /// <summary>
+    /// <para>Map overlap detection delay</para>
+    /// <para>地图的重叠检测延迟</para>
+    /// </summary>
+    public static int OverlapDetectionDelay = 50;
+    /// <summary>
     /// <para>We use a temporary area to measure whether the rooms overlap</para>
     /// <para>我们使用一个临时区域进行测量房间是否重叠</para>
     /// </summary>
@@ -42,6 +47,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
         {
             _measuringArea2D = new Area2D();
             _measuringArea2D.Monitoring = true;
+            _measuringArea2D.Monitorable = false;
+            
             _measuringArea2D.AreaEntered += body =>
             {
                 if (_selfArea2D != null && body == _selfArea2D)
@@ -465,7 +472,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             //Calculate the offset of the shape.
             //计算形状的偏移量。
             _measuringCollisionShape2D.Position = newRoom.RoomCollisionShape2D.Shape.GetRect().Size / 2;
-            await Task.Delay(15);
+            await Task.Delay(OverlapDetectionDelay);
             if (_overlapQuantity > 0)
             {
                 LogCat.Log("room_overlap", label: LogCat.LogLabel.PatchworkRoomPlacementStrategy);

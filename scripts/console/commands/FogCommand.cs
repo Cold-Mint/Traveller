@@ -15,7 +15,7 @@ public class FogCommand : ICommand
         }
 
         var type = args[1].ToLowerInvariant();
-        if (type is "v" or "visible")
+        if (type == Suggest[0][0])
         {
             var fog = GameSceneDepend.Fog;
             if (fog == null)

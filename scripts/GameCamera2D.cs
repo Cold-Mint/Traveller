@@ -17,7 +17,6 @@ public partial class GameCamera2D : Camera2D
     private float _speed = 500;
     private Vector2 _zoomUnit = new(0.1f, 0.1f);
 
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -28,9 +27,9 @@ public partial class GameCamera2D : Camera2D
 
         var velocity = Vector2.Zero;
         var distance = _speed * (float)delta;
-        velocity.Y = distance * Input.GetAxis("ui_up", "ui_down");
-        var horizontallyAxis = Input.GetAxis("ui_left", "ui_right");
-        velocity.X = distance * horizontallyAxis;
+        var zoomFactor = Mathf.Max(Zoom.X, Zoom.Y);
+        velocity.Y = distance * Input.GetAxis("ui_up", "ui_down") / zoomFactor;
+        velocity.X = distance * Input.GetAxis("ui_left", "ui_right") / zoomFactor;
         Position += velocity;
         if (Input.IsActionJustPressed("hotbar_next") && Zoom > _zoomUnit)
         {

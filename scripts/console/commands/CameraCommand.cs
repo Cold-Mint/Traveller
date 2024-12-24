@@ -19,7 +19,7 @@ public class CameraCommand : ICommand
         }
 
         var type = args[1].ToLowerInvariant();
-        if (type is "f" or "free")
+        if (type == Suggest[0][0])
         {
             //Camera free field of view
             //相机自由视野

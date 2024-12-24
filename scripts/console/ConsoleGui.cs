@@ -73,7 +73,6 @@ public partial class ConsoleGui : Control
         var label = new Label();
         label.Text = message;
         NodeUtils.CallDeferredAddChild(_logContainer, label);
-        LogCat.Log(message);
     }
 
     public override void _Process(double delta)
