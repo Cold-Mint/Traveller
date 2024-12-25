@@ -12,16 +12,22 @@ namespace ColdMint.scripts.console.commands;
 public class MapCommand : ICommand
 {
     public string Name => Config.CommandNames.Map;
-    public string[][] Suggest => [["recreate", "set_overlap_detection_delay"]];
+    public string[][] Suggest => [["recreate", "set_overlap_detection_delay"],["def"]];
 
-    public async Task<bool> Execute(string[] args)
+    public async Task<bool> Execute(CommandArgs args)
     {
         if (args.Length < 2)
         {
             return false;
         }
 
-        var type = args[1].ToLowerInvariant();
+        var inputType = args.GetString(1);
+        if (string.IsNullOrEmpty(inputType))
+        {
+            return false;
+        }
+
+        var type = inputType.ToLowerInvariant();
         if (type == Suggest[0][0])
         {
             await MapGenerator.GenerateMapAsync();
@@ -30,7 +36,7 @@ public class MapCommand : ICommand
 
         if (type == Suggest[0][1] && args.Length > 2)
         {
-            PatchworkRoomPlacementStrategy.OverlapDetectionDelay = int.Parse(args[2]);
+            PatchworkRoomPlacementStrategy.OverlapDetectionDelay = args.GetInt(2, Config.DefaultOverlapDetectionDelay);
             ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("set_overlap_detection_delay", LogCat.LogLabel.Default,
                 PatchworkRoomPlacementStrategy.OverlapDetectionDelay));
             return true;

@@ -3,14 +3,14 @@
 namespace ColdMint.scripts.console;
 
 /// <summary>
-/// <para>ItemSuggestLabel</para>
-/// <para>输入建议标签</para>
+/// <para>Auto Complete Suggestion Label</para>
+/// <para>自动完成建议标签</para>
 /// </summary>
-public partial class ItemSuggestLabel : RichTextLabel
+public partial class AutoCompleteSuggestionLabel : RichTextLabel
 {
     public LineEdit? LineEdit;
 
-    public InputSuggestion SuggestValue;
+    public AutoCompleteSuggestion AutoCompleteSuggestion;
 
     public override void _GuiInput(InputEvent @event)
     {
@@ -25,24 +25,24 @@ public partial class ItemSuggestLabel : RichTextLabel
             var inputText = LineEdit.Text;
             if (string.IsNullOrEmpty(inputText))
             {
-                SetLineEditText(SuggestValue.Value);
+                SetLineEditText(AutoCompleteSuggestion.Value);
                 return;
             }
 
             var index = inputText.LastIndexOf(' ');
             if (index == -1)
             {
-                SetLineEditText(SuggestValue.Value);
+                SetLineEditText(AutoCompleteSuggestion.Value);
                 return;
             }
 
             if (index == inputText.Length - 1)
             {
-                SetLineEditText(inputText + SuggestValue.Value);
+                SetLineEditText(inputText + AutoCompleteSuggestion.Value);
                 return;
             }
 
-            SetLineEditText(inputText[..index] +" "+ SuggestValue.Value);
+            SetLineEditText(inputText[..index] +" "+ AutoCompleteSuggestion.Value);
         }
     }
 

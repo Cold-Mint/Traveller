@@ -24,13 +24,13 @@ public static class SuggestUtils
     ///<para>启用BbCode</para>
     /// </param>
     /// <returns></returns>
-    public static InputSuggestion[] ScreeningSuggestion(IEnumerable<string> allSuggest, string? keyword,
+    public static AutoCompleteSuggestion[] ScreeningSuggestion(IEnumerable<string> allSuggest, string? keyword,
         bool enableBbCode = true)
     {
-        List<InputSuggestion> result = [];
+        List<AutoCompleteSuggestion> result = [];
         if (string.IsNullOrEmpty(keyword))
         {
-            result.AddRange(allSuggest.Select(se => new InputSuggestion(se, se)));
+            result.AddRange(allSuggest.Select(se => new AutoCompleteSuggestion(se, se)));
             return result.ToArray();
         }
 
@@ -41,13 +41,13 @@ public static class SuggestUtils
             var lowerSuggest = suggest.ToLowerInvariant();
             if (lowerSuggest.StartsWith(lowerKeyword))
             {
-                result.Insert(0, new InputSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
+                result.Insert(0, new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
                 continue;
             }
 
             if (lowerSuggest.Contains(lowerKeyword))
             {
-                result.Add(new InputSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
+                result.Add(new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
             }
         }
 

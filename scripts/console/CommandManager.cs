@@ -43,7 +43,7 @@ public class CommandManager
     /// </summary>
     /// <param name="commandName"></param>
     /// <returns></returns>
-    public static InputSuggestion[] GetSuggest(string commandName)
+    public static AutoCompleteSuggestion[] GetSuggest(string commandName)
     {
         return SuggestUtils.ScreeningSuggestion(CommandKeys, commandName);
     }

@@ -43,7 +43,7 @@ public static class CommandExecutor
             return false;
         }
 
-        var result = await command.Execute(arguments);
+        var result = await command.Execute(new CommandArgs(arguments));
         if (result)
         {
             ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("command_executed_success", LogCat.LogLabel.CommandExecutor,

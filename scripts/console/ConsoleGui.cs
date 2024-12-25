@@ -148,7 +148,7 @@ public partial class ConsoleGui : Control
     /// <para>显示建议列表</para>
     /// </summary>
     /// <param name="suggestionList"></param>
-    private void ShowSuggestList(IEnumerable<InputSuggestion> suggestionList)
+    private void ShowSuggestList(IEnumerable<AutoCompleteSuggestion> suggestionList)
     {
         if (_suggestedContainer == null || _itemSuggestLabel == null || _commandEdit == null)
         {
@@ -158,7 +158,7 @@ public partial class ConsoleGui : Control
         ClearSuggestList();
         foreach (var suggest in suggestionList)
         {
-            var itemSuggestLabel = NodeUtils.InstantiatePackedScene<ItemSuggestLabel>(_itemSuggestLabel);
+            var itemSuggestLabel = NodeUtils.InstantiatePackedScene<AutoCompleteSuggestionLabel>(_itemSuggestLabel);
             if (itemSuggestLabel == null)
             {
                 continue;
@@ -167,7 +167,7 @@ public partial class ConsoleGui : Control
             itemSuggestLabel.LineEdit = _commandEdit;
             itemSuggestLabel.BbcodeEnabled = true;
             itemSuggestLabel.FitContent = true;
-            itemSuggestLabel.SuggestValue = suggest;
+            itemSuggestLabel.AutoCompleteSuggestion = suggest;
             itemSuggestLabel.Text = suggest.DisplayText;
             NodeUtils.CallDeferredAddChild(_suggestedContainer, itemSuggestLabel);
         }

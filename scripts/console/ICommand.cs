@@ -25,5 +25,5 @@ public interface ICommand
     ///<para>参数</para>
     /// </param>
     /// <returns></returns>
-    Task<bool> Execute(string[] args);
+    Task<bool> Execute(CommandArgs args);
 }

@@ -13,14 +13,20 @@ public class SeedCommand : ICommand
     public string Name => Config.CommandNames.Seed;
     public string[][] Suggest => [["get", "recreate", "set"]];
 
-    public Task<bool> Execute(string[] args)
+    public Task<bool> Execute(CommandArgs args)
     {
         if (args.Length < 2)
         {
             return Task.FromResult(false);
         }
 
-        var type = args[1].ToLowerInvariant();
+        var inputType = args.GetString(1);
+        if (string.IsNullOrEmpty(inputType))
+        {
+            return Task.FromResult(false);
+        }
+
+        var type = inputType.ToLowerInvariant();
         if (type == Suggest[0][0])
         {
             ConsoleGui.Instance?.Echo(MapGenerator.Seed);
@@ -35,7 +41,7 @@ public class SeedCommand : ICommand
 
         if (type == Suggest[0][2])
         {
-            var value = args[2].ToLowerInvariant();
+            var value = args.GetString(2);
             if (string.IsNullOrEmpty(value))
             {
                 return Task.FromResult(false);

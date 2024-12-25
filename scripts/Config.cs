@@ -565,6 +565,16 @@ public static class Config
     public const int CritDamageTextSize = 33;
 
     /// <summary>
+    /// <para>The default map generation overlap detection delay</para>
+    /// <para>默认的地图生成重叠检测延迟</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Higher latencies are more stable and less likely to overlap.</para>
+    ///<para>越高的延迟越稳不易重叠。</para>
+    /// </remarks>
+    public const int DefaultOverlapDetectionDelay = 30;
+
+    /// <summary>
     /// <para>Crit damage multiplier</para>
     /// <para>暴击伤害乘数</para>
     /// </summary>

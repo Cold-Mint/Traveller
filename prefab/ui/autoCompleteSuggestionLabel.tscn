@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8xj04i5pdk7m"]
 
-[ext_resource type="Script" path="res://scripts/console/ItemSuggestLabel.cs" id="1_i60w2"]
+[ext_resource type="Script" path="res://scripts/console/AutoCompleteSuggestionLabel.cs" id="1_8b5nx"]
 
 [node name="ItemSuggestLabel" type="RichTextLabel"]
 anchors_preset = 15
@@ -12,4 +12,4 @@ bbcode_enabled = true
 text = "3232323233232323232323232332333"
 fit_content = true
 scroll_active = false
-script = ExtResource("1_i60w2")
+script = ExtResource("1_8b5nx")

@@ -11,14 +11,20 @@ public class CameraCommand : ICommand
         ["free"]
     ];
 
-    public async Task<bool> Execute(string[] args)
+    public async Task<bool> Execute(CommandArgs args)
     {
         if (args.Length < 2)
         {
             return false;
         }
 
-        var type = args[1].ToLowerInvariant();
+        var inputType = args.GetString(1);
+        if (string.IsNullOrEmpty(inputType))
+        {
+            return false;
+        }
+
+        var type = inputType.ToLowerInvariant();
         if (type == Suggest[0][0])
         {
             //Camera free field of view

@@ -24,7 +24,8 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
     /// <para>Map overlap detection delay</para>
     /// <para>地图的重叠检测延迟</para>
     /// </summary>
-    public static int OverlapDetectionDelay = 50;
+    public static int OverlapDetectionDelay = Config.DefaultOverlapDetectionDelay;
+
     /// <summary>
     /// <para>We use a temporary area to measure whether the rooms overlap</para>
     /// <para>我们使用一个临时区域进行测量房间是否重叠</para>
@@ -48,7 +49,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
             _measuringArea2D = new Area2D();
             _measuringArea2D.Monitoring = true;
             _measuringArea2D.Monitorable = false;
-            
+
             _measuringArea2D.AreaEntered += body =>
             {
                 if (_selfArea2D != null && body == _selfArea2D)
@@ -479,6 +480,7 @@ public class PatchworkRoomPlacementStrategy : IRoomPlacementStrategy
                 return null;
             }
         }
+
         return result;
     }
 }
