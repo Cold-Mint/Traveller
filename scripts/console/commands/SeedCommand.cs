@@ -11,7 +11,19 @@ namespace ColdMint.scripts.console.commands;
 public class SeedCommand : ICommand
 {
     public string Name => Config.CommandNames.Seed;
-    public string[][] Suggest => [["get", "recreate", "set"]];
+    private readonly NodeTree<string> _suggest = new(null);
+
+    public string[] GetAllSuggest(CommandArgs args)
+    {
+        return SuggestUtils.GetAllSuggest(args, _suggest);
+    }
+
+    public void InitSuggest()
+    {
+        _suggest.AddChild("get");
+        _suggest.AddChild("set");
+        _suggest.AddChild("recreate");
+    }
 
     public Task<bool> Execute(CommandArgs args)
     {
@@ -27,19 +39,15 @@ public class SeedCommand : ICommand
         }
 
         var type = inputType.ToLowerInvariant();
-        if (type == Suggest[0][0])
+        var get = _suggest.GetChild(0)?.Data;
+        if (type == get)
         {
             ConsoleGui.Instance?.Echo(MapGenerator.Seed);
             return Task.FromResult(true);
         }
 
-        if (type == Suggest[0][1])
-        {
-            MapGenerator.Seed = GuidUtils.GetGuid();
-            return Task.FromResult(true);
-        }
-
-        if (type == Suggest[0][2])
+        var set = _suggest.GetChild(1)?.Data;
+        if (type == set)
         {
             var value = args.GetString(2);
             if (string.IsNullOrEmpty(value))
@@ -48,6 +56,13 @@ public class SeedCommand : ICommand
             }
 
             MapGenerator.Seed = value;
+            return Task.FromResult(true);
+        }
+
+        var recreate = _suggest.GetChild(2)?.Data;
+        if (type == recreate)
+        {
+            MapGenerator.Seed = GuidUtils.GetGuid();
             return Task.FromResult(true);
         }
 

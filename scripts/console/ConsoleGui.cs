@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -46,7 +45,7 @@ public partial class ConsoleGui : Control
 
     private void TextChanged(string text)
     {
-        _checkTextChange = DateTime.Now + _measureInterval;
+        _checkTextChange = DateTime.UtcNow + _measureInterval;
     }
 
     /// <summary>
@@ -83,7 +82,7 @@ public partial class ConsoleGui : Control
             Visible = !Visible;
         }
 
-        if (_commandEdit != null && DateTime.Now >= _checkTextChange)
+        if (_commandEdit != null && DateTime.UtcNow >= _checkTextChange)
         {
             _checkTextChange = DateTime.MaxValue;
             var text = _commandEdit.Text;
@@ -117,17 +116,9 @@ public partial class ConsoleGui : Control
                 return;
             }
 
-            var maxLevel = command.Suggest.Length;
-            if (level > maxLevel)
-            {
-                LogCat.LogWithFormat("too_many_level_requested", LogCat.LogLabel.Default, level, maxLevel);
-                ClearSuggestList();
-                return;
-            }
-
             var keyWord = lastLevelIndex == text.Length - 1 ? null : text[(lastLevelIndex + 1)..];
             ShowSuggestList(
-                SuggestUtils.ScreeningSuggestion(command.Suggest[level - 1], keyWord));
+                SuggestUtils.ScreeningSuggestion(command.GetAllSuggest(new CommandArgs(text.Split(" "))), keyWord));
         }
     }
 

@@ -14,7 +14,13 @@ public interface ICommand
     /// <para>Suggest</para>
     /// <para>命令的输入建议</para>
     /// </summary>
-    string[][] Suggest { get; }
+    string[] GetAllSuggest(CommandArgs args);
+
+    /// <summary>
+    /// <para>Initialization suggestion</para>
+    /// <para>初始化建议</para>
+    /// </summary>
+    void InitSuggest();
 
     /// <summary>
     /// <para>Execute</para>

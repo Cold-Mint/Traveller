@@ -11,7 +11,7 @@ namespace ColdMint.scripts.console;
 ///<para>Add or remove commands in the command manager.</para>
 ///<para>在命令管理器内添加或移除命令。</para>
 /// </remarks>
-public class CommandManager
+public static class CommandManager
 {
     private static readonly Dictionary<string, ICommand> Commands = new();
     private static readonly List<string> CommandKeys = [];
@@ -32,6 +32,7 @@ public class CommandManager
         if (result)
         {
             CommandKeys.Add(lowerName);
+            command.InitSuggest();
         }
 
         return result;

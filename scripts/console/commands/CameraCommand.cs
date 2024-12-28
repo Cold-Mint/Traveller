@@ -1,15 +1,23 @@
 ﻿using System.Threading.Tasks;
+using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console.commands;
 
 public class CameraCommand : ICommand
 {
     public string Name => Config.CommandNames.Camera;
+    private readonly NodeTree<string> _suggest = new(null);
 
-    public string[][] Suggest =>
-    [
-        ["free"]
-    ];
+
+    public string[] GetAllSuggest(CommandArgs args)
+    {
+        return SuggestUtils.GetAllSuggest(args, _suggest);
+    }
+
+    public void InitSuggest()
+    {
+        _suggest.AddChild("free");
+    }
 
     public async Task<bool> Execute(CommandArgs args)
     {
@@ -25,7 +33,8 @@ public class CameraCommand : ICommand
         }
 
         var type = inputType.ToLowerInvariant();
-        if (type == Suggest[0][0])
+        var free = _suggest.GetChild(0)?.Data;
+        if (type == free)
         {
             //Camera free field of view
             //相机自由视野

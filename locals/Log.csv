@@ -142,5 +142,4 @@ log_map_generator_error,生成地图时出错，错误代码为{0}。,Generating
 log_command_executed_success,命令{0}执行成功。,Command {0} is executed successfully.,コマンド{0}実行成功です。
 log_command_executed_failure,命令{0}执行失败。,Command {0} failed to be executed.,コマンド{0}の実行失敗です。
 log_command_execution,开始执行命令{0}。,Start executing the {0} command.,コマンド{0}を実行します。
-log_too_many_level_requested,请求的建议等级{0}过大，最大不超过{1}。,The recommendation level {0} of the request is too large to exceed {1}.,要求の推奨レベル{0}は過大であり、最大{1}を超えません。
 log_set_overlap_detection_delay,设置重叠检测延迟为{0}。,Set the overlap detection delay to {0}.,オーバーラップ検出遅延を{0}に設定します。

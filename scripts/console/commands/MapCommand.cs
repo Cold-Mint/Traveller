@@ -2,6 +2,7 @@
 using ColdMint.scripts.debug;
 using ColdMint.scripts.map;
 using ColdMint.scripts.map.RoomPlacer;
+using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console.commands;
 
@@ -12,8 +13,20 @@ namespace ColdMint.scripts.console.commands;
 public class MapCommand : ICommand
 {
     public string Name => Config.CommandNames.Map;
-    public string[][] Suggest => [["recreate", "set_overlap_detection_delay"],["def"]];
+    private readonly NodeTree<string> _suggest = new(null);
 
+   
+    public string[] GetAllSuggest(CommandArgs args)
+    {
+        return SuggestUtils.GetAllSuggest(args, _suggest);
+    }
+
+    public void InitSuggest()
+    {
+        _suggest.AddChild("recreate");
+        var setOverlapDetectionDelay = _suggest.AddChild("set_overlap_detection_delay");
+        setOverlapDetectionDelay.AddChild("reset");
+    }
     public async Task<bool> Execute(CommandArgs args)
     {
         if (args.Length < 2)
@@ -28,13 +41,15 @@ public class MapCommand : ICommand
         }
 
         var type = inputType.ToLowerInvariant();
-        if (type == Suggest[0][0])
+        var recreate = _suggest.GetChild(0)?.Data;
+        if (type == recreate)
         {
             await MapGenerator.GenerateMapAsync();
             return true;
         }
 
-        if (type == Suggest[0][1] && args.Length > 2)
+        var setOverlapDetectionDelay = _suggest.GetChild(1)?.Data;
+        if (type == setOverlapDetectionDelay && args.Length > 2)
         {
             PatchworkRoomPlacementStrategy.OverlapDetectionDelay = args.GetInt(2, Config.DefaultOverlapDetectionDelay);
             ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("set_overlap_detection_delay", LogCat.LogLabel.Default,

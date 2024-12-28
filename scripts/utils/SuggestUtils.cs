@@ -8,6 +8,49 @@ namespace ColdMint.scripts.utils;
 public static class SuggestUtils
 {
     /// <summary>
+    /// <para>Obtain the prompt based on the entered command parameters in the node tree.</para>
+    /// <para>在节点树内根据已输入的命令参数获取对应的提示。</para>
+    /// </summary>
+    /// <param name="args"></param>
+    /// <param name="rootNode"></param>
+    /// <returns></returns>
+    public static string[] GetAllSuggest(CommandArgs args, NodeTree<string> rootNode)
+    {
+        string[] emptyArray = [];
+        if (args.Length <= 1)
+        {
+            return emptyArray;
+        }
+
+        //Start the loop with element 1, because we want to remove the command name.
+        //从1号元素开始循环，因为我们要去除命令名。
+        var nextNode = rootNode;
+        for (var i = 1; i < args.Length; i++)
+        {
+            var input = args.GetString(i);
+            if (input == null)
+            {
+                continue;
+            }
+
+            var newNode = nextNode.GetChildByValue(input);
+            if (newNode == null)
+            {
+                return nextNode.GetAllChildren()?? emptyArray;
+            }
+            nextNode = newNode;
+        }
+
+        var resultFromNode = nextNode.GetAllChildren();
+        if (resultFromNode == null)
+        {
+            return emptyArray;
+        }
+
+        return resultFromNode;
+    }
+
+    /// <summary>
     /// <para>In all suggestions, filter suggestions by keyword</para>
     /// <para>在全部的建议内，按照关键字筛选建议</para>
     /// </summary>
@@ -41,13 +84,15 @@ public static class SuggestUtils
             var lowerSuggest = suggest.ToLowerInvariant();
             if (lowerSuggest.StartsWith(lowerKeyword))
             {
-                result.Insert(0, new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
+                result.Insert(0,
+                    new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
                 continue;
             }
 
             if (lowerSuggest.Contains(lowerKeyword))
             {
-                result.Add(new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
+                result.Add(
+                    new AutoCompleteSuggestion(enableBbCode ? RenderKeyword(suggest, keyword) : suggest, suggest));
             }
         }
 
