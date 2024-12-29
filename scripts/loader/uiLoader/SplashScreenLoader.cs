@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.console;
 using ColdMint.scripts.console.commands;
+using ColdMint.scripts.console.dynamicSuggestion;
 using ColdMint.scripts.contribute;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
@@ -80,10 +81,14 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         LogCat.MinLogLevel = Config.IsDebug() ? LogCat.InfoLogLevel : LogCat.DisableAllLogLevel;
         //RegisterCommand
         //注册命令
+        DynamicSuggestionManager.RegisterDynamicSuggestion(new BooleanDynamicSuggestion());
+        DynamicSuggestionManager.RegisterDynamicSuggestion(new ItemDynamicSuggestion());
         CommandManager.RegisterCommand(new MapCommand());
         CommandManager.RegisterCommand(new SeedCommand());
         CommandManager.RegisterCommand(new CameraCommand());
         CommandManager.RegisterCommand(new FogCommand());
+        CommandManager.RegisterCommand(new PlayerCommand());
+        CommandManager.RegisterCommand(new AssetsRegistryCommand());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());

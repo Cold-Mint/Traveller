@@ -16,7 +16,9 @@ public class CameraCommand : ICommand
 
     public void InitSuggest()
     {
-        _suggest.AddChild("free");
+        var free = _suggest.AddChild("free");
+        free.AddChild(DynamicSuggestionManager.CreateDynamicSuggestionReferenceId(Config.DynamicSuggestionID.Boolean));
+        _suggest.AddChild("reset");
     }
 
     public async Task<bool> Execute(CommandArgs args)
@@ -44,7 +46,22 @@ public class CameraCommand : ICommand
                 return false;
             }
 
-            camera2D.FreeVision = !camera2D.FreeVision;
+            camera2D.FreeVision = args.GetBool(2);
+            return true;
+        }
+
+        var reset = _suggest.GetChild(1)?.Data;
+        if (type == reset)
+        {
+            //Revert to the default view
+            //恢复到默认视角
+            var camera2D = GameSceneDepend.Player?.Camera2D;
+            if (camera2D == null)
+            {
+                return false;
+            }
+
+            camera2D.Reset();
             return true;
         }
 

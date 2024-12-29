@@ -49,7 +49,7 @@ public class MapCommand : ICommand
         }
 
         var setOverlapDetectionDelay = _suggest.GetChild(1)?.Data;
-        if (type == setOverlapDetectionDelay && args.Length > 2)
+        if (type == setOverlapDetectionDelay)
         {
             PatchworkRoomPlacementStrategy.OverlapDetectionDelay = args.GetInt(2, Config.DefaultOverlapDetectionDelay);
             ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("set_overlap_detection_delay", LogCat.LogLabel.Default,

@@ -69,8 +69,10 @@ public partial class ConsoleGui : Control
             return;
         }
 
-        var label = new Label();
-        label.Text = message;
+        var label = new Label
+        {
+            Text = message
+        };
         NodeUtils.CallDeferredAddChild(_logContainer, label);
     }
 

@@ -50,6 +50,14 @@ public static class Config
 
         public const string Camera = "camera";
         public const string Fog = "fog";
+        public const string Player = "player";
+        public const string AssetsRegistry = "assetsRegistry";
+    }
+
+    public static class DynamicSuggestionID
+    {
+        public const string Boolean = "Boolean";
+        public const string Item = "Item";
     }
 
     public static class MapGeneratorStopCode

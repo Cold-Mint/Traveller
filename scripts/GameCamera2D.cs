@@ -14,8 +14,37 @@ public partial class GameCamera2D : Camera2D
     /// </summary>
     public bool FreeVision;
 
-    private float _speed = 500;
-    private Vector2 _zoomUnit = new(0.1f, 0.1f);
+    private const float Speed = 500;
+    private readonly Vector2 _zoomUnit = new(0.1f, 0.1f);
+
+    private Vector2? _originalPosition;
+    private Vector2? _originalZoom;
+
+    /// <summary>
+    /// <para>SetOriginalData</para>
+    /// <para>设置原始数据</para>
+    /// </summary>
+    private void SetOriginalData()
+    {
+        _originalPosition = Position;
+        _originalZoom = Zoom;
+    }
+
+    /// <summary>
+    /// <para>Reset to raw data</para>
+    /// <para>重置为原始数据</para>
+    /// </summary>
+    public void Reset()
+    {
+        Position = _originalPosition ?? Vector2.Zero;
+        Zoom = _originalZoom ?? Vector2.One;
+    }
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        SetOriginalData();
+    }
 
     public override void _Process(double delta)
     {
@@ -26,7 +55,7 @@ public partial class GameCamera2D : Camera2D
         }
 
         var velocity = Vector2.Zero;
-        var distance = _speed * (float)delta;
+        var distance = Speed * (float)delta;
         var zoomFactor = Mathf.Max(Zoom.X, Zoom.Y);
         velocity.Y = distance * Input.GetAxis("ui_up", "ui_down") / zoomFactor;
         velocity.X = distance * Input.GetAxis("ui_left", "ui_right") / zoomFactor;

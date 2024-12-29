@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -10,6 +11,8 @@ namespace ColdMint.scripts.inventory;
 public static class ItemTypeManager
 {
     private static Dictionary<string, ItemType> Registry { get; } = [];
+    
+    public static string[] GetAllIds() => Registry.Keys.ToArray();
 
     /// <summary>
     /// <para>Register an item type.</para>

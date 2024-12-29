@@ -143,3 +143,4 @@ log_command_executed_success,命令{0}执行成功。,Command {0} is executed su
 log_command_executed_failure,命令{0}执行失败。,Command {0} failed to be executed.,コマンド{0}の実行失敗です。
 log_command_execution,开始执行命令{0}。,Start executing the {0} command.,コマンド{0}を実行します。
 log_set_overlap_detection_delay,设置重叠检测延迟为{0}。,Set the overlap detection delay to {0}.,オーバーラップ検出遅延を{0}に設定します。
+log_assets_registry_echo,类型为{0}的资产，共{1}条。如下所示：{2},The asset of type {0} has {1} entries. As follows:{2},タイプ{0}のアセットで、{1}条です。次のようになります:{2}

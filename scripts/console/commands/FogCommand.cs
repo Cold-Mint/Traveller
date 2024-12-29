@@ -7,7 +7,7 @@ public class FogCommand : ICommand
 {
     public string Name => Config.CommandNames.Fog;
     private readonly NodeTree<string> _suggest = new(null);
-    
+
     public string[] GetAllSuggest(CommandArgs args)
     {
         return SuggestUtils.GetAllSuggest(args, _suggest);
@@ -15,7 +15,9 @@ public class FogCommand : ICommand
 
     public void InitSuggest()
     {
-        _suggest.AddChild("visible");
+        var visible = _suggest.AddChild("visible");
+        visible.AddChild(
+            DynamicSuggestionManager.CreateDynamicSuggestionReferenceId(Config.DynamicSuggestionID.Boolean));
     }
 
     public async Task<bool> Execute(CommandArgs args)
@@ -41,7 +43,7 @@ public class FogCommand : ICommand
                 return false;
             }
 
-            fog.Visible = !fog.Visible;
+            fog.Visible = args.GetBool(2);
             return true;
         }
 

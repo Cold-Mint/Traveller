@@ -36,8 +36,9 @@ public static class SuggestUtils
             var newNode = nextNode.GetChildByValue(input);
             if (newNode == null)
             {
-                return nextNode.GetAllChildren()?? emptyArray;
+                return InjectionDynamicSuggestion(nextNode.GetAllChildren() ?? emptyArray);
             }
+
             nextNode = newNode;
         }
 
@@ -47,7 +48,35 @@ public static class SuggestUtils
             return emptyArray;
         }
 
-        return resultFromNode;
+        return InjectionDynamicSuggestion(resultFromNode);
+    }
+
+    /// <summary>
+    /// <para>Injection dynamic suggestion</para>
+    /// <para>注入动态建议</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>Expand on the special advice at the beginning of @.</para>
+    ///<para>将@开头的特殊建议扩展开。</para>
+    /// </remarks>
+    /// <param name="allSuggest"></param>
+    private static string[] InjectionDynamicSuggestion(string[] allSuggest)
+    {
+        var extendedAllSuggest = new List<string>();
+        foreach (var suggest in allSuggest)
+        {
+            var dynamicSuggestion = DynamicSuggestionManager.GetDynamicSuggestion(suggest);
+            if (dynamicSuggestion == null)
+            {
+                extendedAllSuggest.Add(suggest);
+            }
+            else
+            {
+                extendedAllSuggest.AddRange(dynamicSuggestion.GetAllSuggest());
+            }
+        }
+
+        return extendedAllSuggest.ToArray();
     }
 
     /// <summary>

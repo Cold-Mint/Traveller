@@ -178,11 +178,9 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>indestructible</para>
     /// <para>是否为无敌的</para>
     /// </summary>
-    [Export]
-    private bool _indestructible; // skipcq:CS-R1137
+    [Export] public bool Indestructible; // skipcq:CS-R1137
 
-    [Export]
-    private string? _lootId; // skipcq:CS-R1137
+    [Export] private string? _lootId; // skipcq:CS-R1137
 
     private HealthBar? _healthBar;
     private Label? _tipLabel;
@@ -196,8 +194,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
 
-    [Export]
-    protected AudioStream[]? DamageSounds;
+    [Export] protected AudioStream[]? DamageSounds;
 
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
@@ -312,6 +309,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             _itemMarkerOriginalX = ItemMarker2D.Position.X;
         }
+
         _animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _pickingArea = GetNodeOrNull<Area2D>("Area2DPickingArea");
         _damageNumber = GetNode<DamageNumberNodeSpawn>("DamageNumber");
@@ -357,10 +355,12 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
+
         if (_audioStreamPlayer2D.IsPlaying())
         {
             return;
         }
+
         _audioStreamPlayer2D.Stream = audioStream;
         _audioStreamPlayer2D.Play();
     }
@@ -375,6 +375,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
+
         var randomIndex = GD.Randi() % DamageSounds.Length;
         PlayAudioStream(DamageSounds[randomIndex]);
     }
@@ -404,6 +405,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
+
         TipLabelUtils.HideTip(_tipLabel);
     }
 
@@ -610,18 +612,20 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <returns></returns>
     public bool Heal(Heal heal)
     {
-        if (CurrentHp <= 0 || _indestructible)
+        if (CurrentHp <= 0 || Indestructible)
         {
             //If the character is dead or invincible, It cannot be healed.
             //如果角色已死亡或者本身是无敌的，那么不能治疗。
             return false;
         }
+
         var nextHp = Math.Min(CurrentHp + heal.HealAmount, MaxHp);
         var actualHealAmount = nextHp - CurrentHp;
         if (actualHealAmount == 0)
         {
             return false;
         }
+
         CurrentHp = nextHp;
         _damageNumber?.DisplayHeal(heal, actualHealAmount);
         UpDataHealthBar();
@@ -643,10 +647,11 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </returns>
     public bool Damage(IDamage damage)
     {
-        if (CurrentHp <= 0 || _indestructible)
+        if (CurrentHp <= 0 || Indestructible)
         {
             return false;
         }
+
         _lastDamageTime = DateTime.UtcNow;
         _damageNumber?.DisplayDamage(damage);
         CurrentHp -= damage.Damage;
@@ -658,6 +663,7 @@ public partial class CharacterTemplate : CharacterBody2D
             OnDie(damage).Start();
             return true;
         }
+
         PlayDamageAudio();
         UpDataHealthBar();
         return false;
@@ -673,7 +679,9 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
-        await LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition);
+
+        await LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId),
+            GlobalPosition);
     }
 
 
@@ -698,7 +706,6 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected virtual void OnHeal(Heal heal)
     {
-
     }
 
     /// <summary>
@@ -724,6 +731,7 @@ public partial class CharacterTemplate : CharacterBody2D
                     damage.Attacker.Name);
             }
         }
+
         ThrowAllItemOnDie();
         await CreateLootObject();
         QueueFree();
@@ -862,6 +870,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             return;
         }
+
         originalItem.OnThrow?.Invoke(node2D, velocity);
         item.ItemContainer = null;
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node2D, GetNode("/root")), node2D);
@@ -871,6 +880,7 @@ public partial class CharacterTemplate : CharacterBody2D
             {
                 return;
             }
+
             pickAbleTemplate.LoadResource();
             pickAbleTemplate.OwnerNode = this;
             pickAbleTemplate.Picked = false;
@@ -880,6 +890,7 @@ public partial class CharacterTemplate : CharacterBody2D
             pickAbleTemplate.EnabledCollisionShape2D();
             pickAbleTemplate.Freeze = false;
         }
+
         node2D.ProcessMode = ProcessModeEnum.Inherit;
         node2D.Show();
         //We apply force to objects.

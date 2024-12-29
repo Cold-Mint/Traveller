@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ColdMint.scripts.inventory;
 using Godot;
@@ -25,6 +26,7 @@ public static class LootListManager
         {
             return false;
         }
+
         return LootListDictionary.TryAdd(id, lootList);
     }
 
@@ -78,6 +80,10 @@ public static class LootListManager
                 }
             }
         }
+
         return await Task.FromResult(result.ToArray());
     }
+
+
+    public static string[] GetAllIds() => LootListDictionary.Keys.ToArray();
 }
