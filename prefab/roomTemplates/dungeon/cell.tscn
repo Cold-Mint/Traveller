@@ -116,3 +116,6 @@ shape = SubResource("RectangleShape2D_kiih8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
 position = Vector2(523, 191.5)
 shape = SubResource("RectangleShape2D_kfmgh")
+
+[node name="PlayerTransportPoint" type="Marker2D" parent="."]
+position = Vector2(412, 273)

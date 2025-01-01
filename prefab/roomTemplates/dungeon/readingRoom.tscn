@@ -88,3 +88,6 @@ shape = SubResource("RectangleShape2D_kfmgh")
 
 [node name="Jar" parent="." instance=ExtResource("3_n4mbs")]
 position = Vector2(529, 174)
+
+[node name="PlayerTransportPoint" type="Marker2D" parent="."]
+position = Vector2(336, 145)

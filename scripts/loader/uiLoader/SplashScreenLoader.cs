@@ -83,12 +83,14 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         //注册命令
         DynamicSuggestionManager.RegisterDynamicSuggestion(new BooleanDynamicSuggestion());
         DynamicSuggestionManager.RegisterDynamicSuggestion(new ItemDynamicSuggestion());
+        DynamicSuggestionManager.RegisterDynamicSuggestion(new RoomDynamicSuggestion());
         CommandManager.RegisterCommand(new MapCommand());
         CommandManager.RegisterCommand(new SeedCommand());
         CommandManager.RegisterCommand(new CameraCommand());
         CommandManager.RegisterCommand(new FogCommand());
         CommandManager.RegisterCommand(new PlayerCommand());
         CommandManager.RegisterCommand(new AssetsRegistryCommand());
+        CommandManager.RegisterCommand(new RoomCommand());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());

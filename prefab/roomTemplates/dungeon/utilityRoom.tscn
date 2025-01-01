@@ -116,3 +116,6 @@ position = Vector2(54, 75)
 
 [node name="Jar2" parent="." instance=ExtResource("4_qdje2")]
 position = Vector2(76, 75)
+
+[node name="PlayerTransportPoint" type="Marker2D" parent="."]
+position = Vector2(322, 297)

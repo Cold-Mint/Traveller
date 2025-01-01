@@ -170,3 +170,6 @@ shape = SubResource("RectangleShape2D_o4dgl")
 position = Vector2(434, 105)
 script = ExtResource("4_fh50l")
 _itemIdList = PackedStringArray("x3")
+
+[node name="PlayerTransportPoint" type="Marker2D" parent="."]
+position = Vector2(118, 232)

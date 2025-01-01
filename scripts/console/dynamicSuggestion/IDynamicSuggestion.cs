@@ -16,7 +16,7 @@ public interface IDynamicSuggestion
     /// <param name="input"></param>
     /// <returns></returns>
     public bool Match(string input);
-    
+
     /// <summary>
     /// <para>Gets the actual value provided by the dynamic recommendation</para>
     /// <para>获取动态建议提供的实际值</para>

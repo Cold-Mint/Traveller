@@ -40,24 +40,45 @@ public static class Config
         /// <para>Map</para>
         /// <para>地图相关命令</para>
         /// </summary>
+        /// <remarks>
+        ///<para>Set the map generation parameters to regenerate the map</para>
+        ///<para>设置地图生成参数，重新生成地图</para>
+        /// </remarks>
         public const string Map = "map";
 
         /// <summary>
-        /// <para>Seed</para>
-        /// <para>查看世界种子</para>
+        /// <para>World seed related orders</para>
+        /// <para>世界种子相关命令</para>
         /// </summary>
+        /// <remarks>
+        ///<para>View, set, or redistribute world seeds</para>
+        ///<para>查看，设置，或重新分配世界种子</para>
+        /// </remarks>
         public const string Seed = "seed";
-
+        /// <summary>
+        /// <para>Camera related commands</para>
+        /// <para>相机相关命令</para>
+        /// </summary>
+        /// <remarks>
+        ///<para>Open free perspective</para>
+        ///<para>开启自由视角</para>
+        /// </remarks>
         public const string Camera = "camera";
+        /// <summary>
+        /// <para>Fog related command</para>
+        /// <para>迷雾相关命令</para>
+        /// </summary>
         public const string Fog = "fog";
         public const string Player = "player";
         public const string AssetsRegistry = "assetsRegistry";
+        public const string Room = "room";
     }
 
     public static class DynamicSuggestionID
     {
         public const string Boolean = "Boolean";
         public const string Item = "Item";
+        public const string Room = "Room";
     }
 
     public static class MapGeneratorStopCode

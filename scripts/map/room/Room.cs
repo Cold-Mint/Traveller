@@ -29,6 +29,7 @@ public class Room
     private PointLight2D? _pointLight2D;
     private CollisionShape2D? _collisionShape2D;
     private bool _hasPlayer;
+
     /// <summary>
     /// <para>All the characters in the room</para>
     /// <para>房间内的所有角色</para>
@@ -81,6 +82,7 @@ public class Room
         {
             return;
         }
+
         barrier.Enabled = true;
     }
 
@@ -95,6 +97,7 @@ public class Room
         {
             return;
         }
+
         barrier.Enabled = false;
     }
 
@@ -131,14 +134,17 @@ public class Room
                 {
                     return;
                 }
+
                 var cellSourceId = barrier.GetCellSourceId(i);
                 if (cellSourceId == -1)
                 {
                     return;
                 }
+
                 ground.SetCell(i, cellSourceId, barrier.GetCellAtlasCoords(i), barrier.GetCellAlternativeTile(i));
             });
         }
+
         barrier.Enabled = false;
     }
 
@@ -195,6 +201,7 @@ public class Room
                 _pointLight2D.Show();
                 _pointLight2D.Texture = AssetHolder.White100;
             }
+
             GameSceneDepend.ShowMiniMap();
             GameSceneDepend.GameGuiTemplate?.MiniMap?.ShowRoomPreview(this);
             ShowAllCharacterTemplate();
@@ -248,6 +255,7 @@ public class Room
                 _pointLight2D.Show();
                 _pointLight2D.Texture = AssetHolder.White25;
             }
+
             HideAllCharacterTemplate();
             if (_waveManager.HasSpawnedEntity && _autoSpawn != null)
             {
@@ -257,6 +265,7 @@ public class Room
                     {
                         marker.DoQueueFree();
                     }
+
                     return false;
                 });
             }
@@ -288,7 +297,6 @@ public class Room
     public Area2D? RoomArea2D
     {
         get => _roomArea2D;
-        set => _roomArea2D = value;
     }
 
     public PackedScene? RoomScene
@@ -296,6 +304,10 @@ public class Room
         get => default;
         set => AnalyzeRoomData(value);
     }
+
+    private Marker2D? _playerTransportPoint;
+
+    public Marker2D? PlayerTransportPoint => _playerTransportPoint;
 
 
     /// <summary>
@@ -338,11 +350,9 @@ public class Room
         if (_spawnArea2D != null)
         {
             _spawnArea2D.SetCollisionMaskValue(Config.LayerNumber.Player, true);
-            _spawnArea2D.BodyEntered += async body =>
-            {
-                await OnEnterSpawnAreaAsync(body);
-            };
+            _spawnArea2D.BodyEntered += async body => { await OnEnterSpawnAreaAsync(body); };
         }
+
         _collisionShape2D = _roomArea2D.GetChild<CollisionShape2D>(0);
         _roomSlots = GetRoomSlots(GetTileMapLayer(Config.TileMapLayerName.Ground), _roomArea2D,
             rootNode.GetNode<Node2D>("RoomSlotList"));
@@ -351,7 +361,9 @@ public class Room
         {
             _pointLight2D.BlendMode = Light2D.BlendModeEnum.Mix;
         }
+
         _autoSpawn = rootNode.GetNodeOrNull<Node2D>("AutoSpawn");
+        _playerTransportPoint = rootNode.GetNodeOrNull<Marker2D>("PlayerTransportPoint");
     }
 
     private async Task OnEnterSpawnAreaAsync(Node2D body)
@@ -360,10 +372,12 @@ public class Room
         {
             return;
         }
+
         if (body is not Player)
         {
             return;
         }
+
         _waveManager.OnWaveStart += async void () =>
         {
             try
