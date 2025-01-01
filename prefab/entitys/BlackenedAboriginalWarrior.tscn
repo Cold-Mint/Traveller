@@ -40,7 +40,7 @@ RequiredForWaveAdvance = null
 _initialHp = null
 MaxHp = 40
 CampId = "Mazoku"
-_indestructible = null
+Indestructible = null
 _lootId = "normal"
 DamageSounds = Array[AudioStream]([])
 

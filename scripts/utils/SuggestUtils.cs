@@ -28,18 +28,51 @@ public static class SuggestUtils
         for (var i = 1; i < args.Length; i++)
         {
             var input = args.GetString(i);
-            if (input == null)
+            if (string.IsNullOrEmpty(input))
             {
                 continue;
             }
 
-            var newNode = nextNode.GetChildByValue(input);
-            if (newNode == null)
+            var inputLower = input.ToLowerInvariant();
+            nextNode.ForEachChildren(node =>
             {
-                return InjectionDynamicSuggestion(nextNode.GetAllChildren() ?? emptyArray);
-            }
+                if (node == null)
+                {
+                    //A null node is encountered, and the loop exits.
+                    //遇到某个节点为null，则跳出循环。
+                    return false;
+                }
 
-            nextNode = newNode;
+                var data = node.Data;
+                if (data == null)
+                {
+                    //If the data of a node is null, the loop exits.
+                    //遇到某个节点数据为null，则跳出循环。
+                    return false;
+                }
+
+                var dynamicSuggestion = DynamicSuggestionManager.GetDynamicSuggestion(data);
+                if (dynamicSuggestion == null)
+                {
+                    //Failed to obtain dynamic suggestion. Procedure
+                    //动态建议获取失败。
+                    if (data == inputLower)
+                    {
+                        nextNode = node;
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (dynamicSuggestion.Match(input))
+                    {
+                        nextNode = node;
+                        return false;
+                    }
+                }
+
+                return true;
+            });
         }
 
         var resultFromNode = nextNode.GetAllChildren();

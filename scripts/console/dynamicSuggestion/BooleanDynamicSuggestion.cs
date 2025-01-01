@@ -1,4 +1,6 @@
-﻿namespace ColdMint.scripts.console.dynamicSuggestion;
+﻿using System.Linq;
+
+namespace ColdMint.scripts.console.dynamicSuggestion;
 
 /// <summary>
 /// <para>Gets a logical dynamic suggestion value</para>
@@ -7,6 +9,8 @@
 public class BooleanDynamicSuggestion : IDynamicSuggestion
 {
     public string ID => Config.DynamicSuggestionID.Boolean;
+
+    public bool Match(string input) => GetAllSuggest().Any(suggest => suggest == input);
 
     public string[] GetAllSuggest()
     {

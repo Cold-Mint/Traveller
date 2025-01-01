@@ -7,6 +7,15 @@ public interface IDynamicSuggestion
     /// <para>动态建议应该有ID</para>
     /// </summary>
     public string ID { get; }
+
+
+    /// <summary>
+    /// <para>Check whether the entered content matches the dynamic suggestion</para>
+    /// <para>输入的内容是否匹配动态建议</para>
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public bool Match(string input);
     
     /// <summary>
     /// <para>Gets the actual value provided by the dynamic recommendation</para>

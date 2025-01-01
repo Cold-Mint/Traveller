@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ColdMint.scripts;
@@ -43,6 +44,25 @@ public class NodeTree<T>(T? data)
         List<T> childrenList = [];
         childrenList.AddRange(_children.Select(nodeTree => nodeTree.Data).OfType<T>());
         return childrenList.ToArray();
+    }
+
+    /// <summary>
+    /// <para>Traversing child nodes (not traversing subtrees)</para>
+    /// <para>遍历子节点（不会遍历子树）</para>
+    /// </summary>
+    /// <param name="callback">
+    ///<para>Returns the child's callback. If false is returned within the callback method, the loop is terminated</para>
+    ///<para>返回子节点的回调，若在回调方法内返回false，则终止循环</para>
+    /// </param>
+    public void ForEachChildren(Func<NodeTree<T>?, bool> callback)
+    {
+        foreach (var nodeTree in _children)
+        {
+            if (callback.Invoke(nodeTree) == false)
+            {
+                return;
+            }
+        }
     }
 
     /// <summary>

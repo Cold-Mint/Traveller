@@ -11,7 +11,7 @@ namespace ColdMint.scripts.inventory;
 public static class ItemTypeManager
 {
     private static Dictionary<string, ItemType> Registry { get; } = [];
-    
+
     public static string[] GetAllIds() => Registry.Keys.ToArray();
 
     /// <summary>
@@ -84,7 +84,14 @@ public static class ItemTypeManager
 
         return items.ToArray();
     }
-
+    
+    /// <summary>
+    /// <para>Whether an item is included</para>
+    /// <para>是否包含某个物品</para>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static bool Contains(string id) => Registry.ContainsKey(id);
 
     /// <summary>
     /// <para>Obtain the icon based on the ID</para>
@@ -98,11 +105,12 @@ public static class ItemTypeManager
         {
             return null;
         }
+
         if (Registry.TryGetValue(id, out var itemType))
         {
             return itemType.Icon;
         }
+
         return null;
     }
-
 }
