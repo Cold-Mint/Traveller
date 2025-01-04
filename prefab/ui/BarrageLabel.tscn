@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgtfeppebswov"]
+
+[ext_resource type="Script" path="res://scripts/barrage/BarrageLabel.cs" id="1_38wfb"]
+
+[node name="BarrageLabel" type="RichTextLabel" node_paths=PackedStringArray("_visibleOnScreenNotifier2D")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+fit_content = true
+script = ExtResource("1_38wfb")
+_visibleOnScreenNotifier2D = NodePath("VisibleOnScreenNotifier2D")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(0, 0, 20, 20)

@@ -58,7 +58,7 @@ public class NodeTree<T>(T? data)
     {
         foreach (var nodeTree in _children)
         {
-            if (callback.Invoke(nodeTree) == false)
+            if (!callback.Invoke(nodeTree))
             {
                 return;
             }
