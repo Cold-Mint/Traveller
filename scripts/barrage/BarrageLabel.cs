@@ -12,7 +12,7 @@ public partial class BarrageLabel : RichTextLabel, IPoolable
     [Export] private VisibleOnScreenNotifier2D? _visibleOnScreenNotifier2D;
 
     private bool _recycle;
-    private Vector2 _speed = new(-50, 0);
+    private readonly Vector2 _barrageVelocity = new(-Config.BarrageSpeed, 0);
 
     public override void _Ready()
     {
@@ -56,6 +56,7 @@ public partial class BarrageLabel : RichTextLabel, IPoolable
     private void VisibleOnScreenNotifier2DOnScreenExited()
     {
         _recycle = true;
+        Visible = false;
     }
 
     private void VisibleOnScreenNotifier2DOnScreenEntered()
@@ -70,11 +71,17 @@ public partial class BarrageLabel : RichTextLabel, IPoolable
         {
             return;
         }
-        Position += _speed * (float)delta;
+
+        Position += _barrageVelocity * (float)delta;
     }
 
     public bool CanRecycle()
     {
         return _recycle;
+    }
+
+    public void OnRecycle()
+    {
+        Visible = true;
     }
 }

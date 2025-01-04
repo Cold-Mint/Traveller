@@ -15,4 +15,10 @@ public interface IPoolable
     ///<para>如果返回true，则会将此对象放入对象池的末尾，并且复用该对象</para>
     /// </returns>
     bool CanRecycle();
+    
+    /// <summary>
+    /// <para>Called when a node is reclaimed</para>
+    /// <para>当节点被回收时调用</para>
+    /// </summary>
+    void OnRecycle();
 }

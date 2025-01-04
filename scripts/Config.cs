@@ -180,6 +180,12 @@ public static class Config
     public const float RoomPreviewScale = 3f;
 
     /// <summary>
+    /// <para>Barrage velocity</para>
+    /// <para>弹幕速度</para>
+    /// </summary>
+    public const float BarrageSpeed = 50;
+    
+    /// <summary>
     /// <para>How much blood does a heart represent</para>
     /// <para>一颗心代表多少血量</para>
     /// </summary>

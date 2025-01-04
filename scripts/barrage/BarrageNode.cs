@@ -14,9 +14,10 @@ public partial class BarrageNode : Control
 {
 	[Export] private PackedScene? _packedScene;
 	private readonly BarrageLabelPool _barrageLabelPool = new();
-	private readonly List<BarrageData> _barrageDataList = new();
+	private readonly List<BarrageData> _barrageDataList = [];
 	private int _index;
 	private DateTime _nextLaunchTime = DateTime.MinValue;
+	private RandomNumberGenerator _randomNumberGenerator = new();
 
 	public override void _Ready()
 	{
@@ -50,9 +51,10 @@ public partial class BarrageNode : Control
 			NodeUtils.CallDeferredAddChild(this, barrageLabel);
 		}
 
-		var position = new Vector2(0, RandomUtils.Instance.Next(0, 50));
+		barrageLabel.SetLabelText(barrageData.Text);
+		var position = new Vector2(-barrageLabel.GetContentWidth(),
+			_randomNumberGenerator.RandfRange(0, GetWindow().Size.Y * 0.6f));
 		barrageLabel.Position = position;
-		barrageLabel.Text = barrageData.Text;
 		_nextLaunchTime = nowTime.Add(barrageData.Duration);
 		_index = (_index + 1) % _barrageDataList.Count;
 	}

@@ -28,16 +28,15 @@ public abstract class ObjectPool<T> where T : IPoolable
     /// <returns></returns>
     public T? AcquirePoolable(out bool isNew)
     {
-        if (_poolQueue.TryPeek(out var poolableAtFront) && poolableAtFront?.CanRecycle() == true)
+        if (_poolQueue.TryPeek(out var poolableAtFront) && poolableAtFront?.CanRecycle() == true &&
+            _poolQueue.TryDequeue(out var poolableToUse))
         {
-            if (_poolQueue.TryDequeue(out var poolableToUse))
-            {
-                //Retrieves the reusable object from the beginning of the queue
-                //从队列开头取出可复用对象
-                _poolQueue.Enqueue(poolableToUse);
-                isNew = false;
-                return poolableToUse;
-            }
+            //Retrieves the reusable object from the beginning of the queue
+            //从队列开头取出可复用对象
+            _poolQueue.Enqueue(poolableToUse);
+            isNew = false;
+            poolableToUse?.OnRecycle();
+            return poolableToUse;
         }
 
         var poolable = InstantiatePoolable();
