@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.map;
 using ColdMint.scripts.utils;
 
@@ -42,7 +43,7 @@ public class SeedCommand : ICommand
         var get = _suggest.GetChild(0)?.Data;
         if (type == get)
         {
-            ConsoleGui.Instance?.Echo(MapGenerator.Seed);
+            ConsoleGui.Instance?.Echo(LogCat.Log(MapGenerator.Seed));
             return Task.FromResult(true);
         }
 
