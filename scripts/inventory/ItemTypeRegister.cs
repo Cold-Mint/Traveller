@@ -65,38 +65,8 @@ public static class ItemTypeRegister
     /// </param>
     private static void RegisterTypeInfo(ItemTypeInfo typeInfo)
     {
-        //Load scene and icon
-        //加载场景和图标
-        var scene = ResourceLoader.Load<PackedScene>(typeInfo.ScenePath);
-        var icon = ResourceLoader.Load<Texture2D>(typeInfo.IconPath);
-        //构造项目类型，寄存器
-        //construct item type, register
-        var itemType = new ItemType(typeInfo.Id,
-            icon, typeInfo.MaxStackValue, typeInfo.Type, defaultParentNode =>
-            {
-                var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
-                if (newItem is not Node node) return newItem;
-                if (defaultParentNode == null)
-                {
-                    node.QueueFree();
-                    return null;
-                }
-
-                newItem.Id = typeInfo.Id;
-                NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
-                return newItem;
-            });
-        var succeed = ItemTypeManager.Register(itemType);
-        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, itemType.Id,
+        var succeed = ItemTypeManager.Register(typeInfo);
+        LogCat.LogWithFormat("register_item", label: LogCat.LogLabel.Default, typeInfo.Id,
             succeed);
     }
-
-    //Use for yaml deserialization
-    //用于yaml反序列化
-    private record struct ItemTypeInfo(
-        string Id,
-        string ScenePath,
-        string IconPath,
-        int MaxStackValue,
-        int Type = Config.ItemTypeCode.Unknown);
 }

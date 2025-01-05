@@ -81,6 +81,15 @@ public static class Config
     public static class ItemTypeCode
     {
         /// <summary>
+        /// <para>All</para>
+        /// <para>全部</para>
+        /// </summary>
+        /// <remarks>
+        ///<para>Special item type code, do not set the item type code to All.</para>
+        ///<para>特殊的物品类型代码，不要将物品的类型代码设置为All。</para>
+        /// </remarks>
+        public const int All = -1;
+        /// <summary>
         /// <para>Unknown type</para>
         /// <para>未知类型</para>
         /// </summary>

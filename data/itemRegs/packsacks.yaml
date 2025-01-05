@@ -11,4 +11,4 @@
   scene_path: res://prefab/packsacks/PortableBackpacks.tscn
   icon_path: res://sprites/PortableBackpacks.png
   max_stack_value: 1
-  type: 3
+  type_code: 3

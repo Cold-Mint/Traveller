@@ -20,12 +20,6 @@ public class AssetsRegistryCommand : ICommand
     private readonly Dictionary<string, int> _itemTypeCodeDictionary = new();
     private readonly Dictionary<int, string> _itemTypeCodeDictionaryReverse = new();
 
-    /// <summary>
-    /// <para>Does not distinguish item types</para>
-    /// <para>不区分物品类型</para>
-    /// </summary>
-    private const int ItemTypeCodeAll = -1;
-
     public void InitSuggest()
     {
         InitItemTypeCodeDictionary();
@@ -49,8 +43,6 @@ public class AssetsRegistryCommand : ICommand
     {
         var itemTypeCodeType = typeof(Config.ItemTypeCode);
         var fields = itemTypeCodeType.GetFields(BindingFlags.Public | BindingFlags.Static);
-        _itemTypeCodeDictionary.Add("all", ItemTypeCodeAll);
-        _itemTypeCodeDictionaryReverse.Add(ItemTypeCodeAll, "all");
         foreach (var field in fields)
         {
             var value = field.GetValue(null);
@@ -116,49 +108,31 @@ public class AssetsRegistryCommand : ICommand
             }
 
             var itemTypeCode = args.GetString(3);
-            var itemTypeCodeInt = ItemTypeCodeAll;
+            var itemTypeCodeInt = Config.ItemTypeCode.All;
             if (!string.IsNullOrEmpty(itemTypeCode))
             {
                 itemTypeCodeInt = _itemTypeCodeDictionary[itemTypeCode];
             }
 
-            var allItemType = ItemTypeManager.GetAllItemType();
             var result = new List<string>();
             if (enableSimpleMode)
             {
-                foreach (var itemType in allItemType)
-                {
-                    if (itemTypeCodeInt == ItemTypeCodeAll)
-                    {
-                        result.Add(itemType.Id);
-                        continue;
-                    }
-
-                    var typeCode = itemType.ItemTypeCode;
-                    if (typeCode == itemTypeCodeInt)
-                    {
-                        result.Add(itemType.Id);
-                    }
-                }
-
-                PrintArray(item, result.ToArray());
+                PrintArray(item, ItemTypeManager.GetAllIds(itemTypeCodeInt));
                 return true;
             }
 
+            var allItemType = ItemTypeManager.GetAllItemType();
             foreach (var itemType in allItemType)
             {
-                if (itemTypeCodeInt == ItemTypeCodeAll)
+                if (itemTypeCodeInt == Config.ItemTypeCode.All)
                 {
-                    result.Add(itemType.Id + "(" +
-                               _itemTypeCodeDictionaryReverse.GetValueOrDefault(itemType.ItemTypeCode) + ")");
+                    result.Add(PrintItemType(itemType));
                     continue;
                 }
 
-                var typeCode = itemType.ItemTypeCode;
-                if (typeCode == itemTypeCodeInt)
+                if (itemType.TypeCode == itemTypeCodeInt)
                 {
-                    result.Add(itemType.Id + "(" +
-                               _itemTypeCodeDictionaryReverse.GetValueOrDefault(itemType.ItemTypeCode) + ")");
+                    result.Add(PrintItemType(itemType));
                 }
             }
 
@@ -188,6 +162,12 @@ public class AssetsRegistryCommand : ICommand
         }
 
         return false;
+    }
+
+    private string PrintItemType(ItemTypeInfo itemTypeInfo)
+    {
+        return itemTypeInfo.Id + "|" + _itemTypeCodeDictionaryReverse[itemTypeInfo.TypeCode] + "|" +
+               itemTypeInfo.ScenePath;
     }
 
     private void PrintArray(string type, string[] array)

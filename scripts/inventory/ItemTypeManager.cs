@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ColdMint.scripts.utils;
 using Godot;
 
 namespace ColdMint.scripts.inventory;
@@ -10,11 +11,13 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public static class ItemTypeManager
 {
-    private static Dictionary<string, ItemType> Registry { get; } = [];
+    private static readonly Dictionary<string, ItemTypeInfo> Registry = [];
+    private static readonly Dictionary<int, List<string>> TypeCodeToIds = [];
 
-    public static ItemType[] GetAllItemType() => Registry.Values.ToArray();
+    public static ItemTypeInfo[] GetAllItemType() => Registry.Values.ToArray();
 
-    public static string[] GetAllIds() => Registry.Keys.ToArray();
+    public static string[] GetAllIds(int typeCode = Config.ItemTypeCode.All) =>
+        TypeCodeToIds.TryGetValue(typeCode, out var ids) ? ids.ToArray() : [];
 
     /// <summary>
     /// <para>Register an item type.</para>
@@ -25,7 +28,33 @@ public static class ItemTypeManager
     /// <returns><para>Whether the registration was successful.</para>
     /// <para>注册是否成功。</para>
     /// </returns>
-    public static bool Register(ItemType itemType) => Registry.TryAdd(itemType.Id, itemType);
+    public static bool Register(ItemTypeInfo itemType)
+    {
+        if (!Registry.TryAdd(itemType.Id, itemType))
+        {
+            return false;
+        }
+
+        if (TypeCodeToIds.TryGetValue(itemType.TypeCode, out var ids))
+        {
+            ids.Add(itemType.Id);
+        }
+        else
+        {
+            TypeCodeToIds.Add(itemType.TypeCode, [itemType.Id]);
+        }
+
+        if (TypeCodeToIds.TryGetValue(Config.ItemTypeCode.All, out var allIds))
+        {
+            allIds.Add(itemType.Id);
+        }
+        else
+        {
+            TypeCodeToIds.Add(Config.ItemTypeCode.All, [itemType.Id]);
+        }
+
+        return true;
+    }
 
     /// <summary>
     /// <para>Creates a new instance of the item registered to the given id.</para>
@@ -44,10 +73,25 @@ public static class ItemTypeManager
     ///<para>父节点</para>
     /// </param>
     /// <seealso cref="CreateItems"/>
-    public static IItem? CreateItem(string id, Node? defaultParentNode = null) =>
-        Registry.TryGetValue(id, out var itemType)
-            ? itemType.CreateItemFunc(defaultParentNode)
-            : null;
+    public static IItem? CreateItem(string id, Node? defaultParentNode = null)
+    {
+        if (!Registry.TryGetValue(id, out var itemType))
+        {
+            return null;
+        }
+
+        var newItem = NodeUtils.InstantiatePackedScene<IItem>(GD.Load<PackedScene>(itemType.ScenePath));
+        if (newItem is not Node node) return newItem;
+        if (defaultParentNode == null)
+        {
+            node.QueueFree();
+            return null;
+        }
+
+        newItem.Id = itemType.Id;
+        NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
+        return newItem;
+    }
 
 
     /// <summary>
@@ -108,11 +152,6 @@ public static class ItemTypeManager
             return null;
         }
 
-        if (Registry.TryGetValue(id, out var itemType))
-        {
-            return itemType.Icon;
-        }
-
-        return null;
+        return Registry.TryGetValue(id, out var itemType) ? GD.Load<Texture2D>(itemType.IconPath) : null;
     }
 }

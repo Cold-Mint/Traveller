@@ -11,18 +11,18 @@
   scene_path: res://prefab/weapons/StaffNecromancy.tscn
   icon_path: res://sprites/weapon/StaffNecromancy_Icon.png
   max_stack_value: 1
-  type: 1
+  type_code: 1
 #iron_axe
 #铁斧子
 - id: iron_axe
   scene_path: res://prefab/weapons/IronAxe.tscn
   icon_path: res://sprites/weapon/StaffNecromancy_Icon.png
   max_stack_value: 1
-  type: 1
+  type_code: 1
 #beginner_staff
 #初学者法杖
 - id: beginner_staff
   scene_path: res://prefab/weapons/BeginnerStaff.tscn
   icon_path: res://sprites/weapon/BeginnerStaff_Icon.png
   max_stack_value: 1
-  type: 1
+  type_code: 1
