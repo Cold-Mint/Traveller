@@ -74,6 +74,35 @@ public static class Config
         public const string Room = "room";
     }
 
+    /// <summary>
+    /// <para>Item type code</para>
+    /// <para>物品类型代码</para>
+    /// </summary>
+    public static class ItemTypeCode
+    {
+        /// <summary>
+        /// <para>Unknown type</para>
+        /// <para>未知类型</para>
+        /// </summary>
+        public const int Unknown = 0;
+        /// <summary>
+        /// <para>Weapon</para>
+        /// <para>武器</para>
+        /// </summary>
+        public const int Weapon = 1;
+        /// <summary>
+        /// <para>Spell</para>
+        /// <para>法术</para>
+        /// </summary>
+        public const int Spell = 2;
+
+        /// <summary>
+        /// <para>Backpack</para>
+        /// <para>背包</para>
+        /// </summary>
+        public const int Backpack = 3;
+    }
+    
     public static class DynamicSuggestionID
     {
         public const string Boolean = "Boolean";

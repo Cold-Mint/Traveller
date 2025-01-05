@@ -8,23 +8,29 @@
   scene_path: res://prefab/magics/curseOfTheUndead.tscn
   icon_path: res://sprites/projectile/curseOfTheUndead.png
   max_stack_value: 1
+  type: 2
 - id: x3
   scene_path: res://prefab/magics/x3.tscn
   icon_path: res://sprites/projectile/x3.png
   max_stack_value: 1
+  type: 2
 - id: curse
   scene_path: res://prefab/magics/curse.tscn
   icon_path: res://sprites/projectile/x3.png
   max_stack_value: 1
+  type: 2
 - id: magic_missile
   scene_path: res://prefab/magics/magicMissile.tscn
   icon_path: res://sprites/projectile/magicMissile.png
   max_stack_value: 1
+  type: 2
 - id: tracking_spell
   scene_path: res://prefab/magics/trackingSpell.tscn
   icon_path: res://sprites/projectile/trackingSpell.png
   max_stack_value: 1
+  type: 2
 - id: damage_area_spell
   scene_path: res://prefab/magics/damageAreaSpell.tscn
   icon_path: res://sprites/projectile/trackingSpell.png
   max_stack_value: 1
+  type: 2

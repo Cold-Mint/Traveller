@@ -30,9 +30,6 @@ log_loot_data_add,生成战利品{0},Add loot {0},戦利品{0}を生成する
 log_warning_node_cannot_cast_to,创建的物品{0}无法被转型为类型{1},Created items {0} cannot be cast into type {1},作成されたアイテム {0} をタイプ {1} にキャストすることはできません。
 log_start_item_register_from_file,开始从文件注册物品信息,Start registering item information from files,アイテム情報をファイルから登録開始
 log_start_loot_register_from_file,开始从文件注册战利品表,Start registering loot tables from files,書類から戦利品リストの登録を開始します
-log_found_files,找到{0}个文件,Found {0} files,{0}ファイルが見つかりました
-log_found_item_types,从文件中找到{0}个物品类型,Found {0} item types in files,ファイルから{0}個のアイテム・タイプが見つかった
-log_found_loots,从文件中找到{0}个战利品表,Found {0} loot table from file,{0}個の戦利品表を見つけました
 log_register_item,注册物品类型{0}结果为{1},Registered item type {0}; results in {1},登録されたアイテム・タイプ {0} の結果は {1} です。
 log_wrong_custom_arg,不匹配的参数：类型为{0}而值为{1},Mismatched parameter: type {0} and value {1},パラメータの不一致：型{0}と値{1}。
 log_item_container_is_null,物品容器为空,Item container is null,アイテム・コンテナが空です

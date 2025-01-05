@@ -7,6 +7,7 @@ public readonly struct ItemType(
     string id,
     Texture2D? icon,
     int maxStackQuantity,
+    int itemTypeCode,
     Func<Node?, IItem?> createItemFunc
 )
 {
@@ -15,6 +16,8 @@ public readonly struct ItemType(
     /// <para>该类型物品的id</para>
     /// </summary>
     public string Id { get; init; } = id;
+
+    public int ItemTypeCode { get; init; } = itemTypeCode;
 
     /// <summary>
     /// <para>A function returns a new item instance of this type</para>

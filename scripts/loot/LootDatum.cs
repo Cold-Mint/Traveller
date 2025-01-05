@@ -8,8 +8,5 @@
 /// <param name="Quantity"></param>
 public readonly record struct LootDatum(string ItemId, int Quantity)
 {
-    public (string id, int quantity) Value
-    {
-        get => (ItemId, Quantity);
-    }
+    public (string id, int quantity) Value => (ItemId, Quantity);
 }

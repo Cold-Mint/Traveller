@@ -22,12 +22,7 @@ public static class LootListManager
     public static bool RegisterLootList(LootList lootList)
     {
         var id = lootList.Id;
-        if (string.IsNullOrEmpty(id))
-        {
-            return false;
-        }
-
-        return LootListDictionary.TryAdd(id, lootList);
+        return !string.IsNullOrEmpty(id) && LootListDictionary.TryAdd(id, lootList);
     }
 
     /// <summary>
@@ -43,7 +38,7 @@ public static class LootListManager
 
     /// <summary>
     /// <para>Generate an loot data.</para>
-    /// <para>获取掉落物品</para>
+    /// <para>获取掉落物品数据</para>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>

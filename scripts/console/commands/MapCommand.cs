@@ -15,7 +15,7 @@ public class MapCommand : ICommand
     public string Name => Config.CommandNames.Map;
     private readonly NodeTree<string> _suggest = new(null);
 
-   
+
     public string[] GetAllSuggest(CommandArgs args)
     {
         return SuggestUtils.GetAllSuggest(args, _suggest);
@@ -27,6 +27,7 @@ public class MapCommand : ICommand
         var setOverlapDetectionDelay = _suggest.AddChild("set_overlap_detection_delay");
         setOverlapDetectionDelay.AddChild("reset");
     }
+
     public async Task<bool> Execute(CommandArgs args)
     {
         if (args.Length < 2)
@@ -52,7 +53,7 @@ public class MapCommand : ICommand
         if (type == setOverlapDetectionDelay)
         {
             PatchworkRoomPlacementStrategy.OverlapDetectionDelay = args.GetInt(2, Config.DefaultOverlapDetectionDelay);
-            ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("set_overlap_detection_delay", LogCat.LogLabel.Default,
+            ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_set_overlap_detection_delay",
                 PatchworkRoomPlacementStrategy.OverlapDetectionDelay));
             return true;
         }

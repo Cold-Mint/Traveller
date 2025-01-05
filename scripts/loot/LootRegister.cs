@@ -17,7 +17,6 @@ public static class LootRegister
     {
         LogCat.Log("start_loot_register_from_file");
         const string lootPath = "res://data/loots";
-        var count = 0;
         ResUtils.ScanResDirectory(lootPath, s =>
         {
             var lootList = ParseFile(s);
@@ -29,18 +28,13 @@ public static class LootRegister
             {
                 LootListManager.RegisterLootList(list);
             }
-            count++;
         });
-        LogCat.LogWithFormat("found_loots" ,LogCat.LogLabel.Default, count);
     }
 
     private static List<LootList>? ParseFile(string filePath)
     {
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-        //Read & deserialize
-        //阅读和反序列化
-        var yamlString = yamlFile.GetAsText();
-        var lootLists = YamlSerialization.Deserialize<List<LootList>>(yamlString);
+        var lootLists = YamlSerialization.Deserialize<List<LootList>>(yamlFile.GetAsText());
         yamlFile.Close();
         return lootLists;
     }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ColdMint.scripts.debug;
+using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console;
 
@@ -20,8 +20,7 @@ public static class CommandExecutor
     /// </returns>
     public static async Task<bool> ExecuteCommandAsync(string commandString)
     {
-        ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("command_execution", LogCat.LogLabel.CommandExecutor,
-            commandString));
+        ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_command_execution", commandString));
         if (string.IsNullOrEmpty(commandString))
         {
             ExecutedFailure(commandString);
@@ -46,8 +45,8 @@ public static class CommandExecutor
         var result = await command.Execute(new CommandArgs(arguments));
         if (result)
         {
-            ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("command_executed_success", LogCat.LogLabel.CommandExecutor,
-                commandString));
+            ConsoleGui.Instance?.Print(
+                TranslationServerUtils.TranslateWithFormat("log_command_executed_success", commandString));
         }
         else
         {
@@ -64,7 +63,7 @@ public static class CommandExecutor
     /// <param name="commandString"></param>
     private static void ExecutedFailure(string commandString)
     {
-        ConsoleGui.Instance?.Echo(LogCat.LogErrorWithFormat("command_executed_failure", LogCat.LogLabel.CommandExecutor,
-            commandString));
+        ConsoleGui.Instance?.Print(
+            TranslationServerUtils.TranslateWithFormat("log_command_executed_failure", commandString));
     }
 }

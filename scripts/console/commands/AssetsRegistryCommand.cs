@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.inventory;
 using ColdMint.scripts.loot;
@@ -15,13 +17,65 @@ public class AssetsRegistryCommand : ICommand
     public string Name => Config.CommandNames.AssetsRegistry;
     private readonly NodeTree<string> _suggest = new(null);
     public string[] GetAllSuggest(CommandArgs args) => SuggestUtils.GetAllSuggest(args, _suggest);
+    private readonly Dictionary<string, int> _itemTypeCodeDictionary = new();
+    private readonly Dictionary<int, string> _itemTypeCodeDictionaryReverse = new();
+
+    /// <summary>
+    /// <para>Does not distinguish item types</para>
+    /// <para>不区分物品类型</para>
+    /// </summary>
+    private const int ItemTypeCodeAll = -1;
 
     public void InitSuggest()
     {
-        _suggest.AddChild("item");
+        InitItemTypeCodeDictionary();
+        var item = _suggest.AddChild("item");
+        //Easy output of all item information
+        //简易的输出全部物品信息
+        AddItemType(item.AddChild("simple"));
+        //Detailed output item information
+        //详细的输出物品信息
+        AddItemType(item.AddChild("detailed"));
         _suggest.AddChild("camp");
         _suggest.AddChild("loot_list");
         _suggest.AddChild("dynamic_suggestion");
+    }
+
+    /// <summary>
+    /// <para>Initializes the item type dictionary</para>
+    /// <para>初始化物品类型字典</para>
+    /// </summary>
+    private void InitItemTypeCodeDictionary()
+    {
+        var itemTypeCodeType = typeof(Config.ItemTypeCode);
+        var fields = itemTypeCodeType.GetFields(BindingFlags.Public | BindingFlags.Static);
+        _itemTypeCodeDictionary.Add("all", ItemTypeCodeAll);
+        _itemTypeCodeDictionaryReverse.Add(ItemTypeCodeAll, "all");
+        foreach (var field in fields)
+        {
+            var value = field.GetValue(null);
+            if (value is not int intValue)
+            {
+                continue;
+            }
+
+            var name = field.Name.ToLowerInvariant();
+            _itemTypeCodeDictionary.Add(name, intValue);
+            _itemTypeCodeDictionaryReverse.Add(intValue, name);
+        }
+    }
+
+    /// <summary>
+    /// <para>AddItemType</para>
+    /// <para>添加物品类型</para>
+    /// </summary>
+    /// <param name="root"></param>
+    private void AddItemType(NodeTree<string> root)
+    {
+        foreach (var key in _itemTypeCodeDictionary.Keys)
+        {
+            root.AddChild(key);
+        }
     }
 
     public async Task<bool> Execute(CommandArgs args)
@@ -38,43 +92,108 @@ public class AssetsRegistryCommand : ICommand
         }
 
         var type = inputType.ToLowerInvariant();
-        var item = _suggest.GetChild(0)?.Data;
-        if (type == item)
+        var itemNode = _suggest.GetChild(0);
+        var item = itemNode?.Data;
+        if (itemNode != null && type == item)
         {
-            Echo(item, ItemTypeManager.GetAllIds());
+            var showMode = args.GetString(2);
+            if (string.IsNullOrEmpty(showMode))
+            {
+                return false;
+            }
+
+            var enableSimpleMode = true;
+            var simple = itemNode.GetChild(0)?.Data;
+            if (showMode == simple)
+            {
+                enableSimpleMode = true;
+            }
+
+            var detailed = itemNode.GetChild(1)?.Data;
+            if (showMode == detailed)
+            {
+                enableSimpleMode = false;
+            }
+
+            var itemTypeCode = args.GetString(3);
+            var itemTypeCodeInt = ItemTypeCodeAll;
+            if (!string.IsNullOrEmpty(itemTypeCode))
+            {
+                itemTypeCodeInt = _itemTypeCodeDictionary[itemTypeCode];
+            }
+
+            var allItemType = ItemTypeManager.GetAllItemType();
+            var result = new List<string>();
+            if (enableSimpleMode)
+            {
+                foreach (var itemType in allItemType)
+                {
+                    if (itemTypeCodeInt == ItemTypeCodeAll)
+                    {
+                        result.Add(itemType.Id);
+                        continue;
+                    }
+
+                    var typeCode = itemType.ItemTypeCode;
+                    if (typeCode == itemTypeCodeInt)
+                    {
+                        result.Add(itemType.Id);
+                    }
+                }
+
+                PrintArray(item, result.ToArray());
+                return true;
+            }
+
+            foreach (var itemType in allItemType)
+            {
+                if (itemTypeCodeInt == ItemTypeCodeAll)
+                {
+                    result.Add(itemType.Id + "(" +
+                               _itemTypeCodeDictionaryReverse.GetValueOrDefault(itemType.ItemTypeCode) + ")");
+                    continue;
+                }
+
+                var typeCode = itemType.ItemTypeCode;
+                if (typeCode == itemTypeCodeInt)
+                {
+                    result.Add(itemType.Id + "(" +
+                               _itemTypeCodeDictionaryReverse.GetValueOrDefault(itemType.ItemTypeCode) + ")");
+                }
+            }
+
+            PrintArray(item, result.ToArray());
             return true;
         }
 
         var camp = _suggest.GetChild(1)?.Data;
         if (type == camp)
         {
-            Echo(camp, CampManager.GetAllIds());
+            PrintArray(camp, CampManager.GetAllIds());
             return true;
         }
+
         var lootList = _suggest.GetChild(2)?.Data;
         if (type == lootList)
         {
-            Echo(lootList, LootListManager.GetAllIds());
+            PrintArray(lootList, LootListManager.GetAllIds());
             return true;
         }
+
         var dynamicSuggestion = _suggest.GetChild(3)?.Data;
         if (type == dynamicSuggestion)
         {
-            Echo(dynamicSuggestion, DynamicSuggestionManager.GetAllIds());
+            PrintArray(dynamicSuggestion, DynamicSuggestionManager.GetAllIds());
             return true;
         }
+
         return false;
     }
 
-    private void Echo(string type, string[] array)
+    private void PrintArray(string type, string[] array)
     {
-        var msg = TranslationServerUtils.TranslateWithFormat("log_assets_registry_echo", type, array.Length,
-            string.Join(',', array));
-        if (msg == null)
-        {
-            return;
-        }
-
-        ConsoleGui.Instance?.Echo(msg);
+        ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_assets_registry_echo", type,
+            array.Length,
+            string.Join('\n', array)));
     }
 }

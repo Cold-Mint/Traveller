@@ -22,7 +22,6 @@ public static class ItemTypeRegister
         //初始化文件目录
         //initialize file dir
         const string itemRegsDirPath = "res://data/itemRegs";
-        var count = 0;
         //将文件解析为项目类型信息
         //parse files to item type infos
         ResUtils.ScanResDirectory(itemRegsDirPath, s =>
@@ -32,13 +31,12 @@ public static class ItemTypeRegister
             {
                 return;
             }
+
             foreach (var itemTypeInfo in list)
             {
                 RegisterTypeInfo(itemTypeInfo);
             }
-            count++;
         });
-        LogCat.LogWithFormat("found_item_types", LogCat.LogLabel.Default, count);
     }
 
     /// <summary>
@@ -52,8 +50,7 @@ public static class ItemTypeRegister
         var yamlFile = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
         //Read & deserialize
         //阅读和反序列化
-        var yamlString = yamlFile.GetAsText();
-        var typeInfos = YamlSerialization.Deserialize<IList<ItemTypeInfo>>(yamlString);
+        var typeInfos = YamlSerialization.Deserialize<IList<ItemTypeInfo>>(yamlFile.GetAsText());
         yamlFile.Close();
         return typeInfos;
     }
@@ -75,7 +72,7 @@ public static class ItemTypeRegister
         //构造项目类型，寄存器
         //construct item type, register
         var itemType = new ItemType(typeInfo.Id,
-            icon, typeInfo.MaxStackValue, defaultParentNode =>
+            icon, typeInfo.MaxStackValue, typeInfo.Type, defaultParentNode =>
             {
                 var newItem = NodeUtils.InstantiatePackedScene<IItem>(scene);
                 if (newItem is not Node node) return newItem;
@@ -100,5 +97,6 @@ public static class ItemTypeRegister
         string Id,
         string ScenePath,
         string IconPath,
-        int MaxStackValue);
+        int MaxStackValue,
+        int Type = Config.ItemTypeCode.Unknown);
 }

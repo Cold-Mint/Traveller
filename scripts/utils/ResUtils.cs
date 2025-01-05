@@ -83,10 +83,8 @@ public static class ResUtils
         var files = dirAccess.GetFiles();
         if (files == null)
         {
-            LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, 0);
             return;
         }
-        LogCat.LogWithFormat("found_files", LogCat.LogLabel.Default, files.Length);
         foreach (var file in files)
         {
             if (string.IsNullOrEmpty(file))

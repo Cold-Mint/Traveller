@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ColdMint.scripts.debug;
 using ColdMint.scripts.map;
-using ColdMint.scripts.map.RoomPlacer;
 using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console.commands;
@@ -45,8 +43,8 @@ public class RoomCommand : ICommand
         if (type == list)
         {
             var roomList = MapGenerator.GetRoomList();
-            ConsoleGui.Instance?.Echo(LogCat.LogWithFormat("rooms_echo", LogCat.LogLabel.Default,
-                roomList.Length, string.Join('\n', roomList)));
+            ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_rooms_echo", roomList.Length,
+                string.Join('\n', roomList)));
             return Task.FromResult(true);
         }
 

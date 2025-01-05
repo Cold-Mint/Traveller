@@ -12,6 +12,8 @@ public static class ItemTypeManager
 {
     private static Dictionary<string, ItemType> Registry { get; } = [];
 
+    public static ItemType[] GetAllItemType() => Registry.Values.ToArray();
+
     public static string[] GetAllIds() => Registry.Keys.ToArray();
 
     /// <summary>
@@ -84,7 +86,7 @@ public static class ItemTypeManager
 
         return items.ToArray();
     }
-    
+
     /// <summary>
     /// <para>Whether an item is included</para>
     /// <para>是否包含某个物品</para>

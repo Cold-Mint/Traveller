@@ -24,7 +24,7 @@ public class LootList
     /// <returns></returns>
     public LootDatum[] GenerateLootData()
     {
-        if (Id == null || Groups == null)
+        if (string.IsNullOrEmpty(Id) || Groups == null)
         {
             return [];
         }
@@ -39,7 +39,7 @@ public class LootList
         {
             //If the random number is greater than the generation probability, skip the current loop.
             //如果随机数大于生成概率，则跳过当前循环。
-            var rd = RandomUtils.Instance.NextDouble();
+            var rd = RandomUtils.Instance.NextSingle();
             if (rd > group.Chance) continue;
 
             //We generate a loot data for each loot entry.

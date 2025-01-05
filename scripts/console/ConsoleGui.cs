@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
 using Godot;
 
@@ -62,9 +63,9 @@ public partial class ConsoleGui : Control
     /// <para>在控制台上输出信息</para>
     /// </summary>
     /// <param name="message"></param>
-    public void Echo(string message)
+    public void Print(string? message)
     {
-        if (_logContainer == null)
+        if (_logContainer == null || string.IsNullOrEmpty(message))
         {
             return;
         }
@@ -74,6 +75,7 @@ public partial class ConsoleGui : Control
             Text = message
         };
         NodeUtils.CallDeferredAddChild(_logContainer, label);
+        LogCat.Log(message, LogCat.LogLabel.Console);
     }
 
     public override void _Process(double delta)
