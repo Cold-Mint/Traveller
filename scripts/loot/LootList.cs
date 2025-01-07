@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ColdMint.scripts.debug;
 using ColdMint.scripts.utils;
+using Godot;
 
 namespace ColdMint.scripts.loot;
 
@@ -10,7 +11,6 @@ namespace ColdMint.scripts.loot;
 /// </summary>
 public class LootList
 {
-
     // ReSharper disable UnusedAutoPropertyAccessor.Global
     public string? Id { get; set; }
 
@@ -28,6 +28,7 @@ public class LootList
         {
             return [];
         }
+
         if (Groups.Count == 0)
         {
             LogCat.LogWithFormat("loot_list_has_no_entries", LogCat.LogLabel.Default, Id);
@@ -39,9 +40,8 @@ public class LootList
         {
             //If the random number is greater than the generation probability, skip the current loop.
             //如果随机数大于生成概率，则跳过当前循环。
-            var rd = RandomUtils.Instance.NextSingle();
+            var rd = GD.Randf();
             if (rd > group.Chance) continue;
-
             //We generate a loot data for each loot entry.
             //我们为每个战利品条目生成一个战利品数据。
             var datum = group.GenerateLootData();

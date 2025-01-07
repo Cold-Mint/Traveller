@@ -660,7 +660,7 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             //Character death
             //角色死亡
-            OnDie(damage).Start();
+            OnDie(damage).GetAwaiter();
             return true;
         }
 

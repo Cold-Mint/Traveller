@@ -24,7 +24,7 @@
   groups:
     - chance: 1
       entries:
-        - item_id: magic_missile
+        - item_id: "@randomItem"
           min_quantity: 1
           max_quantity: 1
           weight: 1

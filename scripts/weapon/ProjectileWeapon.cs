@@ -29,8 +29,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>Number of slots for ranged weapons</para>
     /// <para>远程武器的槽位数量</para>
     /// </summary>
-    [Export]
-    private int _numberSlots; //skipcq:CS-R1137
+    [Export] private int _numberSlots; //skipcq:CS-R1137
 
     /// <summary>
     /// <para>SpellList</para>
@@ -40,8 +39,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     ///<para>To make weapons out of the box, you need to configure pre-made spells here.</para>
     ///<para>为了使武器开箱即用，您需要在这里配置预制的法术。</para>
     /// </remarks>
-    [Export]
-    private string[]? _spellList; //skipcq:CS-R1137
+    [Export] private string[]? _spellList; //skipcq:CS-R1137
 
     /// <summary>
     /// <para>How many projectiles are generated per fire</para>
@@ -50,6 +48,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     public int NumberOfProjectiles { get; set; } = 1;
 
     private readonly List<ISpell> _spells = [];
+
     /// <summary>
     /// <para>Saves the position of a spell with projectile generation</para>
     /// <para>保存具有抛射体生成能力的法术位置</para>
@@ -70,8 +69,7 @@ public partial class ProjectileWeapon : WeaponTemplate
     /// <para>Whether to fire spells in sequence</para>
     /// <para>是否按顺序发射法术</para>
     /// </summary>
-    [Export]
-    private bool _fireSequentially; // skipcq:CS-R1137
+    [Export] private bool _fireSequentially; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>The index used the last time a spell was cast</para>
@@ -93,9 +91,11 @@ public partial class ProjectileWeapon : WeaponTemplate
             {
                 _lastUsedProjectileMagicIndex = 0;
             }
+
             return _lastUsedProjectileMagicIndex;
         }
-        return RandomUtils.Instance.Next(0, _spellProjectileIndexes.Count);
+
+        return GD.RandRange(0, _spellProjectileIndexes.Count);
     }
 
     /// <summary>
@@ -118,10 +118,12 @@ public partial class ProjectileWeapon : WeaponTemplate
             //还有前面的索引可设定起始位置。(这里起始位置加1是为了避免 具有抛射体生成能力的法术 作为起点。)
             startIndex = _spellProjectileIndexes[index - 1] + 1;
         }
+
         if (index == _spellProjectileIndexes.Count - 1)
         {
             endIndex = _spells.Count - 1;
         }
+
         return [startIndex, endIndex, projectileSpellPosition];
     }
 
@@ -138,6 +140,7 @@ public partial class ProjectileWeapon : WeaponTemplate
         {
             _safeDistance = _marker2D.Position.LengthSquared();
         }
+
         if (SelfItemContainer == null)
         {
             SelfItemContainer = new UniversalItemContainer(_numberSlots);
@@ -146,8 +149,10 @@ public partial class ProjectileWeapon : WeaponTemplate
             //装填预制的法术。
             if (_spellList is not { Length: > 0 })
             {
-                throw new ArgumentException(TranslationServerUtils.TranslateWithFormat("log_spell_list_is_null", Id ?? "null"));
+                throw new ArgumentException(
+                    TranslationServerUtils.TranslateWithFormat("log_spell_list_is_null", Id ?? "null"));
             }
+
             var supportOutOfBox = false;
             foreach (var spellId in _spellList)
             {
@@ -155,11 +160,13 @@ public partial class ProjectileWeapon : WeaponTemplate
                 {
                     continue;
                 }
+
                 var item = ItemTypeManager.CreateItem(spellId, this);
                 if (item is not ISpell spell)
                 {
                     continue;
                 }
+
                 //The spell is stored in memory and has not yet been loaded into the node tree. So we call the InvokeLoadResource method to initialize the resource.
                 //法术保存在内存中，尚未加载到节点树。所以我们调用InvokeLoadResource方法来初始化资源。
                 spell.LoadResource();
@@ -168,17 +175,21 @@ public partial class ProjectileWeapon : WeaponTemplate
                 {
                     supportOutOfBox = true;
                 }
+
                 if (SelfItemContainer.CanAddItem(item))
                 {
                     SelfItemContainer.AddItem(item);
                 }
             }
+
             if (!supportOutOfBox)
             {
                 //Long-range weapons must be used out of the box.
                 //远程武器必须开箱即用
-                throw new InvalidOperationException(TranslationServerUtils.TranslateWithFormat("log_weapon_must_be_used_out_of_the_box", Id ?? "null"));
+                throw new InvalidOperationException(
+                    TranslationServerUtils.TranslateWithFormat("log_weapon_must_be_used_out_of_the_box", Id ?? "null"));
             }
+
             UpdateSpellCache();
         }
     }
@@ -197,6 +208,7 @@ public partial class ProjectileWeapon : WeaponTemplate
         {
             return;
         }
+
         _spells.Clear();
         _spellProjectileIndexes.Clear();
         var totalCapacity = SelfItemContainer.GetTotalCapacity();
@@ -207,10 +219,12 @@ public partial class ProjectileWeapon : WeaponTemplate
             {
                 continue;
             }
+
             if (item is not ISpell spell)
             {
                 continue;
             }
+
             _spells.Add(spell);
             var packedScene = spell.GetProjectile();
             if (packedScene != null)
@@ -253,6 +267,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogWarning("can_not_fire_from_safe_distance");
             return false;
         }
+
         if (owner == null)
         {
             LogCat.LogError("owner_is_null");
@@ -270,13 +285,16 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogError("projectile_container_is_null");
             return false;
         }
+
         if (_spellProjectileIndexes.Count == 0)
         {
             LogCat.LogError("projectile_generate_magic_is_null");
             return false;
         }
+
         var spellScope = GetSpellScope();
-        LogCat.LogWithFormat("projectile_weapon_range", LogCat.LogLabel.Default, true, string.Join(",", spellScope), _fireSequentially, _lastUsedProjectileMagicIndex);
+        LogCat.LogWithFormat("projectile_weapon_range", LogCat.LogLabel.Default, true, string.Join(",", spellScope),
+            _fireSequentially, _lastUsedProjectileMagicIndex);
         //The final spell is a projectile generator.
         //最后的法术是拥有抛射体生成能力的。
         var spellProjectile = _spells[spellScope[2]];
@@ -286,6 +304,7 @@ public partial class ProjectileWeapon : WeaponTemplate
             LogCat.LogError("projectile_scene_is_null");
             return false;
         }
+
         ModifyWeapon(spellScope);
         for (var i = 0; i < NumberOfProjectiles; i++)
         {
@@ -296,6 +315,7 @@ public partial class ProjectileWeapon : WeaponTemplate
                 RestoreWeapon(spellScope);
                 return false;
             }
+
             //Be sure to set the master node before modifying the projectile.
             //一定要在修改抛射体前设置主人节点。
             projectile.OwnerNode = OwnerNode;
@@ -305,11 +325,13 @@ public partial class ProjectileWeapon : WeaponTemplate
                 var spell = _spells[s];
                 spell.ModifyProjectile(i, projectile, ref velocity);
             }
+
             NodeUtils.CallDeferredAddChild(GameSceneDepend.ProjectileContainer, projectile);
             projectile.LookAt(velocity);
             projectile.Velocity = velocity;
             projectile.Position = _marker2D.GlobalPosition;
         }
+
         RestoreWeapon(spellScope);
         return true;
     }

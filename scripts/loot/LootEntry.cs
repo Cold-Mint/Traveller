@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ColdMint.scripts.utils;
+using Godot;
 
 namespace ColdMint.scripts.loot;
 
@@ -58,8 +58,7 @@ public readonly record struct LootGroup(float Chance, IEnumerable<LootEntry> Ent
     /// <returns></returns>
     public LootDatum GenerateLootData()
     {
-        var random = RandomUtils.Instance;
-        var w = random.Next(WeightSum);
+        var w = GD.RandRange(0, WeightSum - 1);
         LootEntry entry = default;
         foreach (var e in Entries)
         {
@@ -68,9 +67,7 @@ public readonly record struct LootGroup(float Chance, IEnumerable<LootEntry> Ent
             entry = e;
             break;
         }
-
-        var quantity = random.Next(entry.MinQuantity, entry.MaxQuantity + 1);
-
-        return new LootDatum(entry.ItemId, quantity);
+        return new LootDatum(LootListManager.HandlingGenericMatching(entry.ItemId),
+            GD.RandRange(entry.MinQuantity, entry.MaxQuantity));
     }
 }

@@ -44,8 +44,24 @@ public static class LootListManager
     /// <returns></returns>
     public static IEnumerable<LootDatum> GenerateLootData(string id)
     {
-        if (!LootListDictionary.TryGetValue(id, out var list)) return [];
-        return list.GenerateLootData();
+        return !LootListDictionary.TryGetValue(id, out var list) ? [] : list.GenerateLootData();
+    }
+
+    /// <summary>
+    /// <para>Generic matching for handling loot tables</para>
+    /// <para>处理战利品表的泛型匹配</para>
+    /// </summary>
+    /// <param name="originalItemId"></param>
+    /// <returns></returns>
+    public static string HandlingGenericMatching(string originalItemId)
+    {
+        return originalItemId switch
+        {
+            "@randomItem" => ItemTypeManager.GetRandomId(),
+            "@randomWeapon" => ItemTypeManager.GetRandomId(Config.ItemTypeCode.Weapon),
+            "@randomSpell" => ItemTypeManager.GetRandomId(Config.ItemTypeCode.Spell),
+            _ => null
+        } ?? originalItemId;
     }
 
     /// <summary>

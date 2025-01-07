@@ -55,7 +55,7 @@ public class NodeSpawnOnKillCharacterDecorator : IProjectileDecorator
 
     public void OnKillCharacter(Node2D? owner, CharacterTemplate target)
     {
-        if (RandomUtils.Instance.NextSingle() > Chance)
+        if (GD.Randf() > Chance)
         {
             //Not in probability, straight back.
             //没有在概率内，直接返回。

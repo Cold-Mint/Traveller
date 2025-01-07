@@ -20,6 +20,24 @@ public static class ItemTypeManager
         TypeCodeToIds.TryGetValue(typeCode, out var ids) ? ids.ToArray() : [];
 
     /// <summary>
+    /// <para>Get a random item Id</para>
+    /// <para>获取随机的物品Id</para>
+    /// </summary>
+    /// <returns></returns>
+    public static string? GetRandomId(int typeCode = Config.ItemTypeCode.All)
+    {
+        if (!TypeCodeToIds.TryGetValue(typeCode, out var ids))
+        {
+            return null;
+        }
+
+        return ids.Count == 0 ?
+            //No item of that type has been registered.
+            //没有对应类型的物品被注册了。
+            null : ids[GD.RandRange(0, ids.Count - 1)];
+    }
+
+    /// <summary>
     /// <para>Register an item type.</para>
     /// <para>Return false if the item id already exist.</para>
     /// <para>注册一个物品类型</para>

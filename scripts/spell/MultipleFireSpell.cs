@@ -49,8 +49,10 @@ public partial class MultipleFireSpell : SpellPickAble
     ///<para>第一颗子弹的角度，随后的子弹会以单位弧度偏移。</para>
     /// </remarks>
     private float _initialRadian;
+
     private float _maxRadian;
     private int _oldNumberOfProjectiles;
+
     public override void ModifyWeapon(ProjectileWeapon projectileWeapon)
     {
         base.ModifyWeapon(projectileWeapon);
@@ -69,7 +71,8 @@ public partial class MultipleFireSpell : SpellPickAble
     public override void ModifyProjectile(int index, Projectile projectile, ref Vector2 velocity)
     {
         base.ModifyProjectile(index, projectile, ref velocity);
-        velocity = RandomAngle ? velocity.Rotated(_initialRadian + _maxRadian * RandomUtils.Instance.NextSingle()) : velocity.Rotated(_initialRadian + UnitRadian * index);
+        velocity = RandomAngle
+            ? velocity.Rotated(_initialRadian + _maxRadian * GD.Randf())
+            : velocity.Rotated(_initialRadian + UnitRadian * index);
     }
-
 }
