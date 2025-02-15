@@ -78,7 +78,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     /// <remarks>
     ///<para>If it is set to true, then killing the creature is necessary to move on to the next Wave (i.e. "Required For Wave Advance"); If set to false, the player can advance to the next wave without killing the creature.</para>
-    ///<para>如果设置为true，那么杀死这个生物是进入下一波的必要条件（即“Required For Wave Advance”）；如果设置为false，则玩家不杀死这个生物也能进入下一波。</para>
+    ///<para>如果设置为true，那么杀死这个生物是进入下一波的必要条件（即"Required For Wave Advance"）；如果设置为false，则玩家不杀死这个生物也能进入下一波。</para>
     /// </remarks>
     [Export]
     public bool RequiredForWaveAdvance { get; set; } = true;
@@ -198,6 +198,8 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
+    private Material? _outlineMaterial;
+    private const float OutlineWidth = 1.0f;
 
     /// <summary>
     /// <para>Full Hp Revive</para>
@@ -333,6 +335,30 @@ public partial class CharacterTemplate : CharacterBody2D
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
         InputPickable = true;
+
+        // 初始化描边材质
+        if (_animatedSprite2D != null)
+        {
+            var shader = ResourceLoader.Load<Shader>("res://shaders/outline.gdshader");
+            if (shader != null)
+            {
+                _outlineMaterial = new ShaderMaterial
+                {
+                    Shader = shader
+                };
+                _outlineMaterial.Set("width", OutlineWidth);
+                _outlineMaterial.Set("color", new Vector4(
+                    244f / 255f,
+                    67f / 255f,
+                    54f / 255f,
+                    1f
+                ));
+            }
+            else
+            {
+                GD.PrintErr("Failed to load outline shader!");
+            }
+        }
     }
 
     public override void _ExitTree()
@@ -393,6 +419,12 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
+        // 启用描边效果
+        if (_animatedSprite2D != null && _outlineMaterial != null)
+        {
+            _animatedSprite2D.Material = _outlineMaterial;
+        }
+
         if (_tipLabel != null && !string.IsNullOrEmpty(CharacterName))
         {
             TipLabelUtils.ShowTip(0, _tipLabel, CharacterName);
@@ -401,6 +433,12 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseExit()
     {
+        // 移除描边效果
+        if (_animatedSprite2D != null)
+        {
+            _animatedSprite2D.Material = null;
+        }
+
         if (_tipLabel == null)
         {
             return;
@@ -713,7 +751,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>处理角色死亡的事件</para>
     /// </summary>
     /// <param name="damage"></param>
-    protected async virtual Task OnDie(IDamage damage)
+    protected virtual async Task OnDie(IDamage damage)
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
