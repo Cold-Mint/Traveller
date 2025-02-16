@@ -62,7 +62,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
         {
             return;
         }
-        TipLabelUtils.ShowTip(-Rotation, _tipLabel, translation);
+        TipLabelUtils.ShowTip(-Rotation, _tipLabel, translation,Colors.White);
     }
 
     public override void _MouseExit()

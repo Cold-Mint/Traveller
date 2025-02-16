@@ -198,8 +198,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public Node[] PickingRangeBodies => PickingRangeBodiesList?.ToArray() ?? [];
 
-    private Material? _outlineMaterial;
-    private const float OutlineWidth = 1.0f;
+    private ShaderMaterial? _outlineMaterial;
 
     /// <summary>
     /// <para>Full Hp Revive</para>
@@ -346,13 +345,6 @@ public partial class CharacterTemplate : CharacterBody2D
                 {
                     Shader = shader
                 };
-                _outlineMaterial.Set("width", OutlineWidth);
-                _outlineMaterial.Set("color", new Vector4(
-                    244f / 255f,
-                    67f / 255f,
-                    54f / 255f,
-                    1f
-                ));
             }
             else
             {
@@ -409,17 +401,27 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseEnter()
     {
-        if (GameSceneDepend.Player != null)
+        if (GameSceneDepend.Player == null)
         {
-            var targetCamp = CampManager.GetCamp(CampId);
-            var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
-            if (CampManager.CanCauseHarm(targetCamp, playerCamp))
-            {
-                GameSceneDepend.TemporaryTargetNode = this;
-            }
+            return;
         }
 
-        // 启用描边效果
+        var targetCamp = CampManager.GetCamp(CampId);
+        var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
+        var canCauseHarm = false;
+        if (CampManager.CanCauseHarm(targetCamp, playerCamp))
+        {
+            canCauseHarm = true;
+            GameSceneDepend.TemporaryTargetNode = this;
+            _outlineMaterial?.SetShaderParameter("color",
+                Config.ColorConfig.EnemyColor);
+        }
+        else
+        {
+            _outlineMaterial?.SetShaderParameter("color",
+                Config.ColorConfig.FriendlyColor);
+        }
+
         if (_animatedSprite2D != null && _outlineMaterial != null)
         {
             _animatedSprite2D.Material = _outlineMaterial;
@@ -427,24 +429,22 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (_tipLabel != null && !string.IsNullOrEmpty(CharacterName))
         {
-            TipLabelUtils.ShowTip(0, _tipLabel, CharacterName);
+            TipLabelUtils.ShowTip(0, _tipLabel, CharacterName,
+                canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
     }
 
     public override void _MouseExit()
     {
-        // 移除描边效果
         if (_animatedSprite2D != null)
         {
             _animatedSprite2D.Material = null;
         }
 
-        if (_tipLabel == null)
+        if (_tipLabel != null)
         {
-            return;
+            TipLabelUtils.HideTip(_tipLabel);
         }
-
-        TipLabelUtils.HideTip(_tipLabel);
     }
 
     /// <summary>

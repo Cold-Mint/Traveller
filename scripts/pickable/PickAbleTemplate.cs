@@ -13,6 +13,7 @@ namespace ColdMint.scripts.pickable;
 public partial class PickAbleTemplate : RigidBody2D, IItem
 {
     public int Index { get; set; }
+
     //Do not export this field because the ID is specified within yaml.
     //不要导出此字段，因为ID是在yaml内指定的。
     public virtual string? Id { get; set; }
@@ -38,6 +39,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     {
         get => ItemTypeManager.GetIconOf(Id);
     }
+
     public string ItemName
     {
         get
@@ -60,6 +62,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             OnOwnerNodeChanged(_ownerNode);
         }
     }
+
     private Node2D? _ownerNode;
 
     /// <summary>
@@ -69,7 +72,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="node2D"></param>
     protected virtual void OnOwnerNodeChanged(Node2D? node2D)
     {
-
     }
 
     public string Description
@@ -91,6 +93,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public bool Picked { get; set; }
 
     public int MaxQuantity { get; set; } = 1;
+
     public virtual int ItemType
     {
         get => Config.ItemType.Unknown;
@@ -107,6 +110,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             {
                 return;
             }
+
             _isSelected = value;
             OnSelectChange(value);
         }
@@ -124,7 +128,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="isSelected"></param>
     protected virtual void OnSelectChange(bool isSelected)
     {
-
     }
 
     public IItem? CreateItem(int number)
@@ -151,6 +154,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             duplicate.QueueFree();
             return null;
         }
+
         newItem.Quantity = number < 0 ? Quantity : Math.Min(Quantity, number);
         return newItem;
     }
@@ -176,6 +180,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     {
         return false;
     }
+
     public Action<Node2D, Vector2>? OnThrow { get; set; }
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 
@@ -199,6 +204,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
+
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _collisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
         InputPickable = true;
@@ -220,7 +226,8 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
-        TipLabelUtils.ShowTip(-Rotation, _tipLabel, ItemName);
+
+        TipLabelUtils.ShowTip(-Rotation, _tipLabel, ItemName, Colors.White);
     }
 
     public override void _MouseExit()
@@ -281,6 +288,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         {
             return;
         }
+
         Id = originalPickAbleTemplate.Id;
         SelfItemContainer = originalPickAbleTemplate.SelfItemContainer;
     }

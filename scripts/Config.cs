@@ -55,6 +55,7 @@ public static class Config
         ///<para>查看，设置，或重新分配世界种子</para>
         /// </remarks>
         public const string Seed = "seed";
+
         /// <summary>
         /// <para>Camera related commands</para>
         /// <para>相机相关命令</para>
@@ -64,15 +65,73 @@ public static class Config
         ///<para>开启自由视角</para>
         /// </remarks>
         public const string Camera = "camera";
+
         /// <summary>
         /// <para>Fog related command</para>
         /// <para>迷雾相关命令</para>
         /// </summary>
         public const string Fog = "fog";
+
         public const string Player = "player";
         public const string AssetsRegistry = "assetsRegistry";
         public const string Room = "room";
     }
+
+    public static class ColorConfig
+    {
+        /// <summary>
+        /// <para>Friendly color</para>
+        /// <para>友善的颜色</para>
+        /// </summary>
+        public static Color FriendlyColor = new("#51cf66");
+
+        /// <summary>
+        /// <para>Friendly Colors Background Color</para>
+        /// <para>友善的颜色背景色</para>
+        /// </summary>
+        public static Color FriendlyBackgroundColor = new("#d3f9d8");
+
+        /// <summary>
+        /// <para>Enemy Color</para>
+        /// <para>敌人颜色</para>
+        /// </summary>
+        public static Color EnemyColor = new("#ff6b6b");
+
+        /// <summary>
+        /// <para>Enemy Background Color</para>
+        /// <para>敌人颜色背景色</para>
+        /// </summary>
+        public static Color EnemyBackgroundColor = new("#ffe3e3");
+
+        /// <summary>
+        ///<para>Border Color</para>
+        ///<para>边框颜色</para>
+        /// </summary>
+        public static Color BorderColor = new("#f8f9fa");
+
+        /// <summary>
+        /// <para>Converts colors from the RGB (0-255) format to the format used by the shader (0.0-1.0).</para>
+        /// <para>将颜色从 RGB（0-255）格式转换为着色器使用的格式（0.0-1.0）。</para>
+        /// </summary>
+        /// <param name="originalColor">
+        ///<para>The original color with RGB components in the range 0 to 255.</para>
+        /// <para>原始颜色，其 RGB 分量在 0 到 255 的范围内。</para>
+        /// </param>
+        /// <returns>
+        /// <para>The converted color has an RGB component in the range of 0.0 to 1.0.</para>
+        /// <para>转换后的颜色，其 RGB 分量在 0.0 到 1.0 的范围内。</para>
+        /// </returns>
+        public static Color ToShaderParameter(Color originalColor)
+        {
+            if (originalColor.R <= 1f || originalColor.G <= 1f || originalColor.B <= 1f)
+            {
+                throw new ArgumentException("The color components must be in the range of 0 to 255.");
+            }
+
+            return new Color(originalColor.R / 255f, originalColor.G / 255f, originalColor.B / 255f, originalColor.A);
+        }
+    }
+
 
     /// <summary>
     /// <para>Item type code</para>
@@ -89,16 +148,19 @@ public static class Config
         ///<para>特殊的物品类型代码，不要将物品的类型代码设置为All。</para>
         /// </remarks>
         public const int All = -1;
+
         /// <summary>
         /// <para>Unknown type</para>
         /// <para>未知类型</para>
         /// </summary>
         public const int Unknown = 0;
+
         /// <summary>
         /// <para>Weapon</para>
         /// <para>武器</para>
         /// </summary>
         public const int Weapon = 1;
+
         /// <summary>
         /// <para>Spell</para>
         /// <para>法术</para>
@@ -111,7 +173,7 @@ public static class Config
         /// </summary>
         public const int Backpack = 3;
     }
-    
+
     public static class DynamicSuggestionID
     {
         public const string Boolean = "Boolean";
@@ -222,7 +284,7 @@ public static class Config
     /// <para>弹幕速度</para>
     /// </summary>
     public const float BarrageSpeed = 50;
-    
+
     /// <summary>
     /// <para>How much blood does a heart represent</para>
     /// <para>一颗心代表多少血量</para>

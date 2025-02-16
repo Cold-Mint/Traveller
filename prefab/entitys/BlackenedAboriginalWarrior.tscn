@@ -36,11 +36,8 @@ script = ExtResource("1_ubaid")
 InitWeaponId = "staff_necromancy"
 CharacterName = "character_evil_crow"
 CanMutateAfterDeath = false
-RequiredForWaveAdvance = null
-_initialHp = null
 MaxHp = 40
 CampId = "Mazoku"
-Indestructible = null
 _lootId = "normal"
 DamageSounds = Array[AudioStream]([])
 

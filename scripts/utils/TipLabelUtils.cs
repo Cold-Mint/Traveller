@@ -20,10 +20,27 @@ public static class TipLabelUtils
     ///<para>tip</para>
     ///<para>显示的提示内容</para>
     /// </param>
-    public static void ShowTip(float rotation, Label tipLabel, string tip)
+    /// <param name="fontColor">
+    ///<para>fontColor</para>
+    ///<para>字体颜色</para>
+    /// </param>
+    public static void ShowTip(float rotation, Label tipLabel, string tip, Color fontColor)
     {
         tipLabel.Visible = true;
         tipLabel.Text = tip;
+        var labelSettings = tipLabel.LabelSettings;
+        if (labelSettings == null)
+        {
+            tipLabel.LabelSettings = new LabelSettings
+            {
+                FontColor = fontColor
+            };
+        }
+        else
+        {
+            labelSettings.FontColor = fontColor;
+        }
+
         tipLabel.ResetSize();
         //Vertical Centering Tip
         //垂直居中提示

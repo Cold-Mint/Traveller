@@ -14,11 +14,9 @@ public partial class Furniture : RigidBody2D
 {
     [Export] private int _initialDurability; // skipcq:CS-R1137
     [Export] private int _maxDurability; // skipcq:CS-R1137
-    [Export]
-    private string? _furnitureName; // skipcq:CS-R1137
+    [Export] private string? _furnitureName; // skipcq:CS-R1137
 
-    [Export]
-    private string? _lootId; // skipcq:CS-R1137
+    [Export] private string? _lootId; // skipcq:CS-R1137
 
     private Label? _tipLabel;
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
@@ -30,12 +28,14 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
+
         var translation = TranslationServerUtils.Translate(_furnitureName);
         if (string.IsNullOrEmpty(translation))
         {
             return;
         }
-        TipLabelUtils.ShowTip(0, _tipLabel, translation);
+
+        TipLabelUtils.ShowTip(0, _tipLabel, translation, Colors.White);
     }
 
     public override void _MouseExit()
@@ -44,6 +44,7 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
+
         TipLabelUtils.HideTip(_tipLabel);
     }
 
@@ -64,6 +65,7 @@ public partial class Furniture : RigidBody2D
         {
             _initialDurability = _maxDurability;
         }
+
         _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _collisionShape2D = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
@@ -107,7 +109,10 @@ public partial class Furniture : RigidBody2D
         {
             return;
         }
-        LootListManager.GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId), GlobalPosition - new Vector2(0, Config.CellSize * 2)).GetAwaiter().OnCompleted(onCompleted);
+
+        LootListManager
+            .GenerateLootObjectsAsync<Node2D>(GetParent(), LootListManager.GenerateLootData(_lootId),
+                GlobalPosition - new Vector2(0, Config.CellSize * 2)).GetAwaiter().OnCompleted(onCompleted);
     }
 
     /// <summary>
@@ -127,6 +132,7 @@ public partial class Furniture : RigidBody2D
             //不能对已破碎的家具二次伤害。
             return false;
         }
+
         _durability -= damage.Damage;
         if (_durability <= 0)
         {
@@ -146,9 +152,11 @@ public partial class Furniture : RigidBody2D
                 {
                     _collisionShape2D.Disabled = true;
                 }
+
                 Hide();
             }
         }
+
         return true;
     }
 }
