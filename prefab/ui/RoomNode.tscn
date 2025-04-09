@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://y6rg5jc4viwn"]
 
-[ext_resource type="Script" path="res://scripts/levelGraphEditor/RoomNode.cs" id="1_jiu7r"]
+[ext_resource type="Script" uid="uid://crycvggh1rkjs" path="res://scripts/levelGraphEditor/RoomNode.cs" id="1_jiu7r"]
 
 [node name="RoomNode" type="GraphNode"]
 offset_right = 363.0

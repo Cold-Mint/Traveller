@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8xj04i5pdk7m"]
 
-[ext_resource type="Script" path="res://scripts/console/AutoCompleteSuggestionLabel.cs" id="1_8b5nx"]
+[ext_resource type="Script" uid="uid://xsibap071lh" path="res://scripts/console/AutoCompleteSuggestionLabel.cs" id="1_8b5nx"]
 
 [node name="ItemSuggestLabel" type="RichTextLabel"]
 anchors_preset = 15

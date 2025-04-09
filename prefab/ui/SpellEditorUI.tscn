@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://h7lvaqqlsi4t"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/SpellEditorUi.cs" id="1_1pxjs"]
+[ext_resource type="Script" uid="uid://bi0o05qb8wv4k" path="res://scripts/loader/uiLoader/SpellEditorUi.cs" id="1_1pxjs"]
 [ext_resource type="PackedScene" uid="uid://cdyfow6svey00" path="res://prefab/ui/ItemSlot.tscn" id="2_3ut57"]
 
 [node name="SpellEditorUi" type="Control"]

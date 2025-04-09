@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://chsgo38qjvipx"]
 
-[ext_resource type="Script" path="res://scripts/spell/DamageAreaSell.cs" id="1_nsoar"]
+[ext_resource type="Script" uid="uid://dyv7i0alhodtp" path="res://scripts/spell/DamageAreaSell.cs" id="1_nsoar"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_bsnaa"]
 [ext_resource type="Texture2D" uid="uid://dhgbij2ifphar" path="res://sprites/projectile/trackingSpell.png" id="3_u5vc5"]
 

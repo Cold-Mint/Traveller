@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cg2jmn7cs8m2c"]
 
-[ext_resource type="Script" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w4b6p"]
+[ext_resource type="Script" uid="uid://pbni5k20luon" path="res://scripts/weapon/ProjectileWeapon.cs" id="1_w4b6p"]
 [ext_resource type="Texture2D" uid="uid://pf2ilanjwino" path="res://sprites/weapon/BeginnerStaff_Icon.png" id="2_ip8xd"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_p12sk"]
 

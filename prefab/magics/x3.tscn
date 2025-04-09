@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cg75t3fw5c6er"]
 
-[ext_resource type="Script" path="res://scripts/spell/MultipleFireSpell.cs" id="1_cnhod"]
+[ext_resource type="Script" uid="uid://csk76ac1re37y" path="res://scripts/spell/MultipleFireSpell.cs" id="1_cnhod"]
 [ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_b3s8h"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 

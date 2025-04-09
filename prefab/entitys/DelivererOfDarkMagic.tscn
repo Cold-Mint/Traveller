@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://cj65pso40syj5"]
 
-[ext_resource type="Script" path="res://scripts/character/AiCharacter.cs" id="1_ubaid"]
+[ext_resource type="Script" uid="uid://h5edm8s8yfum" path="res://scripts/character/AiCharacter.cs" id="1_ubaid"]
 [ext_resource type="Texture2D" uid="uid://b1twcink38sh0" path="res://sprites/Player.png" id="2_eha68"]
-[ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_kiam3"]
+[ext_resource type="Script" uid="uid://cts01i772bsti" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_kiam3"]
 [ext_resource type="PackedScene" uid="uid://sqqfrmikmk5v" path="res://prefab/ui/HealthBar.tscn" id="4_gt388"]
-[ext_resource type="Script" path="res://scripts/bubble/BubbleMarker.cs" id="5_y2fh5"]
+[ext_resource type="Script" uid="uid://clcwqbqyggj51" path="res://scripts/bubble/BubbleMarker.cs" id="5_y2fh5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
 radius = 20.0

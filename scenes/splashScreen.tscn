@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://rx7t26ldvonc"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/SplashScreenLoader.cs" id="1_3pcuw"]
+[ext_resource type="Script" uid="uid://c2fdv0n1pkg7s" path="res://scripts/loader/uiLoader/SplashScreenLoader.cs" id="1_3pcuw"]
 [ext_resource type="Texture2D" uid="uid://cb3gn8xb5r4gm" path="res://sprites/icons/coldmint.png" id="1_0333i"]
 [ext_resource type="Texture2D" uid="uid://b877262di2jp5" path="res://sprites/icons/godot.png" id="2_y25sr"]
 
@@ -157,8 +157,8 @@ tracks/5/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mraly"]
 _data = {
-"RESET": SubResource("Animation_bisl3"),
-"startup": SubResource("Animation_j4ppv")
+&"RESET": SubResource("Animation_bisl3"),
+&"startup": SubResource("Animation_j4ppv")
 }
 
 [node name="SplashScreen" type="Control"]
@@ -263,7 +263,7 @@ vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_mraly")
+&"": SubResource("AnimationLibrary_mraly")
 }
 
 [node name="NameLabel" type="Label" parent="."]

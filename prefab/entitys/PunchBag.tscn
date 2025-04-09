@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://cjaydudg7fv5h"]
 
-[ext_resource type="Script" path="res://scripts/character/PunchBag.cs" id="1_nl23k"]
+[ext_resource type="Script" uid="uid://dqi4scvby505h" path="res://scripts/character/PunchBag.cs" id="1_nl23k"]
 [ext_resource type="Texture2D" uid="uid://c8ywypti13aog" path="res://sprites/PunchBag.png" id="2_wn4n7"]
-[ext_resource type="Script" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_4gj24"]
+[ext_resource type="Script" uid="uid://cts01i772bsti" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_4gj24"]
 [ext_resource type="PackedScene" uid="uid://sqqfrmikmk5v" path="res://prefab/ui/HealthBar.tscn" id="4_3l2mi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbk47"]

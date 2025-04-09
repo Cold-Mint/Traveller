@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dld3qttpsdjpe"]
 
-[ext_resource type="Script" path="res://scripts/furniture/Barrier.cs" id="1_hfnuj"]
+[ext_resource type="Script" uid="uid://usipmt6r0fqi" path="res://scripts/furniture/Barrier.cs" id="1_hfnuj"]
 [ext_resource type="Texture2D" uid="uid://cvlm5tmv43i8t" path="res://sprites/furnitures/wooden_box.png" id="2_24vtp"]
 [ext_resource type="AudioStream" uid="uid://brxt157po0gmi" path="res://sounds/wooden_box_broken.wav" id="3_f1fg6"]
 

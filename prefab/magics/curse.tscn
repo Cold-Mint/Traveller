@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://m3tkjcbrrhfj"]
 
-[ext_resource type="Script" path="res://scripts/spell/NodeSpawnOnKillCharacterSpell.cs" id="1_gg5rs"]
+[ext_resource type="Script" uid="uid://8bm3jt3bjha7" path="res://scripts/spell/NodeSpawnOnKillCharacterSpell.cs" id="1_gg5rs"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_83n3c"]
 [ext_resource type="Texture2D" uid="uid://mb5yijtw7sw5" path="res://sprites/projectile/x3.png" id="3_thtsv"]
 

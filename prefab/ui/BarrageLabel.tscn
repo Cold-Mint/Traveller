@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgtfeppebswov"]
 
-[ext_resource type="Script" path="res://scripts/barrage/BarrageLabel.cs" id="1_38wfb"]
+[ext_resource type="Script" uid="uid://d2n254jgbap8i" path="res://scripts/barrage/BarrageLabel.cs" id="1_38wfb"]
 
 [node name="BarrageLabel" type="RichTextLabel" node_paths=PackedStringArray("_visibleOnScreenNotifier2D")]
 anchors_preset = 15

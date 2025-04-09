@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://c3o422sb2opuh"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/MainMenuLoader.cs" id="1_ljkri"]
+[ext_resource type="Script" uid="uid://db6uynccghqdc" path="res://scripts/loader/uiLoader/MainMenuLoader.cs" id="1_ljkri"]
 [ext_resource type="Texture2D" uid="uid://btjicmwuohm5m" path="res://sprites/mainMenu/1.png" id="2_e7tcv"]
 [ext_resource type="Texture2D" uid="uid://dtq7eoe8m0ybk" path="res://sprites/mainMenu/2.png" id="3_iw58v"]
 [ext_resource type="PackedScene" uid="uid://dgtfeppebswov" path="res://prefab/ui/BarrageLabel.tscn" id="3_wpngo"]
 [ext_resource type="Texture2D" uid="uid://cgnu8slwshvb" path="res://sprites/mainMenu/3.png" id="4_j0f0y"]
-[ext_resource type="Script" path="res://scripts/barrage/BarrageNode.cs" id="5_5famo"]
+[ext_resource type="Script" uid="uid://b7f2be8wshn02" path="res://scripts/barrage/BarrageNode.cs" id="5_5famo"]
 
 [sub_resource type="Animation" id="Animation_fdfsj"]
 length = 0.001
@@ -41,8 +41,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ni18n"]
 _data = {
-"RESET": SubResource("Animation_fdfsj"),
-"background": SubResource("Animation_agfyt")
+&"RESET": SubResource("Animation_fdfsj"),
+&"background": SubResource("Animation_agfyt")
 }
 
 [node name="Control" type="Control"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdyfow6svey00"]
 
-[ext_resource type="Script" path="res://scripts/inventory/ItemSlotNode.cs" id="1_fbwot"]
+[ext_resource type="Script" uid="uid://dqsnvvo6n8ip6" path="res://scripts/inventory/ItemSlotNode.cs" id="1_fbwot"]
 [ext_resource type="Texture2D" uid="uid://dmthsdg1wx318" path="res://sprites/ui/ItemBarEmpty.png" id="1_y2wyt"]
 
 [node name="ItemSlot" type="TextureButton" node_paths=PackedStringArray("_iconTextureRect", "_quantityLabel")]

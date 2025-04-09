@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bptnlrbqoc5qw" path="res://sprites/progressBar/Under.png" id="1_sc0v3"]
 [ext_resource type="Texture2D" uid="uid://i6st7ohpjkwu" path="res://sprites/progressBar/Over.png" id="2_ay5vh"]
 [ext_resource type="Texture2D" uid="uid://cfky5jupwflnv" path="res://sprites/progressBar/Progress.png" id="2_s0gle"]
-[ext_resource type="Script" path="res://scripts/health/HealthBar.cs" id="4_84gre"]
+[ext_resource type="Script" uid="uid://dtmoxyup8s7hj" path="res://scripts/health/HealthBar.cs" id="4_84gre"]
 
 [node name="HealthBar" type="TextureProgressBar"]
 offset_right = 96.0

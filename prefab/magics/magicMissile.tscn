@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bt3ck8twqowke"]
 
-[ext_resource type="Script" path="res://scripts/spell/SpellPickAble.cs" id="1_xxv2a"]
+[ext_resource type="Script" uid="uid://daoe0bevwr7h6" path="res://scripts/spell/SpellPickAble.cs" id="1_xxv2a"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_p1csa"]
 [ext_resource type="Texture2D" uid="uid://ca3paw31aubkd" path="res://sprites/projectile/magicMissile.png" id="3_ckdw6"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cg75t3fw5c6er"]
 
-[ext_resource type="Script" path="res://scripts/spell/TrackingSpell.cs" id="1_vhnwx"]
+[ext_resource type="Script" uid="uid://bhos7diadhgr6" path="res://scripts/spell/TrackingSpell.cs" id="1_vhnwx"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_3fbv3"]
 [ext_resource type="Texture2D" uid="uid://dhgbij2ifphar" path="res://sprites/projectile/trackingSpell.png" id="2_i33g0"]
 

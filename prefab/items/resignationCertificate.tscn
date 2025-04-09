@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cj36fjtrlo03t"]
 
-[ext_resource type="Script" path="res://scripts/inventory/ResignationCertificate.cs" id="1_nydte"]
+[ext_resource type="Script" uid="uid://c37g53adhmebm" path="res://scripts/inventory/ResignationCertificate.cs" id="1_nydte"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="2_ei0j2"]
 [ext_resource type="Texture2D" uid="uid://dyfqdpdlq286h" path="res://sprites/projectile/resignationCertificate.png" id="3_jwff2"]
 

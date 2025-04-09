@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bj3jn46e4k0wd"]
 
-[ext_resource type="Script" path="res://scripts/console/ConsoleGui.cs" id="1_gsp3x"]
+[ext_resource type="Script" uid="uid://bmy7nwo7jb7op" path="res://scripts/console/ConsoleGui.cs" id="1_gsp3x"]
 [ext_resource type="PackedScene" uid="uid://c8xj04i5pdk7m" path="res://prefab/ui/autoCompleteSuggestionLabel.tscn" id="2_okl0n"]
 
 [node name="Console" type="Control" node_paths=PackedStringArray("_submitButton", "_commandEdit", "_logContainer", "_suggestedContainer")]

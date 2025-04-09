@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://6i7rgx3sdu1k"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/ContributorGroupLoader.cs" id="1_xwjh1"]
+[ext_resource type="Script" uid="uid://oivaoc06yjk8" path="res://scripts/loader/uiLoader/ContributorGroupLoader.cs" id="1_xwjh1"]
 
 [node name="ContributorGroup" type="Control"]
 layout_mode = 3

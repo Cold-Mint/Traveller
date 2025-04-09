@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bci3swhs1crfb"]
 
-[ext_resource type="Script" path="res://scripts/damage/DamageNumber.cs" id="1_fui0m"]
+[ext_resource type="Script" uid="uid://b4emwi3eoc1v8" path="res://scripts/damage/DamageNumber.cs" id="1_fui0m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vq24w"]
 

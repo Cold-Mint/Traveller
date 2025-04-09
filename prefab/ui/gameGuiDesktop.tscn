@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://bue23j0if74ob"]
 
-[ext_resource type="Script" path="res://scripts/FpsLabel.cs" id="1_isyl2"]
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/DesktopGameGui.cs" id="1_n0m24"]
+[ext_resource type="Script" uid="uid://cjjwc1wwlumvw" path="res://scripts/FpsLabel.cs" id="1_isyl2"]
+[ext_resource type="Script" uid="uid://rr0n3mafy7r8" path="res://scripts/loader/uiLoader/DesktopGameGui.cs" id="1_n0m24"]
 [ext_resource type="PackedScene" uid="uid://c74180dtf7j7a" path="res://scenes/mapContainerDesktop.tscn" id="2_gxfvy"]
-[ext_resource type="Script" path="res://scripts/HealthBarUi.cs" id="3_0j41w"]
+[ext_resource type="Script" uid="uid://ba2b571mf0m0j" path="res://scripts/HealthBarUi.cs" id="3_0j41w"]
 [ext_resource type="Texture2D" uid="uid://cs6e0af876ss5" path="res://sprites/ui/HeartEmpty.png" id="4_a4e6w"]
-[ext_resource type="Script" path="res://scripts/inventory/HotBar.cs" id="5_ae1jm"]
+[ext_resource type="Script" uid="uid://bm7gyutyc5hce" path="res://scripts/inventory/HotBar.cs" id="5_ae1jm"]
 
 [node name="GameGuiDefault" type="Control"]
 layout_mode = 3

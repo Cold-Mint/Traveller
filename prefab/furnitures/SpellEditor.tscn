@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://djsh4unystlf0"]
 
-[ext_resource type="Script" path="res://scripts/furniture/GuiFurniture.cs" id="1_t1qdg"]
+[ext_resource type="Script" uid="uid://3h5sdti3xxiw" path="res://scripts/furniture/GuiFurniture.cs" id="1_t1qdg"]
 [ext_resource type="Texture2D" uid="uid://cyciw4drjvrs8" path="res://sprites/furnitures/SpellEditor.png" id="2_sbshw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4tg"]

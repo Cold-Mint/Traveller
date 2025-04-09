@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckl23uwxrjat4"]
 
-[ext_resource type="Script" path="res://scripts/loader/uiLoader/LevelGraphEditorLoader.cs" id="1_qgo7w"]
+[ext_resource type="Script" uid="uid://crvaa5jq8a3tt" path="res://scripts/loader/uiLoader/LevelGraphEditorLoader.cs" id="1_qgo7w"]
 
 [node name="LevelGraphEditor" type="Control"]
 layout_mode = 3

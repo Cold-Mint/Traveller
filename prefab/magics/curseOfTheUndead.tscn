@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://crthy8a50a4t"]
 
-[ext_resource type="Script" path="res://scripts/spell/SpellPickAble.cs" id="1_v0grp"]
+[ext_resource type="Script" uid="uid://daoe0bevwr7h6" path="res://scripts/spell/SpellPickAble.cs" id="1_v0grp"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_ffr2k"]
 [ext_resource type="Texture2D" uid="uid://bbcjkyrsx88av" path="res://sprites/projectile/curseOfTheUndead.png" id="4_y6nkf"]
 

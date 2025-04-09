@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dmt5gpklx8efc"]
 
-[ext_resource type="Script" path="res://scripts/projectile/Projectile.cs" id="1_cp6hg"]
+[ext_resource type="Script" uid="uid://co7ffkfmup3ls" path="res://scripts/projectile/Projectile.cs" id="1_cp6hg"]
 [ext_resource type="Texture2D" uid="uid://ca3paw31aubkd" path="res://sprites/projectile/magicMissile.png" id="2_6mikr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vfvxd"]
