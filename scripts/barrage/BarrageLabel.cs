@@ -21,6 +21,7 @@ public partial class BarrageLabel : RichTextLabel, IPoolable
         {
             return;
         }
+
         _visibleOnScreenNotifier2D.ScreenEntered += VisibleOnScreenNotifier2DOnScreenEntered;
         _visibleOnScreenNotifier2D.ScreenExited += VisibleOnScreenNotifier2DOnScreenExited;
         UpdateRectangle();

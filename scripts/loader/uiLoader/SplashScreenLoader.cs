@@ -93,7 +93,6 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         CommandManager.RegisterCommand(new RoomCommand());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
-        DeathInfoGenerator.RegisterDeathInfoHandler(new ResignationCertificateDeathInfoHandler());
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());
         MapGenerator.RegisterRoomInjectionProcessor(new ChanceRoomInjectionProcessor());
         MapGenerator.RegisterRoomInjectionProcessor(new TimeIntervalRoomInjectorProcessor());
