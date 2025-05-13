@@ -10,5 +10,5 @@ public interface ILayoutStrategy
     /// <para>获取布局图</para>
     /// </summary>
     /// <returns></returns>
-    public Task<LevelGraphEditorSaveData?> GetLayout();
+    public Task<LevelGraphEditorSaveData?> GetLayout(int level);
 }

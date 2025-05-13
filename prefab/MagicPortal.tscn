@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://3k1rpg2gb7rw"]
+
+[ext_resource type="Texture2D" uid="uid://qtuygd75xnbi" path="res://sprites/magicPortal.png" id="1_7dagd"]
+
+[node name="MagicPortal" type="Node2D"]
+
+[node name="MagicPortal" type="Sprite2D" parent="."]
+texture = ExtResource("1_7dagd")

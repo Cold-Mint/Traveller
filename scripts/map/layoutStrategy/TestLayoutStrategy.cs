@@ -11,9 +11,10 @@ namespace ColdMint.scripts.map.layoutStrategy;
 /// </summary>
 public class TestLayoutStrategy : ILayoutStrategy
 {
-    private const string Path = "res://data/levelGraphs/test.yaml";
+    private const string Path = "res://data/levelGraphs/starting_point.yaml";
 
-    public Task<LevelGraphEditorSaveData?> GetLayout()
+
+    public Task<LevelGraphEditorSaveData?> GetLayout(int level)
     {
         var exists = FileAccess.FileExists(Path);
         if (!exists)
@@ -21,12 +22,12 @@ public class TestLayoutStrategy : ILayoutStrategy
             return Task.FromResult<LevelGraphEditorSaveData?>(null);
         }
 
-        var json = FileAccess.GetFileAsString(Path);
-        if (json == null)
+        var yaml = FileAccess.GetFileAsString(Path);
+        if (yaml == null)
         {
             return Task.FromResult<LevelGraphEditorSaveData?>(null);
         }
 
-        return Task.FromResult(YamlSerialization.Deserialize<LevelGraphEditorSaveData?>(json));
+        return Task.FromResult(YamlSerialization.Deserialize<LevelGraphEditorSaveData?>(yaml));
     }
 }

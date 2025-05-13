@@ -32,13 +32,14 @@ public static class MapGenerator
     private static ILayoutStrategy? _layoutStrategy;
 
     private static bool _running;
+    private static int _level = 1;
 
     /// <summary>
     /// <para>Room dictionary</para>
     /// <para>房间字典</para>
     /// </summary>
     private static readonly Dictionary<string, Room> RoomDictionary = new();
-    
+
     /// <summary>
     /// <para>Map root node</para>
     /// <para>地图根节点</para>
@@ -75,7 +76,7 @@ public static class MapGenerator
     {
         return RoomDictionary.GetValueOrDefault(id);
     }
-    
+
     /// <summary>
     /// <para>Register the room injection processor</para>
     /// <para>注册房间注入处理器</para>
@@ -115,6 +116,15 @@ public static class MapGenerator
         return _roomInjectionProcessorsDictionary.Remove(id);
     }
 
+    /// <summary>
+    /// <para>Level</para>
+    /// <para>关卡等级</para>
+    /// </summary>
+    public static int Level
+    {
+        get => _level;
+        set => _level = value;
+    }
 
     /// <summary>
     /// <para>Set seed</para>
@@ -203,7 +213,7 @@ public static class MapGenerator
             return;
         }
 
-        var levelGraphEditorSaveData = await _layoutStrategy.GetLayout();
+        var levelGraphEditorSaveData = await _layoutStrategy.GetLayout(_level);
         if (levelGraphEditorSaveData == null || !IsValidLayoutData(levelGraphEditorSaveData))
         {
             StopMapGeneration(Config.MapGeneratorStopCode.LevelGraphIsNotAvailable);

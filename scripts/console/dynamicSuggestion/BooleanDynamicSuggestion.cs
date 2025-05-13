@@ -9,11 +9,12 @@ namespace ColdMint.scripts.console.dynamicSuggestion;
 public class BooleanDynamicSuggestion : IDynamicSuggestion
 {
     public string ID => Config.DynamicSuggestionID.Boolean;
+    private readonly string[] _allSuggest = ["true", "false"];
 
-    public bool Match(string input) => GetAllSuggest().Any(suggest => suggest == input);
+    public bool Match(string input) => _allSuggest.Any(suggest => suggest == input);
 
     public string[] GetAllSuggest()
     {
-        return ["true", "false"];
+        return _allSuggest;
     }
 }

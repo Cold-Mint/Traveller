@@ -26,6 +26,9 @@ public class MapCommand : ICommand
         _suggest.AddChild("recreate");
         var setOverlapDetectionDelay = _suggest.AddChild("set_overlap_detection_delay");
         setOverlapDetectionDelay.AddChild("reset");
+        var level = _suggest.AddChild("level");
+        level.AddChild("get");
+        level.AddChild("set");
     }
 
     public async Task<bool> Execute(CommandArgs args)
@@ -56,6 +59,29 @@ public class MapCommand : ICommand
             ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_set_overlap_detection_delay",
                 PatchworkRoomPlacementStrategy.OverlapDetectionDelay));
             return true;
+        }
+
+        var levelTree = _suggest.GetChild(2);
+        if (type == levelTree?.Data)
+        {
+            var op = args.GetString(2);
+            var get = levelTree.GetChild(0)?.Data;
+            var set = levelTree.GetChild(1)?.Data;
+            if (op == get)
+            {
+                ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_get_level",
+                    MapGenerator.Level));
+                return true;
+            }
+
+            if (op == set)
+            {
+                var value = args.GetInt(3);
+                MapGenerator.Level = value;
+                ConsoleGui.Instance?.Print(TranslationServerUtils.TranslateWithFormat("log_set_level",
+                    MapGenerator.Level));
+                return true;
+            }
         }
 
         return false;

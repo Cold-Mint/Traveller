@@ -142,3 +142,7 @@ log_command_execution,开始执行命令{0}。,Start executing the {0} command.,
 log_set_overlap_detection_delay,设置重叠检测延迟为{0}。,Set the overlap detection delay to {0}.,オーバーラップ検出遅延を{0}に設定します。
 log_assets_registry_echo,类型为{0}的资产，共{1}条。如下所示：{2},The asset of type {0} has {1} entries. As follows:{2},タイプ{0}のアセットで、{1}条です。次のようになります:{2}
 log_rooms_echo,房间列表，共{0}条。如下所示：{1},"List of rooms, total {0}. As follows: {1}",部屋リストで、{0}条です。次のようになります:{1}
+log_set_level,设置地图等级为{0}。, Set the map level to {0}.,マップレベルを{0}に設定します。
+log_get_level,地图等级为{0}。,The map level is {0}.,マップレベルは{0}です。
+log_get_indestructible,玩家无敌状态为{0},The player's invincible status is {0},プレイヤーの無敵状態は{0}です
+log_set_indestructible,设置玩家无敌状态为{0},Set the player's invincible status to {0},プレイヤーの無敵状態を{0}に設定します。

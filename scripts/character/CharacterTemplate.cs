@@ -160,6 +160,18 @@ public partial class CharacterTemplate : CharacterBody2D
 
     protected int CurrentHp;
 
+    /// <summary>
+    /// <para>Obtain biological health points in read-only form</para>
+    /// <para>以只读的形式获取生物血量</para>
+    /// </summary>
+    public int Hp => CurrentHp;
+    
+    /// <summary>
+    /// <para>Get the maximum health in read-only mode</para>
+    /// <para>以只读形式获取最大血量</para>
+    /// </summary>
+    public int ReadOnlyMaxHp => MaxHp;
+
     //The initial health of the character after creation
     //角色创建后的初始血量
     [Export] private int _initialHp;

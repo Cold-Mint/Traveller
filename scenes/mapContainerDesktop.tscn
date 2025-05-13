@@ -105,7 +105,7 @@ mouse_filter = 2
 
 [node name="MiniMapAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_d5o4b")
+&"": SubResource("AnimationLibrary_d5o4b")
 }
 
 [node name="Control" type="Control" parent="."]
