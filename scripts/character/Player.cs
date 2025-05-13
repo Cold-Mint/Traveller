@@ -52,6 +52,10 @@ public partial class Player : CharacterTemplate
 
     [Export] private AudioStream[]? _jumpSounds; // skipcq:CS-R1137
 
+
+    [Export] private AudioStream? _throwOut;
+    [Export] private AudioStream? _pickUp;
+
     public override void _Ready()
     {
         base._Ready();
@@ -95,6 +99,22 @@ public partial class Player : CharacterTemplate
 
         var randomIndex = GD.Randi() % _jumpSounds.Length;
         PlayAudioStream(_jumpSounds[randomIndex]);
+    }
+
+    private void PlayThrowOutAudio()
+    {
+        if (_throwOut != null)
+        {
+            PlayAudioStream(_throwOut);
+        }
+    }
+
+    private void PlayPickUpAudio()
+    {
+        if (_pickUp != null)
+        {
+            PlayAudioStream(_pickUp);
+        }
     }
 
     protected override void WhenBindItemContainer(IItemContainer? itemContainer)
@@ -195,6 +215,7 @@ public partial class Player : CharacterTemplate
             var success = PickItem(pickAbleItem);
             if (success && pickAbleItem != null)
             {
+                PlayPickUpAudio();
                 PickingRangeBodiesList?.Remove(pickAbleItem);
             }
         }
@@ -253,6 +274,7 @@ public partial class Player : CharacterTemplate
                 _parabola.Points = [Vector2.Zero];
             }
 
+            PlayThrowOutAudio();
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
             CurrentItem = null;
         }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cj65pso40syj5"]
+[gd_scene load_steps=15 format=3 uid="uid://cj65pso40syj5"]
 
 [ext_resource type="Script" uid="uid://i5oat4qg4iv8" path="res://scripts/character/Player.cs" id="1_1dlls"]
 [ext_resource type="AudioStream" uid="uid://d2yy7rkyyt8ve" path="res://sounds/player/damaged1.wav" id="2_af8h5"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://cts01i772bsti" path="res://scripts/damage/DamageNumberNodeSpawn.cs" id="3_lrmsw"]
 [ext_resource type="AudioStream" uid="uid://cndxmnbanr8cu" path="res://sounds/player/damaged3.wav" id="4_svbgi"]
 [ext_resource type="AudioStream" uid="uid://dm15g76dst2a8" path="res://sounds/player/jump3.wav" id="4_ytj5o"]
+[ext_resource type="AudioStream" uid="uid://cgnkkamxpssx8" path="res://sounds/player/throw_out.wav" id="5_w6h0q"]
+[ext_resource type="AudioStream" uid="uid://dsvy6cvk6vabi" path="res://sounds/player/pick_up.wav" id="6_d1ppo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bb8wt"]
 radius = 21.0
@@ -37,6 +39,8 @@ platform_wall_layers = 128
 script = ExtResource("1_1dlls")
 _platformDetectionRayCast2DList = [NodePath("PlatformDetectionRayCast1"), NodePath("PlatformDetectionRayCast2"), NodePath("PlatformDetectionRayCast3")]
 _jumpSounds = Array[AudioStream]([ExtResource("2_b7gjc"), ExtResource("3_e6cuc"), ExtResource("4_ytj5o")])
+_throwOut = ExtResource("5_w6h0q")
+_pickUp = ExtResource("6_d1ppo")
 MaxHp = 32
 CampId = "Default"
 DamageSounds = Array[AudioStream]([ExtResource("2_af8h5"), ExtResource("3_kosfs"), ExtResource("4_svbgi")])

@@ -66,8 +66,8 @@ tile_set = ExtResource("1_odulj")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false
-position = Vector2(320, 111)
-scale = Vector2(20.125, 7.06253)
+position = Vector2(431, 222)
+scale = Vector2(26.9375, 14)
 texture = ExtResource("2_k8l3w")
 
 [node name="AutoSpawn" type="Node2D" parent="."]
