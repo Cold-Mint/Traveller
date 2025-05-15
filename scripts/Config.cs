@@ -72,6 +72,8 @@ public static class Config
         /// </summary>
         public const string Fog = "fog";
 
+        public const string Give = "give";
+
         public const string Player = "player";
         public const string AssetsRegistry = "assetsRegistry";
         public const string Room = "room";
@@ -178,6 +180,7 @@ public static class Config
     {
         public const string Boolean = "Boolean";
         public const string Item = "Item";
+        public const string ObjectSelector = "ObjectSelector";
         public const string Room = "Room";
     }
 

@@ -84,10 +84,12 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         DynamicSuggestionManager.RegisterDynamicSuggestion(new BooleanDynamicSuggestion());
         DynamicSuggestionManager.RegisterDynamicSuggestion(new ItemDynamicSuggestion());
         DynamicSuggestionManager.RegisterDynamicSuggestion(new RoomDynamicSuggestion());
+        DynamicSuggestionManager.RegisterDynamicSuggestion(new ObjectSelectorDynamicSuggestion());
         CommandManager.RegisterCommand(new MapCommand());
         CommandManager.RegisterCommand(new SeedCommand());
         CommandManager.RegisterCommand(new CameraCommand());
         CommandManager.RegisterCommand(new FogCommand());
+        CommandManager.RegisterCommand(new GiveCommand());
         CommandManager.RegisterCommand(new PlayerCommand());
         CommandManager.RegisterCommand(new AssetsRegistryCommand());
         CommandManager.RegisterCommand(new RoomCommand());
