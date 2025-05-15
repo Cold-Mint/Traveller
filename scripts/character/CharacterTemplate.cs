@@ -165,7 +165,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>以只读的形式获取生物血量</para>
     /// </summary>
     public int Hp => CurrentHp;
-    
+
     /// <summary>
     /// <para>Get the maximum health in read-only mode</para>
     /// <para>以只读形式获取最大血量</para>
@@ -488,16 +488,16 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <para>Pick up the specified items</para>
     /// <para>将指定物品拾起来</para>
     /// </summary>
-    /// <param name="pickAbleItemNode2D"></param>
+    /// <param name="node2D"></param>
     /// <returns>
     ///<para>Whether successfully picked up</para>
     ///<para>是否成功拾起</para>
     /// </returns>
-    public bool PickItem(Node2D? pickAbleItemNode2D)
+    public virtual bool PickItem(Node2D? node2D)
     {
         //Empty reference checking is implicitly performed here.
         //此处隐式的执行了空引用检查。
-        if (pickAbleItemNode2D is not IItem item)
+        if (node2D is not PickAbleTemplate pickAbleItem)
         {
             return false;
         }
@@ -511,7 +511,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Check to see if you can fit the item into the container first.
         //先检查是否能将物品放入容器。
-        var canAddItem = ItemContainer.CanAddItem(item);
+        var canAddItem = ItemContainer.CanAddItem(pickAbleItem);
         if (!canAddItem)
         {
             return false;
@@ -519,7 +519,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         //Is it successfully added to the container?
         //再检查是否成功的添加到容器内了？
-        var addSuccessNumber = ItemContainer.AddItem(item);
+        var addSuccessNumber = ItemContainer.AddItem(pickAbleItem);
         if (addSuccessNumber <= 0)
         {
             return false;
@@ -529,34 +529,30 @@ public partial class CharacterTemplate : CharacterBody2D
         //设置捡起物品的常规处理。
         //You can supplement picking up state handling for more types of objects here.
         //您可以在这里补充更多类型对象的捡起状态处理。
-        if (pickAbleItemNode2D is PickAbleTemplate pickAbleTemplate)
-        {
-            pickAbleTemplate.LoadResource();
-            pickAbleTemplate.OwnerNode = this;
-            pickAbleTemplate.Picked = true;
-            pickAbleTemplate.Freeze = true;
-            pickAbleTemplate.DisabledCollisionShape2D();
-            pickAbleTemplate.OnPickUp?.Invoke(this);
-        }
-
-        if (pickAbleItemNode2D is ProjectileWeapon projectileWeapon)
+        pickAbleItem.LoadResource();
+        pickAbleItem.OwnerNode = this;
+        pickAbleItem.Picked = true;
+        pickAbleItem.Freeze = true;
+        pickAbleItem.DisabledCollisionShape2D();
+        pickAbleItem.OnPickUp?.Invoke(this);
+        if (pickAbleItem is ProjectileWeapon projectileWeapon)
         {
             projectileWeapon.UpdateSpellCache();
         }
 
-        if (_currentItem == null && ItemContainer.GetSelectItem() == item)
+        if (_currentItem == null && ItemContainer.GetSelectItem() == pickAbleItem)
         {
             //If the selected item slot in the item container is a newly picked item, and there is no item in the hand, then we put the selected item into the hand.
             //如果物品容器内选中的物品槽是刚刚捡到的物品，且手里没有物品持有，那么我们将选中的物品放到手上。
-            CurrentItem = pickAbleItemNode2D;
+            CurrentItem = pickAbleItem;
         }
         else
         {
-            pickAbleItemNode2D.Hide();
-            pickAbleItemNode2D.ProcessMode = ProcessModeEnum.Disabled;
+            pickAbleItem.Hide();
+            pickAbleItem.ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        NodeUtils.CallDeferredReparent(ItemMarker2D, pickAbleItemNode2D);
+        NodeUtils.CallDeferredReparent(ItemMarker2D, pickAbleItem);
         return true;
     }
 
@@ -883,15 +879,15 @@ public partial class CharacterTemplate : CharacterBody2D
     ///<para>The speed to be applied to the item</para>
     ///<para>要施加到物品上的速度</para>
     /// </param>
-    protected void ThrowItem(int index, int number, Vector2 velocity)
+    protected virtual bool ThrowItem(int index, int number, Vector2 velocity)
     {
         if (number == 0)
         {
-            return;
+            return false;
         }
 
         var item = ItemContainer?.GetItem(index);
-        if (item is null) return;
+        if (item is null) return false;
         //Less than 0, throw everything
         //小于0,扔出所有物品
         var actualQuantity = number < 0 ? item.Quantity : Math.Min(item.Quantity, number);
@@ -899,6 +895,8 @@ public partial class CharacterTemplate : CharacterBody2D
         {
             ThrowOneItem(index, item, velocity);
         }
+
+        return true;
     }
 
     ///  <summary>

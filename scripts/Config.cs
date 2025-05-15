@@ -176,6 +176,34 @@ public static class Config
         public const int Backpack = 3;
     }
 
+    public static class ObjectType
+    {
+        /// <summary>
+        /// <para>Query all types</para>
+        /// <para>查询全部类型</para>
+        /// </summary>
+        public const int All = 0;
+
+
+        /// <summary>
+        /// <para>Player</para>
+        /// <para>玩家</para>
+        /// </summary>
+        public const int Player = 1;
+
+        /// <summary>
+        /// <para>Characters, including players</para>
+        /// <para>角色，包含玩家</para>
+        /// </summary>
+        public const int Character = 2;
+
+        /// <summary>
+        /// <para>Item</para>
+        /// <para>物品</para>
+        /// </summary>
+        public const int Item = 3;
+    }
+
     public static class DynamicSuggestionID
     {
         public const string Boolean = "Boolean";

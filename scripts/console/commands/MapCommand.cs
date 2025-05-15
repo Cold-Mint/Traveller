@@ -64,7 +64,9 @@ public class MapCommand : ICommand
         var levelTree = _suggest.GetChild(2);
         if (type == levelTree?.Data)
         {
-            var op = args.GetString(2);
+            var inputOp = args.GetString(2);
+            if (string.IsNullOrEmpty(inputOp)) return false;
+            var op = inputOp.ToLowerInvariant();
             var get = levelTree.GetChild(0)?.Data;
             var set = levelTree.GetChild(1)?.Data;
             if (op == get)

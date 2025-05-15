@@ -5,6 +5,7 @@ using ColdMint.scripts.camp;
 using ColdMint.scripts.console;
 using ColdMint.scripts.console.commands;
 using ColdMint.scripts.console.dynamicSuggestion;
+using ColdMint.scripts.console.objectSelector;
 using ColdMint.scripts.contribute;
 using ColdMint.scripts.deathInfo;
 using ColdMint.scripts.debug;
@@ -93,6 +94,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         CommandManager.RegisterCommand(new PlayerCommand());
         CommandManager.RegisterCommand(new AssetsRegistryCommand());
         CommandManager.RegisterCommand(new RoomCommand());
+        ObjectSelector.Register(new PlayerDataSource());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();
         DeathInfoGenerator.RegisterDeathInfoHandler(new SelfDeathInfoHandler());

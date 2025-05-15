@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ColdMint.scripts.damage;
-using ColdMint.scripts.map;
 using ColdMint.scripts.utils;
 
 namespace ColdMint.scripts.console.commands;
@@ -54,7 +53,13 @@ public class PlayerCommand : ICommand
                 return Task.FromResult(false);
             }
 
-            var op = args.GetString(2);
+            var inputOp = args.GetString(2);
+            if (string.IsNullOrEmpty(inputOp))
+            {
+                return Task.FromResult(false);
+            }
+
+            var op = inputOp.ToLowerInvariant();
             var get = indestructibleNode.GetChild(0)?.Data;
             var set = indestructibleNode.GetChild(1)?.Data;
             if (op == get)

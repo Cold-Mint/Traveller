@@ -101,6 +101,17 @@ public partial class Player : CharacterTemplate
         PlayAudioStream(_jumpSounds[randomIndex]);
     }
 
+    public override bool PickItem(Node2D? node2D)
+    {
+        var result = base.PickItem(node2D);
+        if (result)
+        {
+            PlayPickUpAudio();
+        }
+
+        return result;
+    }
+
     private void PlayThrowOutAudio()
     {
         if (_throwOut != null)
@@ -215,7 +226,6 @@ public partial class Player : CharacterTemplate
             var success = PickItem(pickAbleItem);
             if (success && pickAbleItem != null)
             {
-                PlayPickUpAudio();
                 PickingRangeBodiesList?.Remove(pickAbleItem);
             }
         }
@@ -274,10 +284,20 @@ public partial class Player : CharacterTemplate
                 _parabola.Points = [Vector2.Zero];
             }
 
-            PlayThrowOutAudio();
             ThrowItem(ItemContainer.GetSelectIndex(), 1, GetThrowVelocity());
             CurrentItem = null;
         }
+    }
+
+
+    protected override bool ThrowItem(int index, int number, Vector2 velocity)
+    {
+        var result = base.ThrowItem(index, number, velocity);
+        if (result)
+        {
+            PlayThrowOutAudio();
+        }
+        return result;
     }
 
     private void CanUseItem()

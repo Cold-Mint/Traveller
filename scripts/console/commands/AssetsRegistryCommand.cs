@@ -94,15 +94,16 @@ public class AssetsRegistryCommand : ICommand
                 return false;
             }
 
+            var showModeLower = showMode.ToLowerInvariant();
             var enableSimpleMode = true;
             var simple = itemNode.GetChild(0)?.Data;
-            if (showMode == simple)
+            if (showModeLower == simple)
             {
                 enableSimpleMode = true;
             }
 
             var detailed = itemNode.GetChild(1)?.Data;
-            if (showMode == detailed)
+            if (showModeLower == detailed)
             {
                 enableSimpleMode = false;
             }
