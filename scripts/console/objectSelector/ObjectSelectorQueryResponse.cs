@@ -6,9 +6,9 @@ namespace ColdMint.scripts.console.objectSelector;
 
 public class ObjectSelectorQueryResponse
 {
-    private List<Node> _resultList;
+    private readonly List<Node> _resultList;
 
-    public int Count;
+    public readonly int Count;
 
     public ObjectSelectorQueryResponse(List<Node> resultList)
     {
