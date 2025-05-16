@@ -33,7 +33,6 @@ public partial class MeleeWeapon : WeaponTemplate
             Type = _damageType,
             CriticalStrikeProbability = _criticalStrikeProbability
         });
-        _damageArea.SetCollisionMaskValue(Config.LayerNumber.ProjectileBarrier, true);
     }
 
     protected override void OnOwnerNodeChanged(Node2D? node2D)

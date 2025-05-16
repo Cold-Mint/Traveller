@@ -19,6 +19,7 @@ public partial class DamageArea : Area2D
     private int _damageRange;
     private readonly List<CharacterTemplate> _characterTemplates = [];
     private readonly List<Barrier> _barriers = [];
+    private readonly List<ProjectileBarrier> _projectileBarrier = [];
     private CollisionShape2D? _collisionShape2D;
 
     /// <summary>
@@ -81,6 +82,7 @@ public partial class DamageArea : Area2D
         SetCollisionMaskValue(Config.LayerNumber.Player, true);
         SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
+        SetCollisionMaskValue(Config.LayerNumber.ProjectileBarrier, true);
         Monitoring = true;
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
@@ -152,6 +154,11 @@ public partial class DamageArea : Area2D
         {
             _barriers.Remove(barrier);
         }
+
+        if (body is ProjectileBarrier projectile)
+        {
+            _projectileBarrier.Remove(projectile);
+        }
     }
 
     /// <summary>
@@ -169,6 +176,11 @@ public partial class DamageArea : Area2D
         if (body is Barrier barrier)
         {
             _barriers.Add(barrier);
+        }
+
+        if (body is ProjectileBarrier projectile)
+        {
+            _projectileBarrier.Add(projectile);
         }
     }
 
@@ -246,6 +258,7 @@ public partial class DamageArea : Area2D
                     doDamageAction.Invoke(minFixedDamage, node2D);
                 }
             }
+
             return;
         }
 
@@ -318,6 +331,11 @@ public partial class DamageArea : Area2D
             {
                 CircleShape2D(radius, barrier, (damage, barrier1) => barrier1.Damage(damage));
             }
+
+            foreach (var projectileBarrier in _projectileBarrier)
+            {
+                CircleShape2D(radius, projectileBarrier, (damage, barrier1) => barrier1.Damage(damage));
+            }
         }
         else if (_collisionShape2D.Shape is RectangleShape2D rectangleShape2D)
         {
@@ -335,6 +353,11 @@ public partial class DamageArea : Area2D
             foreach (var barrier in _barriers)
             {
                 RectangleShape2D(rect, barrier, (damage, barrier1) => barrier1.Damage(damage));
+            }
+            
+            foreach (var projectileBarrier in _projectileBarrier)
+            {
+                RectangleShape2D(rect, projectileBarrier, (damage, barrier1) => barrier1.Damage(damage));
             }
         }
         else
