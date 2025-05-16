@@ -15,12 +15,12 @@ namespace ColdMint.scripts.damage;
 /// </summary>
 public partial class DamageArea : Area2D
 {
-
     private RangeDamage? _rangeDamage;
     private int _damageRange;
     private readonly List<CharacterTemplate> _characterTemplates = [];
     private readonly List<Barrier> _barriers = [];
     private CollisionShape2D? _collisionShape2D;
+
     /// <summary>
     /// <para>Whether it is a one-time injury area</para>
     /// <para>是否为一次性的伤害区域</para>
@@ -30,6 +30,7 @@ public partial class DamageArea : Area2D
     ///<para>剩余次数为0时，自动销毁</para>
     /// </remarks>
     public bool OneShot { get; set; }
+
     /// <summary>
     /// <para>residualUse</para>
     /// <para>剩余使用次数</para>
@@ -39,6 +40,7 @@ public partial class DamageArea : Area2D
     ///<para>当剩余使用次数时大于0时，伤害区域会对进入范围的生物结算伤害。</para>
     /// </remarks>
     private int _residualUse;
+
     /// <summary>
     /// <para>Whether damage is calculated based on the midpoint of the shape.</para>
     /// <para>是否基于形状的中点计算伤害。</para>
@@ -47,16 +49,16 @@ public partial class DamageArea : Area2D
     /// <para>Take the circular damage area as an example: if the radius is 50 and the distance from the creature to the midpoint is 45, then the damage received is 45/50=0.9,1-0.9=0.1. This is based on a midpoint calculation. Otherwise based on edge computing. The damage is 45/50=0.9.</para>
     /// <para>以圆形伤害区域为例：半径为50,生物到中点的距离为45,那么收到的伤害为45/50=0.9,1-0.9=0.1。这是基于中点计算的结果。否则基于边缘计算。伤害为45/50=0.9。</para>
     /// </remarks>
-    [Export]
-    private bool _isDamageCenterBased = true; // skipcq:CS-R1137
+    [Export] private bool _isDamageCenterBased = true; // skipcq:CS-R1137
+
     /// <summary>
     /// <para>Damage is caused when it comes into contact with the damaged area(Even if the creature is out of shape)</para>
     /// <para>当接触到伤害区域后便可造成伤害(即使生物在形状外)</para>
     /// </summary>
-    [Export]
-    private bool _damageOnContact; // skipcq:CS-R1137
+    [Export] private bool _damageOnContact; // skipcq:CS-R1137
 
     private Node2D? _ownerNode;
+
     public Node2D? OwnerNode
     {
         get => _ownerNode;
@@ -66,6 +68,7 @@ public partial class DamageArea : Area2D
             {
                 _rangeDamage.Attacker = value;
             }
+
             _ownerNode = value;
         }
     }
@@ -144,6 +147,7 @@ public partial class DamageArea : Area2D
         {
             _characterTemplates.Remove(characterTemplate);
         }
+
         if (body is Barrier barrier)
         {
             _barriers.Remove(barrier);
@@ -161,6 +165,7 @@ public partial class DamageArea : Area2D
         {
             _characterTemplates.Add(characterTemplate);
         }
+
         if (body is Barrier barrier)
         {
             _barriers.Add(barrier);
@@ -182,6 +187,7 @@ public partial class DamageArea : Area2D
         {
             return null;
         }
+
         return new FixedDamage(damage)
         {
             Type = _rangeDamage.Type,
@@ -201,6 +207,7 @@ public partial class DamageArea : Area2D
         {
             return null;
         }
+
         return new RangeDamage
         {
             MinDamage = _rangeDamage.MinDamage,
@@ -213,15 +220,17 @@ public partial class DamageArea : Area2D
 
     private void CircleShape2D<T>(float radius, T node2D, Action<IDamage, T> doDamageAction) where T : Node2D
     {
-        if (_rangeDamage == null)
+        if (_rangeDamage == null || _collisionShape2D == null)
         {
             return;
         }
+
         if (!DamageUtils.CanCauseHarm(OwnerNode, node2D))
         {
             return;
         }
-        var distance = node2D.GlobalPosition.DistanceSquaredTo(node2D.GlobalPosition);
+
+        var distance = node2D.GlobalPosition.DistanceSquaredTo(_collisionShape2D.GlobalPosition);
         if (distance > radius)
         {
             //The creature or player is outside the shape.
@@ -230,7 +239,8 @@ public partial class DamageArea : Area2D
             {
                 //If contact can cause injury.
                 //如果接触后即可造成伤害。
-                var minFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage);
+                var minFixedDamage =
+                    CreateFixedDamage(_isDamageCenterBased ? _rangeDamage.MinDamage : _rangeDamage.MaxDamage);
                 if (minFixedDamage != null)
                 {
                     doDamageAction.Invoke(minFixedDamage, node2D);
@@ -238,6 +248,7 @@ public partial class DamageArea : Area2D
             }
             return;
         }
+
         var percent = _isDamageCenterBased ? 1 - distance / radius : distance / radius;
         var percentFixedDamage = CreateFixedDamage(_rangeDamage.MinDamage + (int)(_damageRange * percent));
         if (percentFixedDamage != null)
@@ -252,10 +263,12 @@ public partial class DamageArea : Area2D
         {
             return;
         }
+
         if (!DamageUtils.CanCauseHarm(OwnerNode, node2D))
         {
             return;
         }
+
         //Determines whether a coordinate is contained within the rectangle.
         //判断某个坐标是否包含在矩形内。
         if (rect2.HasPoint(node2D.GlobalPosition))
@@ -289,6 +302,7 @@ public partial class DamageArea : Area2D
         {
             return;
         }
+
         _residualUse--;
         if (_collisionShape2D.Shape is CircleShape2D circleShape2D)
         {
@@ -299,6 +313,7 @@ public partial class DamageArea : Area2D
             {
                 CircleShape2D(radius, characterTemplate, (damage, template) => template.Damage(damage));
             }
+
             foreach (var barrier in _barriers)
             {
                 CircleShape2D(radius, barrier, (damage, barrier1) => barrier1.Damage(damage));
@@ -309,11 +324,14 @@ public partial class DamageArea : Area2D
             //Rectangular shape 2D
             //矩形形状2D
             var rectangleShapeRect = rectangleShape2D.GetRect();
-            var rect = new Rect2(new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X, rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
+            var rect = new Rect2(
+                new Vector2(rectangleShapeRect.Position.X + _collisionShape2D.GlobalPosition.X,
+                    rectangleShapeRect.Position.Y + _collisionShape2D.GlobalPosition.Y), rectangleShapeRect.Size);
             foreach (var characterTemplate in _characterTemplates)
             {
                 RectangleShape2D(rect, characterTemplate, (damage, template) => template.Damage(damage));
             }
+
             foreach (var barrier in _barriers)
             {
                 RectangleShape2D(rect, barrier, (damage, barrier1) => barrier1.Damage(damage));
@@ -323,6 +341,7 @@ public partial class DamageArea : Area2D
         {
             LogCat.LogError("invalid_damage_shape");
         }
+
         //Determine whether to destroy.
         //判断是否销毁。
         if (OneShot && _residualUse <= 0)

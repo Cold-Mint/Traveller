@@ -26,6 +26,11 @@ script = ExtResource("1_nl23k")
 CharacterName = "character_punch_bag"
 CanMutateAfterDeath = false
 RequiredForWaveAdvance = false
+_initialHp = null
+MaxHp = null
+CampId = null
+Indestructible = null
+_lootId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 7)

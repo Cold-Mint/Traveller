@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://du5ldsp613fei"]
+[gd_scene load_steps=14 format=4 uid="uid://du5ldsp613fei"]
 
 [ext_resource type="Script" uid="uid://d4dvypnx50gwb" path="res://scripts/map/PlayerSpawn.cs" id="1_q04qt"]
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_5bnvh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cdjmfqp854utu" path="res://sprites/tutorials/spellEditor.png" id="6_dbg76"]
 [ext_resource type="PackedScene" uid="uid://dld3qttpsdjpe" path="res://prefab/furnitures/WoodenBox.tscn" id="7_jybe6"]
 [ext_resource type="PackedScene" uid="uid://nbqjjnom2f5e" path="res://prefab/furnitures/Jar.tscn" id="8_prvl3"]
+[ext_resource type="PackedScene" uid="uid://cjaydudg7fv5h" path="res://prefab/entitys/PunchBag.tscn" id="9_bwvyy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -91,15 +92,27 @@ texture = ExtResource("6_dbg76")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_0kep0")]
 position = Vector2(227, 283)
+_initialDurability = null
+_maxDurability = null
+_lootId = null
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)
+_initialDurability = null
+_furnitureName = null
+_lootId = null
 
 [node name="WoodenBox2" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 200)
+_initialDurability = null
+_furnitureName = null
+_lootId = null
 
 [node name="WoodenBox3" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 162)
+_initialDurability = null
+_furnitureName = null
+_lootId = null
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 
@@ -125,3 +138,19 @@ position = Vector2(560, 297)
 
 [node name="PlayerTransportPoint" type="Marker2D" parent="."]
 position = Vector2(348, 279)
+
+[node name="PunchBag" parent="." instance=ExtResource("9_bwvyy")]
+position = Vector2(284, 285)
+_initialHp = null
+MaxHp = null
+CampId = null
+Indestructible = null
+_lootId = null
+
+[node name="PunchBag2" parent="." instance=ExtResource("9_bwvyy")]
+position = Vector2(364, 285)
+_initialHp = null
+MaxHp = null
+CampId = null
+Indestructible = null
+_lootId = null
