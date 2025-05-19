@@ -197,13 +197,29 @@ public partial class Player : CharacterTemplate
         if (Input.IsActionJustPressed("ui_up") && IsOnFloor())
         {
             PlayJumpAudio();
-            velocity.Y = JumpVelocity;
+            velocity.Y += JumpVelocity;
         }
 
         //Moving left and right
         //左右移动
         var axis = Input.GetAxis("ui_left", "ui_right");
-        velocity.X = axis * Speed * Config.CellSize * ProtectedSpeedScale;
+        var baseSpeed = Speed * Config.CellSize * ProtectedSpeedScale;
+        var targetVelocityX = axis * baseSpeed;
+
+        // Apply acceleration to smoothly move towards the target velocity
+        // 应用加速度平滑地向目标速度移动
+        // Adjust the multiplier (5) for desired acceleration speed
+        // 调整乘数（5）以获得所需的加速度速度
+        velocity.X = Mathf.MoveToward(velocity.X, targetVelocityX, baseSpeed * (float)delta * 5);
+
+        // Apply friction when there is no horizontal input
+        // 在没有水平输入时应用摩擦力
+        if (axis == 0)
+        {
+            // Adjust the multiplier (10) for desired acceleration speed
+            // 调整乘数（10）以获得所需的加速度速度
+            velocity.X = Mathf.MoveToward(velocity.X, 0, baseSpeed * (float)delta * 10);
+        }
 
 
         if (Input.IsActionJustPressed("use_item"))
@@ -297,6 +313,7 @@ public partial class Player : CharacterTemplate
         {
             PlayThrowOutAudio();
         }
+
         return result;
     }
 
