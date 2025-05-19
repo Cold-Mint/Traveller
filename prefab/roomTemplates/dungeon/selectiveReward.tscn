@@ -14,7 +14,7 @@ size = Vector2(20.9922, 46.5)
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiih8"]
-size = Vector2(739, 285)
+size = Vector2(733, 285)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kfmgh"]
 size = Vector2(595, 227)
@@ -83,7 +83,7 @@ _lootIdList = PackedStringArray("selectRoom1")
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomArea"]
-position = Vector2(370.5, 143.5)
+position = Vector2(367.5, 143.5)
 shape = SubResource("RectangleShape2D_kiih8")
 
 [node name="SpawnArea" type="Area2D" parent="."]

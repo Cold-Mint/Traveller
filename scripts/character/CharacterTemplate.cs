@@ -195,6 +195,7 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export] private string? _lootId; // skipcq:CS-R1137
 
     private HealthBar? _healthBar;
+    [Export]
     private Label? _tipLabel;
     private DateTime _lastDamageTime;
 
@@ -326,7 +327,6 @@ public partial class CharacterTemplate : CharacterBody2D
         _animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _pickingArea = GetNodeOrNull<Area2D>("Area2DPickingArea");
         _damageNumber = GetNode<DamageNumberNodeSpawn>("DamageNumber");
-        _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         if (_pickingArea != null)
         {
@@ -441,7 +441,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
         if (_tipLabel != null && !string.IsNullOrEmpty(CharacterName))
         {
-            TipLabelUtils.ShowTip(0, _tipLabel, CharacterName,
+            TipLabelUtils.ShowTip(this, 0, _tipLabel, CharacterName,
                 canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
     }

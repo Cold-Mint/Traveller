@@ -18,23 +18,19 @@ namespace ColdMint.scripts.pickable;
 /// </remarks>
 public partial class NonPickupItem : RigidBody2D, IItem
 {
-
     /// <summary>
     /// <para>EntityCollisionMode</para>
     /// <para>实体碰撞模式</para>
     /// </summary>
-    [Export]
-    private int _entityCollisionMode = Config.EntityCollisionMode.None; //skipcq:CS-R1137
+    [Export] private int _entityCollisionMode = Config.EntityCollisionMode.None; //skipcq:CS-R1137
 
-    [Export]
-    private string? _itemName; //skipcq:CS-R1137
+    [Export] private string? _itemName; //skipcq:CS-R1137
 
-    private Label? _tipLabel;
+    [Export] private Label? _tipLabel;
 
     public override void _Ready()
     {
         base._Ready();
-        _tipLabel = GetNodeOrNull<Label>("TipLabel");
         InputPickable = true;
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
@@ -57,12 +53,14 @@ public partial class NonPickupItem : RigidBody2D, IItem
         {
             return;
         }
+
         var translation = TranslationServerUtils.Translate(_itemName);
         if (string.IsNullOrEmpty(translation))
         {
             return;
         }
-        TipLabelUtils.ShowTip(-Rotation, _tipLabel, translation,Colors.White);
+
+        TipLabelUtils.ShowTip(this, -Rotation, _tipLabel, translation, Colors.White);
     }
 
     public override void _MouseExit()
@@ -87,11 +85,13 @@ public partial class NonPickupItem : RigidBody2D, IItem
         {
             return;
         }
+
         var collisionInfo = MoveAndCollide(Vector2.Zero, testOnly: true);
         if (collisionInfo == null)
         {
             return;
         }
+
         var node = (Node2D)collisionInfo.GetCollider();
         if (_entityCollisionMode == Config.EntityCollisionMode.OnlyPlayers)
         {
@@ -120,7 +120,6 @@ public partial class NonPickupItem : RigidBody2D, IItem
     /// <param name="player"></param>
     protected virtual void OnTouchPlayer(Player player)
     {
-
     }
 
     /// <summary>
@@ -130,24 +129,21 @@ public partial class NonPickupItem : RigidBody2D, IItem
     /// <param name="player"></param>
     protected virtual void OnTouchCharacterTemplate(CharacterTemplate player)
     {
-
     }
+
     public int Index { get; set; }
     public string? Id { get; set; }
 
     public void ShowSelf()
     {
-
     }
 
     public void QueueFreeSelf()
     {
-
     }
 
     public void HideSelf()
     {
-
     }
 
     public Texture2D? Icon { get; }
@@ -174,7 +170,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
     {
         return false;
     }
+
     public Action<Node2D, Vector2>? OnThrow { get; set; }
     public Action<CharacterTemplate>? OnPickUp { get; set; }
-
 }

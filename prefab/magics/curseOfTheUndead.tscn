@@ -6,12 +6,13 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_akp3k"]
 
-[node name="curseOfTheUndead" type="RigidBody2D"]
+[node name="curseOfTheUndead" type="RigidBody2D" node_paths=PackedStringArray("_tipLabel")]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_v0grp")
 _projectilePath = "res://prefab/projectile/curseOfTheUndead.tscn"
+_tipLabel = NodePath("Node/TipLabel")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.625)
@@ -24,11 +25,13 @@ position = Vector2(65, 0)
 stream = ExtResource("4_ffr2k")
 bus = &"SoundEffect"
 
-[node name="TipLabel" type="Label" parent="."]
+[node name="CurseOfTheUndead" type="Sprite2D" parent="."]
+texture = ExtResource("4_y6nkf")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="TipLabel" type="Label" parent="Node"]
 offset_left = -19.0
 offset_top = 23.0
 offset_right = 21.0
 offset_bottom = 48.0
-
-[node name="CurseOfTheUndead" type="Sprite2D" parent="."]
-texture = ExtResource("4_y6nkf")

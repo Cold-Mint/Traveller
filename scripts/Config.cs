@@ -65,6 +65,7 @@ public static class Config
         ///<para>开启自由视角</para>
         /// </remarks>
         public const string Camera = "camera";
+        public const string Debug = "debug";
 
         /// <summary>
         /// <para>Fog related command</para>

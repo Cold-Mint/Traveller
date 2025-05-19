@@ -138,8 +138,8 @@ public partial class Projectile : CharacterBody2D
             _physicalFrameDecorators ??= [];
             _physicalFrameDecorators.Add(decorator);
         }
-        decorator.Attach(this);
 
+        decorator.Attach(this);
     }
 
     /// <summary>
@@ -157,14 +157,17 @@ public partial class Projectile : CharacterBody2D
         {
             return false;
         }
+
         if (_projectileDecorators.Contains(decorator))
         {
             decorator.Detach(this);
         }
+
         if (_physicalFrameDecorators != null)
         {
             _physicalFrameDecorators.Remove(decorator);
         }
+
         return _projectileDecorators.Remove(decorator);
     }
 
@@ -200,10 +203,8 @@ public partial class Projectile : CharacterBody2D
             if (_repelStrength > 0)
             {
                 //If we set the attack force, then apply the force to the object
-                //如果我们设置了攻退力，那么将力应用到对象上
-                var normalized = Velocity.Normalized();
-                characterTemplate.AddForce(new Vector2(normalized.X * _repelStrength * Config.CellSize,
-                    normalized.Y * _repelStrength * Config.CellSize));
+                //如果我们设置了击退力，那么将力应用到对象上
+                characterTemplate.AddForce(Velocity.Normalized() * _repelStrength);
             }
         }
         else if (target is PickAbleTemplate pickAbleTemplate)
@@ -212,9 +213,7 @@ public partial class Projectile : CharacterBody2D
             {
                 //If we set the attack force, then apply the force to the object
                 //如果我们设置了攻退力，那么将力应用到对象上
-                var normalized = Velocity.Normalized();
-                pickAbleTemplate.ApplyImpulse(new Vector2(normalized.X * _repelStrength * Config.CellSize,
-                    normalized.Y * _repelStrength * Config.CellSize));
+                pickAbleTemplate.ApplyImpulse(Velocity.Normalized() * _repelStrength);
             }
         }
         else if (target is Furniture furniture)
@@ -249,6 +248,7 @@ public partial class Projectile : CharacterBody2D
             projectileDecoratorAction(decorator);
         }
     }
+
     /// <summary>
     /// <para>Invoke Physical Frame Decorators</para>
     /// <para>调用物理帧装饰器</para>
@@ -284,22 +284,21 @@ public partial class Projectile : CharacterBody2D
         {
             OnTimeOut();
         }
+
         LookAt(GlobalPosition + Velocity);
     }
 
     public override void _PhysicsProcess(double delta)
     {
         var collisionInfo = MoveAndCollide(Velocity * (float)delta);
-        InvokePhysicalFrameDecorators(decorator =>
-        {
-            decorator.PhysicsProcess(this, collisionInfo);
-        });
+        InvokePhysicalFrameDecorators(decorator => { decorator.PhysicsProcess(this, collisionInfo); });
         if (collisionInfo == null)
         {
             //No collision.
             //没有撞到任何东西。
             return;
         }
+
         //Here we test whether harm is allowed, notice that for TileMap, we directly allow harm.
         //这里我们检测是否允许造成伤害，注意对于TileMap，我们直接允许造成伤害。
         var node = (Node2D)collisionInfo.GetCollider();
@@ -308,12 +307,14 @@ public partial class Projectile : CharacterBody2D
         {
             return;
         }
+
         //Bump into other objects.
         //撞到其他对象。
         if (_enableBounce)
         {
             Velocity = Velocity.Bounce(collisionInfo.GetNormal());
         }
+
         DoDamage(OwnerNode, node);
         //Please specify in the Mask who the bullet will collide with
         //请在Mask内配置子弹会和谁碰撞

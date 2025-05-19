@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ColdMint.scripts.character;
 using ColdMint.scripts.console.objectSelector;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.pickable;
 using ColdMint.scripts.utils;
 using Godot;
 

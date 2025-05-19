@@ -34,15 +34,10 @@ radius = 172.29
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_ubaid")
-InitWeaponId = null
 CharacterName = "character_necromancer"
 CanMutateAfterDeath = false
-RequiredForWaveAdvance = null
-_initialHp = null
 MaxHp = 50
 CampId = "Mazoku"
-Indestructible = null
-_lootId = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

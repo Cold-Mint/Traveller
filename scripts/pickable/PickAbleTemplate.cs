@@ -119,7 +119,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public IItemContainer? ItemContainer { get; set; }
     public IItemContainer? SelfItemContainer { get; set; }
 
-    private Label? _tipLabel;
+    [Export] private Label? _tipLabel;
 
     /// <summary>
     /// <para></para>
@@ -205,7 +205,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return;
         }
 
-        _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _collisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
         InputPickable = true;
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
@@ -227,7 +226,7 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return;
         }
 
-        TipLabelUtils.ShowTip(-Rotation, _tipLabel, ItemName, Colors.White);
+        TipLabelUtils.ShowTip(this, -Rotation, _tipLabel, ItemName, Colors.White);
     }
 
     public override void _MouseExit()

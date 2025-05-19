@@ -94,6 +94,7 @@ public partial class SplashScreenLoader : UiLoaderTemplate
         CommandManager.RegisterCommand(new PlayerCommand());
         CommandManager.RegisterCommand(new AssetsRegistryCommand());
         CommandManager.RegisterCommand(new RoomCommand());
+        CommandManager.RegisterCommand(new DebugCommand());
         ObjectSelector.Register(new PlayerDataSource());
         AssetHolder.LoadStaticAsset();
         ContributorDataManager.RegisterAllContributorData();

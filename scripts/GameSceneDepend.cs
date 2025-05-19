@@ -14,6 +14,7 @@ public static class GameSceneDepend
     public static GameGuiTemplate? GameGuiTemplate { get; set; }
 
     private static Player? _player;
+    public static bool ShowObjectDetails;
 
     /// <summary>
     /// <para>Player instances within the game scene</para>

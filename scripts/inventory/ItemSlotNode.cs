@@ -9,10 +9,8 @@ namespace ColdMint.scripts.inventory;
 /// </summary>
 public partial class ItemSlotNode : TextureButton, IItemDisplay
 {
-    [Export]
-    private TextureRect? _iconTextureRect; // skipcq:CS-R1137
-    [Export]
-    private Label? _quantityLabel; // skipcq:CS-R1137
+    [Export] private TextureRect? _iconTextureRect; // skipcq:CS-R1137
+    [Export] private Label? _quantityLabel; // skipcq:CS-R1137
     private Texture2D? _backgroundTexture;
     private Texture2D? _backgroundTextureWhenSelect;
     public IItem? Item { get; private set; }
@@ -41,6 +39,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
         {
             return;
         }
+
         Item.ItemContainer?.SelectItem(Item.Index);
     }
 
@@ -72,6 +71,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
         {
             return Config.EmptyVariant;
         }
+
         if (_iconTextureRect == null)
         {
             return Config.EmptyVariant;
@@ -95,12 +95,14 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
         {
             return false;
         }
+
         var itemSlotNode = data.As<ItemSlotNode>();
         var sourceItem = itemSlotNode.Item;
         if (sourceItem == null)
         {
             return false;
         }
+
         switch (Item)
         {
             case null:
@@ -111,6 +113,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
                 {
                     return true;
                 }
+
                 return placeholderItemContainer.CanReplaceItem(placeholderItem.Index, sourceItem);
             default:
                 var sourceItemSelfContainer = sourceItem.SelfItemContainer;
@@ -120,6 +123,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
                     //将容器放在物品上。
                     return sourceItemSelfContainer.CanAddItem(Item);
                 }
+
                 var itemSelfContainer = Item.SelfItemContainer;
                 if (itemSelfContainer != null)
                 {
@@ -127,6 +131,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
                     //将物品拖到容器上。
                     return itemSelfContainer.CanAddItem(sourceItem);
                 }
+
                 return Item.MergeableItemCount(sourceItem, sourceItem.Quantity) > 0;
         }
     }
@@ -139,11 +144,13 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
         {
             return;
         }
+
         var type = data.VariantType;
         if (type == Variant.Type.Nil)
         {
             return;
         }
+
         var itemSlotNode = data.As<ItemSlotNode>();
         var sourceItem = itemSlotNode.Item;
         if (sourceItem == null)
@@ -169,6 +176,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
                     oldItemContainer?.RemoveItem(oldIndex, addNumber);
                 }
             }
+
             return;
         }
 
@@ -190,6 +198,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
                     oldItemContainer?.RemoveItem(oldIndex, addNumber);
                 }
             }
+
             return;
         }
 
@@ -203,6 +212,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             {
                 replaceResult = placeholderItemContainer.ReplaceItem(placeholderItem.Index, sourceItem);
             }
+
             if (replaceResult && sourceItemContainer != null)
             {
                 sourceItemContainer.ClearItem(sourceItemIndex);
@@ -239,7 +249,7 @@ public partial class ItemSlotNode : TextureButton, IItemDisplay
             return;
         }
 
-        if (Config.IsDebug())
+        if (GameSceneDepend.ShowObjectDetails)
         {
             var debugText = TranslationServerUtils.Translate("item_prompt_debug");
             if (debugText != null)

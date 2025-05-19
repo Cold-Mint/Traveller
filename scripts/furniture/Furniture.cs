@@ -18,7 +18,7 @@ public partial class Furniture : RigidBody2D
 
     [Export] private string? _lootId; // skipcq:CS-R1137
 
-    private Label? _tipLabel;
+    [Export] private Label? _tipLabel;
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
     private CollisionShape2D? _collisionShape2D;
 
@@ -35,7 +35,7 @@ public partial class Furniture : RigidBody2D
             return;
         }
 
-        TipLabelUtils.ShowTip(0, _tipLabel, translation, Colors.White);
+        TipLabelUtils.ShowTip(this, 0, _tipLabel, translation, Colors.White);
     }
 
     public override void _MouseExit()
@@ -66,7 +66,6 @@ public partial class Furniture : RigidBody2D
             _initialDurability = _maxDurability;
         }
 
-        _tipLabel = GetNodeOrNull<Label>("TipLabel");
         _collisionShape2D = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         InputPickable = true;
