@@ -978,7 +978,9 @@ public partial class CharacterTemplate : CharacterBody2D
         if (!IsOnFloor())
             velocity.Y += Gravity * (float)delta;
         Velocity = velocity + _additionalForce;
-        _additionalForce = Vector2.Zero;
+        // 附加力随时间衰减
+        // Decay the additional force over time
+        _additionalForce = _additionalForce.Lerp(Vector2.Zero, 0.5f);
         MoveAndSlide();
     }
 

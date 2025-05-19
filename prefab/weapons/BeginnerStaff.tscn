@@ -15,7 +15,7 @@ _numberSlots = 3
 _spellList = PackedStringArray("magic_missile")
 _fireSequentially = true
 FiringIntervalAsMillisecond = 280
-_recoilStrength = 5
+_recoilStrength = 32
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(18, 1)

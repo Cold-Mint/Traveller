@@ -14,8 +14,8 @@ script = ExtResource("1_w8hhv")
 _numberSlots = 1
 _spellList = PackedStringArray("necromancy")
 _fireSequentially = true
-FiringIntervalAsMillisecond = 350
-_recoilStrength = 5
+FiringIntervalAsMillisecond = 320
+_recoilStrength = 25
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)

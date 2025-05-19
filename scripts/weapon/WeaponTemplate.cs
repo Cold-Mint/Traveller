@@ -90,14 +90,17 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
         {
             return false;
         }
+
         _lastFiringTime = nowTime;
         var result = DoFire(owner, enemyGlobalPosition);
         if (result)
         {
             if (owner is CharacterTemplate characterTemplate && _recoilStrength != 0)
             {
-                characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) * _recoilStrength * Config.CellSize);
+                characterTemplate.AddForce(enemyGlobalPosition.DirectionTo(characterTemplate.GlobalPosition) *
+                                           _recoilStrength);
             }
+
             if (_fireSoundPlayer2D == null)
             {
                 //No audio player
@@ -119,6 +122,7 @@ public abstract partial class WeaponTemplate : PickAbleTemplate
             LogCat.LogWithFormat("play_audio", LogCat.LogLabel.Default, _fireSoundPlayer2D.Bus);
             _fireSoundPlayer2D.Play();
         }
+
         return result;
     }
 
