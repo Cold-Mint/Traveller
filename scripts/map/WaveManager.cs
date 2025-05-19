@@ -33,6 +33,7 @@ public class WaveManager
     /// <para>根据物品查找对应的生成标记。</para>
     /// </summary>
     private readonly Dictionary<IItem, ISpawnMarker> _itemSpawnMarker = new();
+
     private readonly Dictionary<IItem, Action<CharacterTemplate>> _onPickUpDictionary = new();
 
     /// <summary>
@@ -80,6 +81,7 @@ public class WaveManager
             OnWaveComplete?.Invoke();
             return;
         }
+
         await NodeUtils.ForEachNodeAsync<ISpawnMarker>(autoSpawn, async marker =>
         {
             var node2DList = await marker.Spawn(_currentWaveNumber);
@@ -87,6 +89,7 @@ public class WaveManager
             {
                 return false;
             }
+
             foreach (var node2D in node2DList)
             {
                 if (node2D is CharacterTemplate characterTemplate)
@@ -130,16 +133,19 @@ public class WaveManager
                                 otherItem.OnPickUp -= _onPickUpDictionary[otherItem];
                                 continue;
                             }
+
                             //The mark is not the same as the mark on the item picked up by the creature.
                             //标记与生物捡起的物品标记不是同一个。
                             otherItem.QueueFreeSelf();
                         }
+
                         item.OnPickUp -= _onPickUpDictionary[item];
                     };
                     item.OnPickUp += onPickUp;
                     _onPickUpDictionary[item] = onPickUp;
                 }
             }
+
             return false;
         });
         if (_spawnedCharacter.Count > 0)
@@ -147,6 +153,4 @@ public class WaveManager
             OnWaveStart?.Invoke();
         }
     }
-
-
 }

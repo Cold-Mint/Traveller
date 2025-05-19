@@ -738,12 +738,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="force"></param>
     public void AddForce(Vector2 force)
     {
-        if (_additionalForce != Vector2.Zero)
-        {
-            return;
-        }
-
-        _additionalForce = force;
+        _additionalForce += force;
     }
 
     protected virtual void OnHit(IDamage damage)

@@ -141,16 +141,6 @@ position = Vector2(348, 279)
 
 [node name="PunchBag" parent="." instance=ExtResource("9_bwvyy")]
 position = Vector2(284, 285)
-_initialHp = null
-MaxHp = null
-CampId = null
-Indestructible = null
-_lootId = null
 
 [node name="PunchBag2" parent="." instance=ExtResource("9_bwvyy")]
 position = Vector2(364, 285)
-_initialHp = null
-MaxHp = null
-CampId = null
-Indestructible = null
-_lootId = null

@@ -50,6 +50,28 @@ public class Room
     /// </summary>
     private int PlayerRoomVisitCount { get; set; }
 
+    private int _index = -1;
+
+    /// <summary>
+    /// <para>Index</para>
+    /// <para>索引</para>
+    /// </summary>
+    /// <remarks>
+    ///<para>The index value of the room within the map. It can only be set once.</para>
+    ///<para>房间在地图内的索引值。（仅能设置一次。）</para>
+    /// </remarks>
+    public int Index
+    {
+        get => _index;
+        set
+        {
+            if (_index == -1)
+            {
+                _index = value;
+            }
+        }
+    }
+
     public string? EnterRoomEventHandlerId { get; set; }
 
     public string? ExitRoomEventHandlerId { get; set; }
@@ -395,6 +417,7 @@ public class Room
         {
             ClearAllMatchedBarriers();
             GameSceneDepend.ShowMiniMap();
+            LogCat.Log("解放房间" + _index);
         };
         await _waveManager.SpawnEnemyWaveAsync(_autoSpawn);
         _waveManager.HasSpawnedEntity = true;

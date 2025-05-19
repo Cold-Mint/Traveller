@@ -67,6 +67,16 @@ public static class MapGenerator
     }
 
     /// <summary>
+    /// <para>RoomCount</para>
+    /// <para>房间总数</para>
+    /// </summary>
+    /// <returns></returns>
+    public static int RoomCount()
+    {
+        return RoomDictionary.Count;
+    }
+
+    /// <summary>
     /// <para>Get a room</para>
     /// <para>获取某个房间</para>
     /// </summary>
@@ -522,7 +532,9 @@ public static class MapGenerator
             return false;
         }
 
-        dictionary.Add(roomNodeDataId, roomPlacementData.NewRoom);
+        var room = roomPlacementData.NewRoom;
+        room.Index = dictionary.Count;
+        dictionary.Add(roomNodeDataId, room);
         LogCat.LogWithFormat("room_placement_information", LogCat.LogLabel.Default, roomNodeDataId,
             roomPlacementData.Position.ToString());
         return true;
