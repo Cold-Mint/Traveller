@@ -440,9 +440,10 @@ public partial class CharacterTemplate : CharacterBody2D
             _animatedSprite2D.Material = _outlineMaterial;
         }
 
-        if (!string.IsNullOrEmpty(CharacterName))
+        var translation = TranslationServerUtils.Translate(CharacterName);
+        if (!string.IsNullOrEmpty(translation))
         {
-            FloatLabelUtils.ShowFloatLabel(this, CharacterName,
+            FloatLabelUtils.ShowFloatLabel(this, translation,
                 canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
     }
@@ -641,11 +642,13 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
-        if (_hasMouse && !string.IsNullOrEmpty(CharacterName))
+        var translation = TranslationServerUtils.Translate(CharacterName);
+        if (_hasMouse && !string.IsNullOrEmpty(translation))
         {
-            FloatLabelUtils.ShowFloatLabel(this, CharacterName,
+            FloatLabelUtils.ShowFloatLabel(this, translation,
                 canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
+
 
         _healthBar.Show();
         _healthBar.Value = CurrentHp;

@@ -157,14 +157,6 @@ public partial class Player : CharacterTemplate
         CurrentItem = item as Node2D;
     }
 
-    public override void _MouseEnter()
-    {
-    }
-
-    public override void _MouseExit()
-    {
-    }
-
     /// <summary>
     /// <para>UpdateCollidingWithPlatform</para>
     /// <para>更新与平台发生碰撞的状态</para>
