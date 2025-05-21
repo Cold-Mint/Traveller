@@ -18,13 +18,12 @@ public partial class Furniture : RigidBody2D
 
     [Export] private string? _lootId; // skipcq:CS-R1137
 
-    [Export] private Label? _tipLabel;
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
     private CollisionShape2D? _collisionShape2D;
 
     public override void _MouseEnter()
     {
-        if (_tipLabel == null || string.IsNullOrEmpty(_furnitureName))
+        if (string.IsNullOrEmpty(_furnitureName))
         {
             return;
         }
@@ -35,17 +34,12 @@ public partial class Furniture : RigidBody2D
             return;
         }
 
-        TipLabelUtils.ShowTip(this, 0, _tipLabel, translation, Colors.White);
+        FloatLabelUtils.ShowFloatLabel(this, translation, Colors.White);
     }
 
     public override void _MouseExit()
     {
-        if (_tipLabel == null)
-        {
-            return;
-        }
-
-        TipLabelUtils.HideTip(_tipLabel);
+        FloatLabelUtils.HideFloatLabel();
     }
 
     /// <summary>

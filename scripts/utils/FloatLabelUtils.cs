@@ -1,14 +1,11 @@
 using System.Text;
 using ColdMint.scripts.character;
-using ColdMint.scripts.furniture;
 using ColdMint.scripts.inventory;
-using ColdMint.scripts.serialization;
 using Godot;
-using YamlDotNet.Serialization.NodeDeserializers;
 
 namespace ColdMint.scripts.utils;
 
-public static class TipLabelUtils
+public static class FloatLabelUtils
 {
     /// <summary>
     /// <para>ShowTip</para>
@@ -18,14 +15,6 @@ public static class TipLabelUtils
     ///<para>The object information displayed in debug mode.</para>
     ///<para>在debug模式下显示的对象信息。</para>
     /// </param>
-    /// <param name="rotation">
-    ///<para>The rotation value of the node</para>
-    ///<para>节点的旋转值</para>
-    /// </param>
-    /// <param name="tipLabel">
-    ///<para>tipLabel</para>
-    ///<para>要显示的标签节点</para>
-    /// </param>
     /// <param name="tip">
     ///<para>tip</para>
     ///<para>显示的提示内容</para>
@@ -34,9 +23,15 @@ public static class TipLabelUtils
     ///<para>fontColor</para>
     ///<para>字体颜色</para>
     /// </param>
-    public static void ShowTip(object obj, float rotation, Label tipLabel, string tip, Color fontColor)
+    public static void ShowFloatLabel(object obj, string tip, Color fontColor)
     {
-        tipLabel.Visible = true;
+        var floatLabel = GameSceneDepend.FloatLabel;
+        if (floatLabel == null)
+        {
+            return;
+        }
+
+
         if (GameSceneDepend.ShowObjectDetails)
         {
             var stringBuilder = new StringBuilder();
@@ -90,17 +85,17 @@ public static class TipLabelUtils
                 stringBuilder.Append(item.MaxQuantity);
             }
 
-            tipLabel.Text = stringBuilder.ToString();
+            floatLabel.Text = stringBuilder.ToString();
         }
         else
         {
-            tipLabel.Text = tip;
+            floatLabel.Text = tip;
         }
 
-        var labelSettings = tipLabel.LabelSettings;
+        var labelSettings = floatLabel.LabelSettings;
         if (labelSettings == null)
         {
-            tipLabel.LabelSettings = new LabelSettings
+            floatLabel.LabelSettings = new LabelSettings
             {
                 FontColor = fontColor
             };
@@ -109,23 +104,16 @@ public static class TipLabelUtils
         {
             labelSettings.FontColor = fontColor;
         }
-
-        tipLabel.ResetSize();
-        //Vertical Centering Tip
-        //垂直居中提示
-        var newPosition = tipLabel.Position;
-        newPosition.X = -tipLabel.Size.X / 2;
-        tipLabel.Rotation = rotation;
-        tipLabel.Position = newPosition;
+        floatLabel.Follow = true;
+        floatLabel.Show();
     }
 
     /// <summary>
-    /// <para>HideTip</para>
-    /// <para>隐藏提示标签</para>
+    /// <para>HideFloatLabel</para>
+    /// <para>隐藏悬浮标签</para>
     /// </summary>
-    /// <param name="tipLabel"></param>
-    public static void HideTip(Label tipLabel)
+    public static void HideFloatLabel()
     {
-        tipLabel.Visible = false;
+        GameSceneDepend.FloatLabel?.Hide();
     }
 }

@@ -195,8 +195,6 @@ public partial class CharacterTemplate : CharacterBody2D
     [Export] private string? _lootId; // skipcq:CS-R1137
 
     private HealthBar? _healthBar;
-    [Export]
-    private Label? _tipLabel;
     private DateTime _lastDamageTime;
 
     /// <summary>
@@ -439,9 +437,9 @@ public partial class CharacterTemplate : CharacterBody2D
             _animatedSprite2D.Material = _outlineMaterial;
         }
 
-        if (_tipLabel != null && !string.IsNullOrEmpty(CharacterName))
+        if (!string.IsNullOrEmpty(CharacterName))
         {
-            TipLabelUtils.ShowTip(this, 0, _tipLabel, CharacterName,
+            FloatLabelUtils.ShowFloatLabel(this, CharacterName,
                 canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
     }
@@ -453,10 +451,7 @@ public partial class CharacterTemplate : CharacterBody2D
             _animatedSprite2D.Material = null;
         }
 
-        if (_tipLabel != null)
-        {
-            TipLabelUtils.HideTip(_tipLabel);
-        }
+        FloatLabelUtils.HideFloatLabel();
     }
 
     /// <summary>

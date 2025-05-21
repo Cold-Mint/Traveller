@@ -110,6 +110,12 @@ public static class GameSceneDepend
 
 
     /// <summary>
+    /// <para>FloatLabel</para>
+    /// <para>悬浮标签</para>
+    /// </summary>
+    public static FloatLabel? FloatLabel { get; set; }
+
+    /// <summary>
     /// <para>Whether the player's mouse is hovering over GUI furniture</para>
     /// <para>玩家的鼠标是否悬浮在GUI家具上</para>
     /// </summary>

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnftvkj2cido7"]
+[gd_scene load_steps=6 format=3 uid="uid://bnftvkj2cido7"]
 
 [ext_resource type="Script" uid="uid://d2xfuebifumj2" path="res://scripts/loader/sceneLoader/GameSceneLoader.cs" id="1_mqdgt"]
 [ext_resource type="PackedScene" uid="uid://bj3jn46e4k0wd" path="res://scenes/console.tscn" id="4_axpmj"]
+[ext_resource type="Script" uid="uid://gyxyl43yq2h2" path="res://scripts/FloatLabel.cs" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://bb188382q7btp" path="res://scenes/gameOverMenu.tscn" id="6_yjmrv"]
 [ext_resource type="Script" uid="uid://nyyu03xteqf1" path="res://scripts/utils/UiGroup.cs" id="7_p0u6a"]
 
@@ -37,6 +38,14 @@ visible = false
 
 [node name="Console" parent="CanvasLayer" instance=ExtResource("4_axpmj")]
 visible = false
+
+[node name="FloatLabel" type="Label" parent="CanvasLayer"]
+offset_left = 320.0
+offset_top = 310.0
+offset_right = 384.0
+offset_bottom = 335.0
+text = "我是文本"
+script = ExtResource("5_iywne")
 
 [node name="ProjectileContainer" type="Node2D" parent="."]
 

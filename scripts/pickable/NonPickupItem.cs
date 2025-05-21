@@ -26,8 +26,6 @@ public partial class NonPickupItem : RigidBody2D, IItem
 
     [Export] private string? _itemName; //skipcq:CS-R1137
 
-    [Export] private Label? _tipLabel;
-
     public override void _Ready()
     {
         base._Ready();
@@ -49,7 +47,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
 
     public override void _MouseEnter()
     {
-        if (_tipLabel == null || string.IsNullOrEmpty(_itemName))
+        if (string.IsNullOrEmpty(_itemName))
         {
             return;
         }
@@ -60,17 +58,12 @@ public partial class NonPickupItem : RigidBody2D, IItem
             return;
         }
 
-        TipLabelUtils.ShowTip(this, -Rotation, _tipLabel, translation, Colors.White);
+        FloatLabelUtils.ShowFloatLabel(this, translation, Colors.White);
     }
 
     public override void _MouseExit()
     {
-        if (_tipLabel == null)
-        {
-            return;
-        }
-
-        TipLabelUtils.HideTip(_tipLabel);
+        FloatLabelUtils.HideFloatLabel();
     }
 
     public int EntityCollisionMode

@@ -119,7 +119,6 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public IItemContainer? ItemContainer { get; set; }
     public IItemContainer? SelfItemContainer { get; set; }
 
-    [Export] private Label? _tipLabel;
 
     /// <summary>
     /// <para></para>
@@ -221,22 +220,12 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return;
         }
 
-        if (_tipLabel == null)
-        {
-            return;
-        }
-
-        TipLabelUtils.ShowTip(this, -Rotation, _tipLabel, ItemName, Colors.White);
+        FloatLabelUtils.ShowFloatLabel(this, ItemName, Colors.White);
     }
 
     public override void _MouseExit()
     {
-        if (_tipLabel == null)
-        {
-            return;
-        }
-
-        TipLabelUtils.HideTip(_tipLabel);
+        FloatLabelUtils.HideFloatLabel();
     }
 
     /// <summary>

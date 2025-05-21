@@ -22,36 +22,29 @@ public partial class GameSceneLoader : SceneLoaderTemplate
         RenderingServer.SetDefaultClearColor(Color.FromHsv(0, 0, 0));
         //Load DynamicUiGroup
         //加载动态Ui容器
-        var dynamicUiGroup = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
-        GameSceneDepend.DynamicUiGroup = dynamicUiGroup;
+        GameSceneDepend.DynamicUiGroup = GetNode<UiGroup>("CanvasLayer/DynamicUiGroup");
         //Loaded weapon container
         //加载武器容器
-        var weaponContainer = GetNode<Node2D>("WeaponContainer");
-        GameSceneDepend.WeaponContainer = weaponContainer;
+        GameSceneDepend.WeaponContainer = GetNode<Node2D>("WeaponContainer");
         //Load projectile container
         //加载抛射体容器
-        var projectileContainer = GetNode<Node2D>("ProjectileContainer");
-        GameSceneDepend.ProjectileContainer = projectileContainer;
+        GameSceneDepend.ProjectileContainer = GetNode<Node2D>("ProjectileContainer");
         //Load magic container
         //加载魔术容器
-        var magicContainer = GetNode<Node2D>("SpellContainer");
-        GameSceneDepend.SpellContainer = magicContainer;
+        GameSceneDepend.SpellContainer = GetNode<Node2D>("SpellContainer");
         //Load Packsack container
         //加载背包容器
-        var packsackContainer = GetNode<Node2D>("PacksackContainer");
-        GameSceneDepend.PacksackContainer = packsackContainer;
+        GameSceneDepend.PacksackContainer = GetNode<Node2D>("PacksackContainer");
         //Load AICharacter container
         //加载AICharacter容器
-        var aiCharacterContainer = GetNode<Node2D>("AICharacterContainer");
-        GameSceneDepend.AiCharacterContainer = aiCharacterContainer;
+        GameSceneDepend.AiCharacterContainer = GetNode<Node2D>("AICharacterContainer");
         //Load player container
         //加载玩家容器
-        var playerContainer = GetNode<Node2D>("PlayerContainer");
-        GameSceneDepend.PlayerContainer = playerContainer;
+        GameSceneDepend.PlayerContainer = GetNode<Node2D>("PlayerContainer");
         //load the dynamicDamageAreaContainer
         //加载动态伤害区域容器
-        var dynamicDamageAreaContainer = GetNode<Node2D>("DynamicDamageAreaContainer");
-        GameSceneDepend.DynamicDamageAreaContainer = dynamicDamageAreaContainer;
+        GameSceneDepend.DynamicDamageAreaContainer = GetNode<Node2D>("DynamicDamageAreaContainer");
+        GameSceneDepend.FloatLabel = GetNode<FloatLabel>("CanvasLayer/FloatLabel");
         //Load the pickable container
         //加载可拾捡物容器
         var pickAbleContainer = GetNode<Node2D>("PickAbleContainer");

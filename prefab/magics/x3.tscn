@@ -7,14 +7,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
 
-[node name="x3" type="RigidBody2D" node_paths=PackedStringArray("_tipLabel")]
+[node name="x3" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_cnhod")
 RandomAngle = true
 UnitRadian = 0.07
-_tipLabel = NodePath("Node/TipLabel")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="TipLabel" type="Label" parent="Node"]
+offset_left = -19.0
+offset_top = 23.0
+offset_right = 21.0
+offset_bottom = 48.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
@@ -31,11 +38,3 @@ bus = &"SoundEffect"
 
 [node name="X3" type="Sprite2D" parent="."]
 texture = ExtResource("3_b3s8h")
-
-[node name="Node" type="Node" parent="."]
-
-[node name="TipLabel" type="Label" parent="Node"]
-offset_left = -19.0
-offset_top = 23.0
-offset_right = 21.0
-offset_bottom = 48.0
