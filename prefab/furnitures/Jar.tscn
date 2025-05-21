@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4tg"]
 size = Vector2(12, 15)
 
-[node name="Jar" type="RigidBody2D"]
+[node name="Jar" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 4096
 collision_mask = 160
 script = ExtResource("1_ck3di")
@@ -15,6 +15,7 @@ _initialDurability = 1
 _maxDurability = 1
 _furnitureName = "ui_jar"
 _lootId = "jar"
+_sprite2D = NodePath("Jar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 8.5)

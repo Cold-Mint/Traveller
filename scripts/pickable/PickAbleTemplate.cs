@@ -184,6 +184,9 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 
     private CollisionShape2D? _collisionShape2D;
+    private ShaderMaterial? _outlineMaterial;
+
+    [Export] private Sprite2D? _sprite2D;
 
     /// <summary>
     /// <para>Whether the resource has been loaded</para>
@@ -210,6 +213,15 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);
         SetCollisionMaskValue(Config.LayerNumber.Floor, true);
         SetCollisionMaskValue(Config.LayerNumber.Barrier, true);
+        var shader = ResourceLoader.Load<Shader>("res://shaders/outline.gdshader");
+        if (shader != null)
+        {
+            _outlineMaterial = new ShaderMaterial
+            {
+                Shader = shader
+            };
+        }
+
         _loadedResource = true;
     }
 
@@ -220,11 +232,21 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
             return;
         }
 
+        if (_sprite2D != null && _outlineMaterial != null)
+        {
+            _sprite2D.Material = _outlineMaterial;
+        }
+
         FloatLabelUtils.ShowFloatLabel(this, ItemName, Colors.White);
     }
 
     public override void _MouseExit()
     {
+        if (_sprite2D != null)
+        {
+            _sprite2D.Material = null;
+        }
+
         FloatLabelUtils.HideFloatLabel();
     }
 

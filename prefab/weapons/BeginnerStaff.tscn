@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
 size = Vector2(32, 5)
 
-[node name="BeginnerStaff" type="RigidBody2D"]
+[node name="BeginnerStaff" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 script = ExtResource("1_w4b6p")
@@ -16,6 +16,7 @@ _spellList = PackedStringArray("magic_missile")
 _fireSequentially = true
 FiringIntervalAsMillisecond = 280
 _recoilStrength = 32
+_sprite2D = NodePath("StaffOfTheUndead2")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(18, 1)

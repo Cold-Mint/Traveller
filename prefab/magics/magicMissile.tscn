@@ -7,12 +7,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(20, 14)
 
-[node name="MagicMissile" type="RigidBody2D"]
+[node name="MagicMissile" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_xxv2a")
 _projectilePath = "res://prefab/projectile/magicMissile.tscn"
+_sprite2D = NodePath("MagicMissile")
 
 [node name="Node" type="Node" parent="."]
 

@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
 size = Vector2(49, 5.25)
 
-[node name="StaffOfTheUndead" type="RigidBody2D"]
+[node name="StaffOfTheUndead" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 script = ExtResource("1_w8hhv")
@@ -16,6 +16,7 @@ _spellList = PackedStringArray("necromancy")
 _fireSequentially = true
 FiringIntervalAsMillisecond = 320
 _recoilStrength = 25
+_sprite2D = NodePath("StaffOfTheUndead2")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)

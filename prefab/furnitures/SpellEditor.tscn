@@ -87,12 +87,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="RigidBody2D" type="RigidBody2D"]
+[node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("_animatedSprite2D")]
 collision_layer = 256
 collision_mask = 160
 script = ExtResource("1_t1qdg")
 Path = "res://prefab/ui/SpellEditorUI.tscn"
 _furnitureName = "ui_spell_editor"
+_animatedSprite2D = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -0.5)

@@ -7,12 +7,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
 
-[node name="trackingSpell2" type="RigidBody2D"]
+[node name="trackingSpell2" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_vhnwx")
-_projectilePath = null
+_sprite2D = NodePath("TrackingSpell")
 
 [node name="Node" type="Node" parent="."]
 

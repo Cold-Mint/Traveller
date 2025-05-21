@@ -357,10 +357,6 @@ public partial class CharacterTemplate : CharacterBody2D
                     Shader = shader
                 };
             }
-            else
-            {
-                GD.PrintErr("Failed to load outline shader!");
-            }
         }
     }
 

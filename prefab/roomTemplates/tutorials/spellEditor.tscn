@@ -92,27 +92,15 @@ texture = ExtResource("6_dbg76")
 
 [node name="RigidBody2D" parent="." instance=ExtResource("5_0kep0")]
 position = Vector2(227, 283)
-_initialDurability = null
-_maxDurability = null
-_lootId = null
 
 [node name="WoodenBox" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 244)
-_initialDurability = null
-_furnitureName = null
-_lootId = null
 
 [node name="WoodenBox2" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 200)
-_initialDurability = null
-_furnitureName = null
-_lootId = null
 
 [node name="WoodenBox3" parent="." instance=ExtResource("7_jybe6")]
 position = Vector2(715, 162)
-_initialDurability = null
-_furnitureName = null
-_lootId = null
 
 [node name="AutoSpawn" type="Node2D" parent="."]
 
@@ -141,16 +129,6 @@ position = Vector2(348, 279)
 
 [node name="PunchBag" parent="." instance=ExtResource("9_bwvyy")]
 position = Vector2(284, 285)
-_initialHp = null
-MaxHp = null
-CampId = null
-Indestructible = null
-_lootId = null
 
 [node name="PunchBag2" parent="." instance=ExtResource("9_bwvyy")]
 position = Vector2(364, 285)
-_initialHp = null
-MaxHp = null
-CampId = null
-Indestructible = null
-_lootId = null

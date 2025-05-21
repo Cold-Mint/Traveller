@@ -11,17 +11,16 @@ size = Vector2(49, 5.25)
 [sub_resource type="CircleShape2D" id="CircleShape2D_2k2a0"]
 radius = 59.0593
 
-[node name="IronAxe" type="RigidBody2D"]
+[node name="IronAxe" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_snmy1")
 _minDamage = 2
 _maxDamage = 5
-_damageType = null
 _criticalStrikeProbability = 56
 FiringIntervalAsMillisecond = 1000
-_recoilStrength = null
+_sprite2D = NodePath("StaffOfTheUndead2")
 
 [node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
 position = Vector2(30, 0)
@@ -47,8 +46,6 @@ offset_bottom = 73.0
 
 [node name="WeaponDamageArea" type="Area2D" parent="."]
 script = ExtResource("4_7xbct")
-_isDamageCenterBased = null
-_damageOnContact = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponDamageArea"]
 position = Vector2(154, 1)

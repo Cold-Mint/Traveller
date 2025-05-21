@@ -23,6 +23,16 @@ public partial class Furniture : RigidBody2D
 
     public override void _MouseEnter()
     {
+        if (_animatedSprite2D != null && _outlineMaterial != null)
+        {
+            _animatedSprite2D.Material = _outlineMaterial;
+        }
+
+        if (_sprite2D != null && _outlineMaterial != null)
+        {
+            _sprite2D.Material = _outlineMaterial;
+        }
+
         if (string.IsNullOrEmpty(_furnitureName))
         {
             return;
@@ -39,6 +49,16 @@ public partial class Furniture : RigidBody2D
 
     public override void _MouseExit()
     {
+        if (_animatedSprite2D != null)
+        {
+            _animatedSprite2D.Material = null;
+        }
+
+        if (_sprite2D != null)
+        {
+            _sprite2D.Material = null;
+        }
+
         FloatLabelUtils.HideFloatLabel();
     }
 
@@ -47,6 +67,11 @@ public partial class Furniture : RigidBody2D
     /// <para>家具的耐久度</para>
     /// </summary>
     private int _durability;
+
+    [Export] private Sprite2D? _sprite2D;
+    [Export] private AnimatedSprite2D? _animatedSprite2D;
+    private ShaderMaterial? _outlineMaterial;
+
 
     public override void _Ready()
     {
@@ -64,6 +89,15 @@ public partial class Furniture : RigidBody2D
         _audioStreamPlayer2D = GetNodeOrNull<AudioStreamPlayer2D>("AudioStreamPlayer2D");
         InputPickable = true;
         _durability = _initialDurability;
+        var shader = ResourceLoader.Load<Shader>("res://shaders/outline.gdshader");
+        if (shader != null)
+        {
+            _outlineMaterial = new ShaderMaterial
+            {
+                Shader = shader
+            };
+        }
+
         SetCollisionLayerValue(Config.LayerNumber.Furniture, true);
         SetCollisionMaskValue(Config.LayerNumber.Wall, true);
         SetCollisionMaskValue(Config.LayerNumber.Platform, true);

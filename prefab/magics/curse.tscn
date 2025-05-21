@@ -7,13 +7,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3lbq"]
 size = Vector2(30, 31)
 
-[node name="curse" type="RigidBody2D"]
+[node name="curse" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_gg5rs")
 _packedScenePath = "res://prefab/entitys/BlackenedAboriginalWarrior.tscn"
-_projectilePath = null
+_sprite2D = NodePath("X3")
 
 [node name="Node" type="Node" parent="."]
 
