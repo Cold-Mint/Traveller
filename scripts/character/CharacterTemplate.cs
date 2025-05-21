@@ -157,6 +157,7 @@ public partial class CharacterTemplate : CharacterBody2D
     //The force added by the AddForce method
     //由AddForce方法追加的力
     private Vector2 _additionalForce = Vector2.Zero;
+    private bool _hasMouse;
 
     protected int CurrentHp;
 
@@ -411,27 +412,33 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseEnter()
     {
+        _hasMouse = true;
+        var canCauseHarm = false;
         if (GameSceneDepend.Player == null)
         {
-            return;
-        }
-
-        var targetCamp = CampManager.GetCamp(CampId);
-        var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
-        var canCauseHarm = false;
-        if (CampManager.CanCauseHarm(targetCamp, playerCamp))
-        {
             canCauseHarm = true;
-            GameSceneDepend.TemporaryTargetNode = this;
-            _outlineMaterial?.SetShaderParameter("color",
-                Config.ColorConfig.EnemyColor);
         }
         else
         {
-            _outlineMaterial?.SetShaderParameter("color",
-                Config.ColorConfig.FriendlyColor);
+            var targetCamp = CampManager.GetCamp(CampId);
+            var playerCamp = CampManager.GetCamp(GameSceneDepend.Player.CampId);
+            if (CampManager.CanCauseHarm(targetCamp, playerCamp))
+            {
+                if (targetCamp != null && playerCamp != null)
+                {
+                    if (targetCamp.Id != playerCamp.Id)
+                    {
+                        //If the injured target is an enemy of the player, it is displayed as an enemy color
+                        //如果受伤的目标是玩家的敌人，则显示为敌对颜色
+                        canCauseHarm = true;
+                    }
+                }
+            }
         }
 
+        GameSceneDepend.TemporaryTargetNode = this;
+        _outlineMaterial?.SetShaderParameter("color",
+            canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         if (_animatedSprite2D != null && _outlineMaterial != null)
         {
             _animatedSprite2D.Material = _outlineMaterial;
@@ -446,6 +453,7 @@ public partial class CharacterTemplate : CharacterBody2D
 
     public override void _MouseExit()
     {
+        _hasMouse = false;
         if (_animatedSprite2D != null)
         {
             _animatedSprite2D.Material = null;
@@ -598,11 +606,13 @@ public partial class CharacterTemplate : CharacterBody2D
             return;
         }
 
+        var canCauseHarm = false;
         if (GameSceneDepend.Player == null)
         {
             //We didn't know who the player was, so we showed it as a hostile color
             //我们不知道玩家是谁，所以我们将其显示为敌对颜色
             _healthBar.SetEnemyTones();
+            canCauseHarm = true;
         }
         else
         {
@@ -625,6 +635,7 @@ public partial class CharacterTemplate : CharacterBody2D
                         //If the injured target is an enemy of the player, it is displayed as an enemy color
                         //如果受伤的目标是玩家的敌人，则显示为敌对颜色
                         _healthBar.SetEnemyTones();
+                        canCauseHarm = true;
                     }
                 }
             }
@@ -632,6 +643,12 @@ public partial class CharacterTemplate : CharacterBody2D
             {
                 _healthBar.SetFriendlyTones();
             }
+        }
+
+        if (_hasMouse && !string.IsNullOrEmpty(CharacterName))
+        {
+            FloatLabelUtils.ShowFloatLabel(this, CharacterName,
+                canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
         }
 
         _healthBar.Show();
