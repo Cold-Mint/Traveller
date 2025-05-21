@@ -40,11 +40,11 @@ visible = false
 visible = false
 
 [node name="FloatLabel" type="Label" parent="CanvasLayer"]
+visible = false
 offset_left = 320.0
 offset_top = 310.0
 offset_right = 384.0
 offset_bottom = 335.0
-text = "我是文本"
 script = ExtResource("5_iywne")
 
 [node name="ProjectileContainer" type="Node2D" parent="."]

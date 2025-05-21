@@ -14,7 +14,7 @@ public partial class FloatLabel : Label
 {
     public bool Follow;
 
-    private Vector2 _offset = new Vector2(8, 8);
+    private Vector2 _offset = new(8, 8);
 
     public override void _Process(double delta)
     {

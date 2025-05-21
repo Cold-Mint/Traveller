@@ -16,6 +16,8 @@ _maxDamage = 6
 _minDamage = 2
 _damageType = 2
 Speed = 15.0
+_enableBounce = null
+IgnoreWall = null
 _repelStrength = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

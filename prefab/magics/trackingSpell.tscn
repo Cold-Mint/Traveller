@@ -12,6 +12,7 @@ collision_layer = 8
 collision_mask = 34
 angular_damp = -1.0
 script = ExtResource("1_vhnwx")
+_projectilePath = null
 
 [node name="Node" type="Node" parent="."]
 

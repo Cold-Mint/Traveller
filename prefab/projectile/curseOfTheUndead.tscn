@@ -15,6 +15,8 @@ _maxDamage = 4
 _minDamage = 1
 _damageType = 2
 Speed = 10.0
+_enableBounce = null
+IgnoreWall = null
 _repelStrength = 2.5
 
 [node name="CurseOfTheUndead" type="Sprite2D" parent="."]
