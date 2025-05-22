@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jx2qp"]
 size = Vector2(14, 13)
 
-[node name="heart" type="RigidBody2D" node_paths=PackedStringArray("_audioStreamPlayer2D")]
+[node name="heart" type="RigidBody2D" node_paths=PackedStringArray("_audioStreamPlayer2D", "_sprite2D")]
 collision_layer = 2048
 collision_mask = 34
 angular_damp = -1.0
@@ -17,6 +17,7 @@ _healAmount = 4
 _playerHealSound = ExtResource("2_gksce")
 _entityCollisionMode = 1
 _itemName = "item_heart"
+_sprite2D = NodePath("HeartFull")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)

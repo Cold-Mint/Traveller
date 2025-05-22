@@ -643,7 +643,7 @@ public partial class CharacterTemplate : CharacterBody2D
         }
 
         var translation = TranslationServerUtils.Translate(CharacterName);
-        if (_hasMouse && !string.IsNullOrEmpty(translation))
+        if (GameSceneDepend.ShowObjectDetails && _hasMouse && !string.IsNullOrEmpty(translation))
         {
             FloatLabelUtils.ShowFloatLabel(this, translation,
                 canCauseHarm ? Config.ColorConfig.EnemyColor : Config.ColorConfig.FriendlyColor);
@@ -782,6 +782,16 @@ public partial class CharacterTemplate : CharacterBody2D
                 LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
                     damage.Attacker.Name);
             }
+        }
+
+        if (_hasMouse)
+        {
+            if (_animatedSprite2D != null)
+            {
+                _animatedSprite2D.Material = null;
+            }
+
+            FloatLabelUtils.HideFloatLabel();
         }
 
         ThrowAllItemOnDie();

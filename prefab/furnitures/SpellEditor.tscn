@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://djsh4unystlf0"]
+[gd_scene load_steps=18 format=3 uid="uid://djsh4unystlf0"]
 
 [ext_resource type="Script" uid="uid://3h5sdti3xxiw" path="res://scripts/furniture/GuiFurniture.cs" id="1_t1qdg"]
+[ext_resource type="Shader" uid="uid://dtpd42a1hqyi" path="res://shaders/outline.gdshader" id="2_kn8t5"]
 [ext_resource type="Texture2D" uid="uid://cyciw4drjvrs8" path="res://sprites/furnitures/SpellEditor.png" id="2_sbshw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vx4tg"]
@@ -8,6 +9,15 @@ size = Vector2(31, 31)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_in1f7"]
 radius = 52.6118
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t33lw"]
+shader = ExtResource("2_kn8t5")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yq6e3"]
 atlas = ExtResource("2_sbshw")
@@ -106,10 +116,11 @@ visible = false
 shape = SubResource("CircleShape2D_in1f7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_t33lw")
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_mppe5")
 autoplay = "default"
-frame_progress = 0.717769
+frame_progress = 0.559056
 
 [node name="TipLabel" type="Label" parent="."]
 offset_left = -17.0

@@ -26,6 +26,11 @@ public partial class NonPickupItem : RigidBody2D, IItem
 
     [Export] private string? _itemName; //skipcq:CS-R1137
 
+    [Export] private Sprite2D? _sprite2D;
+
+    private ShaderMaterial? _outlineMaterial;
+
+
     public override void _Ready()
     {
         base._Ready();
@@ -43,10 +48,24 @@ public partial class NonPickupItem : RigidBody2D, IItem
             SetCollisionMaskValue(Config.LayerNumber.Player, true);
             SetCollisionMaskValue(Config.LayerNumber.Mob, true);
         }
+
+        var shader = ResourceLoader.Load<Shader>("res://shaders/outline.gdshader");
+        if (shader != null)
+        {
+            _outlineMaterial = new ShaderMaterial
+            {
+                Shader = shader
+            };
+        }
     }
 
     public override void _MouseEnter()
     {
+        if (_sprite2D != null && _outlineMaterial != null)
+        {
+            _sprite2D.Material = _outlineMaterial;
+        }
+
         if (string.IsNullOrEmpty(_itemName))
         {
             return;
@@ -63,6 +82,11 @@ public partial class NonPickupItem : RigidBody2D, IItem
 
     public override void _MouseExit()
     {
+        if (_sprite2D != null)
+        {
+            _sprite2D.Material = null;
+        }
+
         FloatLabelUtils.HideFloatLabel();
     }
 
