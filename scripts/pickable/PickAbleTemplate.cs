@@ -257,6 +257,10 @@ public partial class PickAbleTemplate : RigidBody2D, IItem
     /// <param name="facingLeft"></param>
     public void Flip(bool facingLeft)
     {
+        if (_sprite2D != null)
+        {
+            _sprite2D.FlipV = facingLeft;
+        }
     }
 
     /// <summary>

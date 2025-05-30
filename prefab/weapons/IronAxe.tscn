@@ -1,15 +1,15 @@
 [gd_scene load_steps=7 format=3 uid="uid://g1jrthe4ojdd"]
 
 [ext_resource type="Script" uid="uid://dy4qd56cja7my" path="res://scripts/weapon/MeleeWeapon.cs" id="1_snmy1"]
-[ext_resource type="Texture2D" uid="uid://dg5vwprt66w4j" path="res://sprites/weapon/StaffNecromancy_Icon.png" id="2_h73gp"]
+[ext_resource type="Texture2D" uid="uid://vvqu06rh8vb7" path="res://sprites/weapon/IronAxe.png" id="2_q685b"]
 [ext_resource type="Script" uid="uid://beerifvfk31te" path="res://scripts/damage/DamageArea.cs" id="4_7xbct"]
 [ext_resource type="AudioStream" uid="uid://cak6chjjsu7wo" path="res://sounds/fire.wav" id="4_qimud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14m1g"]
-size = Vector2(49, 5.25)
+size = Vector2(43, 5.25)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2k2a0"]
-radius = 59.0593
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q685b"]
+size = Vector2(57, 50)
 
 [node name="IronAxe" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
@@ -20,15 +20,14 @@ _minDamage = 2
 _maxDamage = 5
 _criticalStrikeProbability = 56
 FiringIntervalAsMillisecond = 1000
-_sprite2D = NodePath("StaffOfTheUndead2")
+_sprite2D = NodePath("IronAxe")
 
-[node name="StaffOfTheUndead2" type="Sprite2D" parent="."]
-position = Vector2(30, 0)
-rotation = 0.87451
-texture = ExtResource("2_h73gp")
+[node name="IronAxe" type="Sprite2D" parent="."]
+position = Vector2(31, 0)
+texture = ExtResource("2_q685b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(25.5, 0.375)
+position = Vector2(22.5, 0.375)
 shape = SubResource("RectangleShape2D_14m1g")
 
 [node name="Marker2D" type="Marker2D" parent="."]
@@ -48,5 +47,5 @@ offset_bottom = 73.0
 script = ExtResource("4_7xbct")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponDamageArea"]
-position = Vector2(154, 1)
-shape = SubResource("CircleShape2D_2k2a0")
+position = Vector2(91.5, -1)
+shape = SubResource("RectangleShape2D_q685b")
