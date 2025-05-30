@@ -6,11 +6,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xqyue"]
 size = Vector2(21, 29)
 
-[node name="RigidBody2D" type="RigidBody2D"]
+[node name="RigidBody2D" type="RigidBody2D" node_paths=PackedStringArray("_sprite2D")]
 collision_layer = 8
 collision_mask = 38
 script = ExtResource("1_slakl")
 NumberSlots = 30
+_sprite2D = NodePath("Packsack")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2.5, 1.5)

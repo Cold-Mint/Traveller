@@ -21,6 +21,11 @@ public partial class Furniture : RigidBody2D
     private AudioStreamPlayer2D? _audioStreamPlayer2D;
     private CollisionShape2D? _collisionShape2D;
 
+    public int Durability => _durability;
+    public int MaxDurability => _maxDurability;
+
+    public string? LootId => _lootId;
+
     public override void _MouseEnter()
     {
         if (_animatedSprite2D != null && _outlineMaterial != null)

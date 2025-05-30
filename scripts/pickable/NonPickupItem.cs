@@ -166,8 +166,15 @@ public partial class NonPickupItem : RigidBody2D, IItem
     public Texture2D? Icon { get; }
     public string? ItemName { get; }
     public string? Description { get; }
-    public int Quantity { get; set; }
-    public int MaxQuantity { get; }
+
+    public int Quantity
+    {
+        get => 1;
+        set { }
+    }
+
+    public int MaxQuantity => 1;
+
     public int ItemType { get; }
     public bool IsSelect { get; set; }
     public IItemContainer? ItemContainer { get; set; }

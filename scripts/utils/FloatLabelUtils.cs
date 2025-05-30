@@ -1,6 +1,8 @@
 using System.Text;
 using ColdMint.scripts.character;
+using ColdMint.scripts.furniture;
 using ColdMint.scripts.inventory;
+using ColdMint.scripts.loot;
 using Godot;
 
 namespace ColdMint.scripts.utils;
@@ -50,7 +52,7 @@ public static class FloatLabelUtils
 
             if (obj is CharacterTemplate character)
             {
-                stringBuilder.Append("\nCharacterName");
+                stringBuilder.Append("\nCharacterName:");
                 stringBuilder.Append(character.CharacterName);
                 stringBuilder.Append("\nCampId:");
                 stringBuilder.Append(character.CampId);
@@ -83,6 +85,16 @@ public static class FloatLabelUtils
                 stringBuilder.Append(item.Quantity);
                 stringBuilder.Append("\nMaxQuantity:");
                 stringBuilder.Append(item.MaxQuantity);
+            }
+
+            if (obj is Furniture furniture)
+            {
+                stringBuilder.Append("\nDurability:");
+                stringBuilder.Append(furniture.Durability);
+                stringBuilder.Append("\nMaxDurability:");
+                stringBuilder.Append(furniture.MaxDurability);
+                stringBuilder.Append("\nLootId:");
+                stringBuilder.Append(furniture.LootId);
             }
 
             floatLabel.Text = stringBuilder.ToString();

@@ -669,10 +669,8 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <returns></returns>
     public bool Heal(Heal heal)
     {
-        if (CurrentHp <= 0 || Indestructible)
+        if (CurrentHp <= 0)
         {
-            //If the character is dead or invincible, It cannot be healed.
-            //如果角色已死亡或者本身是无敌的，那么不能治疗。
             return false;
         }
 
