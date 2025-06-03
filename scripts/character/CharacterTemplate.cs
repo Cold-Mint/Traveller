@@ -61,9 +61,9 @@ public partial class CharacterTemplate : CharacterBody2D
     }
 
     protected const float JumpVelocity = -240;
-    public string? ReadOnlyCharacterName => TranslationServerUtils.Translate(CharacterName);
+    public string? ReadOnlyCharacterName => TranslationServerUtils.Translate(_characterName);
 
-    [Export] public string? CharacterName;
+    [Export] private string? _characterName;
 
     /// <summary>
     /// <para>Can mutate after death</para>
@@ -440,7 +440,7 @@ public partial class CharacterTemplate : CharacterBody2D
             _animatedSprite2D.Material = _outlineMaterial;
         }
 
-        var translation = TranslationServerUtils.Translate(CharacterName);
+        var translation = ReadOnlyCharacterName;
         if (!string.IsNullOrEmpty(translation))
         {
             FloatLabelUtils.ShowFloatLabel(this, translation,
@@ -642,7 +642,7 @@ public partial class CharacterTemplate : CharacterBody2D
             }
         }
 
-        var translation = TranslationServerUtils.Translate(CharacterName);
+        var translation = ReadOnlyCharacterName;
         if (GameSceneDepend.ShowObjectDetails && _hasMouse && !string.IsNullOrEmpty(translation))
         {
             FloatLabelUtils.ShowFloatLabel(this, translation,
@@ -767,17 +767,18 @@ public partial class CharacterTemplate : CharacterBody2D
     {
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
-        if (damage.Attacker != null && !string.IsNullOrEmpty(CharacterName))
+        var readOnlyName = ReadOnlyCharacterName;
+        if (damage.Attacker != null && !string.IsNullOrEmpty(readOnlyName))
         {
             if (damage.Attacker is CharacterTemplate characterTemplate &&
-                !string.IsNullOrEmpty(characterTemplate.CharacterName))
+                !string.IsNullOrEmpty(characterTemplate.ReadOnlyCharacterName))
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
-                    characterTemplate.CharacterName);
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, readOnlyName,
+                    characterTemplate.ReadOnlyCharacterName);
             }
             else
             {
-                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, CharacterName,
+                LogCat.LogWithFormat("death_info", LogCat.LogLabel.Default, readOnlyName,
                     damage.Attacker.Name);
             }
         }

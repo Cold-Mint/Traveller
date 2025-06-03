@@ -8,7 +8,7 @@ namespace ColdMint.scripts.stateMachine;
 /// </summary>
 public class PatrolStateMachine : StateMachineTemplate
 {
-    protected override void OnStart(StateContext context)
+    protected override State OnStart(StateContext context)
     {
         var patrolStateProcessor = new PatrolStateProcessor
         {
@@ -27,5 +27,6 @@ public class PatrolStateMachine : StateMachineTemplate
         RegisterProcessor(fleeProcessor);
         var attackStateProcessor = new AttackStateProcessor();
         RegisterProcessor(attackStateProcessor);
+        return State.Patrol;
     }
 }

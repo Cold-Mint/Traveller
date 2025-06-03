@@ -68,7 +68,8 @@ public abstract class StateMachineTemplate : IStateMachine
         }
         else
         {
-            LogCat.LogErrorWithFormat("state_processor_not_found", label: LogCat.LogLabel.StateMachineTemplate, newState);
+            LogCat.LogErrorWithFormat("state_processor_not_found", label: LogCat.LogLabel.StateMachineTemplate,
+                newState);
         }
     }
 
@@ -100,7 +101,7 @@ public abstract class StateMachineTemplate : IStateMachine
             return;
         }
 
-        OnStart(Context);
+        Context.CurrentState = OnStart(Context);
         _activeStatusrocessor = _processors?[Context.CurrentState];
         _isRunning = true;
     }
@@ -113,7 +114,11 @@ public abstract class StateMachineTemplate : IStateMachine
     ///<para>Register the status handler in this method<see cref="RegisterProcessor"/>.</para>
     ///<para>请在此方法内注册状态处理器<see cref="RegisterProcessor"/>。</para>
     /// </remarks>
-    protected abstract void OnStart(StateContext context);
+    /// <returns>
+    ///<para>It is necessary to return to the initial state.</para>
+    ///<para>需要返回初始的状态。</para>
+    /// </returns>
+    protected abstract State OnStart(StateContext context);
 
     /// <summary>
     /// <para>When the state switch is off</para>

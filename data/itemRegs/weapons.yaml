@@ -16,7 +16,7 @@
 #铁斧子
 - id: iron_axe
   scene_path: res://prefab/weapons/IronAxe.tscn
-  icon_path: res://sprites/weapon/Iron_axe.png
+  icon_path: res://sprites/weapon/IronAxe.png
   max_stack_value: 1
   type_code: 1
 #beginner_staff

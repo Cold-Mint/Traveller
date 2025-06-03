@@ -166,10 +166,9 @@ public sealed partial class AiCharacter : CharacterTemplate
         }
 
         _wallDetectionOrigin = _wallDetection.TargetPosition;
-        StateMachine = new PatrolStateMachine();
+        StateMachine = new MaoDieStateMachine();
         StateMachine.Context = new StateContext
         {
-            CurrentState = State.Patrol,
             Owner = this
         };
         if (StateMachine != null)

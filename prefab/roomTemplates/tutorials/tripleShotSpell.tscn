@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://dodxp4mm0emj3"]
+[gd_scene load_steps=13 format=4 uid="uid://dodxp4mm0emj3"]
 
 [ext_resource type="TileSet" uid="uid://c4wpp12rr44hi" path="res://tileSets/dungeon.tres" id="2_k54gk"]
 [ext_resource type="Texture2D" uid="uid://drw45jlmfo0su" path="res://sprites/light/White_100.png" id="3_d6t7n"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://8vmmafhr3j2" path="res://scripts/map/ItemSpawn.cs" id="4_fh50l"]
 [ext_resource type="PackedScene" uid="uid://djsh4unystlf0" path="res://prefab/furnitures/SpellEditor.tscn" id="5_ll4ng"]
 [ext_resource type="Texture2D" uid="uid://kgodvs3ilxbs" path="res://sprites/tutorials/tripleShotSpell.png" id="6_2qcf3"]
+[ext_resource type="Script" uid="uid://cf5r28bfocp6b" path="res://scripts/map/CharacterSpawn.cs" id="7_lfqek"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxmys"]
 size = Vector2(23, 54.875)
@@ -140,6 +141,11 @@ shape = SubResource("RectangleShape2D_o4dgl")
 position = Vector2(434, 105)
 script = ExtResource("4_fh50l")
 _itemIdList = PackedStringArray("x3")
+
+[node name="maodie" type="Marker2D" parent="AutoSpawn"]
+position = Vector2(244, 265)
+script = ExtResource("7_lfqek")
+_resPathArray = PackedStringArray("res://prefab/entitys/maodie.tscn")
 
 [node name="PlayerTransportPoint" type="Marker2D" parent="."]
 position = Vector2(118, 232)

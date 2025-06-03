@@ -23,7 +23,7 @@ animations = [{
 collision_layer = 64
 collision_mask = 38
 script = ExtResource("1_nl23k")
-CharacterName = "character_punch_bag"
+_characterName = "character_punch_bag"
 CanMutateAfterDeath = false
 RequiredForWaveAdvance = false
 

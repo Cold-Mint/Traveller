@@ -53,7 +53,7 @@ public static class FloatLabelUtils
             if (obj is CharacterTemplate character)
             {
                 stringBuilder.Append("\nCharacterName:");
-                stringBuilder.Append(character.CharacterName);
+                stringBuilder.Append(character.ReadOnlyCharacterName);
                 stringBuilder.Append("\nCampId:");
                 stringBuilder.Append(character.CampId);
                 stringBuilder.Append("\nHp:");
@@ -116,6 +116,7 @@ public static class FloatLabelUtils
         {
             labelSettings.FontColor = fontColor;
         }
+
         floatLabel.Follow = true;
         floatLabel.Show();
     }
