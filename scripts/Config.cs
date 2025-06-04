@@ -65,6 +65,7 @@ public static class Config
         ///<para>开启自由视角</para>
         /// </remarks>
         public const string Camera = "camera";
+
         public const string Debug = "debug";
 
         /// <summary>
@@ -770,26 +771,29 @@ public static class Config
     /// </summary>
     public const int VerticalVelocityOfDamageNumbers = 5;
 
-
-    public static class OffsetAngleMode
+    /// <summary>
+    /// <para>Status effect type</para>
+    /// <para>状态效果类型</para>
+    /// </summary>
+    public enum StatusEffectType
     {
         /// <summary>
-        /// <para>Random(Default)</para>
-        /// <para>随机的（默认）</para>
+        /// <para>beneficial</para>
+        /// <para>正面</para>
         /// </summary>
-        public const int Random = 0;
+        Beneficial,
 
         /// <summary>
-        /// <para>AlwaysSame</para>
-        /// <para>永远不变的偏移角度</para>
+        /// <para>harmful</para>
+        /// <para>负面</para>
         /// </summary>
-        public const int AlwaysSame = 1;
+        Harmful,
 
         /// <summary>
-        /// <para>Cross</para>
-        /// <para>交叉变换</para>
+        /// <para>neutral</para>
+        /// <para>中立</para>
         /// </summary>
-        public const int Cross = 2;
+        Neutral
     }
 
     /// <summary>
@@ -903,18 +907,18 @@ public static class Config
     /// <para>Specify the type of damage used in the game</para>
     /// <para>指定游戏内使用的伤害类型</para>
     /// </summary>
-    public static class DamageType
+    public enum DamageType
     {
         /// <summary>
         /// <para>physical injury</para>
         /// <para>物理伤害</para>
         /// </summary>
-        public const int Physical = 1;
+        Physical,
 
         /// <summary>
         /// <para>Magic damage</para>
         /// <para>魔法伤害</para>
         /// </summary>
-        public const int Magic = 2;
+        Magic
     }
 }

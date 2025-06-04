@@ -18,7 +18,7 @@ public partial class MeleeWeapon : WeaponTemplate
     [Export]
     private int _maxDamage; // skipcq:CS-R1137
     [Export]
-    private int _damageType = Config.DamageType.Physical; // skipcq:CS-R1137
+    private Config.DamageType _damageType = Config.DamageType.Physical; // skipcq:CS-R1137
     [Export]
     private int _criticalStrikeProbability; // skipcq:CS-R1137
     public override void LoadResource()

@@ -30,7 +30,7 @@ public partial class Projectile : CharacterBody2D
 
     [Export] private int _maxDamage; // skipcq:CS-R1137
     [Export] private int _minDamage; // skipcq:CS-R1137
-    [Export] private int _damageType; // skipcq:CS-R1137
+    [Export] private Config.DamageType _damageType; // skipcq:CS-R1137
 
     /// <summary>
     /// <para>After this time destroy the projectile</para>

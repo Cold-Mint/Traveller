@@ -22,7 +22,7 @@ public partial class DamageAreaSell : SpellPickAble
     [Export]
     private int MaxDamage { get; set; }
     [Export]
-    private int _damageType = Config.DamageType.Physical; // skipcq:CS-R1137
+    private Config.DamageType _damageType = Config.DamageType.Physical; // skipcq:CS-R1137
 
     public override void LoadResource()
     {

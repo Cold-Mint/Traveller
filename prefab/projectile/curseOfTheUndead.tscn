@@ -13,7 +13,6 @@ _life = 5000
 _durability = 1.0
 _maxDamage = 4
 _minDamage = 1
-_damageType = 2
 Speed = 10.0
 _repelStrength = 2.5
 

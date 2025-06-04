@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ColdMint.scripts.buff;
 using ColdMint.scripts.camp;
 using ColdMint.scripts.damage;
 using ColdMint.scripts.debug;
@@ -29,6 +30,8 @@ public partial class CharacterTemplate : CharacterBody2D
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     // 从项目设置中获取与RigidBody节点同步的重力。
     protected float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+
+    private readonly Dictionary<string, IStatusEffect> _statusEffect = [];
 
     /// <summary>
     /// <para>How fast the character moves</para>
@@ -84,6 +87,44 @@ public partial class CharacterTemplate : CharacterBody2D
     public bool RequiredForWaveAdvance { get; set; } = true;
 
     protected IItemContainer? ProtectedItemContainer;
+
+    /// <summary>
+    /// <para>add status effect</para>
+    /// <para>添加状态效果</para>
+    /// </summary>
+    /// <param name="statusEffect"></param>
+    /// <returns></returns>
+    public bool AddStatusEffect(IStatusEffect statusEffect)
+    {
+        return _statusEffect.TryAdd(statusEffect.Id, statusEffect);
+    }
+
+    /// <summary>
+    /// <para>clear status effect</para>
+    /// <para>清理状态效果</para>
+    /// </summary>
+    public void ClearStatusEffect()
+    {
+        _statusEffect.Clear();
+    }
+
+
+    /// <summary>
+    /// <para>Remove status effect</para>
+    /// <para>移除状态效果</para>
+    /// </summary>
+    /// <param name="statusEffectId"></param>
+    /// <returns></returns>
+    public bool RemoveStatusEffect(string statusEffectId)
+    {
+        if (_statusEffect.ContainsKey(statusEffectId))
+        {
+            return false;
+        }
+
+        _statusEffect.Remove(statusEffectId);
+        return true;
+    }
 
     //Item containers are used to store items.
     //物品容器用于存储物品。

@@ -13,7 +13,7 @@ public class FixedDamage(int damage) : IDamage
         get => damage;
     }
     public bool IsCriticalStrike { get; set; }
-    public int Type { get; set; }
+    public Config.DamageType Type { get; set; }
     public bool MoveLeft { get; set; }
     public Node2D? Attacker { get; set; }
 }

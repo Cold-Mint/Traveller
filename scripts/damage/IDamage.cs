@@ -20,7 +20,7 @@ public interface IDamage
     /// <para>Types of damage</para>
     /// <para>伤害的类型</para>
     /// </summary>
-    public int Type { get; set; }
+    public Config.DamageType Type { get; set; }
 
     /// <summary>
     /// <para>Whether the damage text moves to the left</para>

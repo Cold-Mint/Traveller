@@ -205,7 +205,7 @@ public partial class DamageNumberNodeSpawn : Marker2D
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    private Gradient? GetDamageColorByType(int type)
+    private Gradient? GetDamageColorByType(Config.DamageType type)
     {
         return type switch
         {
