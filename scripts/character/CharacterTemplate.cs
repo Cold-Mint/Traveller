@@ -529,6 +529,7 @@ public partial class CharacterTemplate : CharacterBody2D
         //设置捡起物品的常规处理。
         //You can supplement picking up state handling for more types of objects here.
         //您可以在这里补充更多类型对象的捡起状态处理。
+        pickAbleItem.ClearNewItemGlow();
         pickAbleItem.LoadResource();
         pickAbleItem.OwnerNode = this;
         pickAbleItem.Picked = true;
@@ -932,6 +933,11 @@ public partial class CharacterTemplate : CharacterBody2D
         if (item is not Node2D node2D)
         {
             return;
+        }
+
+        if (this is not Player)
+        {
+            item.ApplyNewItemGlow();
         }
 
         originalItem.OnThrow?.Invoke(node2D, velocity);

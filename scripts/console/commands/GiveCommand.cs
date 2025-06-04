@@ -61,7 +61,7 @@ public class GiveCommand : ICommand
 
         objectSelectorQueryResponse.Filter<CharacterTemplate>(template =>
         {
-            var item = ItemTypeManager.CreateItem(inputItemId, template);
+            var item = ItemTypeManager.CreateItem(inputItemId, template, applyNewItemGlow: false);
             if (item == null)
             {
                 return;

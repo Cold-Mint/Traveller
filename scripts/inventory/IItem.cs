@@ -11,6 +11,7 @@ public interface IItem
     /// <para>物品在容器内的位置</para>
     /// </summary>
     public int Index { get; set; }
+
     /// <summary>
     /// <para>ID of current item</para>
     /// <para>当前物品的ID</para>
@@ -135,6 +136,16 @@ public interface IItem
     bool Use(Node2D? owner, Vector2 targetGlobalPosition);
 
     /// <summary>
+    /// <para>Set the transparency of the image</para>
+    /// <para>设置图像的透明度</para>
+    /// </summary>
+    /// <param name="alpha">
+    ///<para>Between 0 and 1.</para>
+    ///<para>0到1之间。</para>
+    /// </param>
+    void SetAlpha(float alpha);
+
+    /// <summary>
     /// <para>When the item is thrown</para>
     /// <para>当物品被抛出时</para>
     /// </summary>
@@ -143,6 +154,30 @@ public interface IItem
     ///<para>第一个参数Node2D表示此物品的新实例。</para>
     /// </remarks>
     Action<Node2D, Vector2>? OnThrow { get; set; }
+
+    /// <summary>
+    /// <para>On Mouse Enter</para>
+    /// <para>当鼠标进入时</para>
+    /// </summary>
+    Action<IItem>? OnMouseEnter { get; set; }
+
+    /// <summary>
+    /// <para>On Mouse Exit</para>
+    /// <para>当鼠标离开时</para>
+    /// </summary>
+    Action<IItem>? OnMouseExit { get; set; }
+
+    /// <summary>
+    /// <para>Apply NewItem Glow</para>
+    /// <para>应用新物品发光</para>
+    /// </summary>
+    void ApplyNewItemGlow();
+
+    /// <summary>
+    /// <para>Clear the luminous effect of the items</para>
+    /// <para>清空物品发光效果</para>
+    /// </summary>
+    void ClearNewItemGlow();
 
     /// <summary>
     /// <para>When the item is picked up</para>

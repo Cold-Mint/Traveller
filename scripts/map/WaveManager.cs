@@ -64,6 +64,29 @@ public class WaveManager
 
     public Action? OnWaveStart { get; set; }
 
+    private void OnMouseEnter(IItem item)
+    {
+        foreach (var item1 in _spawnedItem)
+        {
+            if (item1 == item)
+            {
+                item1.SetAlpha(1);
+            }
+            else
+            {
+                item1.SetAlpha(0.5f);
+            }
+        }
+    }
+
+    private void OnMouseExit(IItem item)
+    {
+        foreach (var item1 in _spawnedItem)
+        {
+            item1.SetAlpha(1);
+        }
+    }
+
     /// <summary>
     /// <para>Spawn a wave of entities</para>
     /// <para>生成一波实体</para>
@@ -74,6 +97,7 @@ public class WaveManager
         {
             return;
         }
+
         if (_maxWaveNumber > 0 && _currentWaveNumber == _maxWaveNumber)
         {
             //Complete all waves.
@@ -141,6 +165,8 @@ public class WaveManager
 
                         item.OnPickUp -= _onPickUpDictionary[item];
                     };
+                    item.OnMouseEnter += OnMouseEnter;
+                    item.OnMouseExit += OnMouseExit;
                     item.OnPickUp += onPickUp;
                     _onPickUpDictionary[item] = onPickUp;
                 }

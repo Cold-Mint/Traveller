@@ -31,10 +31,12 @@ public static class ItemTypeManager
             return null;
         }
 
-        return ids.Count == 0 ?
+        return ids.Count == 0
+            ?
             //No item of that type has been registered.
             //没有对应类型的物品被注册了。
-            null : ids[GD.RandRange(0, ids.Count - 1)];
+            null
+            : ids[GD.RandRange(0, ids.Count - 1)];
     }
 
     /// <summary>
@@ -90,8 +92,12 @@ public static class ItemTypeManager
     ///<para>Default parent</para>
     ///<para>父节点</para>
     /// </param>
+    /// <param name="applyNewItemGlow">
+    ///<para>Apply luminescence effect</para>
+    ///<para>应用发光效果</para>
+    /// </param>
     /// <seealso cref="CreateItems"/>
-    public static IItem? CreateItem(string id, Node? defaultParentNode = null)
+    public static IItem? CreateItem(string id, Node? defaultParentNode = null, bool applyNewItemGlow = true)
     {
         if (!Registry.TryGetValue(id, out var itemType))
         {
@@ -107,6 +113,11 @@ public static class ItemTypeManager
         }
 
         newItem.Id = itemType.Id;
+        if (applyNewItemGlow)
+        {
+            newItem.ApplyNewItemGlow();
+        }
+
         NodeUtils.CallDeferredAddChild(NodeUtils.FindContainerNode(node, defaultParentNode), node);
         return newItem;
     }

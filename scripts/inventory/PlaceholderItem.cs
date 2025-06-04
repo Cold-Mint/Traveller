@@ -56,6 +56,24 @@ public class PlaceholderItem : IItem
     {
         return false;
     }
+
+    public void SetAlpha(float alpha)
+    {
+        
+    }
+
     public Action<Node2D, Vector2>? OnThrow { get; set; }
+    public Action<IItem>? OnMouseEnter { get; set; }
+    public Action<IItem>? OnMouseExit { get; set; }
+    public void ApplyNewItemGlow()
+    {
+        
+    }
+
+    public void ClearNewItemGlow()
+    {
+        
+    }
+
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 }

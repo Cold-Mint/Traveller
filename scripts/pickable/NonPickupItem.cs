@@ -77,6 +77,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
             return;
         }
 
+        OnMouseEnter?.Invoke(this);
         FloatLabelUtils.ShowFloatLabel(this, translation, Colors.White);
     }
 
@@ -87,6 +88,7 @@ public partial class NonPickupItem : RigidBody2D, IItem
             _sprite2D.Material = null;
         }
 
+        OnMouseExit?.Invoke(this);
         FloatLabelUtils.HideFloatLabel();
     }
 
@@ -195,6 +197,39 @@ public partial class NonPickupItem : RigidBody2D, IItem
         return false;
     }
 
+    public void SetAlpha(float alpha)
+    {
+        if (_sprite2D == null) return;
+        var oldModulate = _sprite2D.Modulate;
+        oldModulate.A = alpha;
+        _sprite2D.Modulate = oldModulate;
+    }
+
     public Action<Node2D, Vector2>? OnThrow { get; set; }
+    public Action<IItem>? OnMouseEnter { get; set; }
+    public Action<IItem>? OnMouseExit { get; set; }
+
+    public void ApplyNewItemGlow()
+    {
+        var highlightShader = ResourceLoader.Load<Shader>("res://shaders/highlight.gdshader");
+        if (highlightShader == null) return;
+        var shaderMaterial = new ShaderMaterial
+        {
+            Shader = highlightShader
+        };
+        if (_sprite2D != null)
+        {
+            _sprite2D.Material = shaderMaterial;
+        }
+    }
+
+    public void ClearNewItemGlow()
+    {
+        if (_sprite2D != null)
+        {
+            _sprite2D.Material = null;
+        }
+    }
+
     public Action<CharacterTemplate>? OnPickUp { get; set; }
 }
