@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ColdMint.scripts.buff;
 using ColdMint.scripts.camp;
@@ -32,6 +33,9 @@ public partial class CharacterTemplate : CharacterBody2D
     protected float Gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     private readonly Dictionary<string, IStatusEffect> _statusEffect = [];
+    private readonly List<IStatusEffect> _statusEffectList = [];
+    private Timer? _statusEffectTimer;
+    public Action<CharacterTemplate>? OnDieAction;
 
     /// <summary>
     /// <para>How fast the character moves</para>
@@ -66,6 +70,7 @@ public partial class CharacterTemplate : CharacterBody2D
     protected const float JumpVelocity = -240;
     public string? ReadOnlyCharacterName => TranslationServerUtils.Translate(_characterName);
 
+
     [Export] private string? _characterName;
 
     /// <summary>
@@ -96,7 +101,43 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <returns></returns>
     public bool AddStatusEffect(IStatusEffect statusEffect)
     {
-        return _statusEffect.TryAdd(statusEffect.Id, statusEffect);
+        var add = _statusEffect.TryAdd(statusEffect.Id, statusEffect);
+        if (add)
+        {
+            _statusEffectList.Add(statusEffect);
+            statusEffect.OnApply(this);
+            if (_statusEffectTimer == null)
+            {
+                _statusEffectTimer = new Timer();
+                _statusEffectTimer.Autostart = true;
+                _statusEffectTimer.Timeout += OnTick;
+                _statusEffectTimer.WaitTime = 1;
+                AddChild(_statusEffectTimer);
+            }
+        }
+
+        return add;
+    }
+
+    private void OnTick()
+    {
+        var finalList = _statusEffectList.ToList();
+        if (finalList.Count <= 0)
+        {
+            _statusEffectTimer?.Stop();
+            _statusEffectTimer = null;
+            return;
+        }
+
+        foreach (var statusEffect in finalList)
+        {
+            if (!statusEffect.OnTick())
+            {
+                //If the status effect times out, then remove it.
+                //如果状态效果超时了，那么移除它。
+                RemoveStatusEffect(statusEffect.Id);
+            }
+        }
     }
 
     /// <summary>
@@ -105,7 +146,13 @@ public partial class CharacterTemplate : CharacterBody2D
     /// </summary>
     public void ClearStatusEffect()
     {
+        foreach (var statusEffect in _statusEffectList)
+        {
+            statusEffect.OnRemove(this);
+        }
+
         _statusEffect.Clear();
+        _statusEffectList.Clear();
     }
 
 
@@ -117,11 +164,13 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <returns></returns>
     public bool RemoveStatusEffect(string statusEffectId)
     {
-        if (_statusEffect.ContainsKey(statusEffectId))
+        if (!_statusEffect.TryGetValue(statusEffectId, out var statusEffect))
         {
             return false;
         }
 
+        statusEffect.OnRemove(this);
+        _statusEffectList.Remove(statusEffect);
         _statusEffect.Remove(statusEffectId);
         return true;
     }
@@ -621,7 +670,6 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _Process(double delta)
     {
         base._Process(delta);
-
         //If the time difference between the last injury and the current time is greater than the time displayed in the health bar, the health bar is hidden
         //如果上次受到伤害的时间与当前时间的时间差大于健康条显示时间，则隐藏健康条
         if (_healthBar is { Visible: true })
@@ -807,6 +855,7 @@ public partial class CharacterTemplate : CharacterBody2D
     /// <param name="damage"></param>
     protected virtual async Task OnDie(IDamage damage)
     {
+        OnDieAction?.Invoke(this);
         //If the attacker is not empty and the role name is not empty, then the role death message is printed
         //如果攻击者不为空，且角色名不为空，那么打印角色死亡信息
         var readOnlyName = ReadOnlyCharacterName;
@@ -835,6 +884,7 @@ public partial class CharacterTemplate : CharacterBody2D
             FloatLabelUtils.HideFloatLabel();
         }
 
+        ClearStatusEffect();
         ThrowAllItemOnDie();
         await CreateLootObject();
         QueueFree();

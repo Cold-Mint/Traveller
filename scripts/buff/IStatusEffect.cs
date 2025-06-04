@@ -11,7 +11,7 @@ public interface IStatusEffect
     /// <para>buff的名称</para>
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// <para>State effect type</para>
     /// <para>状态效果类型</para>
@@ -43,16 +43,14 @@ public interface IStatusEffect
     void OnApply(CharacterTemplate character);
 
     /// <summary>
-    /// <para>When the buff is processed</para>
-    /// <para>当buff处理时</para>
+    /// <para>Periodic processing</para>
+    /// <para>周期处理</para>
     /// </summary>
-    void Process(long delta);
-
-    /// <summary>
-    /// <para>When the buff is processed</para>
-    /// <para>当buff处理时</para>
-    /// </summary>
-    void PhysicsProcess(long delta);
+    /// <returns>
+    ///<para>Return whether it is alive. true means alive, and false will call the OnRemove method.</para>
+    ///<para>返回是否存活着，true为活着，false将调用OnRemove方法。</para>
+    /// </returns>
+    bool OnTick();
 
     /// <summary>
     /// <para>When the buff is removed from the character(Including automatic removal due to timeout)</para>
