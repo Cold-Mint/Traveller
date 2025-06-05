@@ -1,4 +1,5 @@
 ﻿using ColdMint.scripts.character;
+using Godot;
 
 namespace ColdMint.scripts.buff;
 
@@ -13,6 +14,12 @@ public interface IStatusEffect
     string Name { get; }
 
     /// <summary>
+    /// <para>The color of the status effect</para>
+    /// <para>状态效果的颜色</para>
+    /// </summary>
+    Color Color { get; }
+
+    /// <summary>
     /// <para>State effect type</para>
     /// <para>状态效果类型</para>
     /// </summary>
@@ -22,19 +29,19 @@ public interface IStatusEffect
     /// <para>The description of buff</para>
     /// <para>buff的描述</para>
     /// </summary>
-    string Description { get; }
+    string Description { get; set; }
 
     /// <summary>
     /// <para>Remaining duration (seconds)</para>
     /// <para>剩余时长（秒）</para>
     /// </summary>
-    long Duration { get; }
+    ulong Duration { get; }
 
     /// <summary>
     /// <para>Level</para>
     /// <para>等级</para>
     /// </summary>
-    int Level { get; }
+    int Level { get; set; }
 
     /// <summary>
     /// <para>When the buff is applied to the character</para>

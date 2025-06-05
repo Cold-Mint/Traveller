@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvo1eqbgo0mvr"]
+
+[ext_resource type="Texture2D" uid="uid://bxqn0iqybdo2r" path="res://sprites/StateEffectParticle.png" id="1_p5qdp"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uyolh"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angular_velocity_min = -300.0
+angular_velocity_max = -300.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.3
+scale_max = 0.5
+
+[node name="EffectStateParticle" type="GPUParticles2D"]
+texture = ExtResource("1_p5qdp")
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_uyolh")

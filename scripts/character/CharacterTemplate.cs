@@ -37,6 +37,9 @@ public partial class CharacterTemplate : CharacterBody2D
     private Timer? _statusEffectTimer;
     public Action<CharacterTemplate>? OnDieAction;
 
+    private PackedScene? _effectStateParticle;
+    private GpuParticles2D? _effectStateParticleNode;
+
     /// <summary>
     /// <para>How fast the character moves</para>
     /// <para>角色的移动速度</para>
@@ -114,6 +117,21 @@ public partial class CharacterTemplate : CharacterBody2D
                 _statusEffectTimer.WaitTime = 1;
                 AddChild(_statusEffectTimer);
             }
+
+            if (_effectStateParticleNode == null && _effectStateParticle != null)
+            {
+                _effectStateParticleNode = _effectStateParticle.Instantiate<GpuParticles2D>();
+                AddChild(_effectStateParticleNode);
+            }
+
+            if (_effectStateParticleNode != null)
+            {
+                if (_effectStateParticleNode.ProcessMaterial is ParticleProcessMaterial particleProcessMaterial)
+                {
+                    particleProcessMaterial.EmissionBoxExtents = new Vector3(32 * 1, 32 * 2, 1);
+                    particleProcessMaterial.Color = ColorUtils.WeightedAverageMix(_statusEffectList.ToArray());
+                }
+            }
         }
 
         return add;
@@ -125,7 +143,10 @@ public partial class CharacterTemplate : CharacterBody2D
         if (finalList.Count <= 0)
         {
             _statusEffectTimer?.Stop();
+            _statusEffectTimer?.QueueFree();
             _statusEffectTimer = null;
+            _effectStateParticleNode?.QueueFree();
+            _effectStateParticleNode = null;
             return;
         }
 
@@ -384,6 +405,8 @@ public partial class CharacterTemplate : CharacterBody2D
     public override void _Ready()
     {
         base._Ready();
+        _effectStateParticle ??= GD.Load<PackedScene>("res://prefab/particle/effect_state_particle.tscn");
+
         PickingRangeBodiesList = [];
 
         if (MaxHp <= 0)
